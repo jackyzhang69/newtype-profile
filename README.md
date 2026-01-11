@@ -48,22 +48,9 @@ newtype-profile is an AI Agent collaboration framework designed for **content cr
 1. Install [OpenCode](https://opencode.ai/docs)
 2. Install [Bun](https://bun.sh/) (only needed for local development)
 
-### Installation Methods
+### Installation
 
-OpenCode supports both **user-level** and **project-level** configuration. This allows you to use different plugins for different projects - for example, oh-my-opencode for coding projects and newtype-profile for content creation projects.
-
-#### Configuration Hierarchy
-
-| Level | Path | Priority |
-|-------|------|----------|
-| **User-level** | `~/.config/opencode/opencode.json` | Lower |
-| **Project-level** | `<project>/.opencode/opencode.json` | Higher (overrides user-level) |
-
----
-
-#### Method 1: User-Level Configuration (Global)
-
-Use this if you want newtype-profile as your default plugin for all projects.
+#### Method 1: npm Package (Recommended)
 
 Edit `~/.config/opencode/opencode.json`:
 
@@ -75,50 +62,7 @@ Edit `~/.config/opencode/opencode.json`:
 }
 ```
 
----
-
-#### Method 2: Project-Level Configuration (Recommended)
-
-Use this to enable newtype-profile only for specific content creation projects, while keeping oh-my-opencode as the default for coding projects.
-
-**Step 1**: Keep oh-my-opencode as user-level default
-
-`~/.config/opencode/opencode.json`:
-```json
-{
-  "plugin": [
-    "oh-my-opencode"
-  ]
-}
-```
-
-**Step 2**: Enable newtype-profile for content creation projects
-
-In your content creation project root, create `.opencode/opencode.json`:
-
-```bash
-mkdir -p .opencode
-```
-
-`<project>/.opencode/opencode.json`:
-```json
-{
-  "plugin": [
-    "newtype-profile"
-  ]
-}
-```
-
-**Result**:
-
-| Project Type | Config Source | Plugin Used |
-|--------------|---------------|-------------|
-| Coding projects (no `.opencode/`) | User-level config | oh-my-opencode |
-| Content creation projects (has `.opencode/`) | Project-level config | newtype-profile |
-
----
-
-#### Method 3: Clone to Local (Development)
+#### Method 2: Clone to Local (Development)
 
 For development or customization:
 
