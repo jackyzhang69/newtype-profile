@@ -30,7 +30,7 @@
 ### 安装
 
 ```bash
-git clone https://github.com/newtype-01/immi-os.git
+git clone https://github.com/jackyzhang69/immi-os.git
 cd immi-os
 bun install
 ```
@@ -61,6 +61,7 @@ bun install
 > "审计这份申请人 [Name] 的配偶担保申请..."
 
 系统将自动：
+
 1.  识别意图。
 2.  激活 `AuditManager`。
 3.  将任务分解为具体的检查项（身份、关系、准入性等）。

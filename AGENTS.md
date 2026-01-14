@@ -118,6 +118,30 @@ oh-my-opencode/
 - **Hook naming**: `createXXXHook` function convention
 - **Factory pattern**: Components created via `createXXX()` functions
 
+## IMMIGRATION AUDIT MCP/KG AUTHENTICATION
+
+**ImmiCore 服务统一认证**：
+- 使用 `SEARCH_SERVICE_TOKEN` 环境变量作为统一的 Bearer token
+- 用于 Knowledge Graph API 和所有 MCP 服务器的认证
+- 在 HTTP 模式下（`AUDIT_MCP_TRANSPORT=http`），必须配置此令牌
+
+**环境变量配置**：
+```bash
+export SEARCH_SERVICE_TOKEN=your_token
+```
+
+**实现位置**：
+- `src/audit-core/http-client.ts`：AuthenticatedHttpClient 认证支持
+- `src/tools/audit-kg/utils.ts`：KG 工具认证集成
+- `src/audit-core/mcp-bridge.ts`：MCP 服务器认证集成
+- `src/audit-core/eval/health-check.ts`：健康检查认证
+
+**强制 MCP 策略**：
+- `audit-search-guard` hook 拦截 websearch 和 webfetch
+- HTTP 模式下，如果 MCP 服务器不健康，完全阻止外网搜索
+- Detective/Strategist agent 禁止使用 webfetch 工具
+- 域名白名单过滤（government/professional/public 三级）
+
 ## AGENT MODELS
 
 | Agent | Default Model | Purpose |

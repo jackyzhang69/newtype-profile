@@ -1,5 +1,5 @@
 import { tool } from "@opencode-ai/plugin"
-import { fetchJson, getKgBaseUrl } from "./utils"
+import { fetchJson } from "./utils"
 import type { KgSearchFilters, KgSimilarCasesInput } from "./types"
 
 export const kg_search = tool({
@@ -16,10 +16,8 @@ export const kg_search = tool({
   execute: async (args) => {
     try {
       const payload: KgSearchFilters = { ...args }
-      const baseUrl = getKgBaseUrl()
-      const result = await fetchJson(`${baseUrl}/kg/search`, {
+      const result = await fetchJson('/kg/search', {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       })
       return JSON.stringify(result)
@@ -36,9 +34,8 @@ export const kg_case = tool({
   },
   execute: async (args) => {
     try {
-      const baseUrl = getKgBaseUrl()
       const citation = encodeURIComponent(args.citation)
-      const result = await fetchJson(`${baseUrl}/kg/case/${citation}`)
+      const result = await fetchJson(`/kg/case/${citation}`)
       return JSON.stringify(result)
     } catch (e) {
       return `Error: ${e instanceof Error ? e.message : String(e)}`
@@ -60,10 +57,8 @@ export const kg_similar_cases = tool({
   execute: async (args) => {
     try {
       const payload: KgSimilarCasesInput = { ...args }
-      const baseUrl = getKgBaseUrl()
-      const result = await fetchJson(`${baseUrl}/kg/similar-cases`, {
+      const result = await fetchJson('/kg/similar-cases', {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       })
       return JSON.stringify(result)
@@ -80,9 +75,8 @@ export const kg_judge_stats = tool({
   },
   execute: async (args) => {
     try {
-      const baseUrl = getKgBaseUrl()
       const judgeId = encodeURIComponent(args.judge_id)
-      const result = await fetchJson(`${baseUrl}/kg/judge/${judgeId}/stats`)
+      const result = await fetchJson(`/kg/judge/${judgeId}/stats`)
       return JSON.stringify(result)
     } catch (e) {
       return `Error: ${e instanceof Error ? e.message : String(e)}`

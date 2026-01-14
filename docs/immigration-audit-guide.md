@@ -65,8 +65,13 @@ export AUDIT_VALIDATE_KNOWLEDGE=true
 export AUDIT_KG_BASE_URL=http://localhost:3104/api/v1
 export AUDIT_MCP_TRANSPORT=http
 export AUDIT_MCP_HOST=http://localhost
+export SEARCH_SERVICE_TOKEN=your_token
 ```
 *优先级：环境变量 > 配置文件 > 默认值 (spousal)*
+
+**新增认证说明**：
+- `SEARCH_SERVICE_TOKEN`: ImmiCore 服务统一认证令牌，用于 KG API 和 MCP 服务器的 Bearer token 认证
+- 在 HTTP 模式下（`AUDIT_MCP_TRANSPORT=http`），建议配置此令牌以访问受限的 API 端点
 
 ## 5. 模型选择
 

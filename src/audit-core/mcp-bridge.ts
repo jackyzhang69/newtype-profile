@@ -1,11 +1,12 @@
 import { join } from "path"
 import { homedir } from "os"
+import { createMcpClient } from "./http-client"
 
 export interface McpServerConfig {
   command?: string
   args?: string[]
   env?: Record<string, string>
-  type?: "http"
+  type?: "http" | "stdio"
   url?: string
 }
 
@@ -62,4 +63,33 @@ export function getImmicoreMcpConfigs(): Record<string, McpServerConfig> {
       env: stdioEnv
     }
   }
+}
+
+export async function checkMcpHealth(config: McpServerConfig): Promise<boolean> {
+  if (config.type !== 'http' || !config.url) return true
+
+  try {
+    const client = createMcpClient(config.url)
+    return await client.healthCheck()
+  } catch {
+    return false
+  }
+}
+
+export async function getHealthyMcpConfigs(): Promise<Record<string, McpServerConfig>> {
+  const configs = getImmicoreMcpConfigs()
+  const healthyConfigs: Record<string, McpServerConfig> = {}
+
+  for (const [name, config] of Object.entries(configs)) {
+    if (await checkMcpHealth(config)) {
+      healthyConfigs[name] = config
+    }
+  }
+
+  return healthyConfigs
+}
+
+export function shouldBlockWebFallback(): boolean {
+  const transport = getMcpTransport()
+  return transport === 'http'
 }

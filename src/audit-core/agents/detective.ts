@@ -24,6 +24,7 @@ export function createDetectiveAgent(
   const restrictions = createAgentToolRestrictions([
     "write",
     "edit",
+    "webfetch",
   ])
 
   const appId = getAuditAppId()

@@ -1,13 +1,23 @@
 import fs from "node:fs"
 import path from "node:path"
-import { getKgBaseUrl } from "../../tools/audit-kg/utils"
+
+function getKgBaseUrl(): string {
+  return process.env.AUDIT_KG_BASE_URL?.trim() || "http://localhost:3104/api/v1"
+}
 
 async function checkKg(): Promise<string | null> {
   const baseUrl = getKgBaseUrl()
+  const authToken = process.env.SEARCH_SERVICE_TOKEN?.trim()
+
+  const headers: Record<string, string> = { "Content-Type": "application/json" }
+  if (authToken) {
+    headers["Authorization"] = `Bearer ${authToken}`
+  }
+
   try {
     const response = await fetch(`${baseUrl}/kg/search`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers,
       body: JSON.stringify({ limit: 1 }),
     })
     if (!response.ok) {

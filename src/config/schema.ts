@@ -311,6 +311,7 @@ export const OhMyOpenCodeConfigSchema = z.object({
   audit_kg_base_url: z.string().optional(),
   audit_mcp_transport: z.enum(["http", "stdio"]).optional(),
   audit_mcp_host: z.string().optional(),
+  search_service_token: z.string().optional(),
   skills: SkillsConfigSchema.optional(),
   ralph_loop: RalphLoopConfigSchema.optional(),
   background_task: BackgroundTaskConfigSchema.optional(),

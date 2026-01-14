@@ -22,6 +22,7 @@ export function createStrategistAgent(
 ): AgentConfig {
   const restrictions = createAgentToolRestrictions([
     "write",
+    "webfetch",
   ])
 
   const appId = getAuditAppId()

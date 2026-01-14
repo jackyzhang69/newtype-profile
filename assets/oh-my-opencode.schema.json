@@ -73,7 +73,8 @@
           "edit-error-recovery",
           "prometheus-md-only",
           "start-work",
-          "chief-orchestrator"
+          "chief-orchestrator",
+          "audit-search-guard"
         ]
       }
     },
@@ -1077,6 +1078,59 @@
       "type": "boolean"
     },
     "audit_app": {
+      "type": "string"
+    },
+    "search_policy": {
+      "type": "string",
+      "enum": [
+        "mcp_only",
+        "mcp_first",
+        "web_fallback"
+      ]
+    },
+    "web_whitelist": {
+      "type": "object",
+      "properties": {
+        "government": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "professional": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "public": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "audit_validate_knowledge": {
+      "type": "boolean"
+    },
+    "audit_kg_base_url": {
+      "type": "string"
+    },
+    "audit_mcp_transport": {
+      "type": "string",
+      "enum": [
+        "http",
+        "stdio"
+      ]
+    },
+    "audit_mcp_host": {
+      "type": "string"
+    },
+    "audit_mcp_auth_token": {
+      "type": "string"
+    },
+    "audit_kg_auth_token": {
       "type": "string"
     },
     "skills": {

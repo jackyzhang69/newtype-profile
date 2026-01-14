@@ -30,7 +30,7 @@ The system uses a "Separation of Planning and Execution" philosophy inherited fr
 ### Installation
 
 ```bash
-git clone https://github.com/newtype-01/immi-os.git
+git clone https://github.com/jackyzhang69/immi-os.git
 cd immi-os
 bun install
 ```
@@ -61,6 +61,7 @@ Start an OpenCode session and simply ask:
 > "Audit this spousal sponsorship application for applicant [Name]..."
 
 The system will automatically:
+
 1.  Detect the intent.
 2.  Activate the `AuditManager`.
 3.  Decompose the task into checks (Identity, Relationship, Admissibility).
