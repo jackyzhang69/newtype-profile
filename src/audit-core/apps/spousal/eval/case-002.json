@@ -1,0 +1,16 @@
+{
+  "case_id": "spousal-002",
+  "profile": {
+    "relationship_type": "spousal",
+    "courtship_duration_months": 18,
+    "marriage_date": "2024-11-01",
+    "cohabitation_months": 12,
+    "joint_finances": true,
+    "children_together": false
+  },
+  "expected": {
+    "risk_level": "medium",
+    "flags": ["limited_family_integration"],
+    "requires_poison_pill": true
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "case_id": "spousal-003",
+  "profile": {
+    "relationship_type": "spousal",
+    "courtship_duration_months": 36,
+    "marriage_date": "2023-05-20",
+    "cohabitation_months": 24,
+    "joint_finances": true,
+    "family_support_letters": true
+  },
+  "expected": {
+    "risk_level": "low",
+    "flags": [],
+    "requires_poison_pill": false
+  }
+}

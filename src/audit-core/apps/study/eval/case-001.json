@@ -1,0 +1,14 @@
+{
+  "case_id": "study-001",
+  "profile": {
+    "program_level": "diploma",
+    "previous_education": "masters",
+    "funds_ratio": 1.1,
+    "ties_home_country": "weak"
+  },
+  "expected": {
+    "risk_level": "high",
+    "flags": ["academic_regression", "weak_ties"],
+    "requires_poison_pill": true
+  }
+}

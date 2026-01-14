@@ -1,0 +1,16 @@
+{
+  "agents": [
+    "detective.md",
+    "strategist.md",
+    "gatekeeper.md"
+  ],
+  "knowledge": {
+    "guides": [
+      "document_list_guide.md",
+      "supporting_documents.md",
+      "primary_assess_guide.md",
+      "final_assess_guide.md",
+      "risk_analysis.md"
+    ]
+  }
+}

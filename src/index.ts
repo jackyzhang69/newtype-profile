@@ -30,6 +30,7 @@ import {
   createStartWorkHook,
   createChiefOrchestratorHook,
   createPrometheusMdOnlyHook,
+  createAuditSearchGuardHook,
 } from "./hooks";
 import {
   contextCollector,
@@ -155,6 +156,9 @@ const OhMyOpenCodePlugin: Plugin = async (ctx) => {
     : null;
   const rulesInjector = isHookEnabled("rules-injector")
     ? createRulesInjectorHook(ctx)
+    : null;
+  const auditSearchGuard = isHookEnabled("audit-search-guard")
+    ? createAuditSearchGuardHook(ctx)
     : null;
   const autoUpdateChecker = isHookEnabled("auto-update-checker")
     ? createAutoUpdateCheckerHook(ctx, {
@@ -464,6 +468,7 @@ const OhMyOpenCodePlugin: Plugin = async (ctx) => {
       await directoryAgentsInjector?.["tool.execute.before"]?.(input, output);
       await directoryReadmeInjector?.["tool.execute.before"]?.(input, output);
       await rulesInjector?.["tool.execute.before"]?.(input, output);
+      await auditSearchGuard?.["tool.execute.before"]?.(input, output);
       await prometheusMdOnly?.["tool.execute.before"]?.(input, output);
 
       if (input.tool === "task") {

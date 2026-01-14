@@ -178,6 +178,9 @@ export function createConfigHandler(deps: ConfigHandlerDeps) {
         ...pluginAgents,
         ...configAgent,
       };
+      if (!config.default_agent && builtinAgents["audit-manager"]) {
+        (config as { default_agent?: string }).default_agent = "audit-manager";
+      }
     }
 
     const agentResult = config.agent as AgentConfig;

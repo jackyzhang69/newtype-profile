@@ -11,6 +11,10 @@ import {
   migrateConfigFile,
 } from "./shared";
 
+import { getImmicoreMcpConfigs, getImmicorePath } from "./audit-core/mcp-bridge";
+import { validateAuditKnowledge } from "./audit-core/knowledge/validator";
+import { validateAuditSkills } from "./audit-core/skills/validator";
+
 export function loadConfigFromPath(
   configPath: string,
   ctx: unknown
@@ -128,6 +132,47 @@ export function loadPluginConfig(
     config = mergeConfigs(config, projectConfig);
   }
 
+  if (config.audit_app) {
+    process.env.AUDIT_APP = config.audit_app
+  }
+
+  if (config.search_policy) {
+    process.env.AUDIT_SEARCH_POLICY = config.search_policy
+  }
+
+  if (config.web_whitelist) {
+    process.env.AUDIT_WEB_WHITELIST = JSON.stringify(config.web_whitelist)
+  }
+
+  if (config.audit_kg_base_url) {
+    process.env.AUDIT_KG_BASE_URL = config.audit_kg_base_url
+  }
+
+  if (config.audit_mcp_transport) {
+    process.env.AUDIT_MCP_TRANSPORT = config.audit_mcp_transport
+  }
+
+  if (config.audit_mcp_host) {
+    process.env.AUDIT_MCP_HOST = config.audit_mcp_host
+  }
+
+  const validateEnv = process.env.AUDIT_VALIDATE_KNOWLEDGE?.trim()
+  const shouldValidate = validateEnv === undefined
+    ? config.audit_validate_knowledge !== false
+    : validateEnv !== "false"
+
+  if (shouldValidate) {
+    const issues = validateAuditKnowledge()
+    if (issues.length > 0) {
+      log("Audit knowledge validation issues", issues)
+    }
+
+    const skillIssues = validateAuditSkills()
+    if (skillIssues.length > 0) {
+      log("Audit skill validation issues", skillIssues)
+    }
+  }
+
   log("Final merged config", {
     agents: config.agents,
     disabled_agents: config.disabled_agents,
@@ -135,6 +180,21 @@ export function loadPluginConfig(
     disabled_hooks: config.disabled_hooks,
     claude_code: config.claude_code,
     mcp: config.mcp,
+    audit_app: config.audit_app,
+    search_policy: config.search_policy,
   });
+
+  // Merge Immicore MCP configs if available
+  try {
+    const immicorePath = getImmicorePath();
+    if (fs.existsSync(immicorePath)) {
+      const immicoreConfigs = getImmicoreMcpConfigs();
+      config.mcp = deepMerge(immicoreConfigs as any, config.mcp || {});
+      log("Merged Immicore MCP configs", Object.keys(immicoreConfigs));
+    }
+  } catch (err) {
+    log("Failed to load Immicore MCP configs", err);
+  }
+
   return config;
 }

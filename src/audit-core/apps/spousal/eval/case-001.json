@@ -1,0 +1,16 @@
+{
+  "case_id": "spousal-001",
+  "profile": {
+    "relationship_type": "spousal",
+    "courtship_duration_months": 2,
+    "marriage_date": "2025-06-12",
+    "cohabitation_months": 0,
+    "country_difference": true,
+    "age_gap_years": 12
+  },
+  "expected": {
+    "risk_level": "high",
+    "flags": ["short_courtship", "limited_cohabitation"],
+    "requires_poison_pill": true
+  }
+}

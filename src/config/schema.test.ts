@@ -315,3 +315,36 @@ describe("BuiltinCategoryNameSchema", () => {
     }
   })
 })
+
+describe("audit config fields", () => {
+  test("accepts audit search policy and whitelist", () => {
+    // #given
+    const config = {
+      search_policy: "mcp_first",
+      web_whitelist: {
+        government: ["ircc.gc.ca"],
+        professional: ["gands.com"],
+        public: ["x.com"],
+      },
+      audit_validate_knowledge: true,
+      audit_kg_base_url: "http://localhost:3104/api/v1",
+    }
+
+    // #when
+    const result = OhMyOpenCodeConfigSchema.safeParse(config)
+
+    // #then
+    expect(result.success).toBe(true)
+  })
+
+  test("rejects invalid search_policy", () => {
+    // #given
+    const config = { search_policy: "invalid" }
+
+    // #when
+    const result = OhMyOpenCodeConfigSchema.safeParse(config)
+
+    // #then
+    expect(result.success).toBe(false)
+  })
+})

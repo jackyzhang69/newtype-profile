@@ -1,20 +1,14 @@
 import type { AgentConfig } from "@opencode-ai/sdk"
-import { chiefAgent } from "./chief"
-import { researcherAgent } from "./researcher"
-import { factCheckerAgent } from "./fact-checker"
-import { archivistAgent } from "./archivist"
-import { extractorAgent } from "./extractor"
-import { writerAgent } from "./writer"
-import { editorAgent } from "./editor"
+import { auditManagerAgent } from "../audit-core/agents/audit-manager"
+import { detectiveAgent } from "../audit-core/agents/detective"
+import { strategistAgent } from "../audit-core/agents/strategist"
+import { gatekeeperAgent } from "../audit-core/agents/gatekeeper"
 
 export const builtinAgents: Record<string, AgentConfig> = {
-  chief: chiefAgent,
-  researcher: researcherAgent,
-  "fact-checker": factCheckerAgent,
-  archivist: archivistAgent,
-  extractor: extractorAgent,
-  writer: writerAgent,
-  editor: editorAgent,
+  "audit-manager": auditManagerAgent,
+  detective: detectiveAgent,
+  strategist: strategistAgent,
+  gatekeeper: gatekeeperAgent,
 }
 
 export * from "./types"

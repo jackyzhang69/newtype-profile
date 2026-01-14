@@ -1,12 +1,10 @@
 import type { AgentConfig } from "@opencode-ai/sdk"
 import type { BuiltinAgentName, AgentOverrideConfig, AgentOverrides, AgentFactory, AgentPromptMetadata } from "./types"
-import { createChiefAgent, CHIEF_PROMPT_METADATA } from "./chief"
-import { createResearcherAgent, RESEARCHER_PROMPT_METADATA } from "./researcher"
-import { createFactCheckerAgent, FACT_CHECKER_PROMPT_METADATA } from "./fact-checker"
-import { createArchivistAgent, ARCHIVIST_PROMPT_METADATA } from "./archivist"
-import { createExtractorAgent, EXTRACTOR_PROMPT_METADATA } from "./extractor"
-import { createWriterAgent, WRITER_PROMPT_METADATA } from "./writer"
-import { createEditorAgent, EDITOR_PROMPT_METADATA } from "./editor"
+
+import { createAuditManagerAgent, AUDIT_MANAGER_PROMPT_METADATA } from "../audit-core/agents/audit-manager"
+import { createDetectiveAgent, DETECTIVE_PROMPT_METADATA } from "../audit-core/agents/detective"
+import { createStrategistAgent, STRATEGIST_PROMPT_METADATA } from "../audit-core/agents/strategist"
+import { createGatekeeperAgent, GATEKEEPER_PROMPT_METADATA } from "../audit-core/agents/gatekeeper"
 import { deepMerge } from "../shared"
 import { DEFAULT_CATEGORIES } from "../tools/chief-task/constants"
 import { resolveMultipleSkills } from "../features/opencode-skill-loader/skill-content"
@@ -14,13 +12,10 @@ import { resolveMultipleSkills } from "../features/opencode-skill-loader/skill-c
 type AgentSource = AgentFactory | AgentConfig
 
 const agentSources: Record<BuiltinAgentName, AgentSource> = {
-  chief: createChiefAgent,
-  researcher: createResearcherAgent,
-  "fact-checker": createFactCheckerAgent,
-  archivist: createArchivistAgent,
-  extractor: createExtractorAgent,
-  writer: createWriterAgent,
-  editor: createEditorAgent,
+  "audit-manager": createAuditManagerAgent,
+  detective: createDetectiveAgent,
+  strategist: createStrategistAgent,
+  gatekeeper: createGatekeeperAgent,
 }
 
 /**
@@ -28,13 +23,10 @@ const agentSources: Record<BuiltinAgentName, AgentSource> = {
  * (Delegation Table, Tool Selection, Key Triggers, etc.)
  */
 const agentMetadata: Partial<Record<BuiltinAgentName, AgentPromptMetadata>> = {
-  chief: CHIEF_PROMPT_METADATA,
-  researcher: RESEARCHER_PROMPT_METADATA,
-  "fact-checker": FACT_CHECKER_PROMPT_METADATA,
-  archivist: ARCHIVIST_PROMPT_METADATA,
-  extractor: EXTRACTOR_PROMPT_METADATA,
-  writer: WRITER_PROMPT_METADATA,
-  editor: EDITOR_PROMPT_METADATA,
+  "audit-manager": AUDIT_MANAGER_PROMPT_METADATA,
+  detective: DETECTIVE_PROMPT_METADATA,
+  strategist: STRATEGIST_PROMPT_METADATA,
+  gatekeeper: GATEKEEPER_PROMPT_METADATA,
 }
 
 function isFactory(source: AgentSource): source is AgentFactory {
@@ -119,7 +111,6 @@ export function createBuiltinAgents(
   for (const [name, source] of Object.entries(agentSources)) {
     const agentName = name as BuiltinAgentName
 
-    if (agentName === "chief") continue
     if (disabledAgents.includes(agentName)) continue
 
     const override = agentOverrides[agentName]
@@ -127,34 +118,11 @@ export function createBuiltinAgents(
 
     let config = buildAgent(source, model)
 
-    if (agentName === "researcher" && directory && config.prompt) {
-      const envContext = createEnvContext()
-      config = { ...config, prompt: config.prompt + envContext }
-    }
-
     if (override) {
       config = mergeAgentConfig(config, override)
     }
 
     result[name] = config
-  }
-
-  if (!disabledAgents.includes("chief")) {
-    const chiefOverride = agentOverrides["chief"]
-    const chiefModel = chiefOverride?.model ?? systemDefaultModel
-
-    let chiefConfig = createChiefAgent(chiefModel)
-
-    if (directory && chiefConfig.prompt) {
-      const envContext = createEnvContext()
-      chiefConfig = { ...chiefConfig, prompt: chiefConfig.prompt + envContext }
-    }
-
-    if (chiefOverride) {
-      chiefConfig = mergeAgentConfig(chiefConfig, chiefOverride)
-    }
-
-    result["chief"] = chiefConfig
   }
 
   return result

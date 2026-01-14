@@ -1,12 +1,12 @@
 {
-  "name": "newtype-profile",
+  "name": "immi-os",
   "version": "1.0.5",
   "description": "AI Agent Collaboration System for Content Creation - Based on oh-my-opencode",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "type": "module",
   "bin": {
-    "newtype-profile": "./dist/cli/index.js"
+    "immi-os": "./dist/cli/index.js"
   },
   "files": [
     "dist"

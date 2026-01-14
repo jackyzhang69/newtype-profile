@@ -3,75 +3,40 @@ import { createBuiltinAgents } from "./utils"
 import type { AgentConfig } from "@opencode-ai/sdk"
 
 describe("createBuiltinAgents with model overrides", () => {
-  test("chief with default model", () => {
+  test("audit-manager with default model", () => {
     // #given - no overrides
 
     // #when
     const agents = createBuiltinAgents()
 
     // #then
-    expect(agents.chief.model).toBe("anthropic/claude-opus-4-5")
+    expect(agents["audit-manager"].model).toBe("openai/gpt-5.2")
   })
 
-  test("chief with GPT model override", () => {
+  test("audit-manager with GPT model override", () => {
     // #given
     const overrides = {
-      chief: { model: "openai/gpt-5.2" },
+      "audit-manager": { model: "openai/gpt-5.2" },
     }
 
     // #when
     const agents = createBuiltinAgents([], overrides)
 
     // #then
-    expect(agents.chief.model).toBe("openai/gpt-5.2")
+    expect(agents["audit-manager"].model).toBe("openai/gpt-5.2")
   })
 
-  test("chief with systemDefaultModel GPT", () => {
-    // #given
-    const systemDefaultModel = "openai/gpt-5.2"
-
-    // #when
-    const agents = createBuiltinAgents([], {}, undefined, systemDefaultModel)
-
-    // #then
-    expect(agents.chief.model).toBe("openai/gpt-5.2")
-  })
-
-  test("researcher with default model", () => {
-    // #given - no overrides
-
-    // #when
-    const agents = createBuiltinAgents()
-
-    // #then
-    expect(agents.researcher.model).toBe("google/gemini-3-pro-preview")
-  })
-
-  test("researcher with Claude model override", () => {
+  test("gatekeeper with temperature override", () => {
     // #given
     const overrides = {
-      researcher: { model: "anthropic/claude-sonnet-4" },
+      gatekeeper: { temperature: 0.5 },
     }
 
     // #when
     const agents = createBuiltinAgents([], overrides)
 
     // #then
-    expect(agents.researcher.model).toBe("anthropic/claude-sonnet-4")
-  })
-
-  test("non-model overrides are still applied after factory rebuild", () => {
-    // #given
-    const overrides = {
-      chief: { model: "openai/gpt-5.2", temperature: 0.5 },
-    }
-
-    // #when
-    const agents = createBuiltinAgents([], overrides)
-
-    // #then
-    expect(agents.chief.model).toBe("openai/gpt-5.2")
-    expect(agents.chief.temperature).toBe(0.5)
+    expect(agents.gatekeeper.temperature).toBe(0.5)
   })
 })
 

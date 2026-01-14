@@ -21,13 +21,10 @@ const AgentPermissionSchema = z.object({
 })
 
 export const BuiltinAgentNameSchema = z.enum([
-  "chief",
-  "researcher",
-  "fact-checker",
-  "archivist",
-  "extractor",
-  "writer",
-  "editor",
+  "audit-manager",
+  "detective",
+  "strategist",
+  "gatekeeper",
 ])
 
 export const BuiltinSkillNameSchema = z.enum([
@@ -39,13 +36,10 @@ export const BuiltinSkillNameSchema = z.enum([
 export const OverridableAgentNameSchema = z.enum([
   "build",
   "plan",
-  "chief",
-  "researcher",
-  "fact-checker",
-  "archivist",
-  "extractor",
-  "writer",
-  "editor",
+  "audit-manager",
+  "detective",
+  "strategist",
+  "gatekeeper",
 ])
 
 export const AgentNameSchema = BuiltinAgentNameSchema
@@ -82,6 +76,7 @@ export const HookNameSchema = z.enum([
   "prometheus-md-only",
   "start-work",
   "chief-orchestrator",
+  "audit-search-guard",
 ])
 
 export const BuiltinCommandNameSchema = z.enum([
@@ -114,13 +109,10 @@ export const AgentOverrideConfigSchema = z.object({
 export const AgentOverridesSchema = z.object({
   build: AgentOverrideConfigSchema.optional(),
   plan: AgentOverrideConfigSchema.optional(),
-  chief: AgentOverrideConfigSchema.optional(),
-  researcher: AgentOverrideConfigSchema.optional(),
-  "fact-checker": AgentOverrideConfigSchema.optional(),
-  archivist: AgentOverrideConfigSchema.optional(),
-  extractor: AgentOverrideConfigSchema.optional(),
-  writer: AgentOverrideConfigSchema.optional(),
-  editor: AgentOverrideConfigSchema.optional(),
+  "audit-manager": AgentOverrideConfigSchema.optional(),
+  detective: AgentOverrideConfigSchema.optional(),
+  strategist: AgentOverrideConfigSchema.optional(),
+  gatekeeper: AgentOverrideConfigSchema.optional(),
 })
 
 export const ClaudeCodeConfigSchema = z.object({
@@ -284,6 +276,19 @@ export const GitMasterConfigSchema = z.object({
   /** Add "Co-authored-by: Chief" trailer to commit messages (default: true) */
   include_co_authored_by: z.boolean().default(true),
 })
+
+export const AuditSearchPolicySchema = z.enum([
+  "mcp_only",
+  "mcp_first",
+  "web_fallback",
+])
+
+export const WebWhitelistSchema = z.object({
+  government: z.array(z.string()).optional(),
+  professional: z.array(z.string()).optional(),
+  public: z.array(z.string()).optional(),
+})
+
 export const OhMyOpenCodeConfigSchema = z.object({
   $schema: z.string().optional(),
   disabled_mcps: z.array(AnyMcpNameSchema).optional(),
@@ -299,6 +304,13 @@ export const OhMyOpenCodeConfigSchema = z.object({
   comment_checker: CommentCheckerConfigSchema.optional(),
   experimental: ExperimentalConfigSchema.optional(),
   auto_update: z.boolean().optional(),
+  audit_app: z.string().optional(),
+  search_policy: AuditSearchPolicySchema.optional(),
+  web_whitelist: WebWhitelistSchema.optional(),
+  audit_validate_knowledge: z.boolean().optional(),
+  audit_kg_base_url: z.string().optional(),
+  audit_mcp_transport: z.enum(["http", "stdio"]).optional(),
+  audit_mcp_host: z.string().optional(),
   skills: SkillsConfigSchema.optional(),
   ralph_loop: RalphLoopConfigSchema.optional(),
   background_task: BackgroundTaskConfigSchema.optional(),
