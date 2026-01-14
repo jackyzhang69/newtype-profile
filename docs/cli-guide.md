@@ -1,17 +1,17 @@
-# Oh-My-OpenCode CLI Guide
+# Immi-OS CLI Guide
 
-This document provides a comprehensive guide to using the Oh-My-OpenCode CLI tools.
+This document provides a comprehensive guide to using the Immi-OS CLI tools.
 
 ## 1. Overview
 
-Oh-My-OpenCode provides CLI tools accessible via the `bunx oh-my-opencode` command. The CLI supports various features including plugin installation, environment diagnostics, and session execution.
+Immi-OS provides CLI tools accessible via the `immi-os` command (or `bunx immi-os`). The CLI supports various features including plugin installation, environment diagnostics, and session execution.
 
 ```bash
 # Basic execution (displays help)
-bunx oh-my-opencode
+bunx immi-os
 
 # Or run with npx
-npx oh-my-opencode
+npx immi-os
 ```
 
 ---
@@ -30,12 +30,12 @@ npx oh-my-opencode
 
 ## 3. `install` - Interactive Setup Wizard
 
-An interactive installation tool for initial Oh-My-OpenCode setup. Provides a beautiful TUI (Text User Interface) based on `@clack/prompts`.
+An interactive installation tool for initial Immi-OS setup. Provides a beautiful TUI (Text User Interface) based on `@clack/prompts`.
 
 ### Usage
 
 ```bash
-bunx oh-my-opencode install
+bunx immi-os install
 ```
 
 ### Installation Process
@@ -43,7 +43,7 @@ bunx oh-my-opencode install
 1. **Provider Selection**: Choose your AI provider from Claude, ChatGPT, or Gemini.
 2. **API Key Input**: Enter the API key for your selected provider.
 3. **Configuration File Creation**: Generates `opencode.json` or `oh-my-opencode.json` files.
-4. **Plugin Registration**: Automatically registers the oh-my-opencode plugin in OpenCode settings.
+4. **Plugin Registration**: Automatically registers the immi-os plugin in OpenCode settings.
 
 ### Options
 
@@ -56,12 +56,12 @@ bunx oh-my-opencode install
 
 ## 4. `doctor` - Environment Diagnostics
 
-Diagnoses your environment to ensure Oh-My-OpenCode is functioning correctly. Performs 17+ health checks.
+Diagnoses your environment to ensure Immi-OS is functioning correctly. Performs 17+ health checks.
 
 ### Usage
 
 ```bash
-bunx oh-my-opencode doctor
+bunx immi-os doctor
 ```
 
 ### Diagnostic Categories
@@ -86,10 +86,10 @@ bunx oh-my-opencode doctor
 ### Example Output
 
 ```
-oh-my-opencode doctor
+immi-os doctor
 
 ┌──────────────────────────────────────────────────┐
-│  Oh-My-OpenCode Doctor                           │
+│  Immi-OS Doctor                                  │
 └──────────────────────────────────────────────────┘
 
 Installation
@@ -122,7 +122,7 @@ Executes OpenCode sessions and monitors task completion.
 ### Usage
 
 ```bash
-bunx oh-my-opencode run [prompt]
+bunx immi-os run [prompt]
 ```
 
 ### Options
@@ -142,13 +142,13 @@ Manages Google Antigravity OAuth authentication. Required for using Gemini model
 
 ```bash
 # Login
-bunx oh-my-opencode auth login
+bunx immi-os auth login
 
 # Logout
-bunx oh-my-opencode auth logout
+bunx immi-os auth logout
 
 # Check current status
-bunx oh-my-opencode auth status
+bunx immi-os auth status
 ```
 
 ---
@@ -198,17 +198,17 @@ bun install -g opencode@latest
 
 ```bash
 # Reinstall plugin
-bunx oh-my-opencode install
+bunx immi-os install
 ```
 
 ### Doctor Check Failures
 
 ```bash
 # Diagnose with detailed information
-bunx oh-my-opencode doctor --verbose
+bunx immi-os doctor --verbose
 
 # Check specific category only
-bunx oh-my-opencode doctor --category authentication
+bunx immi-os doctor --category authentication
 ```
 
 ---
@@ -219,10 +219,10 @@ Use the `--no-tui` option for CI/CD environments.
 
 ```bash
 # Run doctor in CI environment
-bunx oh-my-opencode doctor --no-tui --json
+bunx immi-os doctor --no-tui --json
 
 # Save results to file
-bunx oh-my-opencode doctor --json > doctor-report.json
+bunx immi-os doctor --json > doctor-report.json
 ```
 
 ---
@@ -241,32 +241,4 @@ src/cli/
 │   └── checks/           # 17+ individual check modules
 ├── run/                  # Session runner
 └── commands/auth.ts      # Authentication management
-```
-
-### Adding New Doctor Checks
-
-1. Create `src/cli/doctor/checks/my-check.ts`:
-
-```typescript
-import type { DoctorCheck } from "../types"
-
-export const myCheck: DoctorCheck = {
-  name: "my-check",
-  category: "environment",
-  check: async () => {
-    // Check logic
-    const isOk = await someValidation()
-    
-    return {
-      status: isOk ? "pass" : "fail",
-      message: isOk ? "Everything looks good" : "Something is wrong",
-    }
-  },
-}
-```
-
-2. Register in `src/cli/doctor/checks/index.ts`:
-
-```typescript
-export { myCheck } from "./my-check"
 ```
