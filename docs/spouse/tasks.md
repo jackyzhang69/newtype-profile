@@ -53,15 +53,15 @@
 ## Phase 3: 更新注入配置
 
 ### 3.1 spousal-knowledge-injection
-- [ ] 更新 `injection_profile.json`（添加新 skills）
-- [ ] 更新 `baseline_guides.md`（扩展内容）
-- [ ] 更新 `manifest.json`
+- [x] 更新 `injection_profile.json`（添加新 skills）
+- [x] 更新 `baseline_guides.md`（扩展内容）
+- [x] 更新 `manifest.json`
 
 ### 3.2 Validator 更新
-- [ ] 更新 `src/audit-core/skills/validator.ts` 支持新 skills
-- [ ] 更新 `src/audit-core/skills/validator.test.ts` 添加测试
+- [x] 更新 `src/audit-core/skills/validator.ts` 支持新 skills
+- [x] 更新 `src/audit-core/skills/validator.test.ts` 添加测试
 
-**Phase 3 完成**: [ ] _(日期: __________)_
+**Phase 3 完成**: [x] _(日期: 2026-01-14)_
 
 ---
 

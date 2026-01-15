@@ -1,62 +1,78 @@
-# 配偶团聚基线指南
+# 配偶团聚知识库概览
 
-## 配偶团聚初审要点
+本文档为配偶团聚审核系统的基线指南，详细知识分布于以下 Skills 中。
 
-### 核心检查
-- 申请资格满足：关系类型、法定要求。
-- 材料完整性：核心文件齐全。
-- 时间线基本一致。
+## Skills 架构
 
-### 初审结论
-- 通过 / 补充材料 / 高风险。
+| Skill | 描述 | 注入对象 |
+|-------|------|----------|
+| `spousal-audit-rules` | 风险模式、资格规则、KG查询模式 | Detective, Strategist, Gatekeeper |
+| `spousal-doc-analysis` | 文件分析规则、证据标准 | Detective, Strategist |
+| `spousal-immicore-mcp` | 判例法查询模式 | Detective |
+| `spousal-workflow` | 输出报告模板 | Strategist, Gatekeeper |
+| `spousal-client-guidance` | 客户指导材料 | Gatekeeper |
 
-## 配偶团聚终审要点
+## 知识注入顺序
 
-### 核心问题
-- 关系真实性是否可被证据充分支持。
-- 证据与陈述是否一致。
-- 高风险点是否已修复。
+1. **风险模式** (spousal-audit-rules/risk_patterns.json)
+   - 7大类风险模式，18个子模式
+   - 每个模式包含 KG 查询参数
 
-### 输出
-- Defensibility Score。
-- 风险点与修复项。
-- 最终建议。
+2. **资格规则** (spousal-audit-rules/eligibility_rules.md)
+   - 担保人资格检查
+   - 申请人资格检查
+   - 法定排除条件
 
-## 配偶/同居伴侣风险分析
+3. **文件分析** (spousal-doc-analysis/)
+   - IMM 5533 完整验证规则
+   - 证据质量分级标准 (A/B/C/D)
+   - 跨文档一致性检查
 
-### 高风险因素
-- 时间线矛盾。
-- 共同生活证据不足。
-- 关系陈述过于笼统。
-- 关键阶段证据缺口。
+4. **判例查询** (spousal-immicore-mcp/caselaw_query_patterns.json)
+   - 关系真实性判例
+   - 便利婚姻判例
+   - 证据权重判例
 
-### 评估维度
-- 真实性。
-- 一致性。
-- 证据覆盖。
-- 风险缓解方案。
+5. **输出模板** (spousal-workflow/)
+   - 初审报告格式
+   - 深度分析格式
+   - 终审报告格式
+   - 提交信格式
 
-## 配偶团聚辅助证据
-- 合照与时间地点说明。
-- 机票与行程单。
-- 聊天记录与通话记录。
-- 银行流水与联合账户。
-- 亲友证明与推荐信。
+6. **客户指导** (spousal-client-guidance/)
+   - 关系陈述写作指南
+   - 面试准备指南
+   - 材料清单指南
 
-## 配偶团聚文件清单
+## Agent 知识映射
 
-### 必备
-- 身份文件与婚姻证明。
-- 共同居住证明。
-- 关系沟通记录。
-- 财务支持证明。
+### Detective Agent
+- 加载: risk_patterns, eligibility_rules, kg_query_patterns
+- 加载: imm5533_checklist, evidence_standards, consistency_rules
+- 加载: caselaw_query_patterns
+- 职责: 搜索风险、收集证据、查询判例
 
-### 可选加分
-- 共同旅行记录。
-- 家庭支持声明。
-- 社交公开证据。
+### Strategist Agent
+- 加载: risk_patterns, eligibility_rules
+- 加载: evidence_standards
+- 加载: primary_assess_template, deep_analysis_template
+- 职责: 分析风险、制定策略、生成报告
+
+### Gatekeeper Agent
+- 加载: risk_patterns
+- 加载: final_assess_template, submission_letter_template
+- 加载: client guidance (love_story, interview, document_list)
+- 职责: 最终审核、生成提交材料、客户指导
 
 ## 注入规则
-- 先注入 Skill references。
-- 不使用 app guides。
-- 使用 `<Skill_References>` 标签区分。
+
+1. 按 injection_profile.json 中定义的顺序注入
+2. 使用 `<Skill_References>` 标签包装注入内容
+3. 根据 agent 类型选择性注入相关 skills
+4. 优先注入高优先级 skills（priority 值越小越优先）
+
+## 版本信息
+
+- **Profile Version**: spousal-v2
+- **最后更新**: 2026-01-14
+- **知识来源**: SPS guides 迁移 + 增强

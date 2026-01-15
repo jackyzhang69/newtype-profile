@@ -21,7 +21,10 @@ function getAuditSkillNames(appId: string): string[] {
   return [
     `${prefix}-audit-rules`,
     `${prefix}-doc-analysis`,
+    `${prefix}-immicore-mcp`,
     `${prefix}-knowledge-injection`,
+    `${prefix}-workflow`,
+    `${prefix}-client-guidance`,
   ]
 }
 

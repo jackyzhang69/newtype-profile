@@ -34,7 +34,10 @@ describe("validateAuditSkills", () => {
 
     createSkill(tempDir, "spousal-audit-rules", "spousal-audit-rules")
     createSkill(tempDir, "spousal-doc-analysis", "spousal-doc-analysis")
+    createSkill(tempDir, "spousal-immicore-mcp", "spousal-immicore-mcp")
     createSkill(tempDir, "spousal-knowledge-injection", "spousal-knowledge-injection")
+    createSkill(tempDir, "spousal-workflow", "spousal-workflow")
+    createSkill(tempDir, "spousal-client-guidance", "spousal-client-guidance")
 
     // #when: validating skills
     process.chdir(tempDir)
@@ -64,7 +67,10 @@ describe("validateAuditSkills", () => {
 
     createSkill(tempDir, "study-audit-rules", "study-audit-rules")
     createSkill(tempDir, "study-doc-analysis", "study-doc-analysis")
+    createSkill(tempDir, "study-immicore-mcp", "study-immicore-mcp")
     createSkill(tempDir, "study-knowledge-injection", "study-knowledge-injection")
+    createSkill(tempDir, "study-workflow", "study-workflow")
+    createSkill(tempDir, "study-client-guidance", "study-client-guidance")
 
     // #when: validating skills
     process.chdir(tempDir)
