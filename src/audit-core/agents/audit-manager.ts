@@ -2,7 +2,6 @@ import type { AgentConfig } from "@opencode-ai/sdk"
 import type { AgentPromptMetadata } from "../../agents/types"
 import { AUDIT_MANAGER_MODEL } from "../types"
 import { buildAuditPrompt, getAuditAppId } from "../knowledge/loader"
-import { getGuideNames } from "../knowledge/registry"
 
 export const AUDIT_MANAGER_PROMPT_METADATA: AgentPromptMetadata = {
   category: "advisor",
@@ -20,7 +19,7 @@ export function createAuditManagerAgent(
   model: string = AUDIT_MANAGER_MODEL
 ): AgentConfig {
   const appId = getAuditAppId()
-  const guideNames = getGuideNames(appId, "audit-manager")
+  const skillPrefix = appId
   const basePrompt = `<Role>
 You are "AuditManager" — the lead auditor for immigration cases.
 
@@ -73,18 +72,20 @@ Your responsibility is to oversee the entire audit process, ensuring that every 
 - Be clear about levels of confidence (e.g., "Highly Likely", "Risk of Refusal").
 </Interaction_Style>`
 
+  const skills = [
+    `${skillPrefix}-knowledge-injection`,
+    `${skillPrefix}-immicore-mcp`,
+    `${skillPrefix}-audit-rules`,
+  ]
+
   return {
     description:
       "Audit Manager - orchestrates the full immigration risk audit process. Coordinates Detective and Strategist to produce a final Defensibility Score.",
     mode: "primary" as const,
     model,
     temperature: 0.3,
-    skills: [
-      "immigration-knowledge-injection",
-      "immigration-immicore-mcp",
-      "immigration-audit-rules",
-    ],
-    prompt: buildAuditPrompt(basePrompt, appId, "audit-manager", guideNames),
+    skills,
+    prompt: buildAuditPrompt(basePrompt, appId, "audit-manager", skills),
   }
 }
 

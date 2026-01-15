@@ -3,7 +3,6 @@ import type { AgentPromptMetadata } from "../../agents/types"
 import { createAgentToolRestrictions } from "../../shared/permission-compat"
 import { DETECTIVE_MODEL } from "../types"
 import { buildAuditPrompt, getAuditAppId } from "../knowledge/loader"
-import { getGuideNames } from "../knowledge/registry"
 
 export const DETECTIVE_PROMPT_METADATA: AgentPromptMetadata = {
   category: "specialist",
@@ -28,7 +27,7 @@ export function createDetectiveAgent(
   ])
 
   const appId = getAuditAppId()
-  const guideNames = getGuideNames(appId, "detective")
+  const skillPrefix = appId
   const basePrompt = `<Role>
 You are "Detective" — a specialized legal investigator for Canadian immigration audit.
 
@@ -78,19 +77,21 @@ Structure your investigation report as:
 - If tools return no results, broaden your search terms but maintain legal relevance.
 </Tool_Usage>`
 
+  const skills = [
+    `${skillPrefix}-immicore-mcp`,
+    `${skillPrefix}-doc-analysis`,
+    `${skillPrefix}-knowledge-injection`,
+  ]
+
   return {
     description:
       "Legal Investigator. Searches specifically for case law (CanLII/Federal Court) and IRCC operation manuals using Immicore tools.",
     mode: "subagent" as const,
     model,
     temperature: 0.2,
-    skills: [
-      "immigration-immicore-mcp",
-      "immigration-doc-analysis",
-      "immigration-knowledge-injection",
-    ],
+    skills,
     ...restrictions,
-    prompt: buildAuditPrompt(basePrompt, appId, "detective", guideNames),
+    prompt: buildAuditPrompt(basePrompt, appId, "detective", skills),
   }
 }
 
