@@ -3,7 +3,6 @@ import type { AgentPromptMetadata } from "../../agents/types"
 import { createAgentToolRestrictions } from "../../shared/permission-compat"
 import { STRATEGIST_MODEL } from "../types"
 import { buildAuditPrompt, getAuditAppId } from "../knowledge/loader"
-import { getGuideNames } from "../knowledge/registry"
 
 export const STRATEGIST_PROMPT_METADATA: AgentPromptMetadata = {
   category: "specialist",
@@ -26,7 +25,7 @@ export function createStrategistAgent(
   ])
 
   const appId = getAuditAppId()
-  const guideNames = getGuideNames(appId, "strategist")
+  const skillPrefix = appId
   const basePrompt = `<Role>
 You are "Strategist" — the architect of the immigration case defense.
 
@@ -65,18 +64,20 @@ Produce a **Defensibility Analysis Report**:
 - You provide the blueprint for the **AuditManager** to approve.
 </Interaction>`
 
+  const skills = [
+    `${skillPrefix}-knowledge-injection`,
+    `${skillPrefix}-immicore-mcp`,
+  ]
+
   return {
     description:
       "Immigration Strategist. Synthesizes facts and legal research into a cohesive defense strategy and risk assessment.",
     mode: "subagent" as const,
     model,
     temperature: 0.4,
-    skills: [
-      "immigration-knowledge-injection",
-      "immigration-immicore-mcp",
-    ],
+    skills,
     ...restrictions,
-    prompt: buildAuditPrompt(basePrompt, appId, "strategist", guideNames),
+    prompt: buildAuditPrompt(basePrompt, appId, "strategist", skills),
   }
 }
 

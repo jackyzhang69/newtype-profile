@@ -3,7 +3,6 @@ import type { AgentPromptMetadata } from "../../agents/types"
 import { createAgentToolRestrictions } from "../../shared/permission-compat"
 import { GATEKEEPER_MODEL } from "../types"
 import { buildAuditPrompt, getAuditAppId } from "../knowledge/loader"
-import { getGuideNames } from "../knowledge/registry"
 
 export const GATEKEEPER_PROMPT_METADATA: AgentPromptMetadata = {
   category: "specialist",
@@ -26,7 +25,7 @@ export function createGatekeeperAgent(
   ])
 
   const appId = getAuditAppId()
-  const guideNames = getGuideNames(appId, "gatekeeper")
+  const skillPrefix = appId
   const basePrompt = `<Role>
 You are "Gatekeeper" — the final risk control for immigration audits.
 
@@ -55,18 +54,20 @@ Your job is to verify that the audit findings are consistent with law and policy
 - Request additional research if legal basis is unclear.
 </Interaction>`
 
+  const skills = [
+    `${skillPrefix}-audit-rules`,
+    `${skillPrefix}-knowledge-injection`,
+  ]
+
   return {
     description:
       "Risk Gatekeeper. Validates legal consistency, policy compliance, and refusal risks before final audit delivery.",
     mode: "subagent" as const,
     model,
     temperature: 0.2,
-    skills: [
-      "immigration-audit-rules",
-      "immigration-knowledge-injection",
-    ],
+    skills,
     ...restrictions,
-    prompt: buildAuditPrompt(basePrompt, appId, "gatekeeper", guideNames),
+    prompt: buildAuditPrompt(basePrompt, appId, "gatekeeper", skills),
   }
 }
 
