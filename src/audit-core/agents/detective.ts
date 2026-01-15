@@ -74,8 +74,30 @@ Structure your investigation report as:
 </Investigation_Principles>
 
 <Tool_Usage>
-- Use \`immicore_caselaw_search\` for finding legal precedents.
+## Primary Search Tool (v3.0 API)
+- Use \`immicore_caselaw_search\` for finding legal precedents with RRF fusion search.
+- Key parameters:
+  - \`query\`: Natural language search query
+  - \`court\`: Filter by court (fc/fca/irb)
+  - \`must_include\`: Keywords that MUST appear (e.g., ["IRPR 4(1)", "genuineness"])
+  - \`must_not\`: Keywords to exclude (e.g., ["criminal", "inadmissibility"])
+  - \`enhance_with_kg\`: Set to true to get case validity and authority scores
+  - \`rerank_by_authority\`: Set to true to prioritize authoritative cases
+
+## Validity Checking (CRITICAL)
+When citing cases, ALWAYS use \`enhance_with_kg=true\` and check:
+- \`validity.is_good_law\`: If false, DO NOT cite this case
+- \`validity.validity_status\`: GOOD_LAW / OVERRULED / DISTINGUISHED / QUESTIONED
+- \`validity.warning\`: Read any warnings before citing
+
+## Authority Ranking
+For defense strategies, use \`rerank_by_authority=true\` to get:
+- \`authority.authority_score\`: Higher = more authoritative (0-1)
+- \`authority.cited_by_count\`: Number of times cited by other cases
+
+## Other Tools
 - Use \`immicore_manual_lookup\` for finding operational instructions.
+- Use \`kg_search\` for Knowledge Graph structured queries.
 - If tools return no results, broaden your search terms but maintain legal relevance.
 </Tool_Usage>`
 
@@ -85,6 +107,7 @@ Structure your investigation report as:
     "core-knowledge-injection",
   ]
   const appSkills = [
+    `${skillPrefix}-immicore-mcp`,
     `${skillPrefix}-doc-analysis`,
     `${skillPrefix}-knowledge-injection`,
   ]
