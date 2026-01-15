@@ -1,0 +1,15 @@
+{
+  "version": "spousal-baseline",
+  "dimensions": [
+    { "id": "authenticity", "label": "真实性", "severity": "high" },
+    { "id": "consistency", "label": "一致性", "severity": "high" },
+    { "id": "evidence", "label": "证据覆盖", "severity": "high" },
+    { "id": "mitigation", "label": "风险缓解", "severity": "medium" }
+  ],
+  "flags": [
+    { "id": "timeline-contradiction", "label": "时间线矛盾", "severity": "high" },
+    { "id": "insufficient-cohabitation", "label": "共同生活证据不足", "severity": "high" },
+    { "id": "generic-statement", "label": "关系陈述过于笼统", "severity": "medium" },
+    { "id": "evidence-gap", "label": "关键阶段证据缺口", "severity": "high" }
+  ]
+}

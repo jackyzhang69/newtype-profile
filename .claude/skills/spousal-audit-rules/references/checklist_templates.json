@@ -1,0 +1,35 @@
+{
+  "version": "spousal-baseline",
+  "templates": [
+    {
+      "id": "spousal-required",
+      "title": "必备文件",
+      "items": [
+        "身份文件与婚姻证明",
+        "共同居住证明",
+        "关系沟通记录",
+        "财务支持证明"
+      ]
+    },
+    {
+      "id": "spousal-optional",
+      "title": "可选加分",
+      "items": [
+        "共同旅行记录",
+        "家庭支持声明",
+        "社交公开证据"
+      ]
+    },
+    {
+      "id": "spousal-supporting",
+      "title": "辅助证据",
+      "items": [
+        "合照与时间地点说明",
+        "机票与行程单",
+        "聊天记录与通话记录",
+        "银行流水与联合账户",
+        "亲友证明与推荐信"
+      ]
+    }
+  ]
+}
