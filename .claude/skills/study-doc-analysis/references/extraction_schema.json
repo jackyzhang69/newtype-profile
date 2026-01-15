@@ -1,0 +1,25 @@
+{
+  "version": "study-baseline",
+  "fields": [
+    { "name": "full_name", "type": "string", "required": true },
+    { "name": "date_of_birth", "type": "date", "required": true },
+    { "name": "nationality", "type": "string", "required": false },
+    { "name": "document_id", "type": "string", "required": false },
+    { "name": "issue_date", "type": "date", "required": false },
+    { "name": "expiry_date", "type": "date", "required": false },
+    { "name": "school_name", "type": "string", "required": false },
+    { "name": "program_name", "type": "string", "required": false },
+    { "name": "program_start_date", "type": "date", "required": false },
+    { "name": "tuition_amount", "type": "number", "required": false },
+    { "name": "funds_amount", "type": "number", "required": false },
+    { "name": "sponsor_name", "type": "string", "required": false }
+  ],
+  "checks": [
+    "cross_document_identity",
+    "purpose_consistency",
+    "funds_consistency",
+    "ties_consistency",
+    "signature_presence",
+    "page_completeness"
+  ]
+}
