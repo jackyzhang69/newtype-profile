@@ -1,0 +1,12 @@
+{
+  "name": "spousal-knowledge-injection",
+  "version": "0.1.0",
+  "description": "Runtime injection of audit_app knowledge into agent prompts.",
+  "categories": ["audit", "knowledge"],
+  "quality_level": "L4",
+  "quickstart_paths": ["../SKILL.md"],
+  "references": [
+    "baseline_guides.md",
+    "injection_profile.json"
+  ]
+}
