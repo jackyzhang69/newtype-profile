@@ -75,7 +75,8 @@ export class AuthenticatedHttpClient {
     }
   }
 
-  async fetchJson<T = unknown>(url: string, init?: RequestInit): Promise<T> {
+  async fetchJson<T = unknown>(path: string, init?: RequestInit): Promise<T> {
+    const url = path.startsWith('http') ? path : `${this.config.baseUrl}${path}`
     const response = await this.fetch(url, init)
 
     if (!response.ok) {

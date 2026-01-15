@@ -19,7 +19,7 @@ import {
 
 import { grep } from "./grep"
 import { glob } from "./glob"
-import { kg_search, kg_case, kg_similar_cases, kg_judge_stats } from "./audit-kg"
+import { kg_search, kg_case, kg_similar_cases, kg_judge_stats, immicore_caselaw_search } from "./audit-kg"
 export { createSlashcommandTool, discoverCommandsSync } from "./slashcommand"
 
 import {
@@ -49,7 +49,7 @@ type OpencodeClient = PluginInput["client"]
 export { createCallOmoAgent } from "./call-omo-agent"
 export { createLookAt } from "./look-at"
 export { createChiefTask, type ChiefTaskToolOptions, DEFAULT_CATEGORIES, CATEGORY_PROMPT_APPENDS } from "./chief-task"
-export { kg_search, kg_case, kg_similar_cases, kg_judge_stats } from "./audit-kg"
+export { kg_search, kg_case, kg_similar_cases, kg_judge_stats, immicore_caselaw_search } from "./audit-kg"
 
 export function createBackgroundTools(manager: BackgroundManager, client: OpencodeClient): Record<string, ToolDefinition> {
   return {
@@ -82,4 +82,5 @@ export const builtinTools: Record<string, ToolDefinition> = {
   kg_case,
   kg_similar_cases,
   kg_judge_stats,
+  immicore_caselaw_search,
 }
