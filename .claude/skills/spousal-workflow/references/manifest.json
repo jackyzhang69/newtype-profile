@@ -1,0 +1,36 @@
+{
+  "name": "spousal-workflow",
+  "version": "1.0.0",
+  "description": "Output templates and report formats for spousal sponsorship audit workflow stages.",
+  "categories": ["audit", "workflow", "templates", "spousal"],
+  "quality_level": "L4",
+  "quickstart_paths": ["../SKILL.md"],
+  "references": [
+    "primary_assess_template.md",
+    "deep_analysis_template.md",
+    "final_assess_template.md",
+    "submission_letter_template.md"
+  ],
+  "workflow_stages": [
+    {
+      "stage": "primary",
+      "template": "primary_assess_template.md",
+      "description": "Initial risk identification and feasibility analysis"
+    },
+    {
+      "stage": "deep",
+      "template": "deep_analysis_template.md",
+      "description": "Detailed legal and evidence analysis"
+    },
+    {
+      "stage": "final",
+      "template": "final_assess_template.md",
+      "description": "Pre-submission compliance and consistency check"
+    },
+    {
+      "stage": "submission",
+      "template": "submission_letter_template.md",
+      "description": "Professional cover letter for IRCC submission"
+    }
+  ]
+}

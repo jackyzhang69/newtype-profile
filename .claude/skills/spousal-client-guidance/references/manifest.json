@@ -1,0 +1,33 @@
+{
+  "name": "spousal-client-guidance",
+  "version": "1.0.0",
+  "description": "Client guidance templates for spousal sponsorship applications.",
+  "categories": ["audit", "guidance", "templates", "spousal", "client"],
+  "quality_level": "L4",
+  "quickstart_paths": ["../SKILL.md"],
+  "references": [
+    "love_story_guide.md",
+    "interview_guide.md",
+    "document_list_guide.md"
+  ],
+  "guide_types": [
+    {
+      "type": "relationship_statement",
+      "template": "love_story_guide.md",
+      "description": "Template for writing relationship narrative",
+      "language": "zh-CN"
+    },
+    {
+      "type": "interview_preparation",
+      "template": "interview_guide.md",
+      "description": "Framework for interview question preparation",
+      "language": "zh-CN"
+    },
+    {
+      "type": "document_checklist",
+      "template": "document_list_guide.md",
+      "description": "Customizable document checklist based on IMM 5533",
+      "language": "zh-CN"
+    }
+  ]
+}

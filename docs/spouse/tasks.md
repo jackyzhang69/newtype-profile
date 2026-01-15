@@ -32,21 +32,21 @@
 ## Phase 2: 创建新 Skills
 
 ### 2.1 spousal-workflow（输出规范）
-- [ ] 创建 `SKILL.md`
-- [ ] 创建 `references/manifest.json`
-- [ ] 迁移 `primary_assess_template.md`（初审报告格式）
-- [ ] 迁移 `deep_analysis_template.md`（深度分析格式）
-- [ ] 迁移 `final_assess_template.md`（终审报告格式）
-- [ ] 迁移 `submission_letter_template.md`（提交信格式）
+- [x] 创建 `SKILL.md`
+- [x] 创建 `references/manifest.json`
+- [x] 迁移 `primary_assess_template.md`（初审报告格式）
+- [x] 迁移 `deep_analysis_template.md`（深度分析格式）
+- [x] 迁移 `final_assess_template.md`（终审报告格式）
+- [x] 迁移 `submission_letter_template.md`（提交信格式）
 
 ### 2.2 spousal-client-guidance（客户指导）
-- [ ] 创建 `SKILL.md`
-- [ ] 创建 `references/manifest.json`
-- [ ] 迁移 `love_story_guide.md`（如何写关系陈述）
-- [ ] 迁移 `interview_guide.md`（如何准备面试）
-- [ ] 迁移 `document_list_guide.md`（需要准备什么材料）
+- [x] 创建 `SKILL.md`
+- [x] 创建 `references/manifest.json`
+- [x] 迁移 `love_story_guide.md`（如何写关系陈述）
+- [x] 迁移 `interview_guide.md`（如何准备面试）
+- [x] 迁移 `document_list_guide.md`（需要准备什么材料）
 
-**Phase 2 完成**: [ ] _(日期: __________)_
+**Phase 2 完成**: [x] _(日期: 2026-01-14)_
 
 ---
 
@@ -101,13 +101,13 @@
 |-------------|---------|------|
 | risk_analysis.md | spousal-audit-rules/risk_patterns.json | [x] |
 | supporting_documents.md | spousal-doc-analysis/imm5533_checklist.md | [x] |
-| primary_assess_guide.md | spousal-workflow/primary_assess_template.md | [ ] |
-| deep_analysis_guide.md | spousal-workflow/deep_analysis_template.md | [ ] |
-| final_assess_guide.md | spousal-workflow/final_assess_template.md | [ ] |
-| submission_letter_guide.md | spousal-workflow/submission_letter_template.md | [ ] |
-| love_story_guide.md | spousal-client-guidance/love_story_guide.md | [ ] |
-| interview_guide.md | spousal-client-guidance/interview_guide.md | [ ] |
-| document_list_guide.md | spousal-client-guidance/document_list_guide.md | [ ] |
+| primary_assess_guide.md | spousal-workflow/primary_assess_template.md | [x] |
+| deep_analysis_guide.md | spousal-workflow/deep_analysis_template.md | [x] |
+| final_assess_guide.md | spousal-workflow/final_assess_template.md | [x] |
+| submission_letter_guide.md | spousal-workflow/submission_letter_template.md | [x] |
+| love_story_guide.md | spousal-client-guidance/love_story_guide.md | [x] |
+| interview_guide.md | spousal-client-guidance/interview_guide.md | [x] |
+| document_list_guide.md | spousal-client-guidance/document_list_guide.md | [x] |
 
 ---
 
