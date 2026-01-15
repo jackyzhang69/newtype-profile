@@ -64,10 +64,14 @@ Produce a **Defensibility Analysis Report**:
 - You provide the blueprint for the **AuditManager** to approve.
 </Interaction>`
 
-  const skills = [
-    `${skillPrefix}-knowledge-injection`,
-    `${skillPrefix}-immicore-mcp`,
+  const coreSkills = [
+    "core-knowledge-injection",
+    "core-immicore-mcp",
   ]
+  const appSkills = [
+    `${skillPrefix}-knowledge-injection`,
+  ]
+  const skills = [...coreSkills, ...appSkills]
 
   return {
     description:

@@ -1,0 +1,14 @@
+{
+  "version": "core-baseline",
+  "templates": [
+    {
+      "id": "core-required",
+      "title": "通用必备",
+      "items": [
+        "身份信息一致",
+        "核心材料齐全",
+        "事实与证据一致"
+      ]
+    }
+  ]
+}

@@ -1,8 +1,10 @@
 # Baseline MCP Usage Policy
 
 ## Allowed Usage
-- Use MCP for caselaw and manual lookups.
-- Prefer semantic search when available.
+- 仅在以下情况使用 MCP：
+  - 用户要求深度分析/深度 audit。
+  - Skill 覆盖不足（规则缺失、证据冲突无法裁决）。
+- 优先语义搜索。
 
 ## Citation Requirements
 - Include case name, citation, and year.

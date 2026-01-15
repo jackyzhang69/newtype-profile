@@ -1,0 +1,13 @@
+{
+  "version": "core-baseline",
+  "fields": [
+    { "name": "full_name", "type": "string", "required": true },
+    { "name": "date_of_birth", "type": "date", "required": true },
+    { "name": "document_id", "type": "string", "required": false }
+  ],
+  "checks": [
+    "cross_document_identity",
+    "timeline_consistency",
+    "page_completeness"
+  ]
+}

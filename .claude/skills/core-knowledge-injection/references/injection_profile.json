@@ -1,0 +1,11 @@
+{
+  "version": "core-baseline",
+  "order": ["skill_references"],
+  "tags": {
+    "skill": "Skill_References"
+  },
+  "stability": {
+    "allow_rename": false,
+    "preserve_manifest": true
+  }
+}

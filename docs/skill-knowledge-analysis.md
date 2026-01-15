@@ -14,12 +14,20 @@
 - 将 MCP 配置统一写入 `SKILL.md` frontmatter
 - 校验器增加 `references/` 非空检查
 
-## 1. 发现机制与目录约束
+## 1. 能力分层（L1/L2）
+- **L1（默认）**：`core-*` + `<app>-*` 的 Skill references + scripts。
+- **L2（升级）**：调用 ImmiCore MCP（caselaw/manual/KG），仅在以下情况启用：
+  - 用户要求“深度分析/深度 audit”。
+  - L1 覆盖不足（规则缺失、证据冲突无法裁决）。
+- **约束**：L2 必须标注触发原因；MCP 不健康时禁止 L2。
+
+## 2. 发现机制与目录约束
 - **项目级路径**: `./.claude/skills/` (最高优先级)
 - **用户级路径**: `~/.claude/skills/`
 - **发现规则**: Skill 仅能从上述指定的 `.claude/skills/` 目录中被发现和加载。
 
 ## 2. Skill 包结构规范
+- **加载顺序**: 先加载 `core-*`，再加载 `<app>-*`。
 每个 Skill 目录必须包含以下核心组件：
 - **`SKILL.md`**: 
     - 包含 YAML Frontmatter 配置。
@@ -46,4 +54,4 @@
 ## 6. 项目级隔离
 - **隔离原则**: Skill 必须支持项目级隔离。
 - **覆盖规则**: 项目存在`./.claude/skills/`时，仅使用项目级定义，不回退用户级定义。
-- **命名空间**: 建议采用 `<project>-<skill>` 格式以避免全局命名冲突。
+- **命名空间**: 使用 `core-*` 作为通用层，`<app>-*` 作为项目层。

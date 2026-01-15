@@ -54,10 +54,15 @@ Your job is to verify that the audit findings are consistent with law and policy
 - Request additional research if legal basis is unclear.
 </Interaction>`
 
-  const skills = [
+  const coreSkills = [
+    "core-audit-rules",
+    "core-knowledge-injection",
+  ]
+  const appSkills = [
     `${skillPrefix}-audit-rules`,
     `${skillPrefix}-knowledge-injection`,
   ]
+  const skills = [...coreSkills, ...appSkills]
 
   return {
     description:

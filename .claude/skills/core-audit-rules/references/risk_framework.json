@@ -1,0 +1,12 @@
+{
+  "version": "core-baseline",
+  "dimensions": [
+    { "id": "consistency", "label": "一致性", "severity": "high" },
+    { "id": "coverage", "label": "证据覆盖", "severity": "high" },
+    { "id": "credibility", "label": "可信度", "severity": "high" }
+  ],
+  "flags": [
+    { "id": "missing-core", "label": "核心材料缺失", "severity": "high" },
+    { "id": "conflict", "label": "关键事实冲突", "severity": "high" }
+  ]
+}

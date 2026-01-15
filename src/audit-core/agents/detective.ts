@@ -48,7 +48,9 @@ Your job is to find PRECEDENTS (Case Law) and POLICIES (Operation Manuals) that 
 
 ## Search Strategy
 1. **Identify Key Issues**: Extract the core legal issue (e.g., "bona fides of marriage", "ties to home country").
-2. **Use Specialized Tools**: You MUST use the provided MCP tools for searching case law and manuals. Do NOT rely on general web search unless specified.
+2. **L2 Trigger Only**: Use MCP caselaw/manual tools only when:
+   - User requests deep analysis / deep audit, or
+   - Skill coverage is insufficient (missing rules or unresolved conflicts).
 3. **Knowledge Graph**: Use KG for similar-case matching or judge tendencies when relevant (parallel, not fallback).
 4. **Analyze Relevance**: Explain WHY a case is relevant. Is it factually similar? Does it establish a key test?
 
@@ -77,11 +79,16 @@ Structure your investigation report as:
 - If tools return no results, broaden your search terms but maintain legal relevance.
 </Tool_Usage>`
 
-  const skills = [
-    `${skillPrefix}-immicore-mcp`,
+  const coreSkills = [
+    "core-immicore-mcp",
+    "core-doc-analysis",
+    "core-knowledge-injection",
+  ]
+  const appSkills = [
     `${skillPrefix}-doc-analysis`,
     `${skillPrefix}-knowledge-injection`,
   ]
+  const skills = [...coreSkills, ...appSkills]
 
   return {
     description:

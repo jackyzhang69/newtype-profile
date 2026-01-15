@@ -72,11 +72,16 @@ Your responsibility is to oversee the entire audit process, ensuring that every 
 - Be clear about levels of confidence (e.g., "Highly Likely", "Risk of Refusal").
 </Interaction_Style>`
 
-  const skills = [
+  const coreSkills = [
+    "core-knowledge-injection",
+    "core-immicore-mcp",
+    "core-audit-rules",
+  ]
+  const appSkills = [
     `${skillPrefix}-knowledge-injection`,
-    `${skillPrefix}-immicore-mcp`,
     `${skillPrefix}-audit-rules`,
   ]
+  const skills = [...coreSkills, ...appSkills]
 
   return {
     description:

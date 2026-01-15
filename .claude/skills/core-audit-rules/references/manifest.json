@@ -1,0 +1,13 @@
+{
+  "name": "core-audit-rules",
+  "version": "0.1.0",
+  "description": "Core audit rules and baseline risk framework.",
+  "categories": ["audit", "rules"],
+  "quality_level": "L4",
+  "quickstart_paths": ["../SKILL.md"],
+  "references": [
+    "baseline_rules.md",
+    "checklist_templates.json",
+    "risk_framework.json"
+  ]
+}

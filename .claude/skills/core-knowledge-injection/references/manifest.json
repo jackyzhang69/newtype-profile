@@ -1,0 +1,12 @@
+{
+  "name": "core-knowledge-injection",
+  "version": "0.1.0",
+  "description": "Core knowledge injection rules.",
+  "categories": ["audit", "knowledge"],
+  "quality_level": "L4",
+  "quickstart_paths": ["../SKILL.md"],
+  "references": [
+    "baseline_guides.md",
+    "injection_profile.json"
+  ]
+}

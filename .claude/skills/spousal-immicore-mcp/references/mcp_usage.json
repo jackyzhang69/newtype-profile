@@ -5,6 +5,10 @@
     { "name": "immicore_manual_lookup", "purpose": "policy manual lookup" },
     { "name": "kg_similar_cases", "purpose": "similar case matching" }
   ],
+  "activation": [
+    "deep_audit_requested",
+    "skill_coverage_insufficient"
+  ],
   "requirements": {
     "citation": true,
     "retrieval_date": true,

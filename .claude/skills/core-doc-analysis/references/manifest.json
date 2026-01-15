@@ -1,0 +1,12 @@
+{
+  "name": "core-doc-analysis",
+  "version": "0.1.0",
+  "description": "Core document analysis baseline.",
+  "categories": ["audit", "documents"],
+  "quality_level": "L4",
+  "quickstart_paths": ["../SKILL.md"],
+  "references": [
+    "baseline_doc_analysis.md",
+    "extraction_schema.json"
+  ]
+}

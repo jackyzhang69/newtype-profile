@@ -1,5 +1,5 @@
 {
-  "version": "study-baseline",
+  "version": "core-baseline",
   "tools": [
     { "name": "immicore_caselaw_search", "purpose": "case law search" },
     { "name": "immicore_manual_lookup", "purpose": "policy manual lookup" },

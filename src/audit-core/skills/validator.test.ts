@@ -27,9 +27,13 @@ describe("validateAuditSkills", () => {
     const tempDir = fs.mkdtempSync(path.join(tmpdir(), "audit-skills-"))
     process.env.AUDIT_APP = "spousal"
 
+    createSkill(tempDir, "core-audit-rules", "core-audit-rules")
+    createSkill(tempDir, "core-doc-analysis", "core-doc-analysis")
+    createSkill(tempDir, "core-immicore-mcp", "core-immicore-mcp")
+    createSkill(tempDir, "core-knowledge-injection", "core-knowledge-injection")
+
     createSkill(tempDir, "spousal-audit-rules", "spousal-audit-rules")
     createSkill(tempDir, "spousal-doc-analysis", "spousal-doc-analysis")
-    createSkill(tempDir, "spousal-immicore-mcp", "spousal-immicore-mcp")
     createSkill(tempDir, "spousal-knowledge-injection", "spousal-knowledge-injection")
 
     // #when: validating skills
@@ -53,9 +57,13 @@ describe("validateAuditSkills", () => {
     const tempDir = fs.mkdtempSync(path.join(tmpdir(), "audit-skills-"))
     process.env.AUDIT_APP = "study"
 
+    createSkill(tempDir, "core-audit-rules", "core-audit-rules")
+    createSkill(tempDir, "core-doc-analysis", "core-doc-analysis")
+    createSkill(tempDir, "core-immicore-mcp", "core-immicore-mcp")
+    createSkill(tempDir, "core-knowledge-injection", "core-knowledge-injection")
+
     createSkill(tempDir, "study-audit-rules", "study-audit-rules")
     createSkill(tempDir, "study-doc-analysis", "study-doc-analysis")
-    createSkill(tempDir, "study-immicore-mcp", "study-immicore-mcp")
     createSkill(tempDir, "study-knowledge-injection", "study-knowledge-injection")
 
     // #when: validating skills

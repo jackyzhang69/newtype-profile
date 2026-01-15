@@ -1,4 +1,4 @@
-# Study MCP Usage Policy
+# Core MCP Usage Policy
 
 ## Allowed Usage
 - 仅在以下情况使用 MCP：

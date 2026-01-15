@@ -7,12 +7,20 @@ function getAuditAppId(): string {
   return process.env.AUDIT_APP?.trim() || "spousal"
 }
 
+function getCoreSkillNames(): string[] {
+  return [
+    "core-audit-rules",
+    "core-doc-analysis",
+    "core-immicore-mcp",
+    "core-knowledge-injection",
+  ]
+}
+
 function getAuditSkillNames(appId: string): string[] {
   const prefix = appId
   return [
     `${prefix}-audit-rules`,
     `${prefix}-doc-analysis`,
-    `${prefix}-immicore-mcp`,
     `${prefix}-knowledge-injection`,
   ]
 }
@@ -74,7 +82,10 @@ export function validateAuditSkills(projectRoot: string = process.cwd()): string
     return [".claude/skills directory not found in project root"]
   }
 
-  const requiredSkills = getAuditSkillNames(getAuditAppId())
+  const requiredSkills = [
+    ...getCoreSkillNames(),
+    ...getAuditSkillNames(getAuditAppId()),
+  ]
   for (const skill of requiredSkills) {
     const skillDir = resolveSkillDirByName(skillsPath, skill)
     if (!skillDir) {
