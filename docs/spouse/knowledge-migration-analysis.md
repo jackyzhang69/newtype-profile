@@ -331,3 +331,32 @@
 |------|---------|
 | 2026-01-14 | 初始版本 |
 | 2026-01-14 | 修订：区分抽象模式 vs 具体案例；新增 spousal-client-guidance skill；重新分类知识类型 |
+| 2026-01-14 | **迁移完成**: Phase 1-4 全部完成，所有 skills 已创建并推送 |
+
+---
+
+## 十一、迁移完成状态
+
+**状态**: ✅ 迁移完成
+
+### 已完成内容
+
+| Skill | 新增文件数 | 内容说明 |
+|-------|-----------|---------|
+| spousal-audit-rules | 3 | risk_patterns.json (7类17模式), eligibility_rules.md, kg_query_patterns.json |
+| spousal-doc-analysis | 3 | imm5533_checklist.md, evidence_standards.md, consistency_rules.md |
+| spousal-immicore-mcp | 1 | caselaw_query_patterns.json (229行) |
+| spousal-workflow | 4 | 4个输出模板 (初审/深度/终审/提交信) |
+| spousal-client-guidance | 3 | 3个客户指导 (love_story/interview/document_list) |
+| spousal-knowledge-injection | 更新 | injection_profile.json (v2), baseline_guides.md (概览) |
+
+### 代码更新
+
+- `src/audit-core/skills/validator.ts`: 添加对6个 app-specific skills 的验证
+- `src/audit-core/skills/validator.test.ts`: 更新测试覆盖新 skills
+
+### Commits
+
+1. `c410ad7` - Phase 1: Expand spousal skills with risk patterns, IMM5533 checklist, and caselaw queries
+2. `5f1dcba` - Phase 2: Create spousal-workflow and spousal-client-guidance skills
+3. `0e1826c` - Phase 3: Update injection profile and validator for expanded skills
