@@ -1,0 +1,34 @@
+{
+  "version": "study-baseline",
+  "templates": [
+    {
+      "id": "study-required",
+      "title": "必备文件",
+      "items": [
+        "录取通知书",
+        "学习计划",
+        "资金证明",
+        "学术背景材料",
+        "回国约束证据"
+      ]
+    },
+    {
+      "id": "study-optional",
+      "title": "可选加分",
+      "items": [
+        "工作证明与假期批准",
+        "资产与家庭证明"
+      ]
+    },
+    {
+      "id": "study-supporting",
+      "title": "辅助证据",
+      "items": [
+        "银行流水与存款证明",
+        "资助人收入与税务文件",
+        "工作/资产证明",
+        "家庭关系证明"
+      ]
+    }
+  ]
+}

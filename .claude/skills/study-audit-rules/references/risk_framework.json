@@ -1,0 +1,15 @@
+{
+  "version": "study-baseline",
+  "dimensions": [
+    { "id": "reasonableness", "label": "合理性", "severity": "high" },
+    { "id": "credibility", "label": "可信度", "severity": "high" },
+    { "id": "funds", "label": "资金可持续性", "severity": "high" },
+    { "id": "return", "label": "回国意向", "severity": "medium" }
+  ],
+  "flags": [
+    { "id": "unclear-purpose", "label": "学习目的不清晰", "severity": "high" },
+    { "id": "insufficient-funds", "label": "资金来源无法证明", "severity": "high" },
+    { "id": "weak-ties", "label": "回国约束证据薄弱", "severity": "high" },
+    { "id": "mismatch-background", "label": "学术背景与项目不匹配", "severity": "high" }
+  ]
+}
