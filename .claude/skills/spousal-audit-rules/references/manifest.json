@@ -1,13 +1,16 @@
 {
   "name": "spousal-audit-rules",
-  "version": "0.1.0",
-  "description": "Hard eligibility checks and fraud risk badges for immigration audit.",
-  "categories": ["audit", "risk", "rules"],
+  "version": "0.2.0",
+  "description": "Hard eligibility checks, risk patterns, and fraud risk badges for spousal sponsorship audit.",
+  "categories": ["audit", "risk", "rules", "spousal"],
   "quality_level": "L4",
   "quickstart_paths": ["../SKILL.md"],
   "references": [
     "baseline_rules.md",
     "checklist_templates.json",
-    "risk_framework.json"
+    "risk_framework.json",
+    "risk_patterns.json",
+    "eligibility_rules.md",
+    "kg_query_patterns.json"
   ]
 }

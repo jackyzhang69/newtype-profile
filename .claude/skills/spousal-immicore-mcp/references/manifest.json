@@ -1,12 +1,13 @@
 {
   "name": "spousal-immicore-mcp",
-  "version": "0.1.0",
-  "description": "MCP usage policy for ImmiCore services.",
-  "categories": ["audit", "mcp"],
+  "version": "0.2.0",
+  "description": "MCP usage policy and caselaw query patterns for spousal sponsorship audit.",
+  "categories": ["audit", "mcp", "spousal"],
   "quality_level": "L4",
   "quickstart_paths": ["../SKILL.md"],
   "references": [
     "baseline_mcp_policy.md",
-    "mcp_usage.json"
+    "mcp_usage.json",
+    "caselaw_query_patterns.json"
   ]
 }

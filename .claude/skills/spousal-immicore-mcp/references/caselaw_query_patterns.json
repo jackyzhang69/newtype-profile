@@ -1,0 +1,228 @@
+{
+  "version": "1.0",
+  "description": "配偶担保判例法查询模式，用于通过 ImmiCore MCP 获取相关案例",
+  "spousal_specific_queries": {
+    "genuineness_cases": {
+      "description": "关系真实性相关判例",
+      "queries": [
+        {
+          "id": "rushed_relationship",
+          "label": "关系发展仓促",
+          "kg_search": {
+            "issue_code": "rushed_relationship",
+            "limit": 10
+          },
+          "keywords": ["short courtship", "quick marriage", "met briefly"],
+          "landmark_cases": [
+            "Basazenew v Canada 2022 CanLII 125801",
+            "Grewal v Canada 2022 CanLII 125795",
+            "Medica v Canada 2021 CanLII 134436"
+          ]
+        },
+        {
+          "id": "lack_cohabitation",
+          "label": "缺乏共同生活证据",
+          "kg_search": {
+            "issue_code": "cohabitation_evidence",
+            "limit": 10
+          },
+          "keywords": ["no cohabitation", "separate residences", "living apart"],
+          "landmark_cases": [
+            "Menjivar Melgar v Canada 2019 CanLII 22178",
+            "Johal v Canada 2006 CanLII 62396"
+          ]
+        },
+        {
+          "id": "immigration_purpose",
+          "label": "移民目的",
+          "kg_search": {
+            "issue_code": "immigration_purpose",
+            "limit": 10
+          },
+          "keywords": ["primarily for immigration", "IRPR 4(1)(a)", "immigration motive"],
+          "landmark_cases": [
+            "Kaur Gill v Canada 2012 FC 1522",
+            "Medica v Canada 2021 CanLII 134436",
+            "Sandhu v Canada 2016 CanLII 98290"
+          ]
+        }
+      ]
+    },
+    "misrepresentation_cases": {
+      "description": "虚假陈述相关判例",
+      "queries": [
+        {
+          "id": "concealed_history",
+          "label": "隐瞒婚史/前关系",
+          "kg_search": {
+            "issue_code": "concealed_marriage",
+            "limit": 10
+          },
+          "keywords": ["concealed marriage", "undisclosed relationship", "hidden divorce"],
+          "landmark_cases": [
+            "Grewal v Canada 2022 CanLII 125795",
+            "Sidhu v Canada 2015 CanLII 94449",
+            "Nguyen v Canada 2012 CanLII 61969"
+          ]
+        },
+        {
+          "id": "false_documents",
+          "label": "虚假文件",
+          "kg_search": {
+            "issue_code": "document_fraud",
+            "limit": 10
+          },
+          "keywords": ["forged document", "fraudulent certificate", "false evidence"],
+          "landmark_cases": [
+            "Medica v Canada 2021 CanLII 134436",
+            "Sidhu v Canada 2015 CanLII 94449"
+          ]
+        }
+      ]
+    },
+    "credibility_cases": {
+      "description": "可信度问题相关判例",
+      "queries": [
+        {
+          "id": "testimony_contradiction",
+          "label": "证词矛盾",
+          "kg_search": {
+            "issue_code": "credibility",
+            "limit": 10
+          },
+          "keywords": ["contradictory testimony", "inconsistent statements", "credibility concerns"],
+          "landmark_cases": [
+            "Menjivar Melgar v Canada 2019 CanLII 22178",
+            "Punia v Canada 2010 CanLII 94335",
+            "Basazenew v Canada 2022 CanLII 125801"
+          ]
+        },
+        {
+          "id": "lack_knowledge",
+          "label": "对配偶不了解",
+          "kg_search": {
+            "issue_code": "lack_knowledge",
+            "limit": 10
+          },
+          "keywords": ["limited knowledge", "basic information unknown", "unfamiliar with spouse"],
+          "landmark_cases": [
+            "Ha v Canada 2010 CanLII 94501",
+            "Abu Jacob v Canada 2013 CanLII 99816"
+          ]
+        }
+      ]
+    },
+    "common_law_cases": {
+      "description": "同居伴侣特殊情况判例",
+      "queries": [
+        {
+          "id": "cohabitation_duration",
+          "label": "共同居住时间不足",
+          "kg_search": {
+            "issue_code": "cohabitation_duration",
+            "limit": 10
+          },
+          "keywords": ["12 months cohabitation", "continuous residence", "living together requirement"]
+        },
+        {
+          "id": "conjugal_relationship",
+          "label": "关系性质证明",
+          "kg_search": {
+            "issue_code": "relationship_nature",
+            "limit": 10
+          },
+          "keywords": ["conjugal relationship", "marriage-like", "spousal nature"]
+        }
+      ]
+    }
+  },
+  "procedural_queries": {
+    "description": "程序性问题查询",
+    "queries": [
+      {
+        "id": "procedural_fairness",
+        "label": "程序公平性",
+        "kg_search": {
+          "issue_code": "procedural_fairness",
+          "limit": 5
+        },
+        "keywords": ["procedural fairness", "duty to disclose", "opportunity to respond"]
+      },
+      {
+        "id": "section_4_interpretation",
+        "label": "IRPR 第4条解释",
+        "kg_search": {
+          "issue_code": "section_4_test",
+          "limit": 5
+        },
+        "keywords": ["IRPR 4(1)", "dual test", "or test", "genuineness vs purpose"],
+        "landmark_cases": [
+          "Kaur Gill v Canada 2012 FC 1522"
+        ]
+      }
+    ]
+  },
+  "country_specific_queries": {
+    "description": "按国家查询",
+    "high_volume_countries": [
+      {
+        "country_code": "IND",
+        "country_name": "India",
+        "common_issues": ["arranged_marriage", "rushed_relationship", "family_involvement"]
+      },
+      {
+        "country_code": "CHN",
+        "country_name": "China",
+        "common_issues": ["age_difference", "communication_evidence", "financial_support"]
+      },
+      {
+        "country_code": "PAK",
+        "country_name": "Pakistan",
+        "common_issues": ["cousin_marriage", "arranged_marriage", "credibility"]
+      },
+      {
+        "country_code": "PHL",
+        "country_name": "Philippines",
+        "common_issues": ["age_difference", "online_relationship", "financial_motive"]
+      }
+    ]
+  },
+  "mcp_integration": {
+    "tools": {
+      "kg_search": {
+        "description": "搜索相关案例",
+        "usage": "kg_search(issue_code='...', country_code='...', limit=10)"
+      },
+      "kg_case": {
+        "description": "获取具体案例详情",
+        "usage": "kg_case(citation='2022 CanLII 125795')"
+      },
+      "kg_similar_cases": {
+        "description": "查找相似案例",
+        "usage": "kg_similar_cases(country='IND', issue_codes=['rushed_relationship'], limit=5)"
+      }
+    },
+    "operation_manual_queries": {
+      "description": "操作手册查询",
+      "relevant_sections": [
+        "OP 2 - Processing Members of the Family Class",
+        "IP 8 - Spouse or Common-law Partner in Canada Class",
+        "ENF 2 - Evaluating Inadmissibility"
+      ]
+    }
+  },
+  "query_templates": {
+    "risk_assessment": {
+      "description": "风险评估时查询模板",
+      "template": "kg_search(issue_code='{risk_pattern_id}', country_code='{applicant_country}', limit=5)"
+    },
+    "defense_strategy": {
+      "description": "制定辩护策略时查询成功案例",
+      "template": "kg_search(issue_code='{risk_pattern_id}', outcome='allowed', limit=5)"
+    },
+    "precedent_research": {
+      "description": "判例研究",
+      "template": "kg_case(citation='{case_citation}')"
+    }
+  }
+}

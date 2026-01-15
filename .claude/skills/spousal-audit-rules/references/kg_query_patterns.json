@@ -1,0 +1,134 @@
+{
+  "version": "1.0",
+  "description": "Knowledge Graph 查询模式，用于获取与风险模式相关的具体案例",
+  "query_patterns": {
+    "by_issue_code": {
+      "description": "按问题代码查询相关案例",
+      "examples": [
+        {
+          "pattern": "issue_code:rushed_relationship",
+          "use_case": "查找关系发展仓促的案例",
+          "expected_results": ["Basazenew 2022", "Grewal 2022", "Medica 2021"]
+        },
+        {
+          "pattern": "issue_code:misrepresentation",
+          "use_case": "查找虚假陈述案例",
+          "expected_results": ["Sidhu 2015", "Grewal 2022", "Medica 2021"]
+        },
+        {
+          "pattern": "issue_code:credibility",
+          "use_case": "查找可信度问题案例",
+          "expected_results": ["Menjivar Melgar 2019", "Punia 2010"]
+        },
+        {
+          "pattern": "issue_code:immigration_purpose",
+          "use_case": "查找移民目的不纯案例",
+          "expected_results": ["Kaur Gill 2012", "Medica 2021", "Johal 2006"]
+        },
+        {
+          "pattern": "issue_code:cohabitation_evidence",
+          "use_case": "查找缺乏共同生活证据案例",
+          "expected_results": ["Menjivar Melgar 2019", "Johal 2006"]
+        }
+      ]
+    },
+    "by_outcome": {
+      "description": "按裁决结果查询",
+      "examples": [
+        {
+          "pattern": "outcome:dismissed",
+          "use_case": "查找上诉被驳回的案例"
+        },
+        {
+          "pattern": "outcome:allowed",
+          "use_case": "查找上诉成功的案例"
+        }
+      ]
+    },
+    "by_country": {
+      "description": "按申请人国籍查询",
+      "examples": [
+        {
+          "pattern": "country:IND",
+          "use_case": "查找印度申请人案例"
+        },
+        {
+          "pattern": "country:CHN",
+          "use_case": "查找中国申请人案例"
+        },
+        {
+          "pattern": "country:PAK",
+          "use_case": "查找巴基斯坦申请人案例"
+        }
+      ]
+    },
+    "by_citation": {
+      "description": "按案例引用查询具体案例",
+      "examples": [
+        {
+          "pattern": "citation:2012_FC_1522",
+          "use_case": "查找 Kaur Gill v Canada 案例详情"
+        },
+        {
+          "pattern": "citation:2022_CanLII_125795",
+          "use_case": "查找 Grewal 案例详情"
+        }
+      ]
+    },
+    "combined_queries": {
+      "description": "组合查询模式",
+      "examples": [
+        {
+          "pattern": "issue_code:rushed_relationship AND country:IND",
+          "use_case": "查找印度申请人关系仓促案例"
+        },
+        {
+          "pattern": "issue_code:misrepresentation AND outcome:dismissed",
+          "use_case": "查找因虚假陈述被驳回的案例"
+        }
+      ]
+    }
+  },
+  "mcp_tool_mapping": {
+    "kg_search": {
+      "description": "通用案例搜索",
+      "parameters": ["issue_code", "country_code", "outcome", "start_date", "end_date", "limit"]
+    },
+    "kg_case": {
+      "description": "按引用获取单个案例",
+      "parameters": ["citation"]
+    },
+    "kg_similar_cases": {
+      "description": "查找相似案例",
+      "parameters": ["country", "issue_codes", "age_range", "education_level", "funds_min", "funds_max", "limit"]
+    },
+    "kg_judge_stats": {
+      "description": "获取法官统计",
+      "parameters": ["judge_id"]
+    }
+  },
+  "common_issue_codes": {
+    "genuineness": [
+      "rushed_relationship",
+      "cohabitation_evidence",
+      "immigration_purpose",
+      "lack_knowledge",
+      "illogical_behavior"
+    ],
+    "misrepresentation": [
+      "concealed_marriage",
+      "concealed_children",
+      "concealed_criminal",
+      "false_documents"
+    ],
+    "credibility": [
+      "testimony_contradiction",
+      "timeline_inconsistency",
+      "vague_testimony"
+    ],
+    "procedural": [
+      "procedural_fairness",
+      "inadequate_reasons"
+    ]
+  }
+}

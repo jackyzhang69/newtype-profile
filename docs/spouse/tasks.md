@@ -8,24 +8,24 @@
 ## Phase 1: 扩展现有 Skills
 
 ### 1.1 spousal-audit-rules
-- [ ] 从 risk_analysis.md 提取抽象风险模式
-- [ ] 创建 `risk_patterns.json`（风险模式定义）
-- [ ] 创建 `eligibility_rules.md`（资格检查规则）
-- [ ] 创建 `kg_query_patterns.json`（KG 查询模式）
-- [ ] 更新 `manifest.json`
+- [x] 从 risk_analysis.md 提取抽象风险模式
+- [x] 创建 `risk_patterns.json`（风险模式定义）
+- [x] 创建 `eligibility_rules.md`（资格检查规则）
+- [x] 创建 `kg_query_patterns.json`（KG 查询模式）
+- [x] 更新 `manifest.json`
 
 ### 1.2 spousal-doc-analysis
-- [ ] 从 supporting_documents.md 提取 IMM5533 验证规则
-- [ ] 创建 `imm5533_checklist.md`（文件清单验证）
-- [ ] 创建 `evidence_standards.md`（证据质量标准）
-- [ ] 创建 `consistency_rules.md`（跨文档一致性规则）
-- [ ] 更新 `manifest.json`
+- [x] 从 supporting_documents.md 提取 IMM5533 验证规则
+- [x] 创建 `imm5533_checklist.md`（文件清单验证）
+- [x] 创建 `evidence_standards.md`（证据质量标准）
+- [x] 创建 `consistency_rules.md`（跨文档一致性规则）
+- [x] 更新 `manifest.json`
 
 ### 1.3 spousal-immicore-mcp
-- [ ] 创建 `caselaw_query_patterns.json`（判例查询模式）
-- [ ] 更新 `manifest.json`
+- [x] 创建 `caselaw_query_patterns.json`（判例查询模式）
+- [x] 更新 `manifest.json`
 
-**Phase 1 完成**: [ ] _(日期: __________)_
+**Phase 1 完成**: [x] _(日期: 2026-01-14)_
 
 ---
 
@@ -99,8 +99,8 @@
 
 | 源文件 (SPS) | 目标文件 | 状态 |
 |-------------|---------|------|
-| risk_analysis.md | spousal-audit-rules/risk_patterns.json | [ ] |
-| supporting_documents.md | spousal-doc-analysis/imm5533_checklist.md | [ ] |
+| risk_analysis.md | spousal-audit-rules/risk_patterns.json | [x] |
+| supporting_documents.md | spousal-doc-analysis/imm5533_checklist.md | [x] |
 | primary_assess_guide.md | spousal-workflow/primary_assess_template.md | [ ] |
 | deep_analysis_guide.md | spousal-workflow/deep_analysis_template.md | [ ] |
 | final_assess_guide.md | spousal-workflow/final_assess_template.md | [ ] |

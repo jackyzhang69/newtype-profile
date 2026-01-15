@@ -1,0 +1,288 @@
+{
+  "version": "spousal-v2.0",
+  "description": "抽象风险模式定义，具体案例通过 KG 查询获取",
+  "categories": [
+    {
+      "id": "genuineness",
+      "label": "婚姻/同居关系真实性",
+      "legal_basis": "IRPR 4(1)(b)",
+      "patterns": [
+        {
+          "id": "rushed_relationship",
+          "label": "关系发展仓促",
+          "indicators": [
+            "相识到结婚时间过短（< 3个月）",
+            "首次见面到结婚时间过短（< 1个月）",
+            "婚礼不符合当地习俗或家庭成员未参与",
+            "双方对彼此背景信息存在重大矛盾或不了解",
+            "婚后长期未见面或未回访配偶"
+          ],
+          "severity": "high",
+          "kg_query": "issue_code:rushed_relationship"
+        },
+        {
+          "id": "lack_cohabitation_evidence",
+          "label": "缺乏共同生活证据",
+          "indicators": [
+            "无共同银行账户",
+            "无共同租赁协议或房产证明",
+            "无共同水电费账单",
+            "无共同保险",
+            "日常生活习惯、社交圈子缺乏真实性",
+            "沟通记录显示内容肤浅、频率低"
+          ],
+          "severity": "high",
+          "kg_query": "issue_code:cohabitation_evidence"
+        },
+        {
+          "id": "immigration_motive",
+          "label": "移民目的不纯",
+          "indicators": [
+            "多次担保或被担保历史",
+            "之前关系被认定为虚假",
+            "申请时机与遣返日期紧密相关",
+            "隐瞒与担保人家庭的密切关系",
+            "申请人有多次尝试留在加拿大的历史",
+            "担保人有通过婚姻获取身份的模式"
+          ],
+          "severity": "critical",
+          "kg_query": "issue_code:immigration_purpose"
+        }
+      ]
+    },
+    {
+      "id": "misrepresentation",
+      "label": "虚假陈述",
+      "legal_basis": "IRPA 40(1)(a)",
+      "patterns": [
+        {
+          "id": "concealed_facts",
+          "label": "隐瞒重要事实",
+          "indicators": [
+            "隐瞒前婚史或同居关系",
+            "隐瞒子女",
+            "隐瞒犯罪记录",
+            "隐瞒拒签史",
+            "隐瞒亲属关系",
+            "隐瞒工作经历或教育背景"
+          ],
+          "severity": "critical",
+          "kg_query": "issue_code:misrepresentation"
+        },
+        {
+          "id": "false_documents",
+          "label": "提供虚假文件",
+          "indicators": [
+            "伪造结婚证或出生证",
+            "虚假银行对账单",
+            "虚假雇佣信",
+            "虚假共同居住证明",
+            "伪造旅行或身份文件"
+          ],
+          "severity": "critical",
+          "kg_query": "issue_code:document_fraud"
+        }
+      ]
+    },
+    {
+      "id": "credibility",
+      "label": "可信度问题",
+      "legal_basis": "General assessment",
+      "patterns": [
+        {
+          "id": "testimony_contradiction",
+          "label": "证词矛盾",
+          "indicators": [
+            "双方对关键事实描述不一致（相识日期、求婚细节）",
+            "书面材料与口头证词存在矛盾",
+            "时间线存在重大空白或矛盾",
+            "对近期事件记忆模糊或矛盾",
+            "听证会上回避问题或证词含糊"
+          ],
+          "severity": "high",
+          "kg_query": "issue_code:credibility"
+        },
+        {
+          "id": "lack_mutual_knowledge",
+          "label": "对基本信息不了解",
+          "indicators": [
+            "不了解配偶家庭成员信息",
+            "不了解配偶工作或日常生活",
+            "不了解配偶朋友圈",
+            "对共同生活细节描述模糊",
+            "对配偶前段关系或婚姻不了解"
+          ],
+          "severity": "high",
+          "kg_query": "issue_code:lack_knowledge"
+        },
+        {
+          "id": "illogical_behavior",
+          "label": "不合逻辑的行为",
+          "indicators": [
+            "长期分居且缺乏合理解释",
+            "重要生活决策无共同参与",
+            "沟通频率与声称的关系深度不符",
+            "婚礼形式或原因解释前后矛盾",
+            "财务支持方式异常"
+          ],
+          "severity": "medium",
+          "kg_query": "issue_code:illogical_behavior"
+        }
+      ]
+    },
+    {
+      "id": "previous_relationships",
+      "label": "前婚史与离婚",
+      "legal_basis": "IRPR 2, 117",
+      "patterns": [
+        {
+          "id": "divorce_validity",
+          "label": "离婚有效性存疑",
+          "indicators": [
+            "未提供有效离婚证明",
+            "多国婚姻关系解除不清晰",
+            "前次婚姻获得PR后迅速离婚"
+          ],
+          "severity": "high",
+          "kg_query": "issue_code:divorce_validity"
+        },
+        {
+          "id": "sponsorship_history",
+          "label": "担保历史异常",
+          "indicators": [
+            "多次担保他人",
+            "多次被他人担保",
+            "之前担保关系被认定虚假",
+            "离婚时间与新关系开始过于接近"
+          ],
+          "severity": "high",
+          "kg_query": "issue_code:sponsorship_history"
+        }
+      ]
+    },
+    {
+      "id": "financial_support",
+      "label": "财务支持",
+      "legal_basis": "IRPR 133",
+      "patterns": [
+        {
+          "id": "insufficient_income",
+          "label": "担保人财务能力不足",
+          "indicators": [
+            "收入或资产不足以满足担保要求",
+            "有破产史",
+            "领取社会福利",
+            "有未履行的担保义务"
+          ],
+          "severity": "medium",
+          "kg_query": "issue_code:financial_capacity"
+        },
+        {
+          "id": "financial_inconsistency",
+          "label": "财务证据不一致",
+          "indicators": [
+            "财务文件存在矛盾",
+            "收入与生活开销不符",
+            "财务文件被怀疑伪造"
+          ],
+          "severity": "medium",
+          "kg_query": "issue_code:financial_inconsistency"
+        }
+      ]
+    },
+    {
+      "id": "relationship_evidence",
+      "label": "关系发展与证据",
+      "legal_basis": "General assessment",
+      "patterns": [
+        {
+          "id": "lack_interaction_evidence",
+          "label": "缺乏持续互动证据",
+          "indicators": [
+            "缺乏电话、短信、邮件等沟通记录",
+            "长期分居无合理解释",
+            "分居期间无频繁互动证据"
+          ],
+          "severity": "high",
+          "kg_query": "issue_code:interaction_evidence"
+        },
+        {
+          "id": "social_interaction_deficit",
+          "label": "社交互动不足",
+          "indicators": [
+            "无共同朋友圈或社交活动",
+            "无家庭聚会照片",
+            "亲友对关系了解甚少",
+            "亲友证词不一致"
+          ],
+          "severity": "medium",
+          "kg_query": "issue_code:social_evidence"
+        }
+      ]
+    },
+    {
+      "id": "common_law_specific",
+      "label": "同居伴侣特殊要求",
+      "legal_basis": "IRPR 1(1), 2",
+      "patterns": [
+        {
+          "id": "cohabitation_duration",
+          "label": "共同居住时间不足",
+          "indicators": [
+            "未能证明连续共同居住至少一年",
+            "共同居住证据不充分",
+            "实际生活安排与共同居住声称不符"
+          ],
+          "severity": "critical",
+          "kg_query": "issue_code:cohabitation_duration"
+        },
+        {
+          "id": "relationship_nature",
+          "label": "关系性质证明不足",
+          "indicators": [
+            "缺乏财务捆绑证据",
+            "缺乏社交认可证据",
+            "缺乏情感承诺证据",
+            "对未来计划缺乏一致性"
+          ],
+          "severity": "high",
+          "kg_query": "issue_code:relationship_nature"
+        },
+        {
+          "id": "separation_explanation",
+          "label": "分居解释不合理",
+          "indicators": [
+            "短暂分居无合理解释",
+            "分居期间关系持续性不足",
+            "分居期间沟通证据缺乏"
+          ],
+          "severity": "medium",
+          "kg_query": "issue_code:separation_explanation"
+        }
+      ]
+    }
+  ],
+  "judicial_principles": [
+    {
+      "id": "section_4_test",
+      "label": "IRPR 第4条双重测试",
+      "description": "即使婚姻真实，如果主要目的是移民，申请仍可能被拒",
+      "source": "Kaur Gill, 2012 FC 1522",
+      "kg_query": "citation:2012_FC_1522"
+    },
+    {
+      "id": "holistic_assessment",
+      "label": "综合评估原则",
+      "description": "法院综合考虑所有证据，包括关系起源、共同生活、财务捆绑、社交互动、子女情况、证词可信度",
+      "source": "General IAD practice",
+      "kg_query": "issue_code:holistic_assessment"
+    },
+    {
+      "id": "credibility_core",
+      "label": "可信度核心原则",
+      "description": "可信度是评估申请真实性的核心，即使微小矛盾也可能影响整体评估",
+      "source": "General IAD practice",
+      "kg_query": "issue_code:credibility_assessment"
+    }
+  ]
+}
