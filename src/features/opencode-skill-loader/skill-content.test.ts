@@ -1,4 +1,7 @@
 import { describe, it, expect } from "bun:test"
+import fs from "node:fs"
+import path from "node:path"
+import { tmpdir } from "node:os"
 import { resolveSkillContent, resolveMultipleSkills } from "./skill-content"
 
 describe("resolveSkillContent", () => {
@@ -94,6 +97,58 @@ describe("resolveMultipleSkills", () => {
 		// #then: no skills resolved, all in notFound
 		expect(result.resolved.size).toBe(0)
 		expect(result.notFound).toEqual(["skill-one", "skill-two", "skill-three"])
+	})
+
+	it("should resolve project .claude skill when present", () => {
+		// #given: a project skill in .claude/skills
+		const cwd = process.cwd()
+		const tempDir = fs.mkdtempSync(path.join(tmpdir(), "skills-test-"))
+		const skillDir = path.join(tempDir, ".claude", "skills", "local-skill")
+		fs.mkdirSync(skillDir, { recursive: true })
+		fs.writeFileSync(
+			path.join(skillDir, "SKILL.md"),
+			"---\nname: local-skill\n---\nLocal skill body"
+		)
+
+		// #when: resolving with local skill in project directory
+		process.chdir(tempDir)
+		try {
+			const result = resolveMultipleSkills(["local-skill"])
+
+			// #then: resolves local skill content
+			expect(result.resolved.size).toBe(1)
+			expect(result.notFound).toEqual([])
+			expect(result.resolved.get("local-skill")).toContain("Local skill body")
+		} finally {
+			process.chdir(cwd)
+			fs.rmSync(tempDir, { recursive: true, force: true })
+		}
+	})
+
+	it("should resolve skill by frontmatter name", () => {
+		// #given: a project skill with different directory name
+		const cwd = process.cwd()
+		const tempDir = fs.mkdtempSync(path.join(tmpdir(), "skills-frontmatter-"))
+		const skillDir = path.join(tempDir, ".claude", "skills", "legacy-knowledge-injection")
+		fs.mkdirSync(skillDir, { recursive: true })
+		fs.writeFileSync(
+			path.join(skillDir, "SKILL.md"),
+			"---\nname: spousal-knowledge-injection\n---\nFrontmatter skill body"
+		)
+
+		// #when: resolving by frontmatter name
+		process.chdir(tempDir)
+		try {
+			const result = resolveMultipleSkills(["spousal-knowledge-injection"])
+
+			// #then: resolves skill content by frontmatter name
+			expect(result.resolved.size).toBe(1)
+			expect(result.notFound).toEqual([])
+			expect(result.resolved.get("spousal-knowledge-injection")).toContain("Frontmatter skill body")
+		} finally {
+			process.chdir(cwd)
+			fs.rmSync(tempDir, { recursive: true, force: true })
+		}
 	})
 
 	it("should preserve skill order in resolved map", () => {
