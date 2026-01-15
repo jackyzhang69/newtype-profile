@@ -1,0 +1,16 @@
+{
+  "version": "study-baseline",
+  "tools": [
+    { "name": "immicore_caselaw_search", "purpose": "case law search" },
+    { "name": "immicore_manual_lookup", "purpose": "policy manual lookup" },
+    { "name": "kg_similar_cases", "purpose": "similar case matching" }
+  ],
+  "requirements": {
+    "citation": true,
+    "retrieval_date": true,
+    "no_fabrication": true
+  },
+  "fallback": {
+    "use_local_only": true
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "name": "study-immicore-mcp",
+  "version": "0.1.0",
+  "description": "MCP usage policy for ImmiCore services.",
+  "categories": ["audit", "mcp"],
+  "quality_level": "L4",
+  "quickstart_paths": ["../SKILL.md"],
+  "references": [
+    "baseline_mcp_policy.md",
+    "mcp_usage.json"
+  ]
+}
