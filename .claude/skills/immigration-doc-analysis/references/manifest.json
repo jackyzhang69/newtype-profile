@@ -1,9 +1,0 @@
-{
-  "name": "immigration-doc-analysis",
-  "version": "0.1.0",
-  "description": "Document extraction and evidence summarization for audit workflows.",
-  "categories": ["audit", "documents"],
-  "quality_level": "L4",
-  "quickstart_paths": ["../SKILL.md"],
-  "references": []
-}
