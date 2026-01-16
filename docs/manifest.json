@@ -1,0 +1,143 @@
+{
+  "version": "2.0",
+  "base_path": "docs",
+  "categories": {
+    "framework": "Framework - oh-my-opencode tools, hooks, features",
+    "audit": "Audit - workflow, tiers, MCP integration",
+    "apps": "Apps - spousal, study application specifics",
+    "system": "System - environment, server access, testing"
+  },
+  "entries": [
+    {
+      "id": "framework-tools",
+      "path": "agent-guides/framework/tools.md",
+      "category": "framework",
+      "summary": "LSP (11 tools), AST-Grep, Glob, Session management, background tasks",
+      "keywords": [
+        "lsp",
+        "ast-grep",
+        "glob",
+        "grep",
+        "tools",
+        "session"
+      ]
+    },
+    {
+      "id": "framework-hooks",
+      "path": "agent-guides/framework/hooks.md",
+      "category": "framework",
+      "summary": "22+ lifecycle hooks for context injection, error recovery, orchestration",
+      "keywords": [
+        "hooks",
+        "PreToolUse",
+        "PostToolUse",
+        "injection",
+        "recovery"
+      ]
+    },
+    {
+      "id": "framework-features",
+      "path": "agent-guides/framework/features.md",
+      "category": "framework",
+      "summary": "Claude Code compatibility layer, background agents, skill MCP",
+      "keywords": [
+        "features",
+        "claude-code",
+        "skills",
+        "mcp",
+        "background"
+      ]
+    },
+    {
+      "id": "framework-cli",
+      "path": "agent-guides/framework/cli.md",
+      "category": "framework",
+      "summary": "CLI installer, doctor health checks, runtime launcher",
+      "keywords": [
+        "cli",
+        "install",
+        "doctor",
+        "health-check"
+      ]
+    },
+    {
+      "id": "audit-workflow",
+      "path": "agent-guides/audit/workflow.md",
+      "category": "audit",
+      "summary": "5-agent audit workflow: AuditManager, Detective, Strategist, Gatekeeper, Verifier",
+      "keywords": [
+        "workflow",
+        "agents",
+        "audit",
+        "defensibility",
+        "report"
+      ]
+    },
+    {
+      "id": "audit-tiers",
+      "path": "agent-guides/audit/tiers.md",
+      "category": "audit",
+      "summary": "Tiered system: guest/pro/ultra with model configs and feature matrix",
+      "keywords": [
+        "tiers",
+        "guest",
+        "pro",
+        "ultra",
+        "pricing",
+        "models"
+      ]
+    },
+    {
+      "id": "audit-mcp",
+      "path": "agent-guides/audit/mcp-integration.md",
+      "category": "audit",
+      "summary": "MCP services (caselaw, operation-manual), KG integration, search policy",
+      "keywords": [
+        "mcp",
+        "caselaw",
+        "kg",
+        "search",
+        "immicore"
+      ]
+    },
+    {
+      "id": "app-spousal",
+      "path": "agent-guides/apps/spousal.md",
+      "category": "apps",
+      "summary": "Spousal sponsorship: genuineness, evidence, refusal triggers",
+      "keywords": [
+        "spousal",
+        "sponsorship",
+        "marriage",
+        "relationship"
+      ]
+    },
+    {
+      "id": "app-study",
+      "path": "agent-guides/apps/study.md",
+      "category": "apps",
+      "summary": "Study permit: genuine intent, financial capacity, return ties",
+      "keywords": [
+        "study",
+        "permit",
+        "student",
+        "dli",
+        "intent"
+      ]
+    },
+    {
+      "id": "system-environment",
+      "path": "system/environment.md",
+      "category": "system",
+      "summary": "服务器访问规则、测试环境配置、环境变量、ImmiCore 服务依赖",
+      "keywords": [
+        "server",
+        "ssh",
+        "environment",
+        "testing",
+        "immicore",
+        "env"
+      ]
+    }
+  ]
+}

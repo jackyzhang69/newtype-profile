@@ -137,11 +137,49 @@ oh-my-opencode/
 - **Hook naming**: `createXXXHook` function convention
 - **Factory pattern**: Components created via `createXXX()` functions
 
-## ⚠️ CRITICAL: 服务器只读访问
+## ⚠️ CRITICAL: 服务器访问规则
 
-- SSH: `jacky@192.168.1.98`，密码见 `.env` 中 `SERVER_PASSWORD`
-- **只读** - 只能查看状态、日志、配置，禁止任何写操作
-- **修改** - 需要修改时，向用户提出方案，由用户决定执行
+### 服务器信息
+
+| 项目 | 值 |
+|------|-----|
+| IP | `192.168.1.98` |
+| 用户 | `jacky` |
+| 密码 | `${SERVER_PASSWORD}` (见 `.env`) |
+| SSH | `ssh jacky@192.168.1.98` |
+| ImmiCore 目录 | `/home/jacky/immicore` |
+
+### 访问策略
+
+| 策略 | 说明 |
+|------|------|
+| **只读访问** | Agent 只能通过 SSH 查看服务器状态、日志、配置 |
+| **禁止修改** | 绝对不允许在服务器上执行任何写操作（文件修改、git、docker 操作等） |
+| **修改方案** | 如需修改服务器内容，只能向用户提出修改方案，由用户决定执行 |
+
+### 允许的操作
+
+```bash
+# 查看服务状态
+ssh jacky@192.168.1.98 "docker ps"
+# 查看日志
+ssh jacky@192.168.1.98 "docker logs immicore-search-service-1 --tail 50"
+# 健康检查
+ssh jacky@192.168.1.98 "curl -s http://localhost:3104/health"
+```
+
+### 禁止的操作
+
+```bash
+# ❌ 修改文件
+ssh jacky@192.168.1.98 "vim /home/jacky/immicore/.env"
+# ❌ 重启服务
+ssh jacky@192.168.1.98 "docker restart ..."
+# ❌ 部署/更新
+ssh jacky@192.168.1.98 "cd /home/jacky/immicore && git pull"
+```
+
+详细信息见: `docs/system/environment.md`
 
 ## IMMIGRATION AUDIT MCP/KG AUTHENTICATION
 
@@ -250,4 +288,5 @@ bun test               # Run tests (76 test files, 2559+ BDD assertions)
 | Audit | MCP services (caselaw, operation-manu... | `docs/agent-guides/audit/mcp-integration.md` |
 | Apps | Spousal sponsorship: genuineness, evi... | `docs/agent-guides/apps/spousal.md` |
 | Apps | Study permit: genuine intent, financi... | `docs/agent-guides/apps/study.md` |
+| System | 服务器访问规则、测试环境配置、环境变量、ImmiCore 服务依赖 | `docs/system/environment.md` |
 <!-- KNOWLEDGE_INDEX:END -->
