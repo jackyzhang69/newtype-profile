@@ -233,3 +233,21 @@ bun test               # Run tests (76 test files, 2559+ BDD assertions)
 - **JSONC support**: Config files support comments (`// comment`, `/* block */`) and trailing commas
 - **Claude Code Compat**: Full compatibility layer for settings.json hooks, commands, skills, agents, MCPs
 - **Skill MCP**: Skills can embed MCP server configs in YAML frontmatter
+
+---
+
+## Knowledge Index
+
+<!-- KNOWLEDGE_INDEX:START -->
+| Category | Topic | Path |
+|----------|-------|------|
+| Framework | LSP (11 tools), AST-Grep, Glob, Sessi... | `docs/agent-guides/framework/tools.md` |
+| Framework | 22+ lifecycle hooks for context injec... | `docs/agent-guides/framework/hooks.md` |
+| Framework | Claude Code compatibility layer, back... | `docs/agent-guides/framework/features.md` |
+| Framework | CLI installer, doctor health checks, ... | `docs/agent-guides/framework/cli.md` |
+| Audit | 5-agent audit workflow: AuditManager,... | `docs/agent-guides/audit/workflow.md` |
+| Audit | Tiered system: guest/pro/ultra with m... | `docs/agent-guides/audit/tiers.md` |
+| Audit | MCP services (caselaw, operation-manu... | `docs/agent-guides/audit/mcp-integration.md` |
+| Apps | Spousal sponsorship: genuineness, evi... | `docs/agent-guides/apps/spousal.md` |
+| Apps | Study permit: genuine intent, financi... | `docs/agent-guides/apps/study.md` |
+<!-- KNOWLEDGE_INDEX:END -->
