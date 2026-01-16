@@ -1,7 +1,7 @@
 import type { AgentConfig } from "@opencode-ai/sdk"
 import type { AgentPromptMetadata } from "../../agents/types"
 import { createAgentToolRestrictions } from "../../shared/permission-compat"
-import { STRATEGIST_MODEL } from "../types"
+import { getStrategistModel, getStrategistTemperature } from "../types"
 import { buildAuditPrompt, getAuditAppId } from "../knowledge/loader"
 
 export const STRATEGIST_PROMPT_METADATA: AgentPromptMetadata = {
@@ -17,8 +17,11 @@ export const STRATEGIST_PROMPT_METADATA: AgentPromptMetadata = {
 }
 
 export function createStrategistAgent(
-  model: string = STRATEGIST_MODEL
+  model?: string,
+  temperature?: number
 ): AgentConfig {
+  const resolvedModel = model ?? getStrategistModel()
+  const resolvedTemperature = temperature ?? getStrategistTemperature()
   const restrictions = createAgentToolRestrictions([
     "write",
     "webfetch",
@@ -77,8 +80,8 @@ Produce a **Defensibility Analysis Report**:
     description:
       "Immigration Strategist. Synthesizes facts and legal research into a cohesive defense strategy and risk assessment.",
     mode: "subagent" as const,
-    model,
-    temperature: 0.4,
+    model: resolvedModel,
+    temperature: resolvedTemperature,
     skills,
     ...restrictions,
     prompt: buildAuditPrompt(basePrompt, appId, "strategist", skills),

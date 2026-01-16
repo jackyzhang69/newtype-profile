@@ -5,28 +5,31 @@ import { createAuditManagerAgent, AUDIT_MANAGER_PROMPT_METADATA } from "../audit
 import { createDetectiveAgent, DETECTIVE_PROMPT_METADATA } from "../audit-core/agents/detective"
 import { createStrategistAgent, STRATEGIST_PROMPT_METADATA } from "../audit-core/agents/strategist"
 import { createGatekeeperAgent, GATEKEEPER_PROMPT_METADATA } from "../audit-core/agents/gatekeeper"
+import { createVerifierAgent, VERIFIER_PROMPT_METADATA } from "../audit-core/agents/verifier"
 import { deepMerge } from "../shared"
 import { DEFAULT_CATEGORIES } from "../tools/chief-task/constants"
 import { resolveMultipleSkills } from "../features/opencode-skill-loader/skill-content"
 
 type AgentSource = AgentFactory | AgentConfig
+type ConditionalAgentSource = () => AgentConfig | null
 
-const agentSources: Record<BuiltinAgentName, AgentSource> = {
+const agentSources: Record<string, AgentSource> = {
   "audit-manager": createAuditManagerAgent,
   detective: createDetectiveAgent,
   strategist: createStrategistAgent,
   gatekeeper: createGatekeeperAgent,
 }
 
-/**
- * Metadata for each agent, used to build Chief's dynamic prompt sections
- * (Delegation Table, Tool Selection, Key Triggers, etc.)
- */
+const conditionalAgentSources: Record<string, ConditionalAgentSource> = {
+  verifier: createVerifierAgent,
+}
+
 const agentMetadata: Partial<Record<BuiltinAgentName, AgentPromptMetadata>> = {
   "audit-manager": AUDIT_MANAGER_PROMPT_METADATA,
   detective: DETECTIVE_PROMPT_METADATA,
   strategist: STRATEGIST_PROMPT_METADATA,
   gatekeeper: GATEKEEPER_PROMPT_METADATA,
+  verifier: VERIFIER_PROMPT_METADATA,
 }
 
 function isFactory(source: AgentSource): source is AgentFactory {
@@ -123,6 +126,22 @@ export function createBuiltinAgents(
     }
 
     result[name] = config
+  }
+
+  for (const [name, factory] of Object.entries(conditionalAgentSources)) {
+    const agentName = name as BuiltinAgentName
+
+    if (disabledAgents.includes(agentName)) continue
+
+    const config = factory()
+    if (!config) continue
+
+    const override = agentOverrides[agentName]
+    if (override) {
+      result[name] = mergeAgentConfig(config, override)
+    } else {
+      result[name] = config
+    }
   }
 
   return result

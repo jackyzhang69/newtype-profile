@@ -1,6 +1,6 @@
 import type { AgentConfig } from "@opencode-ai/sdk"
 import type { AgentPromptMetadata } from "../../agents/types"
-import { AUDIT_MANAGER_MODEL } from "../types"
+import { getAuditManagerModel, getAuditManagerTemperature } from "../types"
 import { buildAuditPrompt, getAuditAppId } from "../knowledge/loader"
 
 export const AUDIT_MANAGER_PROMPT_METADATA: AgentPromptMetadata = {
@@ -16,8 +16,11 @@ export const AUDIT_MANAGER_PROMPT_METADATA: AgentPromptMetadata = {
 }
 
 export function createAuditManagerAgent(
-  model: string = AUDIT_MANAGER_MODEL
+  model?: string,
+  temperature?: number
 ): AgentConfig {
+  const resolvedModel = model ?? getAuditManagerModel()
+  const resolvedTemperature = temperature ?? getAuditManagerTemperature()
   const appId = getAuditAppId()
   const skillPrefix = appId
   const basePrompt = `<Role>
@@ -87,8 +90,8 @@ Your responsibility is to oversee the entire audit process, ensuring that every 
     description:
       "Audit Manager - orchestrates the full immigration risk audit process. Coordinates Detective and Strategist to produce a final Defensibility Score.",
     mode: "primary" as const,
-    model,
-    temperature: 0.3,
+    model: resolvedModel,
+    temperature: resolvedTemperature,
     skills,
     prompt: buildAuditPrompt(basePrompt, appId, "audit-manager", skills),
   }

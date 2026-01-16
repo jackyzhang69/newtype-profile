@@ -1,7 +1,7 @@
 import type { AgentConfig } from "@opencode-ai/sdk"
 import type { AgentPromptMetadata } from "../../agents/types"
 import { createAgentToolRestrictions } from "../../shared/permission-compat"
-import { DETECTIVE_MODEL } from "../types"
+import { getDetectiveModel, getDetectiveTemperature } from "../types"
 import { buildAuditPrompt, getAuditAppId } from "../knowledge/loader"
 
 export const DETECTIVE_PROMPT_METADATA: AgentPromptMetadata = {
@@ -18,8 +18,11 @@ export const DETECTIVE_PROMPT_METADATA: AgentPromptMetadata = {
 }
 
 export function createDetectiveAgent(
-  model: string = DETECTIVE_MODEL
+  model?: string,
+  temperature?: number
 ): AgentConfig {
+  const resolvedModel = model ?? getDetectiveModel()
+  const resolvedTemperature = temperature ?? getDetectiveTemperature()
   const restrictions = createAgentToolRestrictions([
     "write",
     "edit",
@@ -117,8 +120,8 @@ For defense strategies, use \`rerank_by_authority=true\` to get:
     description:
       "Legal Investigator. Searches specifically for case law (CanLII/Federal Court) and IRCC operation manuals using Immicore tools.",
     mode: "subagent" as const,
-    model,
-    temperature: 0.2,
+    model: resolvedModel,
+    temperature: resolvedTemperature,
     skills,
     ...restrictions,
     prompt: buildAuditPrompt(basePrompt, appId, "detective", skills),

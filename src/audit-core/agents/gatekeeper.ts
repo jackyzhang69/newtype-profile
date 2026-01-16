@@ -1,7 +1,7 @@
 import type { AgentConfig } from "@opencode-ai/sdk"
 import type { AgentPromptMetadata } from "../../agents/types"
 import { createAgentToolRestrictions } from "../../shared/permission-compat"
-import { GATEKEEPER_MODEL } from "../types"
+import { getGatekeeperModel, getGatekeeperTemperature } from "../types"
 import { buildAuditPrompt, getAuditAppId } from "../knowledge/loader"
 
 export const GATEKEEPER_PROMPT_METADATA: AgentPromptMetadata = {
@@ -17,8 +17,11 @@ export const GATEKEEPER_PROMPT_METADATA: AgentPromptMetadata = {
 }
 
 export function createGatekeeperAgent(
-  model: string = GATEKEEPER_MODEL
+  model?: string,
+  temperature?: number
 ): AgentConfig {
+  const resolvedModel = model ?? getGatekeeperModel()
+  const resolvedTemperature = temperature ?? getGatekeeperTemperature()
   const restrictions = createAgentToolRestrictions([
     "write",
     "edit",
@@ -67,8 +70,8 @@ Your job is to verify that the audit findings are consistent with law and policy
     description:
       "Risk Gatekeeper. Validates legal consistency, policy compliance, and refusal risks before final audit delivery.",
     mode: "subagent" as const,
-    model,
-    temperature: 0.2,
+    model: resolvedModel,
+    temperature: resolvedTemperature,
     skills,
     ...restrictions,
     prompt: buildAuditPrompt(basePrompt, appId, "gatekeeper", skills),
