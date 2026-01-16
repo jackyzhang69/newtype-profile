@@ -74,8 +74,10 @@ import { loadPluginConfig } from "./plugin-config";
 import { createModelCacheState, getModelLimit } from "./plugin-state";
 import { createConfigHandler } from "./plugin-handlers";
 
+import { setProjectDirectory } from "./audit-core/http-client";
+
 const OhMyOpenCodePlugin: Plugin = async (ctx) => {
-  // Start background tmux check immediately
+  setProjectDirectory(ctx.directory);
   startTmuxCheck();
 
   const pluginConfig = loadPluginConfig(ctx.directory, ctx);

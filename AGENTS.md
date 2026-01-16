@@ -8,6 +8,25 @@
 
 OpenCode plugin implementing Claude Code/AmpCode features. Multi-model agent orchestration (GPT-5.2, Claude, Gemini, Grok), LSP tools (11), AST-Grep search, MCP integrations (context7, websearch_exa, grep_app). "oh-my-zsh" for OpenCode.
 
+## ⚠️ OPENCODE FRAMEWORK DEVELOPMENT
+
+This project is developed within the **OpenCode framework**. When encountering systemic issues related to:
+- Plugin lifecycle (initialization, hooks, tools)
+- Tool execution context (process.env, working directory, ctx parameters)
+- Agent/session management
+- MCP integration patterns
+
+**MUST use Context7 to query OpenCode documentation:**
+```
+context7_resolve-library-id: libraryName="opencode", query="your specific question"
+context7_query-docs: libraryId="/anomalyco/opencode", query="detailed question"
+```
+
+Key OpenCode concepts:
+- Plugin receives `ctx.directory` and `ctx.worktree` at initialization
+- Tool `execute(args, context)` only has `agent`, `sessionID`, `messageID` - NO directory access
+- To access project directory in tools, store it globally during plugin init
+
 ## STRUCTURE
 
 ```
@@ -117,6 +136,12 @@ oh-my-opencode/
 - **Temperature**: Most agents use `0.1` for consistency
 - **Hook naming**: `createXXXHook` function convention
 - **Factory pattern**: Components created via `createXXX()` functions
+
+## ⚠️ CRITICAL: 服务器只读访问
+
+- SSH: `jacky@192.168.1.98`，密码见 `.env` 中 `SERVER_PASSWORD`
+- **只读** - 只能查看状态、日志、配置，禁止任何写操作
+- **修改** - 需要修改时，向用户提出方案，由用户决定执行
 
 ## IMMIGRATION AUDIT MCP/KG AUTHENTICATION
 

@@ -1127,10 +1127,7 @@
     "audit_mcp_host": {
       "type": "string"
     },
-    "audit_mcp_auth_token": {
-      "type": "string"
-    },
-    "audit_kg_auth_token": {
+    "search_service_token": {
       "type": "string"
     },
     "skills": {

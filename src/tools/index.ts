@@ -19,7 +19,31 @@ import {
 
 import { grep } from "./grep"
 import { glob } from "./glob"
-import { kg_search, kg_case, kg_similar_cases, kg_judge_stats, immicore_caselaw_search } from "./audit-kg"
+import {
+  kg_search,
+  kg_case,
+  kg_similar_cases,
+  kg_judge_stats,
+  kg_top_authorities,
+  kg_metadata,
+  immicore_caselaw_search,
+  caselaw_keyword_search,
+  caselaw_semantic_search,
+  caselaw_optimized_search,
+  caselaw_authority,
+  caselaw_validity,
+  caselaw_get_fulltext_by_url,
+  operation_manual_keyword_search,
+  operation_manual_semantic_search,
+  help_centre_search,
+  help_centre_detail,
+  mcp_list_prompts,
+  mcp_get_prompt,
+  mcp_list_resources,
+  mcp_read_resource,
+  mcp_call_tool,
+  mcp_list_tools,
+} from "./audit-kg"
 export { createSlashcommandTool, discoverCommandsSync } from "./slashcommand"
 
 import {
@@ -49,7 +73,31 @@ type OpencodeClient = PluginInput["client"]
 export { createCallOmoAgent } from "./call-omo-agent"
 export { createLookAt } from "./look-at"
 export { createChiefTask, type ChiefTaskToolOptions, DEFAULT_CATEGORIES, CATEGORY_PROMPT_APPENDS } from "./chief-task"
-export { kg_search, kg_case, kg_similar_cases, kg_judge_stats, immicore_caselaw_search } from "./audit-kg"
+export {
+  kg_search,
+  kg_case,
+  kg_similar_cases,
+  kg_judge_stats,
+  kg_top_authorities,
+  kg_metadata,
+  immicore_caselaw_search,
+  caselaw_keyword_search,
+  caselaw_semantic_search,
+  caselaw_optimized_search,
+  caselaw_authority,
+  caselaw_validity,
+  caselaw_get_fulltext_by_url,
+  operation_manual_keyword_search,
+  operation_manual_semantic_search,
+  help_centre_search,
+  help_centre_detail,
+  mcp_list_prompts,
+  mcp_get_prompt,
+  mcp_list_resources,
+  mcp_read_resource,
+  mcp_call_tool,
+  mcp_list_tools,
+} from "./audit-kg"
 
 export function createBackgroundTools(manager: BackgroundManager, client: OpencodeClient): Record<string, ToolDefinition> {
   return {
@@ -82,5 +130,23 @@ export const builtinTools: Record<string, ToolDefinition> = {
   kg_case,
   kg_similar_cases,
   kg_judge_stats,
+  kg_top_authorities,
+  kg_metadata,
   immicore_caselaw_search,
+  caselaw_keyword_search,
+  caselaw_semantic_search,
+  caselaw_optimized_search,
+  caselaw_authority,
+  caselaw_validity,
+  caselaw_get_fulltext_by_url,
+  operation_manual_keyword_search,
+  operation_manual_semantic_search,
+  help_centre_search,
+  help_centre_detail,
+  mcp_list_prompts,
+  mcp_get_prompt,
+  mcp_list_resources,
+  mcp_read_resource,
+  mcp_call_tool,
+  mcp_list_tools,
 }

@@ -108,22 +108,86 @@ export class AuthenticatedHttpClient {
   hasAuth(): boolean {
     return !!this.config.authToken
   }
+
+  getAuthToken(): string | undefined {
+    return this.config.authToken
+  }
+}
+
+function loadEnvFile(): Record<string, string> {
+  const env: Record<string, string> = {}
+  try {
+    const fs = require('fs')
+    const path = require('path')
+    const os = require('os')
+    
+    const possiblePaths: string[] = []
+    
+    if (projectDirectory) {
+      possiblePaths.push(path.join(projectDirectory, '.env'))
+    }
+    
+    possiblePaths.push(
+      path.join(process.cwd(), '.env'),
+      path.join(__dirname, '../../.env'),
+      path.join(__dirname, '../../../.env'),
+      path.join(os.homedir(), 'immi-os/.env'),
+    )
+    
+    for (const envPath of possiblePaths) {
+      if (fs.existsSync(envPath)) {
+        const content = fs.readFileSync(envPath, 'utf-8')
+        for (const line of content.split('\n')) {
+          const trimmed = line.trim()
+          if (trimmed && !trimmed.startsWith('#')) {
+            const eqIndex = trimmed.indexOf('=')
+            if (eqIndex > 0) {
+              const key = trimmed.slice(0, eqIndex).trim()
+              const value = trimmed.slice(eqIndex + 1).trim()
+              env[key] = value
+            }
+          }
+        }
+        break
+      }
+    }
+  } catch {
+  }
+  return env
+}
+
+export function getEnvVar(key: string): string | undefined {
+  if (process.env[key]) {
+    return process.env[key]?.trim()
+  }
+  const envFile = loadEnvFile()
+  return envFile[key]?.trim()
 }
 
 export function createKgClient(): AuthenticatedHttpClient {
-  const baseUrl = process.env.AUDIT_KG_BASE_URL?.trim() || 'http://localhost:3104/api/v1'
-  const authToken = process.env.SEARCH_SERVICE_TOKEN?.trim()
+  const baseUrl = getEnvVar('AUDIT_KG_BASE_URL') || 'http://localhost:3104/api/v1'
+  const authToken = getEnvVar('SEARCH_SERVICE_TOKEN')
 
   return new AuthenticatedHttpClient({ baseUrl, authToken })
 }
 
 export function createMcpClient(baseUrl: string): AuthenticatedHttpClient {
-  const authToken = process.env.SEARCH_SERVICE_TOKEN?.trim()
+  const authToken = getEnvVar('SEARCH_SERVICE_TOKEN')
 
   return new AuthenticatedHttpClient({ baseUrl, authToken })
 }
 
 let kgClientInstance: AuthenticatedHttpClient | null = null
+let projectDirectory: string | null = null
+
+export function setProjectDirectory(dir: string): void {
+  projectDirectory = dir
+  resetKgClient()
+}
+
+export function getProjectDirectory(): string | null {
+  return projectDirectory
+}
 
 export function getKgClient(): AuthenticatedHttpClient {
   if (!kgClientInstance) {
