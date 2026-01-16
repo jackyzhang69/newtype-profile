@@ -25,6 +25,7 @@ export const BuiltinAgentNameSchema = z.enum([
   "detective",
   "strategist",
   "gatekeeper",
+  "verifier",
 ])
 
 export const BuiltinSkillNameSchema = z.enum([
@@ -40,6 +41,7 @@ export const OverridableAgentNameSchema = z.enum([
   "detective",
   "strategist",
   "gatekeeper",
+  "verifier",
 ])
 
 export const AgentNameSchema = BuiltinAgentNameSchema
@@ -113,6 +115,7 @@ export const AgentOverridesSchema = z.object({
   detective: AgentOverrideConfigSchema.optional(),
   strategist: AgentOverrideConfigSchema.optional(),
   gatekeeper: AgentOverrideConfigSchema.optional(),
+  verifier: AgentOverrideConfigSchema.optional(),
 })
 
 export const ClaudeCodeConfigSchema = z.object({
@@ -283,6 +286,18 @@ export const AuditSearchPolicySchema = z.enum([
   "web_fallback",
 ])
 
+/**
+ * Audit tier determines model quality and feature availability.
+ * Aligned with ~/audit billing: guest ($0), pro ($99/mo), ultra ($299/mo)
+ */
+export const AuditTierSchema = z.enum([
+  "guest",    // DIY applicants / unpaid - basic models (gemini-flash)
+  "pro",      // Paid subscribers ($99/mo) - standard models (claude-sonnet + gemini-pro)
+  "ultra",    // Max/VIP users ($299/mo) - premium models (claude-opus)
+])
+
+export type AuditTier = z.infer<typeof AuditTierSchema>
+
 export const WebWhitelistSchema = z.object({
   government: z.array(z.string()).optional(),
   professional: z.array(z.string()).optional(),
@@ -305,6 +320,7 @@ export const OhMyOpenCodeConfigSchema = z.object({
   experimental: ExperimentalConfigSchema.optional(),
   auto_update: z.boolean().optional(),
   audit_app: z.string().optional(),
+  audit_tier: AuditTierSchema.optional(),
   search_policy: AuditSearchPolicySchema.optional(),
   web_whitelist: WebWhitelistSchema.optional(),
   audit_validate_knowledge: z.boolean().optional(),

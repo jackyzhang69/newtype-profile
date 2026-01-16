@@ -156,6 +156,10 @@ export function loadPluginConfig(
     process.env.AUDIT_MCP_HOST = config.audit_mcp_host
   }
 
+  if (config.audit_tier) {
+    process.env.AUDIT_TIER = config.audit_tier
+  }
+
   const validateEnv = process.env.AUDIT_VALIDATE_KNOWLEDGE?.trim()
   const shouldValidate = validateEnv === undefined
     ? config.audit_validate_knowledge !== false
