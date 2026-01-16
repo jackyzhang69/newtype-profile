@@ -1,0 +1,147 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SpousalSponsorshipChecklist",
+  "description": "JSON schema for spousal sponsorship document checklist with conditional logic",
+  "type": "object",
+  "required": ["meta", "forms", "supporting_documents"],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "required": ["generated_at", "case_id", "sponsor", "applicant"],
+      "properties": {
+        "generated_at": { "type": "string", "format": "date-time" },
+        "case_id": { "type": "string" },
+        "sponsor": {
+          "type": "object",
+          "properties": {
+            "name": { "type": "string" },
+            "status": { "enum": ["citizen", "permanent_resident", "indian_status"] },
+            "is_overseas": { "type": "boolean" },
+            "marital_history": { "enum": ["never_married", "divorced", "widowed", "annulled"] },
+            "province": { "type": "string" }
+          }
+        },
+        "applicant": {
+          "type": "object",
+          "properties": {
+            "name": { "type": "string" },
+            "nationality": { "type": "string" },
+            "current_status_in_canada": { "enum": ["visitor", "worker", "student", "none"] },
+            "marital_history": { "enum": ["never_married", "divorced", "widowed", "annulled"] },
+            "has_dependent_children": { "type": "boolean" }
+          }
+        },
+        "relationship": {
+          "type": "object",
+          "properties": {
+            "type": { "enum": ["marriage", "common_law", "conjugal"] },
+            "cohabiting": { "type": "boolean" },
+            "has_shared_children": { "type": "boolean" },
+            "both_first_marriage": { "type": "boolean" },
+            "married_over_2_years": { "type": "boolean" }
+          }
+        },
+        "simplified_requirements": {
+          "type": "boolean",
+          "description": "True if ALL 4 conditions met: cohabiting + shared children + both first marriage + married 2+ years"
+        }
+      }
+    },
+    "forms": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/document_group" }
+    },
+    "supporting_documents": {
+      "type": "object",
+      "properties": {
+        "sponsor_identity": { "$ref": "#/definitions/document_group" },
+        "sponsor_marital_history": { "$ref": "#/definitions/document_group" },
+        "sponsor_financials": { "$ref": "#/definitions/document_group" },
+        "applicant_identity": { "$ref": "#/definitions/document_group" },
+        "applicant_marital_status": { "$ref": "#/definitions/document_group" },
+        "children": { "$ref": "#/definitions/document_group" },
+        "police_certificates": { "$ref": "#/definitions/document_group" },
+        "relationship_proof": { "$ref": "#/definitions/document_group" }
+      }
+    }
+  },
+  "definitions": {
+    "document_group": {
+      "type": "object",
+      "required": ["group_id", "title", "logic", "items"],
+      "properties": {
+        "group_id": { "type": "string" },
+        "title": { "type": "string" },
+        "logic": {
+          "enum": ["ALL_REQUIRED", "ONE_OF", "AT_LEAST_N", "CONDITIONAL"],
+          "description": "ALL_REQUIRED: all items mandatory; ONE_OF: only one needed; AT_LEAST_N: minimum N items; CONDITIONAL: depends on case"
+        },
+        "minimum_required": {
+          "type": "integer",
+          "description": "For AT_LEAST_N logic, how many items required"
+        },
+        "condition": {
+          "type": "string",
+          "description": "For CONDITIONAL logic, describes when this group applies"
+        },
+        "applies": {
+          "type": "boolean",
+          "description": "Whether this group applies to current case (calculated based on meta)"
+        },
+        "items": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/document_item" }
+        }
+      }
+    },
+    "document_item": {
+      "type": "object",
+      "required": ["doc_id", "name", "priority"],
+      "properties": {
+        "doc_id": { "type": "string" },
+        "name": { "type": "string" },
+        "name_zh": { "type": "string" },
+        "form_number": { "type": "string", "description": "IRCC form number if applicable (e.g., IMM 5533)" },
+        "priority": {
+          "enum": ["mandatory", "important", "supplementary"],
+          "description": "mandatory: required by IMM 5533; important: strongly recommended; supplementary: optional enhancement"
+        },
+        "applies_to": {
+          "type": "array",
+          "items": { "enum": ["sponsor", "applicant", "dependent_18_plus", "dependent_under_18", "all"] }
+        },
+        "condition": {
+          "type": "string",
+          "description": "When this specific item is required (e.g., 'sponsor.marital_history == divorced')"
+        },
+        "applies": {
+          "type": "boolean",
+          "description": "Whether this item applies to current case"
+        },
+        "specifications": {
+          "type": "object",
+          "properties": {
+            "format": { "type": "string", "description": "e.g., PDF, certified copy" },
+            "translation_required": { "type": "boolean" },
+            "signature_required": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Who must sign (e.g., ['sponsor', 'applicant'])"
+            },
+            "signature_locations": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Where to sign (e.g., ['Part A #9', 'Part C #12'])"
+            },
+            "notes": { "type": "string" }
+          }
+        },
+        "alternatives": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Alternative documents if this one unavailable"
+        }
+      }
+    }
+  }
+}

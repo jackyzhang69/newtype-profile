@@ -18,6 +18,25 @@ type SkillReferenceEntry = {
 
 type SkillReferencesManifest = {
   references?: Array<string | SkillReferenceEntry>
+  depends_on?: string[]
+}
+
+interface InjectionProfileSkill {
+  description: string
+  inject_to: string[]
+  priority: number
+  files?: string[]
+}
+
+interface InjectionProfile {
+  version: string
+  description: string
+  skills: Record<string, InjectionProfileSkill>
+  injection_order: string[]
+}
+
+type SkillFrontmatter = {
+  name?: string
 }
 
 function readJsonSafe<T>(filePath: string): T | null {
@@ -29,8 +48,11 @@ function readJsonSafe<T>(filePath: string): T | null {
   return data ?? null
 }
 
-type SkillFrontmatter = {
-  name?: string
+function readFileSafe(filePath: string): string {
+  if (!fs.existsSync(filePath)) {
+    return ""
+  }
+  return fs.readFileSync(filePath, "utf-8")
 }
 
 function resolveSkillDirByName(skillsRoot: string, skillName: string): string | null {
@@ -77,6 +99,68 @@ function resolveSkillDir(skillName: string): string | null {
   return resolveSkillDirByName(userSkillsRoot, skillName)
 }
 
+function loadSkillManifest(skillName: string): SkillReferencesManifest | null {
+  const skillDir = resolveSkillDir(skillName)
+  if (!skillDir) return null
+  
+  const manifestPath = path.join(skillDir, "references", "manifest.json")
+  return readJsonSafe<SkillReferencesManifest>(manifestPath)
+}
+
+function resolveSkillWithDependencies(
+  skillName: string,
+  visited: Set<string> = new Set(),
+  visiting: Set<string> = new Set()
+): string[] {
+  if (visiting.has(skillName)) {
+    console.warn(`[skill-loader] Circular dependency detected: ${skillName}`)
+    return []
+  }
+  
+  if (visited.has(skillName)) {
+    return []
+  }
+  
+  visiting.add(skillName)
+  const result: string[] = []
+  
+  const manifest = loadSkillManifest(skillName)
+  if (manifest?.depends_on) {
+    for (const dep of manifest.depends_on) {
+      result.push(...resolveSkillWithDependencies(dep, visited, visiting))
+    }
+  }
+  
+  visiting.delete(skillName)
+  visited.add(skillName)
+  result.push(skillName)
+  
+  return result
+}
+
+function loadInjectionProfile(appId: string): InjectionProfile | null {
+  const skillName = `${appId}-knowledge-injection`
+  const skillDir = resolveSkillDir(skillName)
+  if (!skillDir) return null
+  
+  const profilePath = path.join(skillDir, "references", "injection_profile.json")
+  return readJsonSafe<InjectionProfile>(profilePath)
+}
+
+function getSkillsForAgent(profile: InjectionProfile, agentName: string): string[] {
+  const matchingSkills: Array<{ name: string; priority: number }> = []
+  
+  for (const [skillName, config] of Object.entries(profile.skills)) {
+    if (config.inject_to.includes(agentName)) {
+      matchingSkills.push({ name: skillName, priority: config.priority })
+    }
+  }
+  
+  matchingSkills.sort((a, b) => a.priority - b.priority)
+  
+  return matchingSkills.map(s => s.name)
+}
+
 function resolveReferenceFile(ref: string | SkillReferenceEntry): string | null {
   if (typeof ref === "string") {
     return ref.trim() || null
@@ -120,8 +204,18 @@ function loadSkillReferences(skillName: string): string {
   return contents.join("\n\n")
 }
 
-function loadSkillReferencesForSkills(skillNames: string[]): string {
-  const contents = skillNames
+function loadSkillReferencesWithDependencies(skillNames: string[]): string {
+  const visited = new Set<string>()
+  const allSkills: string[] = []
+  
+  for (const skillName of skillNames) {
+    const resolved = resolveSkillWithDependencies(skillName, visited)
+    allSkills.push(...resolved)
+  }
+  
+  const uniqueSkills = [...new Set(allSkills)]
+  
+  const contents = uniqueSkills
     .map((skillName) => loadSkillReferences(skillName))
     .filter((text) => text.trim().length > 0)
 
@@ -130,13 +224,6 @@ function loadSkillReferencesForSkills(skillNames: string[]): string {
 
 export function getAuditAppId(): string {
   return process.env.AUDIT_APP?.trim() || "spousal"
-}
-
-function readFileSafe(filePath: string): string {
-  if (!fs.existsSync(filePath)) {
-    return ""
-  }
-  return fs.readFileSync(filePath, "utf-8")
 }
 
 export function loadAuditAgentPrompt(appId: string, agentName: string): string {
@@ -148,10 +235,22 @@ export function buildAuditPrompt(
   basePrompt: string,
   appId: string,
   agentName: string,
-  skillNames: string[] = []
+  explicitSkills: string[] = []
 ): string {
+  const profile = loadInjectionProfile(appId)
+  
+  let skillNames: string[]
+  if (profile) {
+    const autoSkills = getSkillsForAgent(profile, agentName)
+    skillNames = [...new Set([...autoSkills, ...explicitSkills])]
+  } else {
+    skillNames = explicitSkills
+  }
+  
+  const skillReferences = loadSkillReferencesWithDependencies(skillNames).trim()
+  
   const agentPrompt = loadAuditAgentPrompt(appId, agentName).trim()
-  const skillReferences = loadSkillReferencesForSkills(skillNames).trim()
+  
   const sections: string[] = []
 
   if (agentPrompt) {
@@ -161,7 +260,6 @@ export function buildAuditPrompt(
   if (skillReferences) {
     sections.push(`<Skill_References>\n${skillReferences}\n</Skill_References>`)
   }
-
 
   const searchPolicy = buildSearchPolicySection().trim()
   if (searchPolicy) {
@@ -173,4 +271,11 @@ export function buildAuditPrompt(
   }
 
   return `${basePrompt}\n\n${sections.join("\n\n")}`
+}
+
+export {
+  loadInjectionProfile,
+  getSkillsForAgent,
+  resolveSkillWithDependencies,
+  loadSkillReferencesWithDependencies,
 }

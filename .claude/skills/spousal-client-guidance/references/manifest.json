@@ -1,6 +1,6 @@
 {
   "name": "spousal-client-guidance",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Client guidance templates for spousal sponsorship applications.",
   "categories": ["audit", "guidance", "templates", "spousal", "client"],
   "quality_level": "L4",
@@ -8,7 +8,11 @@
   "references": [
     "love_story_guide.md",
     "interview_guide.md",
-    "document_list_guide.md"
+    "document_list_guide.md",
+    "checklist_schema.json"
+  ],
+  "depends_on": [
+    "spousal-doc-analysis"
   ],
   "guide_types": [
     {
