@@ -26,7 +26,7 @@ The audit system uses a tiered architecture to provide differentiated service le
 | **Detective** | gemini-3-flash | gemini-3-pro-high | claude-sonnet-4-5 |
 | **Strategist** | gemini-3-flash | claude-sonnet-4-5 | claude-sonnet-4-5 |
 | **Gatekeeper** | gemini-3-flash | claude-sonnet-4-5 | claude-sonnet-4-5 |
-| **Verifier** | N/A | gemini-3-flash | claude-haiku-4-5 |
+| **Verifier** | gemini-3-flash | gemini-3-flash | claude-haiku-4-5 |
 
 ---
 
@@ -38,7 +38,7 @@ The audit system uses a tiered architecture to provide differentiated service le
 | Detective | 0.2 | 0.1 | 0.1 |
 | Strategist | 0.4 | 0.3 | 0.3 |
 | Gatekeeper | 0.2 | 0.1 | 0.1 |
-| Verifier | - | 0.0 | 0.0 |
+| Verifier | 0.0 | 0.0 | 0.0 |
 
 ---
 
@@ -46,10 +46,11 @@ The audit system uses a tiered architecture to provide differentiated service le
 
 | Feature | Guest | Pro | Ultra |
 |---------|-------|-----|-------|
-| **Verifier** (citation check) | No | Yes | Yes |
+| **Verifier** (citation check) | Yes | Yes | Yes |
+| **Max Verify Iterations** | 1 | 2 | 3 |
 | **KG Search** (similar cases) | No | Yes | Yes |
 | **Deep Analysis** (L2 MCP) | No | No | Yes |
-| **Multi-Round** verification | No | No | Yes |
+| **Multi-Round** review | No | No | Yes |
 | **Max Citations** | 3 | 10 | 20 |
 | **Max Agent Calls** | 4 | 6 | 12 |
 

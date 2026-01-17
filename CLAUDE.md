@@ -150,8 +150,8 @@ Every audit report MUST include:
 | Framework | 22+ lifecycle hooks for context injec... | `docs/agent-guides/framework/hooks.md` |
 | Framework | Claude Code compatibility layer, back... | `docs/agent-guides/framework/features.md` |
 | Framework | CLI installer, doctor health checks, ... | `docs/agent-guides/framework/cli.md` |
-| Audit | 5-agent audit workflow: AuditManager,... | `docs/agent-guides/audit/workflow.md` |
-| Audit | Tiered system: guest/pro/ultra with m... | `docs/agent-guides/audit/tiers.md` |
+| Audit | 5-agent audit workflow with verificat... | `docs/agent-guides/audit/workflow.md` |
+| Audit | Tiered system: guest/pro/ultra, Verif... | `docs/agent-guides/audit/tiers.md` |
 | Audit | MCP services (caselaw, operation-manu... | `docs/agent-guides/audit/mcp-integration.md` |
 | Apps | Spousal sponsorship: genuineness, evi... | `docs/agent-guides/apps/spousal.md` |
 | Apps | Study permit: genuine intent, financi... | `docs/agent-guides/apps/study.md` |

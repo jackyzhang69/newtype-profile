@@ -64,26 +64,28 @@
       "id": "audit-workflow",
       "path": "agent-guides/audit/workflow.md",
       "category": "audit",
-      "summary": "5-agent audit workflow: AuditManager, Detective, Strategist, Gatekeeper, Verifier",
+      "summary": "5-agent audit workflow with verification loop-back, INCOMPLETE report handling, all tiers",
       "keywords": [
         "workflow",
         "agents",
         "audit",
         "defensibility",
-        "report"
+        "verification",
+        "loop-back"
       ]
     },
     {
       "id": "audit-tiers",
       "path": "agent-guides/audit/tiers.md",
       "category": "audit",
-      "summary": "Tiered system: guest/pro/ultra with model configs and feature matrix",
+      "summary": "Tiered system: guest/pro/ultra, Verifier enabled for all tiers with retry limits",
       "keywords": [
         "tiers",
         "guest",
         "pro",
         "ultra",
-        "pricing",
+        "verifier",
+        "retry",
         "models"
       ]
     },
