@@ -1,3 +1,4 @@
 {
-  "google_auth": true
+  "google_auth": true,
+  "audit_tier": "pro"
 }
