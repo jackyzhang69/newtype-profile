@@ -5,12 +5,17 @@ import type { AgentConfig } from "@opencode-ai/sdk"
 describe("createBuiltinAgents with model overrides", () => {
   test("audit-manager with default model", () => {
     // #given - no overrides
-
     // #when
     const agents = createBuiltinAgents()
 
-    // #then
-    expect(agents["audit-manager"].model).toBe("openai/gpt-5.2")
+    // #then - model depends on AUDIT_TIER env (default: guest -> gemini-3-flash, pro -> claude-sonnet-4-5)
+    const tier = process.env.AUDIT_TIER || "guest"
+    const expectedModel = tier === "pro" 
+      ? "anthropic/claude-sonnet-4-5" 
+      : tier === "ultra" 
+        ? "anthropic/claude-opus-4-5" 
+        : "google/gemini-3-flash"
+    expect(agents["audit-manager"].model).toBe(expectedModel)
   })
 
   test("audit-manager with GPT model override", () => {

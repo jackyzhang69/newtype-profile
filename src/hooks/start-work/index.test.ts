@@ -11,7 +11,7 @@ import type { BoulderState } from "../../features/boulder-state"
 
 describe("start-work hook", () => {
   const TEST_DIR = join(tmpdir(), "start-work-test-" + Date.now())
-  const SISYPHUS_DIR = join(TEST_DIR, ".sisyphus")
+  const CHIEF_DIR = join(TEST_DIR, ".chief")
 
   function createMockPluginInput() {
     return {
@@ -24,8 +24,8 @@ describe("start-work hook", () => {
     if (!existsSync(TEST_DIR)) {
       mkdirSync(TEST_DIR, { recursive: true })
     }
-    if (!existsSync(SISYPHUS_DIR)) {
-      mkdirSync(SISYPHUS_DIR, { recursive: true })
+    if (!existsSync(CHIEF_DIR)) {
+      mkdirSync(CHIEF_DIR, { recursive: true })
     }
     clearBoulderState(TEST_DIR)
   })
@@ -92,7 +92,7 @@ describe("start-work hook", () => {
 
       const hook = createStartWorkHook(createMockPluginInput())
       const output = {
-        parts: [{ type: "text", text: "Start Sisyphus work session" }],
+        parts: [{ type: "text", text: "Start Chief work session" }],
       }
 
       // #when
@@ -113,7 +113,7 @@ describe("start-work hook", () => {
         parts: [
           {
             type: "text",
-            text: "Start Sisyphus work session\nSession: $SESSION_ID",
+            text: "Start Chief work session\nSession: $SESSION_ID",
           },
         ],
       }
@@ -136,7 +136,7 @@ describe("start-work hook", () => {
         parts: [
           {
             type: "text",
-            text: "Start Sisyphus work session\nTime: $TIMESTAMP",
+            text: "Start Chief work session\nTime: $TIMESTAMP",
           },
         ],
       }
@@ -154,7 +154,7 @@ describe("start-work hook", () => {
 
     test("should auto-select when only one incomplete plan among multiple plans", async () => {
       // #given - multiple plans but only one incomplete
-      const plansDir = join(TEST_DIR, ".sisyphus", "plans")
+      const plansDir = join(TEST_DIR, ".chief", "plans")
       mkdirSync(plansDir, { recursive: true })
 
       // Plan 1: complete (all checked)
@@ -167,7 +167,7 @@ describe("start-work hook", () => {
 
       const hook = createStartWorkHook(createMockPluginInput())
       const output = {
-        parts: [{ type: "text", text: "Start Sisyphus work session" }],
+        parts: [{ type: "text", text: "Start Chief work session" }],
       }
 
       // #when
@@ -184,7 +184,7 @@ describe("start-work hook", () => {
 
     test("should wrap multiple plans message in system-reminder tag", async () => {
       // #given - multiple incomplete plans
-      const plansDir = join(TEST_DIR, ".sisyphus", "plans")
+      const plansDir = join(TEST_DIR, ".chief", "plans")
       mkdirSync(plansDir, { recursive: true })
 
       const plan1Path = join(plansDir, "plan-a.md")
@@ -195,7 +195,7 @@ describe("start-work hook", () => {
 
       const hook = createStartWorkHook(createMockPluginInput())
       const output = {
-        parts: [{ type: "text", text: "Start Sisyphus work session" }],
+        parts: [{ type: "text", text: "Start Chief work session" }],
       }
 
       // #when
@@ -212,7 +212,7 @@ describe("start-work hook", () => {
 
     test("should use 'ask user' prompt style for multiple plans", async () => {
       // #given - multiple incomplete plans
-      const plansDir = join(TEST_DIR, ".sisyphus", "plans")
+      const plansDir = join(TEST_DIR, ".chief", "plans")
       mkdirSync(plansDir, { recursive: true })
 
       const plan1Path = join(plansDir, "plan-x.md")
@@ -223,7 +223,7 @@ describe("start-work hook", () => {
 
       const hook = createStartWorkHook(createMockPluginInput())
       const output = {
-        parts: [{ type: "text", text: "Start Sisyphus work session" }],
+        parts: [{ type: "text", text: "Start Chief work session" }],
       }
 
       // #when
