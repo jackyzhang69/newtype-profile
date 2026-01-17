@@ -82,7 +82,6 @@ Produce a **Defensibility Analysis Report**:
     mode: "subagent" as const,
     model: resolvedModel,
     temperature: resolvedTemperature,
-    skills,
     ...restrictions,
     prompt: buildAuditPrompt(basePrompt, appId, "strategist", skills),
   }

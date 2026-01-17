@@ -122,7 +122,6 @@ For defense strategies, use \`rerank_by_authority=true\` to get:
     mode: "subagent" as const,
     model: resolvedModel,
     temperature: resolvedTemperature,
-    skills,
     ...restrictions,
     prompt: buildAuditPrompt(basePrompt, appId, "detective", skills),
   }
