@@ -138,6 +138,33 @@
         "immicore",
         "env"
       ]
+    },
+    {
+      "id": "framework-pitfalls",
+      "path": "agent-guides/framework/pitfalls.md",
+      "category": "framework",
+      "summary": "Common pitfalls: agent empty response, double skill processing, debugging strategy",
+      "keywords": [
+        "pitfalls",
+        "debugging",
+        "troubleshooting",
+        "lessons",
+        "mistakes"
+      ]
+    },
+    {
+      "id": "framework-opencode-omo",
+      "path": "agent-guides/framework/opencode-omo.md",
+      "category": "framework",
+      "summary": "OpenCode/OMO framework: plugin system, agent config, tools, hooks, Context7",
+      "keywords": [
+        "opencode",
+        "omo",
+        "plugin",
+        "framework",
+        "context7",
+        "sdk"
+      ]
     }
   ]
 }

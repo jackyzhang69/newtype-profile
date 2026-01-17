@@ -156,6 +156,8 @@ Every audit report MUST include:
 | Apps | Spousal sponsorship: genuineness, evi... | `docs/agent-guides/apps/spousal.md` |
 | Apps | Study permit: genuine intent, financi... | `docs/agent-guides/apps/study.md` |
 | System | 服务器访问规则、测试环境配置、环境变量、ImmiCore 服务依赖 | `docs/system/environment.md` |
+| Framework | Common pitfalls: agent empty response... | `docs/agent-guides/framework/pitfalls.md` |
+| Framework | OpenCode/OMO framework: plugin system... | `docs/agent-guides/framework/opencode-omo.md` |
 <!-- KNOWLEDGE_INDEX:END -->
 
 ---
