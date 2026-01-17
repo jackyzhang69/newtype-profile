@@ -19,11 +19,11 @@ describe("TIER_CONFIGS", () => {
       expect(config.models.detective).toBe("google/gemini-3-flash")
       expect(config.models.strategist).toBe("google/gemini-3-flash")
       expect(config.models.gatekeeper).toBe("google/gemini-3-flash")
-      expect(config.models.verifier).toBeUndefined()
+      expect(config.models.verifier).toBe("google/gemini-3-flash")
     })
 
-    it("#given guest tier #when checking features #then verifier is disabled", () => {
-      expect(config.features.verifier).toBe(false)
+    it("#given guest tier #when checking features #then verifier enabled but no KG", () => {
+      expect(config.features.verifier).toBe(true)
       expect(config.features.kgSearch).toBe(false)
       expect(config.features.deepAnalysis).toBe(false)
     })

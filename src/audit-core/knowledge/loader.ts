@@ -247,11 +247,12 @@ function buildTierContextSection(): string {
   let workflowRules: string
   switch (tier) {
     case "guest":
-      workflowRules = `- Use Skill knowledge for quick responses when appropriate
+      workflowRules = `- MUST delegate to Detective, Strategist, Gatekeeper, Verifier (full workflow)
+- Use Skill knowledge for quick responses when appropriate
 - Limit MCP calls to essential queries only
 - Skip KG search (not available)
-- Skip Verifier (not available)
-- Focus on providing helpful guidance within resource constraints`
+- If Verifier reports CRITICAL failures, loop back (max ${config.limits.maxVerifyIterations} iteration)
+- Focus on correctness within resource constraints`
       break
     case "pro":
       workflowRules = `- MUST delegate to Detective for legal research via MCP

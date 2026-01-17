@@ -7,15 +7,17 @@ export const TIER_CONFIGS: Record<AuditTier, TierConfig> = {
       detective: "google/gemini-3-flash",
       strategist: "google/gemini-3-flash",
       gatekeeper: "google/gemini-3-flash",
+      verifier: "google/gemini-3-flash",
     },
     temperatures: {
       auditManager: 0.3,
       detective: 0.2,
       strategist: 0.4,
       gatekeeper: 0.2,
+      verifier: 0.0,
     },
     features: {
-      verifier: false,
+      verifier: true,
       kgSearch: false,
       deepAnalysis: false,
       multiRound: false,
@@ -23,7 +25,7 @@ export const TIER_CONFIGS: Record<AuditTier, TierConfig> = {
     limits: {
       maxCitations: 3,
       maxAgentCalls: 4,
-      maxVerifyIterations: 0,
+      maxVerifyIterations: 1,
     },
   },
 
@@ -51,7 +53,7 @@ export const TIER_CONFIGS: Record<AuditTier, TierConfig> = {
     limits: {
       maxCitations: 10,
       maxAgentCalls: 6,
-      maxVerifyIterations: 1,
+      maxVerifyIterations: 2,
     },
   },
 
@@ -79,7 +81,7 @@ export const TIER_CONFIGS: Record<AuditTier, TierConfig> = {
     limits: {
       maxCitations: 20,
       maxAgentCalls: 12,
-      maxVerifyIterations: 2,
+      maxVerifyIterations: 3,
     },
   },
 }

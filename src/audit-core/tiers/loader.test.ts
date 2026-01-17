@@ -87,12 +87,10 @@ describe("getAgentModel", () => {
     expect(getAgentModel("detective", "ultra")).toBe("anthropic/claude-sonnet-4-5")
   })
 
-  it("#given verifier on guest tier #then throws error", () => {
-    expect(() => getAgentModel("verifier", "guest")).toThrow()
-  })
-
-  it("#given verifier on pro tier #then returns model", () => {
+  it("#given verifier on any tier #then returns model", () => {
+    expect(getAgentModel("verifier", "guest")).toBe("google/gemini-3-flash")
     expect(getAgentModel("verifier", "pro")).toBe("google/gemini-3-flash")
+    expect(getAgentModel("verifier", "ultra")).toBe("anthropic/claude-haiku-4-5")
   })
 })
 
@@ -106,8 +104,10 @@ describe("getAgentTemperature", () => {
 
 describe("getTierFeature", () => {
   it("#given feature name and tier #then returns correct value", () => {
-    expect(getTierFeature("verifier", "guest")).toBe(false)
+    expect(getTierFeature("verifier", "guest")).toBe(true)
     expect(getTierFeature("verifier", "pro")).toBe(true)
+    expect(getTierFeature("verifier", "ultra")).toBe(true)
+    expect(getTierFeature("deepAnalysis", "guest")).toBe(false)
     expect(getTierFeature("deepAnalysis", "pro")).toBe(false)
     expect(getTierFeature("deepAnalysis", "ultra")).toBe(true)
   })
@@ -122,22 +122,16 @@ describe("getTierLimit", () => {
   })
 
   it("#given maxVerifyIterations #then returns tier-specific values", () => {
-    expect(getTierLimit("maxVerifyIterations", "guest")).toBe(0)
-    expect(getTierLimit("maxVerifyIterations", "pro")).toBe(1)
-    expect(getTierLimit("maxVerifyIterations", "ultra")).toBe(2)
+    expect(getTierLimit("maxVerifyIterations", "guest")).toBe(1)
+    expect(getTierLimit("maxVerifyIterations", "pro")).toBe(2)
+    expect(getTierLimit("maxVerifyIterations", "ultra")).toBe(3)
   })
 })
 
 describe("isVerifierEnabled", () => {
-  it("#given guest tier #then verifier is disabled", () => {
-    expect(isVerifierEnabled("guest")).toBe(false)
-  })
-
-  it("#given pro tier #then verifier is enabled", () => {
+  it("#given any tier #then verifier is enabled", () => {
+    expect(isVerifierEnabled("guest")).toBe(true)
     expect(isVerifierEnabled("pro")).toBe(true)
-  })
-
-  it("#given ultra tier #then verifier is enabled", () => {
     expect(isVerifierEnabled("ultra")).toBe(true)
   })
 })
