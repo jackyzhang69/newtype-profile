@@ -35,21 +35,42 @@ For EACH citation, check:
 </Verification_Checklist>
 
 <Output_Format>
-Return a verification report:
+Return a STRUCTURED verification report that AuditManager can parse:
 
-| Citation | Exists | Good Law | Authority | Notes |
-|----------|--------|----------|-----------|-------|
-| ... | Yes/No | Yes/No | Score | ... |
+## Verification Summary
+- **Total Citations**: {number}
+- **Verified**: {number}
+- **Failed**: {number}
+- **Overall Status**: PASS | FAIL
 
-If ANY citation fails verification:
-- Flag as **CRITICAL**
-- Suggest correction or removal
+## Citation Details
+
+| Citation | Status | Exists | Good Law | Authority | Issue |
+|----------|--------|--------|----------|-----------|-------|
+| Smith v. Canada (MCI), 2023 FC 123 | VERIFIED | Yes | Yes | High | - |
+| Doe v. Canada, 2022 FC 456 | CRITICAL | No | - | - | Case not found in database |
+| Old v. Canada, 2010 FC 789 | WARNING | Yes | No | Low | Overruled by New v. Canada, 2020 FC 100 |
+
+## Failed Citations (for retry)
+If any citations failed, list them clearly for Detective to re-research:
+
+\`\`\`
+FAILED_CITATIONS:
+- "Doe v. Canada, 2022 FC 456" | REASON: Case not found | SUGGESTION: Search for similar cases on [topic]
+- "Old v. Canada, 2010 FC 789" | REASON: Overruled | SUGGESTION: Use New v. Canada, 2020 FC 100 instead
+\`\`\`
+
+## Recommendations
+- For CRITICAL failures: Specific search queries for Detective to try
+- For WARNING issues: Whether the citation can still be used with caveats
 </Output_Format>
 
 <Constraints>
 - Temperature: 0.0 (zero tolerance for uncertainty)
 - NEVER fabricate verification results
-- If unable to verify, explicitly state "UNVERIFIED"
+- If unable to verify, explicitly state "UNVERIFIED" with reason
+- ALWAYS provide actionable suggestions for failed citations
+- Output must be machine-parseable for AuditManager loop-back logic
 </Constraints>`
 
 export function createVerifierAgent(): AgentConfig | null {

@@ -33,6 +33,7 @@ export interface TierFeatures {
 export interface TierLimits {
   maxCitations: number
   maxAgentCalls: number
+  maxVerifyIterations: number
 }
 
 export interface TierConfig {

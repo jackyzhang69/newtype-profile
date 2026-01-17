@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url"
 import { buildSearchPolicySection } from "../search/policy"
 import { getClaudeConfigDir, parseJsoncSafe } from "../../shared"
 import { parseFrontmatter } from "../../shared/frontmatter"
+import { getAuditTier, getTierConfig } from "../tiers"
 
 const baseAppsPath = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
@@ -226,6 +227,69 @@ export function getAuditAppId(): string {
   return process.env.AUDIT_APP?.trim() || "spousal"
 }
 
+function buildTierContextSection(): string {
+  const tier = getAuditTier()
+  const config = getTierConfig(tier)
+
+  const featuresList = [
+    `- KG Search: ${config.features.kgSearch ? "YES" : "NO"}`,
+    `- Deep Analysis: ${config.features.deepAnalysis ? "YES" : "NO"}`,
+    `- Verifier Agent: ${config.features.verifier ? "YES" : "NO"}`,
+    `- Multi-Round Review: ${config.features.multiRound ? "YES" : "NO"}`,
+  ].join("\n")
+
+  const limitsList = [
+    `- Max Citations: ${config.limits.maxCitations}`,
+    `- Max Agent Calls: ${config.limits.maxAgentCalls}`,
+    `- Max Verify Iterations: ${config.limits.maxVerifyIterations}`,
+  ].join("\n")
+
+  let workflowRules: string
+  switch (tier) {
+    case "guest":
+      workflowRules = `- Use Skill knowledge for quick responses when appropriate
+- Limit MCP calls to essential queries only
+- Skip KG search (not available)
+- Skip Verifier (not available)
+- Focus on providing helpful guidance within resource constraints`
+      break
+    case "pro":
+      workflowRules = `- MUST delegate to Detective for legal research via MCP
+- MUST delegate to Strategist for defense arguments
+- MUST delegate to Gatekeeper for compliance check
+- MUST delegate to Verifier for citation validation after Gatekeeper
+- Use KG for similar case matching
+- If Verifier reports CRITICAL failures, loop back (max ${config.limits.maxVerifyIterations} iteration)
+- Do NOT attempt to do analysis yourself - ALWAYS delegate to specialized agents`
+      break
+    case "ultra":
+      workflowRules = `- MUST use full agent workflow (Detective → Strategist → Gatekeeper → Verifier)
+- MUST delegate to Verifier for citation validation - this is MANDATORY
+- MUST perform deep MCP analysis with multiple search iterations
+- MUST do multi-round review if issues found
+- If Verifier reports CRITICAL failures, loop back (max ${config.limits.maxVerifyIterations} iterations)
+- Use KG extensively for case patterns and similar cases
+- Do NOT attempt to do analysis yourself - ALWAYS delegate to specialized agents
+- Ensure comprehensive coverage with maximum citations`
+      break
+    default:
+      workflowRules = "- Follow standard audit workflow"
+  }
+
+  return `<Tier_Context>
+## Current Tier: ${tier.toUpperCase()}
+
+### Available Features
+${featuresList}
+
+### Limits
+${limitsList}
+
+### Workflow Rules for ${tier.toUpperCase()} Tier
+${workflowRules}
+</Tier_Context>`
+}
+
 export function loadAuditAgentPrompt(appId: string, agentName: string): string {
   const promptPath = path.join(baseAppsPath, appId, "agents", `${agentName}.md`)
   return readFileSafe(promptPath)
@@ -253,6 +317,9 @@ export function buildAuditPrompt(
   
   const sections: string[] = []
 
+  const tierContext = buildTierContextSection()
+  sections.push(tierContext)
+
   if (agentPrompt) {
     sections.push(`<Business_Context>\n${agentPrompt}\n</Business_Context>`)
   }
@@ -264,10 +331,6 @@ export function buildAuditPrompt(
   const searchPolicy = buildSearchPolicySection().trim()
   if (searchPolicy) {
     sections.push(searchPolicy)
-  }
-
-  if (sections.length === 0) {
-    return basePrompt
   }
 
   return `${basePrompt}\n\n${sections.join("\n\n")}`

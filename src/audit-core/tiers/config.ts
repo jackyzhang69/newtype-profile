@@ -23,6 +23,7 @@ export const TIER_CONFIGS: Record<AuditTier, TierConfig> = {
     limits: {
       maxCitations: 3,
       maxAgentCalls: 4,
+      maxVerifyIterations: 0,
     },
   },
 
@@ -50,6 +51,7 @@ export const TIER_CONFIGS: Record<AuditTier, TierConfig> = {
     limits: {
       maxCitations: 10,
       maxAgentCalls: 6,
+      maxVerifyIterations: 1,
     },
   },
 
@@ -77,6 +79,7 @@ export const TIER_CONFIGS: Record<AuditTier, TierConfig> = {
     limits: {
       maxCitations: 20,
       maxAgentCalls: 12,
+      maxVerifyIterations: 2,
     },
   },
 }

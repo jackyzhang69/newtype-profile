@@ -120,6 +120,12 @@ describe("getTierLimit", () => {
     expect(getTierLimit("maxCitations", "ultra")).toBe(20)
     expect(getTierLimit("maxAgentCalls", "ultra")).toBe(12)
   })
+
+  it("#given maxVerifyIterations #then returns tier-specific values", () => {
+    expect(getTierLimit("maxVerifyIterations", "guest")).toBe(0)
+    expect(getTierLimit("maxVerifyIterations", "pro")).toBe(1)
+    expect(getTierLimit("maxVerifyIterations", "ultra")).toBe(2)
+  })
 })
 
 describe("isVerifierEnabled", () => {
