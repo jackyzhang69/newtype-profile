@@ -31,12 +31,13 @@ export function getImmicoreMcpConfigs(): Record<string, McpServerConfig> {
   if (transport === "http") {
     const host = getMcpHost()
     return {
-      "caselaw": { type: "http", url: `${host}:3105/mcp` },
-      "email-kg": { type: "http", url: `${host}:3106/mcp` },
-      "operation-manual": { type: "http", url: `${host}:3107/mcp` },
-      "noc": { type: "http", url: `${host}:3108/mcp` },
-      "help-centre": { type: "http", url: `${host}:3109/mcp` },
-      "immi-tools": { type: "http", url: `${host}:3009/mcp` },
+      // Services are exposed through nginx proxy at /mcp/{service-name}
+      "caselaw": { type: "http", url: `${host}/mcp/caselaw` },
+      "email-kg": { type: "http", url: `${host}/mcp/email-kg` },
+      "operation-manual": { type: "http", url: `${host}/mcp/operation-manual` },
+      "noc": { type: "http", url: `${host}/mcp/noc` },
+      "help-centre": { type: "http", url: `${host}/mcp/help-centre` },
+      // Note: immi-tools not in nginx config, might not be available
     }
   }
 
@@ -78,10 +79,19 @@ export async function checkMcpHealth(config: McpServerConfig): Promise<boolean> 
 
 export async function getHealthyMcpConfigs(): Promise<Record<string, McpServerConfig>> {
   const configs = getImmicoreMcpConfigs()
-  const healthyConfigs: Record<string, McpServerConfig> = {}
 
-  for (const [name, config] of Object.entries(configs)) {
-    if (await checkMcpHealth(config)) {
+  // Run health checks in parallel to avoid sequential timeouts
+  const healthChecks = await Promise.all(
+    Object.entries(configs).map(async ([name, config]) => {
+      const isHealthy = await checkMcpHealth(config)
+      return { name, config, isHealthy }
+    })
+  )
+
+  // Collect healthy configs
+  const healthyConfigs: Record<string, McpServerConfig> = {}
+  for (const { name, config, isHealthy } of healthChecks) {
+    if (isHealthy) {
       healthyConfigs[name] = config
     }
   }
