@@ -125,6 +125,23 @@ oh-my-opencode/
 - **Batch completions**: Mark TODOs complete immediately, don't group
 - **Giant commits**: 3+ files = 2+ commits minimum
 - **Separate test from impl**: Same commit always
+- **Double skill injection**: Don't return `skills` property in agent config if using `buildAuditPrompt` (see pitfalls.md)
+- **Exact tool name matching**: Use case-insensitive matching for tool names in hooks (see pitfalls.md)
+
+## ⚠️ MANDATORY: READ PITFALLS BEFORE CODING
+
+**BEFORE writing any code in this project**, read `docs/agent-guides/framework/pitfalls.md`.
+
+This document contains:
+- Known bugs and their solutions
+- Common mistakes that waste hours of debugging
+- Code patterns to avoid (with correct alternatives)
+
+**Key pitfalls to avoid:**
+1. Agent empty response → Double skill processing
+2. Hook not triggering → Tool name case sensitivity
+3. Config not taking effect → Plugin not reloaded
+4. Skills not injecting → Wrong injection method
 
 ## UNIQUE STYLES
 

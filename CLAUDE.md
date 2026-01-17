@@ -56,12 +56,14 @@ export SEARCH_SERVICE_TOKEN=xxx # MCP/KG auth token
 - Use MCP tools BEFORE web search (Detective/Strategist)
 - Include disclaimer in all audit reports
 - Follow TDD: RED -> GREEN -> REFACTOR
+- **MUST READ `docs/agent-guides/framework/pitfalls.md` before writing code** - contains known issues and their solutions
 
 ### DO NOT
 - Modify `src/index.ts` (plugin core)
 - Use npm/yarn (Bun only)
 - Hallucinate case citations (use Verifier)
 - Suppress type errors with `as any`
+- Return `skills` property in agent config if already using `buildAuditPrompt` (causes double processing)
 
 ---
 
