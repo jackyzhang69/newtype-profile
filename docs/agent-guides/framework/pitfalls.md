@@ -145,6 +145,30 @@ return {
 
 ---
 
+## Tool Name Matching
+
+### Pitfall: Hook Not Detecting Tool Calls
+
+**Symptom**: Hook checks for tool name but doesn't trigger (e.g., `empty-task-response-detector` only checked `"Task"` but not `"chief_task"`).
+
+**Root Cause**: Tool names in OpenCode can have different cases and variants:
+- `Task` vs `task` vs `chief_task`
+- Hooks must handle all variants
+
+**Solution**: 
+```typescript
+// WRONG - exact match only
+if (input.tool !== "Task") return
+
+// CORRECT - case-insensitive, handle all variants
+const toolName = input.tool.toLowerCase()
+if (toolName !== "task" && toolName !== "chief_task") return
+```
+
+**Fix Applied**: `src/hooks/empty-task-response-detector.ts` now detects both `task` and `chief_task` with case-insensitive matching.
+
+---
+
 ## Quick Reference: Debugging Checklist
 
 When something stops working:

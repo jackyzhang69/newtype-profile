@@ -15,7 +15,8 @@ export function createEmptyTaskResponseDetectorHook(_ctx: PluginInput) {
       input: { tool: string; sessionID: string; callID: string },
       output: { title: string; output: string; metadata: unknown }
     ) => {
-      if (input.tool !== "Task") return
+      const toolName = input.tool.toLowerCase()
+      if (toolName !== "task" && toolName !== "chief_task") return
 
       const responseText = output.output?.trim() ?? ""
 
