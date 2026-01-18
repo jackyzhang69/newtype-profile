@@ -77,31 +77,48 @@ Structure your investigation report as:
 </Investigation_Principles>
 
 <Tool_Usage>
-## Primary Search Tool (v3.0 API)
-- Use \`immicore_caselaw_search\` for finding legal precedents with RRF fusion search.
-- Key parameters:
-  - \`query\`: Natural language search query
-  - \`court\`: Filter by court (fc/fca/irb)
-  - \`must_include\`: Keywords that MUST appear (e.g., ["IRPR 4(1)", "genuineness"])
-  - \`must_not\`: Keywords to exclude (e.g., ["criminal", "inadmissibility"])
-  - \`enhance_with_kg\`: Set to true to get case validity and authority scores
-  - \`rerank_by_authority\`: Set to true to prioritize authoritative cases
+## Primary Search Tools
 
-## Validity Checking (CRITICAL)
-When citing cases, ALWAYS use \`enhance_with_kg=true\` and check:
-- \`validity.is_good_law\`: If false, DO NOT cite this case
-- \`validity.validity_status\`: GOOD_LAW / OVERRULED / DISTINGUISHED / QUESTIONED
-- \`validity.warning\`: Read any warnings before citing
+### Case Law Search
+Use one of these tools for finding legal precedents:
 
-## Authority Ranking
-For defense strategies, use \`rerank_by_authority=true\` to get:
-- \`authority.authority_score\`: Higher = more authoritative (0-1)
-- \`authority.cited_by_count\`: Number of times cited by other cases
+1. **\`caselaw_keyword_search\`** - Best for specific legal terms (BM25)
+   - \`query\`: Search query with legal terms
+   - \`court\`: fc/fca/irb/tr/tcc
+   - \`must_include\`: Keywords that MUST appear (e.g., ["IRPR 4(1)", "genuineness"])
+   - \`must_not\`: Keywords to exclude
+   - \`strategy\`: "balanced" | "precision" | "filter_driven"
 
-## Other Tools
-- Use \`immicore_manual_lookup\` for finding operational instructions.
-- Use \`kg_search\` for Knowledge Graph structured queries.
-- If tools return no results, broaden your search terms but maintain legal relevance.
+2. **\`caselaw_semantic_search\`** - Best for conceptual queries (vector search)
+   - \`query\`: Natural language description of legal issue
+   - \`court\`: fc/fca/irb
+
+3. **\`caselaw_optimized_search\`** - RECOMMENDED (combines BM25 + Semantic + KG)
+   - \`query\`: Search query
+   - \`issue_code\`: Filter by issue code (e.g., "SUB_FUNDS", "PF_REASONS")
+   - \`auto_route\`: true (let system choose best strategy)
+
+### Operation Manual Search
+- **\`operation_manual_keyword_search\`** - Search IRCC manuals by keywords
+- **\`operation_manual_semantic_search\`** - Search by concept/meaning
+
+### Validity Checking (CRITICAL)
+Before citing any case, verify with \`caselaw_validity\`:
+- Returns \`validity_status\`: GOOD_LAW / OVERRULED / DISTINGUISHED / QUESTIONED
+- If not GOOD_LAW, DO NOT cite without noting the limitation
+
+### Authority Scoring
+Use \`caselaw_authority\` to check case influence:
+- \`authority_score\`: 0-1 (higher = more authoritative)
+- \`cited_by_count\`: Number of citing cases
+
+### Knowledge Graph
+- **\`kg_search\`** - Structured case searches with filters
+- **\`kg_similar_cases\`** - Find cases with similar applicant profiles
+- **\`kg_metadata\`** - Get valid filter values (call FIRST)
+
+### Help Centre
+- **\`help_centre_search\`** - Search IRCC Q&A content
 </Tool_Usage>`
 
   const coreSkills = [

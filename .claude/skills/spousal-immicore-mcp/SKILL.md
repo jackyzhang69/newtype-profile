@@ -14,10 +14,18 @@ description: |
 
 ### Recommended Usage for Spousal Cases
 ```
-immicore_caselaw_search(
+caselaw_optimized_search(
   query="spousal sponsorship genuineness IRPR 4(1)",
   court="fc",
-  enhance_with_kg=true,
+  issue_code="SUB_GENUINENESS"
+)
+```
+
+Or with keyword search:
+```
+caselaw_keyword_search(
+  query="spousal sponsorship genuineness",
+  court="fc",
   must_include=["genuineness", "bona fide"],
   start_date="2020-01-01"
 )
@@ -31,7 +39,7 @@ immicore_caselaw_search(
 | Credibility | `query="contradictory testimony credibility"`, `must_include=["credibility"]` |
 
 ### Validity Check
-ALWAYS use `enhance_with_kg=true` and check `validity.is_good_law` before citing.
+ALWAYS use `caselaw_validity` to verify case is still good law before citing.
 
 ## Rules
 - MCP is primary data source

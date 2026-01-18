@@ -11,24 +11,25 @@ description: |
 
 ## Caselaw Search API (v3.0)
 
-### Primary Tool
-Use `immicore_caselaw_search` for all caselaw queries:
-- RRF fusion: BM25 + Semantic dual-path search
-- Validity checking: Detect overruled cases
-- Authority ranking: Prioritize authoritative precedents
+### Available Tools
+| Tool | Best For |
+|------|----------|
+| `caselaw_keyword_search` | Specific legal terms (BM25) |
+| `caselaw_semantic_search` | Conceptual queries (vector) |
+| `caselaw_optimized_search` | **RECOMMENDED** - combines all methods |
 
-### Key Parameters
+### Key Parameters for `caselaw_keyword_search`
 | Parameter | Purpose |
 |-----------|---------|
-| `enhance_with_kg=true` | Get validity/authority info |
-| `rerank_by_authority=true` | Sort by case authority |
 | `must_include=["keyword"]` | Require specific terms |
 | `must_not=["keyword"]` | Exclude specific terms |
+| `court="fc"` | Filter by court (fc/fca/irb) |
+| `strategy="balanced"` | Search strategy |
 
 ### Validity Check (CRITICAL)
-Before citing any case, verify:
-- `validity.is_good_law == true`
-- `validity.validity_status != "OVERRULED"`
+Before citing any case, use `caselaw_validity`:
+- Check `validity_status` is "GOOD_LAW"
+- If "OVERRULED" or "QUESTIONED", do NOT cite without caveat
 
 ## Notes
 - L2 trigger only (deep audit or coverage gaps).

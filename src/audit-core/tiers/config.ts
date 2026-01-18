@@ -32,7 +32,7 @@ export const TIER_CONFIGS: Record<AuditTier, TierConfig> = {
   pro: {
     models: {
       auditManager: "anthropic/claude-sonnet-4-5",
-      detective: "google/gemini-3-pro-high",
+      detective: "anthropic/claude-sonnet-4-5",
       strategist: "anthropic/claude-sonnet-4-5",
       gatekeeper: "anthropic/claude-sonnet-4-5",
       verifier: "google/gemini-3-flash",
