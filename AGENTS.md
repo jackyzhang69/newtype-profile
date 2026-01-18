@@ -164,7 +164,7 @@ This document contains:
 | 用户 | `jacky` |
 | 密码 | `${SERVER_PASSWORD}` (见 `.env`) |
 | SSH | `ssh jacky@192.168.1.98` |
-| ImmiCore 目录 | `/home/jacky/immicore` |
+| ImmiCore 目录 | `/home/jacky/apps/immicore` |
 
 ### 访问策略
 
@@ -189,11 +189,11 @@ ssh jacky@192.168.1.98 "curl -s http://localhost:3104/health"
 
 ```bash
 # ❌ 修改文件
-ssh jacky@192.168.1.98 "vim /home/jacky/immicore/.env"
+ssh jacky@192.168.1.98 "vim /home/jacky/apps/immicore/.env"
 # ❌ 重启服务
 ssh jacky@192.168.1.98 "docker restart ..."
 # ❌ 部署/更新
-ssh jacky@192.168.1.98 "cd /home/jacky/immicore && git pull"
+ssh jacky@192.168.1.98 "cd /home/jacky/apps/immicore && git pull"
 ```
 
 详细信息见: `docs/system/environment.md`
