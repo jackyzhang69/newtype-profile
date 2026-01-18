@@ -1,0 +1,13 @@
+{
+  "name": "learned-guardrails",
+  "version": "1.0.0",
+  "description": "Semantic verification rules learned from audit errors. Injects verification guidance into Gatekeeper for detecting concept confusion, timeline errors, and document inconsistencies.",
+  "categories": ["audit", "verification", "knowledge"],
+  "quality_level": "L3",
+  "references": [
+    "semantic_verification_guide.md"
+  ],
+  "changelog": {
+    "1.0.0": "Initial release with RULE-001 (ceremony vs marriage semantic confusion)"
+  }
+}

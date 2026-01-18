@@ -1,0 +1,63 @@
+{
+  "version": "1.0",
+  "name": "learned-guardrails",
+  "description": "经验知识防御层 - 从审核错误中学习的规则库",
+  "base_path": "rules",
+  "categories": {
+    "semantic_confusion": "语义混淆 - 概念边界错误，混淆相似但不同的概念",
+    "timeline_issues": "时间线问题 - 日期解读错误，时间顺序理解错误",
+    "document_inconsistency": "文档不一致 - 跨文档校验失败，信息冲突",
+    "cultural_context": "文化背景 - 文化差异导致的理解偏差"
+  },
+  "severity_levels": {
+    "critical": "可能导致错误的 CRITICAL 风险判定",
+    "high": "可能导致错误的 HIGH 风险判定",
+    "medium": "可能导致风险级别偏差",
+    "low": "轻微理解偏差"
+  },
+  "rules": [
+    {
+      "id": "RULE-001",
+      "path": "core/semantic/RULE-001-ceremony-vs-marriage.md",
+      "category": "semantic_confusion",
+      "triggers": [
+        "no ceremony",
+        "没有婚礼",
+        "no formal wedding",
+        "没有举办仪式",
+        "no wedding ceremony",
+        "未举行婚礼",
+        "haven't had a wedding",
+        "haven't had a formal wedding",
+        "haven't had a ceremony",
+        "no wedding banquet",
+        "没有办婚宴",
+        "yet to have a wedding",
+        "still haven't had",
+        "wedding ceremony yet"
+      ],
+      "semantic_description": "Ceremony vs Marriage Semantic Confusion",
+      "severity": "critical",
+      "learned_from": "Tian-Huang Case 2026-01-18",
+      "app_types": [
+        "all"
+      ],
+      "created_at": "2026-01-18",
+      "updated_at": "2026-01-18"
+    }
+  ],
+  "statistics": {
+    "total_rules": 1,
+    "by_category": {
+      "semantic_confusion": 1,
+      "timeline_issues": 0,
+      "document_inconsistency": 0,
+      "cultural_context": 0
+    },
+    "by_app_type": {
+      "spousal": 0,
+      "study": 0,
+      "core": 1
+    }
+  }
+}
