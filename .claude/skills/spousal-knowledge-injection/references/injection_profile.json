@@ -50,6 +50,14 @@
         "interview_guide.md",
         "document_list_guide.md"
       ]
+    },
+    "learned-guardrails": {
+      "description": "Semantic verification rules to catch concept confusion errors",
+      "inject_to": ["gatekeeper"],
+      "priority": 6,
+      "files": [
+        "semantic_verification_guide.md"
+      ]
     }
   },
   "injection_order": [
@@ -57,7 +65,8 @@
     "spousal-doc-analysis",
     "spousal-immicore-mcp",
     "spousal-workflow",
-    "spousal-client-guidance"
+    "spousal-client-guidance",
+    "learned-guardrails"
   ],
   "tags": {
     "skill": "Skill_References",

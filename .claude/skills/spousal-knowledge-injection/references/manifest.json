@@ -1,7 +1,7 @@
 {
   "name": "spousal-knowledge-injection",
-  "version": "0.2.0",
-  "description": "Runtime injection of spousal audit knowledge into agent prompts. Coordinates 5 specialized skills for comprehensive audit coverage.",
+  "version": "0.3.0",
+  "description": "Runtime injection of spousal audit knowledge into agent prompts. Coordinates 6 specialized skills for comprehensive audit coverage including semantic verification.",
   "categories": ["audit", "knowledge", "orchestration"],
   "quality_level": "L4",
   "quickstart_paths": ["../SKILL.md"],
@@ -14,9 +14,11 @@
     "spousal-doc-analysis",
     "spousal-immicore-mcp",
     "spousal-workflow",
-    "spousal-client-guidance"
+    "spousal-client-guidance",
+    "learned-guardrails"
   ],
   "changelog": {
+    "0.3.0": "Added learned-guardrails for semantic verification in Gatekeeper",
     "0.2.0": "Expanded to coordinate 5 specialized skills with agent-specific injection mapping",
     "0.1.0": "Initial baseline guides"
   }
