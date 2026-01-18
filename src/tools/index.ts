@@ -19,6 +19,7 @@ import {
 
 import { grep } from "./grep"
 import { glob } from "./glob"
+import { file_content_extract } from "./file-content"
 import {
   kg_search,
   kg_case,
@@ -72,6 +73,7 @@ type OpencodeClient = PluginInput["client"]
 
 export { createCallOmoAgent } from "./call-omo-agent"
 export { createLookAt } from "./look-at"
+export { file_content_extract } from "./file-content"
 export { createChiefTask, type ChiefTaskToolOptions, DEFAULT_CATEGORIES, CATEGORY_PROMPT_APPENDS } from "./chief-task"
 export {
   kg_search,
@@ -149,4 +151,5 @@ export const builtinTools: Record<string, ToolDefinition> = {
   mcp_read_resource,
   mcp_call_tool,
   mcp_list_tools,
+  file_content_extract,
 }
