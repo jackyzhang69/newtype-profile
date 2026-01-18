@@ -47,26 +47,22 @@ export const file_content_extract = tool({
 
       const client = getFileContentClient()
 
-      const task = await client.submitExtraction(args.file_paths, {
+      const result = await client.extractBatched(args.file_paths, {
         output_format: args.output_format,
         detect_scanned: args.detect_scanned,
         extract_xfa: args.extract_xfa,
         include_structure: args.include_structure,
       })
 
-      if (args.wait_for_result === false) {
-        return JSON.stringify({
-          task_id: task.task_id,
-          status: task.status,
-          file_count: task.file_count,
-          estimated_seconds: task.estimated_seconds,
-          message: "Task submitted. Poll /file-content/tasks/{task_id} for status.",
-        })
-      }
-
-      const result = await client.pollUntilComplete(task.task_id)
-
-      return JSON.stringify(result)
+      return JSON.stringify({
+        status: result.failed_files.length === 0 ? "completed" : "partial",
+        total_files: result.total_files,
+        total_batches: result.total_batches,
+        extracted_count: result.files.length,
+        failed_count: result.failed_files.length,
+        files: result.files,
+        failed_files: result.failed_files.length > 0 ? result.failed_files : undefined,
+      })
     } catch (error) {
       return JSON.stringify({
         error: error instanceof Error ? error.message : String(error),

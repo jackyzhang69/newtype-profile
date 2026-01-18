@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach, mock } from "bun:test"
 import { FileContentClient, resetFileContentClient } from "./client"
+import type { FileInfo } from "./types"
 
 describe("FileContentClient", () => {
   const originalFileContentUrl = process.env.FILE_CONTENT_BASE_URL
@@ -218,6 +219,78 @@ describe("FileContentClient", () => {
           maxWaitMs: 50,
         })
       ).rejects.toThrow("Extraction timed out after 50ms")
+    })
+  })
+
+  describe("splitIntoBatches", () => {
+    it("#given files within batch limit #when splitting #then returns single batch", () => {
+      const client = new FileContentClient()
+      const files: FileInfo[] = [
+        { path: "/a.pdf", filename: "a.pdf", size: 1000 },
+        { path: "/b.pdf", filename: "b.pdf", size: 2000 },
+        { path: "/c.pdf", filename: "c.pdf", size: 3000 },
+      ]
+
+      const batches = client.splitIntoBatches(files, 10000)
+
+      expect(batches.length).toBe(1)
+      expect(batches[0].length).toBe(3)
+    })
+
+    it("#given files exceeding batch limit #when splitting #then creates multiple batches", () => {
+      const client = new FileContentClient()
+      const files: FileInfo[] = [
+        { path: "/a.pdf", filename: "a.pdf", size: 3000 },
+        { path: "/b.pdf", filename: "b.pdf", size: 3000 },
+        { path: "/c.pdf", filename: "c.pdf", size: 3000 },
+        { path: "/d.pdf", filename: "d.pdf", size: 3000 },
+      ]
+
+      const batches = client.splitIntoBatches(files, 5000)
+
+      expect(batches.length).toBe(4)
+      batches.forEach((batch) => {
+        expect(batch.length).toBe(1)
+      })
+    })
+
+    it("#given oversized single file #when splitting #then puts file in own batch", () => {
+      const client = new FileContentClient()
+      const files: FileInfo[] = [
+        { path: "/huge.pdf", filename: "huge.pdf", size: 50000 },
+        { path: "/small.pdf", filename: "small.pdf", size: 1000 },
+      ]
+
+      const batches = client.splitIntoBatches(files, 10000)
+
+      expect(batches.length).toBe(2)
+      expect(batches[0][0].filename).toBe("huge.pdf")
+      expect(batches[1][0].filename).toBe("small.pdf")
+    })
+
+    it("#given mixed file sizes #when splitting #then optimizes batch grouping", () => {
+      const client = new FileContentClient()
+      const files: FileInfo[] = [
+        { path: "/small1.pdf", filename: "small1.pdf", size: 1000 },
+        { path: "/medium.pdf", filename: "medium.pdf", size: 5000 },
+        { path: "/small2.pdf", filename: "small2.pdf", size: 1000 },
+        { path: "/large.pdf", filename: "large.pdf", size: 8000 },
+        { path: "/small3.pdf", filename: "small3.pdf", size: 1000 },
+      ]
+
+      const batches = client.splitIntoBatches(files, 10000)
+
+      expect(batches.length).toBe(2)
+      expect(batches[0][0].filename).toBe("large.pdf")
+      expect(batches[1].length).toBe(4)
+      const totalFiles = batches.reduce((sum, b) => sum + b.length, 0)
+      expect(totalFiles).toBe(5)
+    })
+
+    it("#given empty file list #when splitting #then returns empty array", () => {
+      const client = new FileContentClient()
+      const batches = client.splitIntoBatches([], 10000)
+      expect(batches.length).toBe(0)
     })
   })
 })

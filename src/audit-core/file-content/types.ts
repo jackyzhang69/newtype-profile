@@ -109,3 +109,31 @@ export interface PollOptions {
   maxWaitMs?: number
   onProgress?: (status: TaskStatusResponse) => void
 }
+
+export interface FileInfo {
+  path: string
+  filename: string
+  size: number
+}
+
+export interface BatchProgress {
+  currentBatch: number
+  totalBatches: number
+  filesProcessed: number
+  totalFiles: number
+  currentBatchFiles: string[]
+}
+
+export interface BatchedExtractOptions extends ExtractOptions {
+  maxBatchSizeBytes?: number
+  maxRetries?: number
+  onBatchProgress?: (progress: BatchProgress) => void
+}
+
+export interface BatchedExtractionResult {
+  task_ids: string[]
+  total_files: number
+  total_batches: number
+  files: ExtractedFile[]
+  failed_files: Array<{ filename: string; error: string }>
+}
