@@ -167,6 +167,24 @@
         "context7",
         "sdk"
       ]
+    },
+    {
+      "id": "framework-agent-skill-selection",
+      "path": "agent-guides/framework/agent-skill-selection.md",
+      "category": "framework",
+      "summary": "Agent/skill selection guide: when to use AuditManager/Detective/Strategist/Gatekeeper/Verifier, skill taxonomy",
+      "keywords": [
+        "agent",
+        "skill",
+        "selection",
+        "when",
+        "trigger",
+        "detective",
+        "strategist",
+        "gatekeeper",
+        "verifier",
+        "auditmanager"
+      ]
     }
   ]
 }

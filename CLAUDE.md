@@ -84,7 +84,8 @@ immi-os/
 │   ├── features/             # Claude Code compat layer
 │   └── shared/               # Cross-cutting utilities
 ├── .claude/
-│   ├── skills/               # 14 project skills (core-*, spousal-*, study-*)
+│   ├── agents/               # External agent configs (audit-report-builder)
+│   ├── skills/               # 16 project skills (core-*, spousal-*, study-*, standalone)
 │   └── rules/                # Auto-loaded rules
 ├── docs/
 │   ├── agent-guides/         # On-demand knowledge
@@ -120,7 +121,7 @@ AuditManager (orchestrator)
     |         v
     |     [Refusal triggers + Required fixes]
     |
-    +---> Verifier (pro/ultra only)
+    +---> Verifier (all tiers)
               |
               v
           [Citation validation]
@@ -128,6 +129,34 @@ AuditManager (orchestrator)
     v
 Final Audit Report
 ```
+
+---
+
+## Agent/Skill Quick Reference
+
+> Detailed guide: `docs/agent-guides/framework/agent-skill-selection.md`
+
+### When to Fire Each Agent
+
+| Trigger | Agent | Mode |
+|---------|-------|------|
+| "audit", "risk assessment" | AuditManager | primary |
+| "case law search" | Detective | subagent |
+| "risk analysis", "defense" | Strategist | subagent |
+| "compliance", "refusal risk" | Gatekeeper | subagent |
+| "verify citation" | Verifier | subagent |
+| "generate PDF report" | audit-report-builder* | external |
+
+*External agent in `.claude/agents/`
+
+### Skill Naming Convention
+
+| Prefix | Scope | Example |
+|--------|-------|---------|
+| `core-*` | Shared across all apps | `core-audit-rules` |
+| `spousal-*` | Spousal app only | `spousal-knowledge-injection` |
+| `study-*` | Study app only | `study-audit-rules` |
+| (none) | Standalone | `audit-report-output`, `learned-guardrails` |
 
 ---
 
@@ -160,6 +189,7 @@ Every audit report MUST include:
 | System | 服务器访问规则、测试环境配置、环境变量、ImmiCore 服务依赖 | `docs/system/environment.md` |
 | Framework | Common pitfalls: agent empty response... | `docs/agent-guides/framework/pitfalls.md` |
 | Framework | OpenCode/OMO framework: plugin system... | `docs/agent-guides/framework/opencode-omo.md` |
+| Framework | Agent/skill selection guide: when to ... | `docs/agent-guides/framework/agent-skill-selection.md` |
 <!-- KNOWLEDGE_INDEX:END -->
 
 ---

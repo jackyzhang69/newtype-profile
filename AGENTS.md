@@ -308,4 +308,5 @@ bun test               # Run tests (76 test files, 2559+ BDD assertions)
 | System | 服务器访问规则、测试环境配置、环境变量、ImmiCore 服务依赖 | `docs/system/environment.md` |
 | Framework | Common pitfalls: agent empty response... | `docs/agent-guides/framework/pitfalls.md` |
 | Framework | OpenCode/OMO framework: plugin system... | `docs/agent-guides/framework/opencode-omo.md` |
+| Framework | Agent/skill selection guide: when to ... | `docs/agent-guides/framework/agent-skill-selection.md` |
 <!-- KNOWLEDGE_INDEX:END -->

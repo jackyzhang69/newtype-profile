@@ -79,6 +79,7 @@ export const HookNameSchema = z.enum([
   "start-work",
   "chief-orchestrator",
   "audit-search-guard",
+  "audit-document-guard",
 ])
 
 export const BuiltinCommandNameSchema = z.enum([

@@ -75,7 +75,8 @@
           "prometheus-md-only",
           "start-work",
           "chief-orchestrator",
-          "audit-search-guard"
+          "audit-search-guard",
+          "audit-document-guard"
         ]
       }
     },
