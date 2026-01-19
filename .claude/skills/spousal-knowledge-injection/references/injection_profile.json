@@ -1,6 +1,6 @@
 {
-  "version": "spousal-v2",
-  "description": "Spousal sponsorship knowledge injection profile",
+  "version": "spousal-v3",
+  "description": "Spousal sponsorship knowledge injection profile with output constraints",
   "skills": {
     "spousal-audit-rules": {
       "description": "Risk patterns, eligibility rules, KG query patterns",
@@ -31,7 +31,7 @@
       ]
     },
     "spousal-workflow": {
-      "description": "Output templates for audit reports",
+      "description": "Internal workflow templates (NOT output format)",
       "inject_to": ["strategist", "gatekeeper"],
       "priority": 4,
       "files": [
@@ -58,6 +58,14 @@
       "files": [
         "semantic_verification_guide.md"
       ]
+    },
+    "audit-report-output": {
+      "description": "Final report format, Poison Pill templates, tier-based output constraints",
+      "inject_to": ["audit-manager"],
+      "priority": 7,
+      "files": [
+        "client_report_template.md"
+      ]
     }
   },
   "injection_order": [
@@ -66,7 +74,8 @@
     "spousal-immicore-mcp",
     "spousal-workflow",
     "spousal-client-guidance",
-    "learned-guardrails"
+    "learned-guardrails",
+    "audit-report-output"
   ],
   "tags": {
     "skill": "Skill_References",

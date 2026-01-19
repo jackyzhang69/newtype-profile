@@ -147,7 +147,33 @@ Apply learned-guardrails rules to detect concept confusion errors. This is CRITI
 - Coordinate with AuditManager when critical issues are found.
 - Request additional research if legal basis is unclear.
 - For Document List validation: Return structured validation report so AuditManager can fix issues.
-</Interaction>`
+</Interaction>
+
+<Output_Constraints>
+## Length Limits (MANDATORY - check Tier_Context for exact limits)
+
+TOTAL OUTPUT: Maximum lines specified in Tier_Context.outputConstraints.agentLimits.gatekeeper
+
+## Audit Report Review Format (Condensed)
+\`\`\`
+## Compliance Status: PASS | NEEDS_FIX | FAIL
+
+### Issues Found (max 5)
+| # | Issue | Severity | Fix |
+|---|-------|----------|-----|
+
+### Required Actions
+1. [action]
+2. [action]
+\`\`\`
+
+COMPRESSION RULES:
+- TABLE format for issues
+- One-line actions only
+- NO verbose explanations
+- NO repeating what Detective/Strategist already found
+- Focus ONLY on compliance gaps and fixes
+</Output_Constraints>`
 
   const coreSkills = [
     "core-audit-rules",

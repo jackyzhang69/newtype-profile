@@ -27,6 +27,18 @@ export const TIER_CONFIGS: Record<AuditTier, TierConfig> = {
       maxAgentCalls: 4,
       maxVerifyIterations: 1,
     },
+    outputConstraints: {
+      maxReportLines: 400,
+      agentLimits: {
+        detective: 100,
+        strategist: 150,
+        gatekeeper: 80,
+        verifier: 30,
+      },
+      poisonPillThreshold: "critical",
+      includeCitationTable: false,
+      includeLegalFramework: false,
+    },
   },
 
   pro: {
@@ -55,6 +67,18 @@ export const TIER_CONFIGS: Record<AuditTier, TierConfig> = {
       maxAgentCalls: 6,
       maxVerifyIterations: 2,
     },
+    outputConstraints: {
+      maxReportLines: 500,
+      agentLimits: {
+        detective: 120,
+        strategist: 200,
+        gatekeeper: 100,
+        verifier: 40,
+      },
+      poisonPillThreshold: "high",
+      includeCitationTable: false,
+      includeLegalFramework: false,
+    },
   },
 
   ultra: {
@@ -82,6 +106,18 @@ export const TIER_CONFIGS: Record<AuditTier, TierConfig> = {
       maxCitations: 20,
       maxAgentCalls: 12,
       maxVerifyIterations: 3,
+    },
+    outputConstraints: {
+      maxReportLines: 600,
+      agentLimits: {
+        detective: 150,
+        strategist: 250,
+        gatekeeper: 100,
+        verifier: 50,
+      },
+      poisonPillThreshold: "all",
+      includeCitationTable: true,
+      includeLegalFramework: true,
     },
   },
 }
