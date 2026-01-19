@@ -8,6 +8,12 @@
 
 OpenCode plugin implementing Claude Code/AmpCode features. Multi-model agent orchestration (GPT-5.2, Claude, Gemini, Grok), LSP tools (11), AST-Grep search, MCP integrations (context7, websearch_exa, grep_app). "oh-my-zsh" for OpenCode.
 
+## 语言规则 (Language Rules)
+
+- **代码**: 全部使用英文（变量名、注释、commit message）
+- **对话**: 与用户交流使用中文
+- **文档**: 面向用户的文档使用中文（如审计报告、说明文档）
+
 ## ⚠️ OPENCODE FRAMEWORK DEVELOPMENT
 
 This project is developed within the **OpenCode framework**. When encountering systemic issues related to:
