@@ -5,6 +5,28 @@ import { LOOK_AT_DESCRIPTION, MULTIMODAL_LOOKER_AGENT } from "./constants"
 import type { LookAtArgs } from "./types"
 import { log } from "../../shared/logger"
 
+const CASE_DOCUMENT_EXTENSIONS = new Set([
+  ".pdf",
+  ".jpg", ".jpeg", ".png", ".webp", ".heic", ".heif", ".gif", ".bmp", ".tiff",
+  ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx",
+])
+
+const CASE_DIRECTORY_PATTERNS = [
+  /\/cases\//i,
+  /\/Desktop\//i,
+  /\/Documents\//i,
+  /\/audit/i,
+  /\/immigration/i,
+  /\/sponsor/i,
+  /\/applicant/i,
+]
+
+function isCaseDocument(filePath: string): boolean {
+  const ext = extname(filePath).toLowerCase()
+  if (!CASE_DOCUMENT_EXTENSIONS.has(ext)) return false
+  return CASE_DIRECTORY_PATTERNS.some(pattern => pattern.test(filePath))
+}
+
 function inferMimeType(filePath: string): string {
   const ext = extname(filePath).toLowerCase()
   const mimeTypes: Record<string, string> = {
@@ -55,6 +77,47 @@ export function createLookAt(ctx: PluginInput): ToolDefinition {
 
       const mimeType = inferMimeType(args.file_path)
       const filename = basename(args.file_path)
+
+      if (isCaseDocument(args.file_path)) {
+        const errorMessage = `❌ BLOCKED: Case documents must use file_content_extract tool
+
+This file appears to be a case document: ${args.file_path}
+
+According to .claude/rules/audit-document-extraction.md:
+- ALL case documents MUST use file_content_extract tool
+- This includes PDF, images, and Office documents
+- This ensures complete text extraction, XFA form parsing, and metadata verification
+
+Correct usage:
+  file_content_extract({
+    "file_paths": ["${args.file_path}"],
+    "output_format": "markdown",
+    "extract_xfa": true,
+    "include_structure": true
+  })
+
+For multiple files (RECOMMENDED):
+  file_content_extract({
+    "file_paths": [
+      "/path/to/file1.pdf",
+      "/path/to/file2.pdf",
+      ... (ALL case files in one call)
+    ],
+    "output_format": "markdown",
+    "extract_xfa": true,
+    "include_structure": true
+  })
+
+Why this matters:
+- mcp_look_at uses AI interpretation (loses accuracy, misses details)
+- file_content_extract provides complete extraction with page-level structure
+- XFA form fields (IMM forms) are properly parsed
+- Metadata verification ensures completeness
+- OCR support for scanned documents`
+
+        log(`[look_at] BLOCKED: Case document detected, redirecting to file_content_extract`)
+        return errorMessage
+      }
 
       const prompt = `Analyze this file and extract the requested information.
 

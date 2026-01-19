@@ -1,16 +1,18 @@
 import type { AgentConfig } from "@opencode-ai/sdk"
-import { createAuditManagerAgent } from "../audit-core/agents/audit-manager"
+import { auditManagerAgent } from "../audit-core/agents/audit-manager"
 import { createDetectiveAgent } from "../audit-core/agents/detective"
 import { createStrategistAgent } from "../audit-core/agents/strategist"
 import { createGatekeeperAgent } from "../audit-core/agents/gatekeeper"
 import { createVerifierAgent } from "../audit-core/agents/verifier"
+import { createIntakeAgent } from "../audit-core/agents/intake"
 
 export function getBuiltinAgents(): Record<string, AgentConfig> {
   const baseAgents: Record<string, AgentConfig> = {
-    "audit-manager": createAuditManagerAgent(),
+    "audit-manager": auditManagerAgent,
     detective: createDetectiveAgent(),
     strategist: createStrategistAgent(),
     gatekeeper: createGatekeeperAgent(),
+    intake: createIntakeAgent(),
   }
 
   const verifierAgent = createVerifierAgent()
