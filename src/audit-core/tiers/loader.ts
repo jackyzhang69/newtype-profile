@@ -7,12 +7,26 @@ export function isValidTier(tier: string): tier is AuditTier {
   return VALID_TIERS.includes(tier as AuditTier)
 }
 
+let tierWarningLogged = false
+
 export function getAuditTier(): AuditTier {
   const envTier = process.env.AUDIT_TIER?.toLowerCase()
   if (envTier && isValidTier(envTier)) {
     return envTier
   }
+  if (!tierWarningLogged && envTier) {
+    console.warn(`[Audit] Invalid AUDIT_TIER="${envTier}", using default: ${DEFAULT_TIER}`)
+    tierWarningLogged = true
+  }
   return DEFAULT_TIER
+}
+
+export function logTierInfo(context: string = "Audit"): void {
+  const tier = getAuditTier()
+  const config = getTierConfig(tier)
+  console.log(`[${context}] Tier: ${tier}`)
+  console.log(`[${context}] Verifier: ${config.features.verifier ? "enabled" : "disabled"}`)
+  console.log(`[${context}] KG Search: ${config.features.kgSearch ? "enabled" : "disabled"}`)
 }
 
 export function getTierConfig(tier?: AuditTier): TierConfig {

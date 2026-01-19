@@ -8,6 +8,8 @@ export interface RuleMetadata {
   description?: string;
   globs?: string | string[];
   alwaysApply?: boolean;
+  agents?: string[];
+  excludeAgents?: string[];
 }
 
 /**

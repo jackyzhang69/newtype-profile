@@ -29,3 +29,6 @@ yarn.lock
 test-injection/
 notepad.md
 oauth-success.html
+
+# Case files (contains client data)
+cases/

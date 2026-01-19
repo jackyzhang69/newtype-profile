@@ -215,6 +215,19 @@ export function createRulesInjectorHook(ctx: PluginInput) {
     }
   };
 
+  // NOTE: chatMessage hook for proactive audit rule injection has been REMOVED.
+  // 
+  // REASON: The previous implementation injected audit-document-extraction.md into ALL
+  // agent sessions (including Detective, Strategist, Gatekeeper, Verifier) when detecting
+  // "audit" keywords. This caused specialist agents to receive ~5000 words of irrelevant
+  // instructions about document extraction, leading to prompt pollution and agent failures.
+  // 
+  // FIX: Rules are now injected ONLY through file-based triggers (tool.execute.after)
+  // when agents actually read/write files matching the rule's glob patterns.
+  // 
+  // For audit-specific knowledge injection, use the skill injection system in
+  // src/audit-core/knowledge/loader.ts which properly filters by agent type.
+
   return {
     "tool.execute.before": toolExecuteBefore,
     "tool.execute.after": toolExecuteAfter,

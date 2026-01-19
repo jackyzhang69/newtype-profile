@@ -4,12 +4,46 @@ export interface HttpClientConfig {
   timeout?: number
 }
 
+const DEFAULT_TIMEOUT = 60000
+const TIMEOUT_ENV_KEY = 'MCP_REQUEST_TIMEOUT'
+
+const SERVICE_TIMEOUTS: Record<string, number> = {
+  caselaw: 90000,
+  'operation-manual': 60000,
+  'help-centre': 45000,
+  'email-kg': 45000,
+  noc: 45000,
+}
+
+function getDefaultTimeout(): number {
+  const envTimeout = process.env[TIMEOUT_ENV_KEY]
+  if (envTimeout) {
+    const parsed = parseInt(envTimeout, 10)
+    if (!isNaN(parsed) && parsed > 0) {
+      return parsed
+    }
+  }
+  return DEFAULT_TIMEOUT
+}
+
+export function getServiceTimeout(serviceName: string): number {
+  const envKey = `MCP_${serviceName.toUpperCase().replace(/-/g, '_')}_TIMEOUT`
+  const envTimeout = process.env[envKey]
+  if (envTimeout) {
+    const parsed = parseInt(envTimeout, 10)
+    if (!isNaN(parsed) && parsed > 0) {
+      return parsed
+    }
+  }
+  return SERVICE_TIMEOUTS[serviceName] ?? getDefaultTimeout()
+}
+
 export class AuthenticatedHttpClient {
   private readonly config: HttpClientConfig
 
   constructor(config: HttpClientConfig) {
     this.config = {
-      timeout: 30000,
+      timeout: config.timeout ?? getDefaultTimeout(),
       ...config,
     }
   }

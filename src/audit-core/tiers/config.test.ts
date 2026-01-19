@@ -37,9 +37,9 @@ describe("TIER_CONFIGS", () => {
   describe("pro tier", () => {
     const config = TIER_CONFIGS.pro
 
-    it("#given pro tier #when checking models #then uses sonnet and gemini-pro", () => {
+    it("#given pro tier #when checking models #then uses sonnet for all agents except verifier", () => {
       expect(config.models.auditManager).toBe("anthropic/claude-sonnet-4-5")
-      expect(config.models.detective).toBe("google/gemini-3-pro-high")
+      expect(config.models.detective).toBe("anthropic/claude-sonnet-4-5")
       expect(config.models.verifier).toBe("google/gemini-3-flash")
     })
 

@@ -8,14 +8,61 @@ export interface MatchResult {
   reason?: string
 }
 
+export interface AgentMatchOptions {
+  agentName?: string
+}
+
+/**
+ * Check if a rule should apply based on agent filtering
+ */
+export function shouldApplyToAgent(
+  metadata: RuleMetadata,
+  options: AgentMatchOptions
+): MatchResult {
+  const { agentName } = options
+
+  if (!agentName) {
+    return { applies: true, reason: "no agent context" }
+  }
+
+  if (metadata.excludeAgents?.length) {
+    const normalizedAgent = agentName.toLowerCase()
+    const excluded = metadata.excludeAgents.some(
+      (a) => a.toLowerCase() === normalizedAgent
+    )
+    if (excluded) {
+      return { applies: false, reason: `excludeAgents: ${agentName}` }
+    }
+  }
+
+  if (metadata.agents?.length) {
+    const normalizedAgent = agentName.toLowerCase()
+    const included = metadata.agents.some(
+      (a) => a.toLowerCase() === normalizedAgent
+    )
+    if (!included) {
+      return { applies: false, reason: `agents whitelist excludes: ${agentName}` }
+    }
+    return { applies: true, reason: `agents: ${agentName}` }
+  }
+
+  return { applies: true, reason: "no agent restriction" }
+}
+
 /**
  * Check if a rule should apply to the current file based on metadata
  */
 export function shouldApplyRule(
   metadata: RuleMetadata,
   currentFilePath: string,
-  projectRoot: string | null
+  projectRoot: string | null,
+  options: AgentMatchOptions = {}
 ): MatchResult {
+  const agentCheck = shouldApplyToAgent(metadata, options)
+  if (!agentCheck.applies) {
+    return agentCheck
+  }
+
   if (metadata.alwaysApply === true) {
     return { applies: true, reason: "alwaysApply" }
   }
