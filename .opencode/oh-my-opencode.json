@@ -1,4 +1,60 @@
 {
+  "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/master/assets/oh-my-opencode.schema.json",
+  
   "google_auth": true,
-  "audit_tier": "pro"
+  "audit_tier": "pro",
+  
+  "audit_app": "spousal",
+  "search_policy": "mcp_first",
+  
+  "audit_mcp_transport": "http",
+  "audit_mcp_host": "192.168.1.98",
+  
+  "experimental": {
+    "aggressive_truncation": false,
+    "auto_resume": true,
+    "preemptive_compaction": false,
+    "truncate_all_tool_outputs": false,
+    "dynamic_context_pruning": {
+      "enabled": true,
+      "notification": "detailed",
+      "turn_protection": {
+        "enabled": true,
+        "turns": 3
+      },
+      "strategies": {
+        "deduplication": {
+          "enabled": true
+        },
+        "supersede_writes": {
+          "enabled": true,
+          "aggressive": false
+        },
+        "purge_errors": {
+          "enabled": true,
+          "turns": 5
+        }
+      }
+    }
+  },
+  
+  "background_task": {
+    "defaultConcurrency": 3,
+    "providerConcurrency": {
+      "anthropic": 2,
+      "google": 3,
+      "openai": 2
+    }
+  },
+  
+  "notification": {
+    "force_enable": true
+  },
+  
+  "auto_update": true,
+  
+  "git_master": {
+    "commit_footer": true,
+    "include_co_authored_by": true
+  }
 }
