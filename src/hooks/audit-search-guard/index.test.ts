@@ -10,6 +10,11 @@ function makeOutput(query: string) {
 describe("audit-search-guard", () => {
   const env = { ...process.env }
 
+  beforeEach(() => {
+    // #given: Ensure stdio transport to avoid HTTP health checks in tests
+    process.env.AUDIT_MCP_TRANSPORT = "stdio"
+  })
+
   afterEach(() => {
     process.env = { ...env }
   })

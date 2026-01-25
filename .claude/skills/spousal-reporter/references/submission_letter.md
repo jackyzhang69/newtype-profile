@@ -90,8 +90,8 @@ Enclosed Documentation:
 
 ```
 Based on the enclosed documentation, I respectfully submit that {sponsor_name} and 
-{applicant_name} are in a genuine spousal relationship and meet all requirements 
-for sponsorship under IRPA and IRPR.
+{applicant_name} have provided evidence demonstrating a genuine spousal relationship 
+as defined under IRPA and IRPR.
 
 Should additional information be required, please contact me directly at the 
 details below.

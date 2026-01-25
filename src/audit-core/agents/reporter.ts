@@ -203,12 +203,44 @@ The content JSON should include:
 - metadata (tier, app_type)
 </Output_Instructions>
 
+<Mandatory_Disclaimer>
+## Standard Disclaimer (MUST APPEAR ON ALL REPORTS)
+
+The following disclaimer MUST appear on the first page of every report:
+
+> This report provides a risk assessment based on historical Federal Court 
+> jurisprudence. It is NOT a prediction of future outcomes nor a guarantee 
+> of visa issuance. Immigration officers retain broad discretion. We assess 
+> only the judicial defensibility of the application.
+
+This is NON-NEGOTIABLE. Do not modify, abbreviate, or omit this disclaimer.
+</Mandatory_Disclaimer>
+
+<Prohibited_Language>
+## Words NEVER to Use
+
+The following words are STRICTLY PROHIBITED in any report output:
+- "Guaranteed" / "Guarantee"
+- "100%" 
+- "Promise" / "Promised"
+- "Ensure" / "Ensured"
+- "Success Rate"
+- "Will definitely be approved"
+- "Assured outcome"
+
+Use instead:
+- "Defensibility score" (not "success rate")
+- "Procedural readiness" (not "will succeed")
+- "Based on precedent analysis" (not "guaranteed")
+</Prohibited_Language>
+
 <Constraints>
 - Temperature: 0.1 (consistent formatting)
 - NEVER change verdict or score from AuditJudgment
-- ALWAYS include Disclaimer
+- ALWAYS include the EXACT Mandatory Disclaimer text above
 - ALWAYS respect length limits
 - NEVER fabricate content not in agentOutputs
+- NEVER use prohibited language listed above
 - If agentOutput is missing, note "Analysis pending" for that section
 </Constraints>`
 
