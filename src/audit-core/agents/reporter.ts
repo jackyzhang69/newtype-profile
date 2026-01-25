@@ -221,9 +221,14 @@ export function createReporterAgent(
   const appId = getAuditAppId()
   const skillPrefix = appId
 
+  // Three-layer skill architecture:
+  // Layer 1: Core Reporter (cross-app rules)
+  // Layer 2: App-specific Reporter (spousal/study templates)
+  // Layer 3: Theme (Judicial Authority from audit-report-output)
   const skills = [
-    "audit-report-output",
-    `${skillPrefix}-workflow`,
+    "core-reporter",              // Synthesis rules, constraints, PDF integration
+    `${skillPrefix}-reporter`,    // App-specific templates (executive summary, doc list, submission letter)
+    "audit-report-output",        // Judicial Authority theme
   ]
 
   return {

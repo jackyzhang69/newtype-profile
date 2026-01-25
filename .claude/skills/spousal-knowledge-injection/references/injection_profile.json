@@ -32,7 +32,7 @@
     },
     "spousal-workflow": {
       "description": "Internal workflow templates (NOT output format)",
-      "inject_to": ["strategist", "gatekeeper", "reporter"],
+      "inject_to": ["strategist", "gatekeeper"],
       "priority": 4,
       "files": [
         "primary_assess_template.md",
@@ -66,6 +66,26 @@
       "files": [
         "client_report_template.md"
       ]
+    },
+    "core-reporter": {
+      "description": "Cross-app Reporter rules for synthesis, constraints, and document generation",
+      "inject_to": ["reporter"],
+      "priority": 8,
+      "files": [
+        "synthesis_rules.md",
+        "output_constraints.md",
+        "document_generation.md"
+      ]
+    },
+    "spousal-reporter": {
+      "description": "Spousal-specific Reporter templates for executive summary, document list, submission letter",
+      "inject_to": ["reporter"],
+      "priority": 9,
+      "files": [
+        "executive_summary.md",
+        "document_list.md",
+        "submission_letter.md"
+      ]
     }
   },
   "injection_order": [
@@ -75,7 +95,9 @@
     "spousal-workflow",
     "spousal-client-guidance",
     "learned-guardrails",
-    "audit-report-output"
+    "audit-report-output",
+    "core-reporter",
+    "spousal-reporter"
   ],
   "tags": {
     "skill": "Skill_References",

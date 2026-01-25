@@ -1,0 +1,15 @@
+{
+  "name": "spousal-reporter",
+  "version": "1.0.0",
+  "description": "Spousal-specific Reporter templates for executive summary, document list, and submission letter",
+  "files": [
+    "executive_summary.md",
+    "document_list.md",
+    "submission_letter.md"
+  ],
+  "depends_on": [
+    "core-reporter",
+    "audit-report-output"
+  ],
+  "inject_to": ["reporter"]
+}
