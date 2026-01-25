@@ -8,6 +8,7 @@ export const TIER_CONFIGS: Record<AuditTier, TierConfig> = {
       strategist: "google/gemini-3-flash",
       gatekeeper: "google/gemini-3-flash",
       verifier: "google/gemini-3-flash",
+      reporter: "google/gemini-3-flash",
     },
     temperatures: {
       auditManager: 0.3,
@@ -15,6 +16,7 @@ export const TIER_CONFIGS: Record<AuditTier, TierConfig> = {
       strategist: 0.4,
       gatekeeper: 0.2,
       verifier: 0.0,
+      reporter: 0.1,
     },
     features: {
       verifier: true,
@@ -48,6 +50,7 @@ export const TIER_CONFIGS: Record<AuditTier, TierConfig> = {
       strategist: "anthropic/claude-sonnet-4-5",
       gatekeeper: "anthropic/claude-sonnet-4-5",
       verifier: "google/gemini-3-flash",
+      reporter: "anthropic/claude-haiku-4-5",
     },
     temperatures: {
       auditManager: 0.2,
@@ -55,6 +58,7 @@ export const TIER_CONFIGS: Record<AuditTier, TierConfig> = {
       strategist: 0.3,
       gatekeeper: 0.1,
       verifier: 0.0,
+      reporter: 0.1,
     },
     features: {
       verifier: true,
@@ -88,6 +92,7 @@ export const TIER_CONFIGS: Record<AuditTier, TierConfig> = {
       strategist: "anthropic/claude-sonnet-4-5",
       gatekeeper: "anthropic/claude-sonnet-4-5",
       verifier: "anthropic/claude-haiku-4-5",
+      reporter: "anthropic/claude-haiku-4-5",
     },
     temperatures: {
       auditManager: 0.2,
@@ -95,6 +100,7 @@ export const TIER_CONFIGS: Record<AuditTier, TierConfig> = {
       strategist: 0.3,
       gatekeeper: 0.1,
       verifier: 0.0,
+      reporter: 0.1,
     },
     features: {
       verifier: true,

@@ -32,7 +32,7 @@
     },
     "spousal-workflow": {
       "description": "Internal workflow templates (NOT output format)",
-      "inject_to": ["strategist", "gatekeeper"],
+      "inject_to": ["strategist", "gatekeeper", "reporter"],
       "priority": 4,
       "files": [
         "primary_assess_template.md",
@@ -61,7 +61,7 @@
     },
     "audit-report-output": {
       "description": "Final report format, Poison Pill templates, tier-based output constraints",
-      "inject_to": ["audit-manager"],
+      "inject_to": ["reporter"],
       "priority": 7,
       "files": [
         "client_report_template.md"
