@@ -6,17 +6,19 @@
 
 ## Overview
 
-The audit system orchestrates a team of specialized AI agents to simulate real immigration lawyer audit workflows. It produces a **Defensibility Score** based on historical Federal Court jurisprudence.
+The audit system orchestrates a team of 7 specialized AI agents to simulate real immigration lawyer audit workflows. It produces a **Defensibility Score** based on historical Federal Court jurisprudence.
 
 ## Agent Team
 
-| Agent | Role | Primary Tasks |
-|-------|------|---------------|
-| **AuditManager** | Orchestrator | Case decomposition, workflow control, final report |
-| **Detective** | Investigator | Case law search, policy lookup via MCP/KG |
-| **Strategist** | Analyst | Risk assessment, defense arguments, evidence planning |
-| **Gatekeeper** | Reviewer | Compliance check, refusal triggers, quality control |
-| **Verifier** | Validator | Citation accuracy check (all tiers) |
+| Agent | Stage | Role | Primary Tasks |
+|-------|-------|------|---------------|
+| **Intake** | 0 | Extractor | Document extraction, intent recognition, structured profile |
+| **AuditManager** | 1,5 | Orchestrator | Case decomposition, workflow control, final judgment |
+| **Detective** | 2 | Investigator | Case law search, policy lookup via MCP/KG |
+| **Strategist** | 3 | Analyst | Risk assessment, defense arguments, evidence planning |
+| **Gatekeeper** | 4 | Reviewer | Compliance check, refusal triggers, quality control |
+| **Verifier** | 4 | Validator | Citation accuracy check (all tiers) |
+| **Reporter** | 5.5 | Formatter | Report generation with Judicial Authority theme |
 
 ---
 
@@ -24,9 +26,18 @@ The audit system orchestrates a team of specialized AI agents to simulate real i
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│  Stage 1: INTAKE                                                │
-│  - AuditManager receives client profile                         │
-│  - Identifies application type (spousal, study, etc.)          │
+│  Stage 0: DOCUMENT EXTRACTION                                   │
+│  - Intake agent extracts text from uploaded documents           │
+│  - Recognizes application intent (spousal, study, etc.)         │
+│  - Produces structured ApplicantProfile JSON                    │
+│  - No legal analysis - pure extraction and normalization        │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│  Stage 1: ORCHESTRATION                                         │
+│  - AuditManager receives ApplicantProfile from Intake           │
+│  - Identifies application type (spousal, study, etc.)           │
 │  - Decomposes into auditable components                         │
 └─────────────────────────────────────────────────────────────────┘
                               │
@@ -68,11 +79,22 @@ The audit system orchestrates a team of specialized AI agents to simulate real i
                               │
                               ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│  Stage 5: FINALIZATION                                          │
+│  Stage 5: JUDGMENT                                              │
 │  - AuditManager reviews all findings                            │
-│  - Loops back if gaps exist                                     │
-│  - Compiles Final Audit Report                                  │
+│  - Assigns Defensibility Score (0-100)                          │
+│  - Makes verdict: GO / CAUTION / NO-GO                          │
+│  - Packages AuditJudgment struct                                │
 │  - If verification failed: Include INCOMPLETE warning           │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│  Stage 5.5: REPORT GENERATION                                   │
+│  - Reporter receives AuditJudgment from AuditManager            │
+│  - Selects tier-based template (Guest/Pro/Ultra)                │
+│  - Synthesizes all agent outputs into cohesive narrative        │
+│  - Applies Judicial Authority theme (Navy/Gold/Paper)           │
+│  - Generates Markdown + PDF output                              │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
@@ -80,13 +102,23 @@ The audit system orchestrates a team of specialized AI agents to simulate real i
 
 ## Delegation Rules
 
+### Intake MUST:
+- Extract ALL text from uploaded documents using file_content_extract
+- Recognize application intent from document types and content
+- Produce structured ApplicantProfile with normalized fields
+- NEVER perform legal analysis - pure data extraction only
+- Pass ApplicantProfile to AuditManager
+
 ### AuditManager MUST:
+- Receive ApplicantProfile from Intake (never extract directly)
 - Use Detective for ALL legal research (never hallucinate case law)
 - Use Strategist for argument construction
 - Use Gatekeeper for compliance validation
 - Use Verifier for citation checks (all tiers, mandatory)
 - Track verification iterations and enforce tier limits
 - Handle INCOMPLETE reports when verification fails after max retries
+- Make final judgment (score, verdict) BEFORE delegating to Reporter
+- Delegate to Reporter for report formatting (never format reports directly)
 
 ### Detective MUST:
 - Search MCP services BEFORE web search
@@ -103,6 +135,14 @@ The audit system orchestrates a team of specialized AI agents to simulate real i
 - Validate output compliance
 - Flag critical issues
 - Validate document lists (DOCUMENT_LIST tasks, all tiers mandatory)
+
+### Reporter MUST:
+- Receive AuditJudgment struct from AuditManager (never compute scores/verdicts)
+- Apply Judicial Authority theme consistently
+- Use tier-appropriate template (Guest/Pro/Ultra depth)
+- Include all required sections: Disclaimer, Summary, Score, Evidence, Recommendations
+- Output Markdown AND PDF to case directory
+- Never modify the judgment - presentation only
 
 ---
 
