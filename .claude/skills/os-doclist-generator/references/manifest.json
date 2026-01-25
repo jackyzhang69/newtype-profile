@@ -1,0 +1,47 @@
+{
+  "name": "os-doclist-generator",
+  "version": "1.0.0",
+  "description": "IRCC document checklist generator with conditional logic",
+  "categories": {
+    "schema": {
+      "name": "Output Schema",
+      "files": [
+        {
+          "path": "checklist_schema.json",
+          "title": "Checklist JSON Schema",
+          "description": "Complete JSON schema for generated document lists",
+          "topics": ["forms", "supporting_documents", "logic_types"]
+        }
+      ]
+    },
+    "reference": {
+      "name": "Reference Data",
+      "files": [
+        {
+          "path": "ircc_forms_catalog.md",
+          "title": "IRCC Forms Catalog",
+          "description": "Official IRCC form numbers and purposes",
+          "topics": ["IMM forms", "form numbers", "anti-hallucination"]
+        },
+        {
+          "path": "client_variables.md",
+          "title": "Client Variables Reference",
+          "description": "All client profile fields and valid values",
+          "topics": ["sponsor", "applicant", "relationship", "dependents"]
+        }
+      ]
+    },
+    "logic": {
+      "name": "Conditional Logic",
+      "files": [
+        {
+          "path": "conditional_logic.md",
+          "title": "Conditional Logic Rules",
+          "description": "How conditions are evaluated for document requirements",
+          "topics": ["ONE_OF", "ALL_REQUIRED", "AT_LEAST_N", "CONDITIONAL"]
+        }
+      ]
+    }
+  },
+  "last_updated": "2026-01-25"
+}

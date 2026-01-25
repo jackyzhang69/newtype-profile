@@ -1,0 +1,41 @@
+{
+  "name": "os-knowledge-updater",
+  "version": "1.0.0",
+  "description": "Update existing app skill references from user-specified sources",
+  "categories": {
+    "workflow": {
+      "name": "Update Workflow",
+      "files": [
+        {
+          "path": "update_workflow.md",
+          "title": "Update Process",
+          "description": "Step-by-step update workflow with validation",
+          "topics": ["extract", "merge", "validate", "write"]
+        }
+      ]
+    },
+    "strategies": {
+      "name": "Merge Strategies",
+      "files": [
+        {
+          "path": "merge_strategies.md",
+          "title": "Conflict Resolution",
+          "description": "How to handle conflicts between existing and new knowledge",
+          "topics": ["merge", "replace", "append", "conflict"]
+        }
+      ]
+    },
+    "backup": {
+      "name": "Backup Policy",
+      "files": [
+        {
+          "path": "backup_policy.md",
+          "title": "Backup and Rollback",
+          "description": "How backups are created and how to rollback changes",
+          "topics": ["backup", "rollback", "recovery"]
+        }
+      ]
+    }
+  },
+  "last_updated": "2026-01-25"
+}

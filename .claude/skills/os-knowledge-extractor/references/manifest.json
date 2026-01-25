@@ -1,0 +1,41 @@
+{
+  "name": "os-knowledge-extractor",
+  "version": "1.0.0",
+  "description": "Domain knowledge extraction from local files or MCP services",
+  "categories": {
+    "extraction": {
+      "name": "Extraction Rules",
+      "files": [
+        {
+          "path": "extraction_rules.md",
+          "title": "Pattern Extraction Methodology",
+          "description": "How to identify and structure risk patterns, eligibility rules",
+          "topics": ["risk_patterns", "eligibility", "case_analysis"]
+        }
+      ]
+    },
+    "mcp": {
+      "name": "MCP Bootstrap",
+      "files": [
+        {
+          "path": "mcp_bootstrap.md",
+          "title": "MCP Search Strategies",
+          "description": "How to effectively search case law and operation manuals",
+          "topics": ["caselaw_search", "operation_manual", "help_centre"]
+        }
+      ]
+    },
+    "output": {
+      "name": "Output Templates",
+      "files": [
+        {
+          "path": "output_templates.md",
+          "title": "Generated File Templates",
+          "description": "Format templates for extracted knowledge files",
+          "topics": ["risk_patterns.json", "baseline_rules.md", "caselaw_query_patterns.json"]
+        }
+      ]
+    }
+  },
+  "last_updated": "2026-01-25"
+}

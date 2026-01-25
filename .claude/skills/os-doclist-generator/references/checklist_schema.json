@@ -1,0 +1,175 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "IRCC Document Checklist",
+  "type": "object",
+  "required": ["meta", "forms", "supporting_documents"],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "required": ["generated_at", "case_id", "app_type"],
+      "properties": {
+        "generated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "case_id": {
+          "type": "string"
+        },
+        "app_type": {
+          "type": "string",
+          "enum": ["spousal", "study", "work", "visitor", "pr"]
+        },
+        "sponsor": {
+          "$ref": "#/definitions/sponsor"
+        },
+        "applicant": {
+          "$ref": "#/definitions/applicant"
+        },
+        "relationship": {
+          "$ref": "#/definitions/relationship"
+        },
+        "simplified_requirements": {
+          "type": "boolean",
+          "default": false
+        }
+      }
+    },
+    "forms": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/documentGroup"
+      }
+    },
+    "supporting_documents": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/definitions/documentGroup"
+      }
+    },
+    "notes": {
+      "type": "object",
+      "properties": {
+        "translation": { "type": "string" },
+        "format": { "type": "string" },
+        "police_certificate": { "type": "string" },
+        "country_specific": { "type": "string" }
+      }
+    }
+  },
+  "definitions": {
+    "sponsor": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "status": {
+          "type": "string",
+          "enum": ["citizen", "permanent_resident", "indian_status"]
+        },
+        "is_overseas": { "type": "boolean" },
+        "marital_history": {
+          "type": "string",
+          "enum": ["never_married", "divorced", "widowed", "annulled"]
+        },
+        "province": { "type": "string" }
+      }
+    },
+    "applicant": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "nationality": { "type": "string" },
+        "current_status_in_canada": {
+          "type": "string",
+          "enum": ["visitor", "worker", "student", "none"]
+        },
+        "marital_history": {
+          "type": "string",
+          "enum": ["never_married", "divorced", "widowed", "annulled"]
+        },
+        "has_dependent_children": { "type": "boolean" }
+      }
+    },
+    "relationship": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["marriage", "common_law", "conjugal"]
+        },
+        "cohabiting": { "type": "boolean" },
+        "has_shared_children": { "type": "boolean" },
+        "both_first_marriage": { "type": "boolean" },
+        "married_over_2_years": { "type": "boolean" }
+      }
+    },
+    "documentGroup": {
+      "type": "object",
+      "required": ["group_id", "title", "logic", "items"],
+      "properties": {
+        "group_id": { "type": "string" },
+        "title": { "type": "string" },
+        "logic": {
+          "type": "string",
+          "enum": ["ALL_REQUIRED", "ONE_OF", "AT_LEAST_N", "CONDITIONAL"]
+        },
+        "minimum_required": {
+          "type": "integer",
+          "description": "Only for AT_LEAST_N logic"
+        },
+        "condition": {
+          "type": "string",
+          "description": "JavaScript-like condition expression"
+        },
+        "applies": { "type": "boolean" },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/documentItem"
+          }
+        }
+      }
+    },
+    "documentItem": {
+      "type": "object",
+      "required": ["doc_id", "name", "priority"],
+      "properties": {
+        "doc_id": { "type": "string" },
+        "name": { "type": "string" },
+        "name_zh": { "type": "string" },
+        "form_number": {
+          "type": "string",
+          "pattern": "^IMM [0-9]+$"
+        },
+        "priority": {
+          "type": "string",
+          "enum": ["mandatory", "important", "optional"]
+        },
+        "applies_to": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["sponsor", "applicant", "dependent"]
+          }
+        },
+        "condition": { "type": "string" },
+        "applies": { "type": "boolean" },
+        "alternatives": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "specifications": {
+          "type": "object",
+          "properties": {
+            "format": { "type": "string" },
+            "translation_required": { "type": "boolean" },
+            "signature_required": {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "notes": { "type": "string" }
+          }
+        }
+      }
+    }
+  }
+}
