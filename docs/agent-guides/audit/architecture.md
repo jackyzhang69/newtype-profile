@@ -63,6 +63,17 @@ Immi-OS 采用**模块化积木式架构**，将复杂的移民审计流程分�
 - **可替换**：可以用不同模型/配置替换任意 Agent
 - **可组合**：可以跳过或重复某些 Agent
 
+**职责边界（重要）**：
+
+| 职责 | 归属 | 说明 |
+|------|------|------|
+| **Disclaimer** | Reporter + `core-reporter` skill | 免责声明是报告输出的一部分，不是 app skill 的职责 |
+| **禁止用语检查** | Reporter agent prompt | "Guaranteed", "100%" 等在生成时拦截 |
+| **输出格式/长度** | `core-reporter` + tier config | 按 tier 强制执行 |
+| **引用验证** | Verifier agent | 运行时验证，非结构检查 |
+
+**原则**：App 级别的 skill（如 `spousal-*`）只负责**领域知识**，不负责**输出合规**。输出合规由 `core-reporter` 统一管理。
+
 ### Layer 2: Skill 积木 (16块)
 
 Skills 是领域知识的载体，按应用类型和功能分类：

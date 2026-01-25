@@ -19,6 +19,8 @@ This skill extends `core-reporter` with spousal-specific:
 - Document list generation rules
 - Submission letter formatting
 
+**Note**: Disclaimer, prohibited language checks, and output length limits are handled by `core-reporter`. This skill only provides **spousal-specific content templates**.
+
 ## Output Types
 
 The Reporter generates four types of documents for spousal cases:

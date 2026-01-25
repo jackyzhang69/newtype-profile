@@ -1,7 +1,8 @@
 # PROJECT KNOWLEDGE BASE
 
-**Generated:** 2026-01-09T15:38:00+09:00
-**Commit:** 0581793
+> **Today's Date:** Run `date "+%Y-%m-%d"` to get current date. NEVER use year 2024 in any output.
+
+**Last Updated:** 2026-01-25
 **Branch:** dev
 
 ## OVERVIEW
@@ -133,6 +134,7 @@ oh-my-opencode/
 - **Separate test from impl**: Same commit always
 - **Double skill injection**: Don't return `skills` property in agent config if using `buildAuditPrompt` (see pitfalls.md)
 - **Exact tool name matching**: Use case-insensitive matching for tool names in hooks (see pitfalls.md)
+- **Temp files outside ./tmp/**: ALL temporary files MUST be saved to `./tmp/` directory
 
 ## ⚠️ MANDATORY: READ PITFALLS BEFORE CODING
 
@@ -315,4 +317,12 @@ bun test               # Run tests (76 test files, 2559+ BDD assertions)
 | Framework | Common pitfalls: agent empty response... | `docs/agent-guides/framework/pitfalls.md` |
 | Framework | OpenCode/OMO framework: plugin system... | `docs/agent-guides/framework/opencode-omo.md` |
 | Framework | Agent/skill selection guide: when to ... | `docs/agent-guides/framework/agent-skill-selection.md` |
+| Audit | Archived milestones: spousal knowledg... | `docs/agent-guides/audit/completed-milestones.md` |
+| Framework | Guide for building custom multi-agent... | `docs/agent-guides/framework/building-agentic-workflows.md` |
+| Audit | 搭积木式多智能体审计系统设计：6 Agents, 16 Skills, 3... | `docs/agent-guides/audit/architecture.md` |
+| OS System | os-compliance-checker: Validate app c... | `.claude/skills/os-compliance-checker/SKILL.md` |
+| OS System | os-doclist-generator: Generate custom... | `.claude/skills/os-doclist-generator/SKILL.md` |
+| OS System | os-knowledge-extractor: Extract knowl... | `.claude/skills/os-knowledge-extractor/SKILL.md` |
+| OS System | os-knowledge-updater: Update existing... | `.claude/skills/os-knowledge-updater/SKILL.md` |
+| OS System | os-app-builder agent: Orchestrate ful... | `.claude/agents/os-app-builder.md` |
 <!-- KNOWLEDGE_INDEX:END -->
