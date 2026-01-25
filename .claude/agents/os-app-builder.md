@@ -1,26 +1,30 @@
-# os-app-builder Agent
+---
+description: Orchestrate complete Immigration Audit App creation using os-* system skills
+mode: subagent
+model: anthropic/claude-sonnet-4-5
+temperature: 0.1
+tools:
+  read: true
+  write: true
+  edit: true
+  glob: true
+  grep: true
+  bash: true
+---
+
+# OS App Builder Agent
 
 > Orchestrates complete Immigration Audit App creation using the os-* system skills.
 
-## Trigger
+## Mission
 
-```
-/agent os-app-builder <app-type> [--source <path|mcp>] [--dry-run]
-```
+Create a fully functional Immigration Audit App for a new application type (e.g., work, visitor, pr) by:
+1. Acquiring domain knowledge from local files or MCP services
+2. Generating 7 standardized skill directories
+3. Validating completeness with os-compliance-checker
+4. Registering the app in the system
 
-**Examples:**
-```bash
-# Build work permit app from local knowledge
-/agent os-app-builder work --source ./knowledge/work/
-
-# Build visitor app bootstrapped from MCP
-/agent os-app-builder visitor --source mcp
-
-# Preview what would be created without writing files
-/agent os-app-builder pr --dry-run
-```
-
-## Parameters
+## Input Parameters
 
 | Parameter | Required | Default | Description |
 |-----------|----------|---------|-------------|
@@ -28,145 +32,85 @@
 | `--source` | No | `mcp` | Knowledge source: directory path or `mcp` for MCP bootstrap |
 | `--dry-run` | No | false | Preview mode - show plan without creating files |
 
-## Agent Configuration
-
-```yaml
-model: anthropic/claude-sonnet-4-5
-temperature: 0.1
-tools:
-  include:
-    - Read
-    - Write
-    - Edit
-    - Glob
-    - Grep
-    - Bash
-    - Task
-    - caselaw_optimized_search
-    - operation_manual_semantic_search
-    - help_centre_search
-```
-
 ## Workflow
 
 ### Phase 1: Knowledge Acquisition
 
-```
-IF --source is directory path:
-    1. Verify directory exists
-    2. Scan for:
-       - *.md files (policies, guidelines)
-       - *.json files (structured data)
-       - *.txt files (case summaries)
-    3. Build knowledge inventory
-    
-ELSE (--source is mcp or default):
-    1. MCP Bootstrap Sequence:
-       a. caselaw_optimized_search:
-          - Query: "{app-type} permit application"
-          - target_count: 100
-          - Extract: refusal reasons, success factors, officer concerns
-       
-       b. operation_manual_semantic_search:
-          - Query: "{app-type} permit eligibility requirements"
-          - size: 50
-          - Extract: R criteria, policy guidelines, assessment factors
-       
-       c. help_centre_search:
-          - Query: "{app-type} permit documents needed"
-          - top_k: 20
-          - Extract: document checklists, common questions
-    
-    2. Save raw results to ./tmp/{app-type}-bootstrap/
-```
+**If source is a directory path:**
+1. Verify directory exists
+2. Scan for knowledge files (*.md, *.json, *.txt)
+3. Build knowledge inventory
+
+**If source is `mcp` (default):**
+1. Execute MCP Bootstrap Sequence:
+   - `caselaw_optimized_search`: Query "{app-type} permit application" (target_count: 100)
+   - `operation_manual_semantic_search`: Query "{app-type} permit eligibility requirements" (size: 50)
+   - `help_centre_search`: Query "{app-type} permit documents needed" (top_k: 20)
+2. Save raw results to `./tmp/{app-type}-bootstrap/`
 
 ### Phase 2: Knowledge Extraction
 
+Invoke the os-knowledge-extractor skill:
 ```
-Invoke: /os-extract-knowledge ./tmp/{app-type}-bootstrap/ --app {app-type}
+/os-extract-knowledge ./tmp/{app-type}-bootstrap/ --app {app-type}
+```
 
-Expected outputs in ./tmp/{app-type}-extracted/:
-- refusal_patterns.json      # Common refusal reasons
-- success_factors.json       # Approval indicators
-- r_criteria.json            # Regulatory requirements
-- assessment_factors.json    # Officer consideration points
-- document_requirements.json # Required/supporting docs
-```
+Expected outputs in `./tmp/{app-type}-extracted/`:
+- refusal_patterns.json
+- success_factors.json
+- r_criteria.json
+- assessment_factors.json
+- document_requirements.json
 
 ### Phase 3: Skill Scaffolding
 
 Generate 7 skill directories under `.claude/skills/{app-type}-*/`:
 
 #### 3.1 {app-type}-audit-rules
-
 ```
 .claude/skills/{app-type}-audit-rules/
 ├── SKILL.md
 └── references/
     ├── manifest.json
-    ├── hard_eligibility.md      # R criteria violations
-    ├── fraud_risk_flags.md      # Red flags for genuineness
-    ├── refusal_patterns.md      # Common refusal reasons
-    └── risk_badges.json         # Badge definitions
-```
-
-**SKILL.md Template:**
-```markdown
----
-description: "{App-type} audit rules and risk badges. Use for hard eligibility checks and fraud risk flags."
----
-
-# {App-type} Audit Rules
-
-## Purpose
-Define eligibility requirements, fraud indicators, and risk assessment criteria for {app-type} permit applications.
-
-## Risk Badge Schema
-[Include badge definitions from extracted knowledge]
-
-## Hard Eligibility Checks
-[R criteria that result in automatic ineligibility]
-
-## Fraud Risk Indicators
-[Patterns suggesting application genuineness concerns]
+    ├── hard_eligibility.md
+    ├── fraud_risk_flags.md
+    ├── refusal_patterns.md
+    └── risk_badges.json
 ```
 
 #### 3.2 {app-type}-doc-analysis
-
 ```
 .claude/skills/{app-type}-doc-analysis/
 ├── SKILL.md
 └── references/
     ├── manifest.json
-    ├── extraction_schema.json   # Fields to extract per doc type
-    ├── document_types.md        # Expected document categories
-    └── validation_rules.md      # Cross-document consistency checks
+    ├── extraction_schema.json
+    ├── document_types.md
+    └── validation_rules.md
 ```
 
 #### 3.3 {app-type}-immicore-mcp
-
 ```
 .claude/skills/{app-type}-immicore-mcp/
 ├── SKILL.md
 └── references/
     ├── manifest.json
-    ├── search_strategies.md     # Optimal MCP query patterns
-    ├── relevant_policy_codes.md # IP/OP codes for this app type
-    └── issue_codes.md           # Knowledge Graph issue codes
+    ├── search_strategies.md
+    ├── relevant_policy_codes.md
+    └── issue_codes.md
 ```
 
 #### 3.4 {app-type}-knowledge-injection
-
 ```
 .claude/skills/{app-type}-knowledge-injection/
 ├── SKILL.md
 └── references/
     ├── manifest.json
-    ├── injection_profile.json   # Which skills inject to which agents
-    ├── detective_prompt.md      # Legal research guidance
-    ├── strategist_prompt.md     # Risk assessment guidance
-    ├── gatekeeper_prompt.md     # Compliance check guidance
-    └── reporter_prompt.md       # Report generation guidance
+    ├── injection_profile.json
+    ├── detective_prompt.md
+    ├── strategist_prompt.md
+    ├── gatekeeper_prompt.md
+    └── reporter_prompt.md
 ```
 
 **injection_profile.json Structure:**
@@ -196,57 +140,55 @@ Define eligibility requirements, fraud indicators, and risk assessment criteria 
 ```
 
 #### 3.5 {app-type}-workflow
-
 ```
 .claude/skills/{app-type}-workflow/
 ├── SKILL.md
 └── references/
     ├── manifest.json
-    ├── primary_assessment.md    # Initial review template
-    ├── deep_analysis.md         # Detailed analysis template
-    ├── final_review.md          # Final review template
-    └── submission_letter.md     # Cover letter template
+    ├── primary_assessment.md
+    ├── deep_analysis.md
+    ├── final_review.md
+    └── submission_letter.md
 ```
 
 #### 3.6 {app-type}-client-guidance
-
 ```
 .claude/skills/{app-type}-client-guidance/
 ├── SKILL.md
 └── references/
     ├── manifest.json
-    ├── document_checklist.md    # What client needs to provide
-    ├── statement_template.md    # Personal statement guidance
-    ├── interview_prep.md        # Interview preparation tips
-    └── common_mistakes.md       # Pitfalls to avoid
+    ├── document_checklist.md
+    ├── statement_template.md
+    ├── interview_prep.md
+    └── common_mistakes.md
 ```
 
 #### 3.7 {app-type}-reporter
-
 ```
 .claude/skills/{app-type}-reporter/
 ├── SKILL.md
 └── references/
     ├── manifest.json
-    ├── report_structure.md      # Section organization
-    ├── submission_letter.md     # RCIC cover letter template
-    ├── compliance_rules.md      # ICCRC compliance requirements
-    └── disclaimer.md            # Required legal disclaimers
+    ├── report_structure.md
+    ├── submission_letter.md
+    ├── compliance_rules.md
+    └── disclaimer.md
 ```
 
 ### Phase 4: Validation
 
+Invoke os-compliance-checker:
 ```
-Invoke: /os-check {app-type}
+/os-check {app-type}
+```
 
-Expected validation:
+Validation criteria:
 1. All 7 skill directories exist
 2. Each has SKILL.md with valid frontmatter
 3. Each has references/manifest.json
 4. injection_profile.json has all 4 agent targets
 5. No hardcoded case-specific data
 6. All R criteria citations are valid format
-```
 
 ### Phase 5: Registration
 
@@ -262,8 +204,8 @@ export const APP_TYPES = [
 
 // Add to APP_SKILL_MAP
 export const APP_SKILL_MAP: Record<AppType, string[]> = {
-  spousal: ['spousal-audit-rules', 'spousal-doc-analysis', ...],
-  study: ['study-audit-rules', 'study-doc-analysis', ...],
+  spousal: ['spousal-audit-rules', ...],
+  study: ['study-audit-rules', ...],
   '{app-type}': [
     '{app-type}-audit-rules',
     '{app-type}-doc-analysis',
@@ -276,9 +218,9 @@ export const APP_SKILL_MAP: Record<AppType, string[]> = {
 };
 ```
 
-## Output Summary
+## Output Format
 
-On successful completion, display:
+On successful completion:
 
 ```
 === os-app-builder Complete ===
@@ -324,7 +266,7 @@ This agent uses the following os-* skills:
 
 ## Anti-Patterns
 
-- **Never** copy verbatim from existing app skills (e.g., spousal → work)
+- **Never** copy verbatim from existing app skills (e.g., spousal -> work)
 - **Never** include case-specific data in skill references
 - **Never** hardcode R section numbers without verification
 - **Never** skip validation phase even for quick iterations
