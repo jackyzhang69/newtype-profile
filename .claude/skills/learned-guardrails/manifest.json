@@ -1,13 +1,16 @@
 {
-  "version": "1.0",
+  "version": "1.1",
   "name": "learned-guardrails",
-  "description": "经验知识防御层 - 从审核错误中学习的规则库",
+  "description": "经验知识防御层 - 从审核错误和律师反馈中学习的规则库",
   "base_path": "rules",
   "categories": {
     "semantic_confusion": "语义混淆 - 概念边界错误，混淆相似但不同的概念",
     "timeline_issues": "时间线问题 - 日期解读错误，时间顺序理解错误",
     "document_inconsistency": "文档不一致 - 跨文档校验失败，信息冲突",
-    "cultural_context": "文化背景 - 文化差异导致的理解偏差"
+    "cultural_context": "文化背景 - 文化差异导致的理解偏差",
+    "form_filling": "表格填写 - 申请表格填写技巧和常见错误",
+    "submission": "申请提交 - 提交流程和技术要求",
+    "academic_history": "学术历史 - 学习记录和成绩相关问题"
   },
   "severity_levels": {
     "critical": "可能导致错误的 CRITICAL 风险判定",
@@ -44,19 +47,114 @@
       ],
       "created_at": "2026-01-18",
       "updated_at": "2026-01-18"
+    },
+    {
+      "id": "RULE-003",
+      "path": "study/form/RULE-003-completion-date-buffer.md",
+      "category": "form_filling",
+      "triggers": [
+        "expected completion date equals LOA end date",
+        "预计完成日期等于项目结束日期",
+        "completion date same as program end",
+        "no buffer on completion date",
+        "学签到期日与项目结束日相同"
+      ],
+      "semantic_description": "+90 Days Completion Date Buffer Rule",
+      "severity": "medium",
+      "learned_from": "Immigration Lawyer Feedback 2026-01-26",
+      "app_types": [
+        "study"
+      ],
+      "created_at": "2026-01-26",
+      "updated_at": "2026-01-26"
+    },
+    {
+      "id": "RULE-004",
+      "path": "study/form/RULE-004-employment-gap.md",
+      "category": "form_filling",
+      "triggers": [
+        "employment gap",
+        "时间空档",
+        "unexplained gap",
+        "未解释的空白",
+        "gap in employment history",
+        "就业历史空白",
+        "no activity listed for period",
+        "gap between jobs"
+      ],
+      "semantic_description": "Employment History Gap Filling with Full-time Student",
+      "severity": "medium",
+      "learned_from": "Immigration Lawyer Feedback 2026-01-26",
+      "app_types": [
+        "study"
+      ],
+      "created_at": "2026-01-26",
+      "updated_at": "2026-01-26"
+    },
+    {
+      "id": "RULE-005",
+      "path": "study/submission/RULE-005-ip-location-check.md",
+      "category": "submission",
+      "triggers": [
+        "inside Canada application",
+        "境内申请",
+        "IMM 5555",
+        "IMM 5709",
+        "study permit extension",
+        "学签延期",
+        "change status in Canada",
+        "境内转身份"
+      ],
+      "semantic_description": "IP Address / Location Check for Inside Canada Applications",
+      "severity": "high",
+      "learned_from": "Immigration Lawyer Feedback 2026-01-26",
+      "app_types": [
+        "study"
+      ],
+      "created_at": "2026-01-26",
+      "updated_at": "2026-01-26"
+    },
+    {
+      "id": "RULE-006",
+      "path": "study/academic/RULE-006-parttime-gap-disclosure.md",
+      "category": "academic_history",
+      "triggers": [
+        "part-time semester",
+        "兼职学期",
+        "reduced course load",
+        "减少课程",
+        "academic gap",
+        "学习空档",
+        "leave of absence",
+        "休学",
+        "break in studies",
+        "withdrew from courses",
+        "dropped courses"
+      ],
+      "semantic_description": "Part-time / Gap Proactive Disclosure in Study Plan",
+      "severity": "medium",
+      "learned_from": "Immigration Lawyer Feedback 2026-01-26",
+      "app_types": [
+        "study"
+      ],
+      "created_at": "2026-01-26",
+      "updated_at": "2026-01-26"
     }
   ],
   "statistics": {
-    "total_rules": 1,
+    "total_rules": 5,
     "by_category": {
       "semantic_confusion": 1,
       "timeline_issues": 0,
       "document_inconsistency": 0,
-      "cultural_context": 0
+      "cultural_context": 0,
+      "form_filling": 2,
+      "submission": 1,
+      "academic_history": 1
     },
     "by_app_type": {
       "spousal": 0,
-      "study": 0,
+      "study": 4,
       "core": 1
     }
   }

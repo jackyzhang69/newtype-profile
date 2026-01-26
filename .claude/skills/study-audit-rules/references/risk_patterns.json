@@ -342,6 +342,91 @@
           "mitigation": "强调学术价值、职业发展、回国计划"
         }
       ]
+    },
+    "submission_location": {
+      "id": "SUBMISSION_LOCATION",
+      "name": "申请提交位置风险",
+      "description": "境内申请必须从加拿大境内提交，IRCC 系统检测 IP 地址",
+      "patterns": [
+        {
+          "id": "LOCATION_MISMATCH",
+          "name": "提交位置不匹配",
+          "severity": "high",
+          "description": "境内申请但从加拿大境外网络提交",
+          "indicators": [
+            "申请人在境外旅行期间提交",
+            "使用境外 VPN",
+            "代理人从境外提交",
+            "边境城市使用美国网络"
+          ],
+          "mitigation": "确保从加拿大境内网络提交，关闭 VPN，验证 IP 地址显示加拿大",
+          "guardrail_rule": "RULE-005"
+        }
+      ]
+    },
+    "form_filling": {
+      "id": "FORM_FILLING",
+      "name": "表格填写风险",
+      "description": "申请表格填写的常见问题和技巧",
+      "patterns": [
+        {
+          "id": "COMPLETION_DATE_NO_BUFFER",
+          "name": "预计完成日期无缓冲",
+          "severity": "medium",
+          "description": "预计完成日期与 LOA 结束日期相同，未留缓冲",
+          "indicators": [
+            "expected_completion_date == program_end_date",
+            "无额外时间完成论文/答辩"
+          ],
+          "mitigation": "将预计完成日期设为 LOA 结束日期 + 90 天",
+          "guardrail_rule": "RULE-003"
+        },
+        {
+          "id": "EMPLOYMENT_HISTORY_GAP",
+          "name": "就业历史存在空白",
+          "severity": "medium",
+          "description": "就业/活动历史中有未解释的时间空档",
+          "indicators": [
+            "时间段之间有超过 30 天的空白",
+            "学习期间未填写活动"
+          ],
+          "mitigation": "使用 'Full-time Student' 或其他适当活动填补空白",
+          "guardrail_rule": "RULE-004"
+        }
+      ]
+    },
+    "academic_history_issues": {
+      "id": "ACADEMIC_HISTORY_ISSUES",
+      "name": "学术历史问题",
+      "description": "学习记录中的潜在问题和披露要求",
+      "patterns": [
+        {
+          "id": "PARTTIME_UNDISCLOSED",
+          "name": "Part-time 学期未披露",
+          "severity": "medium",
+          "description": "成绩单显示有 Part-time 学期但学习计划未解释",
+          "indicators": [
+            "学期学分低于全日制标准",
+            "成绩单显示 part-time 状态",
+            "课程数量明显减少的学期"
+          ],
+          "mitigation": "在学习计划中主动解释原因，说明已解决",
+          "guardrail_rule": "RULE-006"
+        },
+        {
+          "id": "STUDY_GAP_UNDISCLOSED",
+          "name": "学习空档未披露",
+          "severity": "medium",
+          "description": "学习历史有中断但未在申请中解释",
+          "indicators": [
+            "休学记录",
+            "学期之间有较长间隔",
+            "退课或停学记录"
+          ],
+          "mitigation": "在学习计划中主动说明原因和当前状态",
+          "guardrail_rule": "RULE-006"
+        }
+      ]
     }
   },
   "severity_levels": {

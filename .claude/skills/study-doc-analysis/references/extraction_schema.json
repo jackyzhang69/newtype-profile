@@ -82,11 +82,27 @@
         "tuition_per_year": {"type": "number", "required": true},
         "total_tuition": {"type": "number", "required": false},
         "student_id": {"type": "string", "required": false},
-        "conditions": {"type": "array", "required": false}
+        "conditions": {"type": "array", "required": false},
+        "has_coop_component": {
+          "type": "boolean",
+          "required": false,
+          "description": "项目是否包含 Co-op/实习组件 (R186(w) 适用)",
+          "extraction_hints": ["co-op", "coop", "internship", "work placement", "work term", "实习", "工作学期"]
+        },
+        "coop_details": {
+          "type": "object",
+          "required": false,
+          "fields": {
+            "is_mandatory": {"type": "boolean", "description": "Co-op 是否为必修"},
+            "total_coop_terms": {"type": "number", "description": "Co-op 学期数量"},
+            "coop_duration_months": {"type": "number", "description": "Co-op 总时长（月）"}
+          }
+        }
       },
       "validations": [
         {"rule": "dli_number in DLI_LIST", "severity": "fatal"},
-        {"rule": "start_date > current_date", "severity": "warning"}
+        {"rule": "start_date > current_date", "severity": "warning"},
+        {"rule": "if has_coop_component, recommend co-op work permit", "severity": "info"}
       ]
     },
     "provincial_attestation_letter": {
