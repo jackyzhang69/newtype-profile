@@ -46,8 +46,19 @@ import {
 } from "../persistence/repositories/audit-log.repository"
 import {
   uploadReport,
+  uploadReportAnonymized,
   uploadAgentOutput,
 } from "../persistence/storage/documents"
+import {
+  saveDualReports,
+  type DualReportInput,
+} from "../persistence/repositories/report.repository"
+import {
+  processIntakePII,
+  processReportForPrivacy,
+  generateDualReports,
+  type ProcessReportOptions,
+} from "../privacy"
 
 export interface AuditWorkflowConfig {
   caseId: string
@@ -370,6 +381,110 @@ export class AuditSessionService {
       score_with_mitigation: result.scoreWithMitigation,
       recommendation: result.recommendation,
     }))
+  }
+
+  async savePIIById(
+    sessionId: string,
+    profile: CaseProfile,
+    userId?: string
+  ): Promise<string> {
+    return processIntakePII(sessionId, profile, userId)
+  }
+
+  async saveReportWithPrivacyById(
+    sessionId: string,
+    options: {
+      profile: CaseProfile
+      report: string
+      result: AuditResult
+      tier: string
+      reasoningChain?: string
+      executiveSummary?: string
+      anonymize?: boolean | "dual"
+      anonymizeLevel?: "minimal" | "conservative" | "aggressive"
+      userId?: string
+    }
+  ): Promise<{
+    standardReportId: string
+    anonymizedReportId?: string
+    piiId: string
+    knowledgeBaseId?: string
+    paths: {
+      standardMarkdown: string
+      anonymizedMarkdown?: string
+    }
+  }> {
+    const {
+      profile,
+      report,
+      result,
+      tier,
+      reasoningChain,
+      executiveSummary,
+      anonymize = "dual",
+      anonymizeLevel = "conservative",
+      userId,
+    } = options
+
+    const version = await getNextVersion(sessionId)
+
+    const standardMarkdownPath = await uploadReport(sessionId, version, report, "md")
+
+    const privacyResult = await processReportForPrivacy({
+      sessionId,
+      profile,
+      report,
+      reasoningChain,
+      executiveSummary,
+      verdict: result.verdict,
+      score: result.score,
+      scoreWithMitigation: result.scoreWithMitigation,
+      tier,
+      userId,
+      anonymizeLevel,
+      skipKnowledgeBase: anonymize === false,
+    })
+
+    let anonymizedMarkdownPath: string | undefined
+    let anonymizedReportId: string | undefined
+
+    if (anonymize === true || anonymize === "dual") {
+      anonymizedMarkdownPath = await uploadReportAnonymized(
+        sessionId,
+        version,
+        privacyResult.anonymizedReport,
+        "md"
+      )
+    }
+
+    const dualReportResult = await saveDualReports(sessionId, {
+      verdict: result.verdict,
+      score: result.score,
+      tier,
+      standardMarkdownPath,
+      anonymizedMarkdownPath,
+      anonymizeLevel,
+    })
+
+    return {
+      standardReportId: dualReportResult.standard.id,
+      anonymizedReportId: dualReportResult.anonymized?.id,
+      piiId: privacyResult.piiId,
+      knowledgeBaseId: privacyResult.knowledgeBaseId ?? undefined,
+      paths: {
+        standardMarkdown: standardMarkdownPath,
+        anonymizedMarkdown: anonymizedMarkdownPath,
+      },
+    }
+  }
+
+  async generateDualReportsById(
+    sessionId: string,
+    profile: CaseProfile,
+    report: string,
+    anonymizeLevel: "minimal" | "conservative" | "aggressive" = "conservative"
+  ): Promise<{ standard: string; anonymized: string; piiCount: number }> {
+    return generateDualReports(sessionId, profile, report, anonymizeLevel)
   }
 }
 

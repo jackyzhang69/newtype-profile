@@ -72,6 +72,28 @@ export async function uploadReport(
   return storagePath
 }
 
+export async function uploadReportAnonymized(
+  sessionId: string,
+  version: number,
+  content: string | Buffer,
+  format: "md" | "pdf" | "json"
+): Promise<string> {
+  const storagePath = storagePaths.reportAnonymized(sessionId, version, format)
+  
+  const contentType = format === "md" 
+    ? "text/markdown"
+    : format === "pdf"
+    ? "application/pdf"
+    : "application/json"
+  
+  await uploadFile(storagePath, content, {
+    contentType,
+    upsert: true,
+  })
+
+  return storagePath
+}
+
 export async function uploadAgentOutput(
   sessionId: string,
   stage: string,

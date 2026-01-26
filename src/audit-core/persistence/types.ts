@@ -215,6 +215,7 @@ export interface StoragePaths {
   source: (sessionId: string, filename: string) => string
   extracted: (sessionId: string, filename: string) => string
   report: (sessionId: string, version: number, ext: string) => string
+  reportAnonymized: (sessionId: string, version: number, ext: string) => string
   agentOutput: (sessionId: string, stage: string) => string
 }
 
@@ -222,6 +223,7 @@ export const storagePaths: StoragePaths = {
   source: (sessionId, filename) => `${sessionId}/source/${filename}`,
   extracted: (sessionId, filename) => `${sessionId}/extracted/${filename}`,
   report: (sessionId, version, ext) => `${sessionId}/reports/v${version}/report.${ext}`,
+  reportAnonymized: (sessionId, version, ext) => `${sessionId}/reports/v${version}/report_demo.${ext}`,
   agentOutput: (sessionId, stage) => `${sessionId}/agent-outputs/${stage}.json`,
 }
 

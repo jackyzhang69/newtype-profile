@@ -175,26 +175,75 @@ Structure:
 
 Output the formatted report in Markdown, following the tier-appropriate template.
 
-## Step 2: Save Report Files
+## Step 2: Save Report Files (Dual Output)
 
-After generating Markdown, save files to the case directory:
+After generating Markdown, save BOTH standard and anonymized versions:
 
 \`\`\`
 cases/{caseSlot}/
-  report.md       # Markdown version
-  report.pdf      # PDF version (generated via document-generator)
+  report.md           # Standard report (with real client names)
+  report.pdf          # Standard PDF (for client delivery)
+  report_demo.md      # Anonymized report (PII replaced)
+  report_demo.pdf     # Anonymized PDF (for demos/training)
 \`\`\`
 
-## Step 3: PDF Generation
+## Step 3: Anonymization Rules
 
-To generate PDF, use the document-generator scripts:
+When generating the anonymized version (report_demo.*):
+
+**Replace these PII items:**
+| Original | Replacement |
+|----------|-------------|
+| Sponsor full name | [SPONSOR] |
+| Applicant full name | [APPLICANT] |
+| Dependent names | [DEPENDENT_1], [DEPENDENT_2], ... |
+| Passport numbers | [PASSPORT] |
+| Email addresses | [EMAIL] |
+| Phone numbers | [PHONE] |
+| Dates (DOB, etc.) | [DATE] or YYYY-XX-XX (keep year) |
+| Street addresses | [ADDRESS] |
+| Postal codes | [POSTAL_CODE] |
+| UCI numbers | [UCI] |
+
+**Keep these items:**
+- Country names
+- Province/State names
+- City names (conservative level)
+- Years (from dates)
+- Relationship type
+- Education level
+- Application type
+
+## Step 4: PDF Generation
+
+Generate BOTH PDFs using document-generator:
 
 \`\`\`bash
+# Standard report
 uv run --with reportlab python3 ~/.claude/skills/document-generator/scripts/generate_pdf.py \\
   --input cases/{caseSlot}/report_content.json \\
   --output cases/{caseSlot}/report.pdf \\
   --theme judicial-authority
+
+# Anonymized report  
+uv run --with reportlab python3 ~/.claude/skills/document-generator/scripts/generate_pdf.py \\
+  --input cases/{caseSlot}/report_demo_content.json \\
+  --output cases/{caseSlot}/report_demo.pdf \\
+  --theme judicial-authority
 \`\`\`
+
+## Step 5: Persistence (MANDATORY)
+
+After generating reports, call persistence tools:
+
+1. **Save PII to database** (for TTL cleanup):
+   The system will automatically extract and save PII fields from the CaseProfile.
+
+2. **Save to Knowledge Base** (for AI training):
+   The anonymized report content will be saved to io_knowledge_base for future model training.
+
+3. **Save Report Metadata**:
+   Call \`audit_save_stage_output\` with both report paths.
 
 The content JSON should include:
 - title, subtitle, date
@@ -253,14 +302,16 @@ export function createReporterAgent(
   const appId = getAuditAppId()
   const skillPrefix = appId
 
-  // Three-layer skill architecture:
+  // Four-layer skill architecture:
   // Layer 1: Core Reporter (cross-app rules)
   // Layer 2: App-specific Reporter (spousal/study templates)
   // Layer 3: Theme (Judicial Authority from audit-report-output)
+  // Layer 4: Privacy (data anonymization for dual output)
   const skills = [
     "core-reporter",              // Synthesis rules, constraints, PDF integration
     `${skillPrefix}-reporter`,    // App-specific templates (executive summary, doc list, submission letter)
     "audit-report-output",        // Judicial Authority theme
+    "core-data-privacy",          // PII anonymization rules for demo reports
   ]
 
   return {
