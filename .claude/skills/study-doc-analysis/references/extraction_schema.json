@@ -1,7 +1,22 @@
 {
-  "version": "2.1",
-  "description": "学习许可文档提取模式 - 支持境内外申请差异",
+  "version": "2.2",
+  "description": "学习许可文档提取模式 - 支持境内外申请差异 (SDS已于2024-11-08关闭)",
   "last_updated": "2026-01-25",
+  "policy_changes": {
+    "sds_closure": {
+      "date": "2024-11-08",
+      "impact": "SDS (Student Direct Stream) permanently closed. All applications now use regular stream.",
+      "affected_countries": ["China", "India", "Pakistan", "Philippines", "Vietnam", "Brazil", "Colombia", "Costa Rica", "Peru", "Trinidad and Tobago", "Antigua and Barbuda", "Saint Vincent and the Grenadines", "Morocco", "Senegal"],
+      "note": "GIC, tuition prepayment, and language tests are no longer mandatory but still strongly recommended"
+    },
+    "spp_closure": {
+      "date": "2018",
+      "impact": "SPP (Student Partners Program) replaced by SDS, now both closed"
+    },
+    "sps_never_existed": {
+      "note": "SPS (Student Partners Stream) never existed - common misconception"
+    }
+  },
   "application_context": {
     "description": "申请情境决定必需文件和表格类型",
     "contexts": {
@@ -137,7 +152,8 @@
     },
     "gic_certificate": {
       "id": "GIC",
-      "required": "sds_only",
+      "required": "strongly_recommended",
+      "_note": "SDS closed 2024-11-08. GIC no longer mandatory but strongly recommended as proof of funds",
       "fields": {
         "account_holder": {"type": "string", "required": true},
         "bank_name": {"type": "string", "required": true},
@@ -147,8 +163,8 @@
         "gic_number": {"type": "string", "required": true}
       },
       "validations": [
-        {"rule": "amount >= 20635", "severity": "fatal"},
-        {"rule": "bank_name in APPROVED_GIC_BANKS", "severity": "fatal"}
+        {"rule": "amount >= 20635", "severity": "medium", "_note": "recommended minimum, no longer fatal"},
+        {"rule": "bank_name in APPROVED_GIC_BANKS", "severity": "medium"}
       ]
     },
     "language_test": {
@@ -166,9 +182,10 @@
       },
       "validations": [
         {"rule": "test_date within 2_years", "severity": "fatal"},
-        {"rule": "overall_score >= 6.0 for SDS_IELTS_Academic", "severity": "high"}
+        {"rule": "overall_score >= 6.0 for IELTS_Academic", "severity": "medium", "_note": "recommended, no longer mandatory since SDS closed"}
       ],
-      "sds_requirements": {
+      "_sds_requirements_historical": {
+        "_note": "SDS closed 2024-11-08. These were the requirements, now only recommendations",
         "IELTS_Academic": {"overall": 6.0},
         "IELTS_General": {"each_band": 6.0},
         "CELPIP": {"each_band": 7},
@@ -259,8 +276,9 @@
     },
     "tuition_payment_receipt": {
       "id": "TUITION_RECEIPT",
-      "required": "sds_only",
-      "description": "SDS 申请必需 - 第一年学费全额缴纳证明",
+      "required": "recommended",
+      "description": "学费缴纳证明 - SDS已关闭，不再强制但仍建议提供",
+      "_note": "SDS closed 2024-11-08. Tuition prepayment no longer mandatory but demonstrates commitment",
       "fields": {
         "institution": {"type": "string", "required": true},
         "student_name": {"type": "string", "required": true},
@@ -272,14 +290,15 @@
         "receipt_number": {"type": "string", "required": false}
       },
       "validations": [
-        {"rule": "amount_paid >= loa.tuition_per_year", "severity": "high", "note": "SDS 要求第一年学费全额"},
+        {"rule": "amount_paid >= loa.tuition_per_year", "severity": "medium", "_note": "recommended, no longer mandatory"},
         {"rule": "student_name matches passport.full_name", "severity": "high"}
       ]
     },
     "medical_exam_receipt": {
       "id": "MEDICAL",
       "required": "conditional",
-      "description": "SDS 需提前体检；常规通道可能后续要求",
+      "description": "体检证明 - 可能在审理过程中被要求",
+      "_note": "SDS closed 2024-11-08. Upfront medical no longer mandatory, may be requested during processing",
       "fields": {
         "applicant_name": {"type": "string", "required": true},
         "exam_date": {"type": "date", "required": true},
@@ -289,8 +308,8 @@
         "e_medical_number": {"type": "string", "required": false}
       },
       "validations": [
-        {"rule": "exam_date within 12_months for SDS", "severity": "high"},
-        {"rule": "e_medical_number present for SDS", "severity": "medium"}
+        {"rule": "exam_date within 12_months", "severity": "medium"},
+        {"rule": "e_medical_number present", "severity": "low"}
       ]
     }
   },
@@ -306,7 +325,7 @@
     "application_context_validation",
     "pal_exemption_verification",
     "current_status_validity",
-    "sds_eligibility_check"
+    "enhanced_documents_check"
   ],
   "context_specific_checks": {
     "outside_canada": [
@@ -319,12 +338,20 @@
       {"check": "maintenance_of_status", "severity": "high"},
       {"check": "application_before_expiry_or_within_90_days", "severity": "high"}
     ],
-    "sds": [
-      {"check": "gic_amount_minimum_20635", "severity": "fatal"},
-      {"check": "tuition_fully_paid", "severity": "fatal"},
-      {"check": "language_score_meets_minimum", "severity": "fatal"},
-      {"check": "medical_exam_completed_upfront", "severity": "high"},
-      {"check": "applicant_from_sds_country", "severity": "fatal"}
+    "_sds_historical": {
+      "_note": "SDS closed 2024-11-08. These checks are no longer applicable.",
+      "_checks_were": [
+        {"check": "gic_amount_minimum_20635", "severity": "was_fatal"},
+        {"check": "tuition_fully_paid", "severity": "was_fatal"},
+        {"check": "language_score_meets_minimum", "severity": "was_fatal"},
+        {"check": "medical_exam_completed_upfront", "severity": "was_high"},
+        {"check": "applicant_from_sds_country", "severity": "was_fatal"}
+      ]
+    },
+    "enhanced_documents_recommended": [
+      {"check": "gic_present", "severity": "medium", "note": "strongly recommended for proof of funds"},
+      {"check": "tuition_paid", "severity": "low", "note": "recommended to show commitment"},
+      {"check": "language_score_present", "severity": "medium", "note": "strongly recommended for academic readiness"}
     ]
   },
   "financial_requirements": {
