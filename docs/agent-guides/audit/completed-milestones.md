@@ -150,3 +150,177 @@
 | **Gatekeeper** | 合规校验与复核 | learned-guardrails, *-workflow |
 | **Verifier** | 引用验证 | (无特定 skill) |
 | **Intake** | 文档提取 | *-doc-analysis |
+
+---
+
+## 2026-01-26 Supabase 持久化迁移
+
+**完成日期**: 2026-01-26  
+**原始文档**: `.opencode/.plans/supabase-persistence-migration.md`
+
+### 完成内容
+
+| Phase | 状态 | 说明 |
+|-------|------|------|
+| Phase 1: 基础设施 | ✅ | 10 表, 8 函数, 41 索引, 19 RLS |
+| Phase 2: 持久化层 | ✅ | 7 Repositories + Storage |
+| Phase 2.5: Workflow Service | ✅ | AuditSessionService |
+| Phase 3: Agent 工具 | ✅ | 6 持久化工具 |
+| Phase 4.1: 无状态化 | ✅ | `*ById` 方法 |
+| Phase 4.2: 幂等性 | ✅ | unique_violation 处理 |
+| Phase 4.3: 乐观锁 | ✅ | version 列 + RPC |
+| Phase 4.4: Prompt 更新 | ✅ | AuditManager 持久化指令 |
+
+### 数据库表 (10个)
+
+| 表名 | 用途 |
+|------|------|
+| `io_audit_sessions` | 审计会话主表 |
+| `io_case_profiles` | 案例档案 (+ delete_at TTL) |
+| `io_stage_results` | Agent 阶段输出 |
+| `io_citations` | 法律引用 |
+| `io_documents` | 文档元数据 |
+| `io_reports` | 报告版本 |
+| `io_audit_log` | 操作日志 |
+| `io_config` | 系统配置 |
+| `io_case_pii` | PII 热数据 (30天TTL) |
+| `io_knowledge_base` | 匿名化训练数据 |
+
+### 关键实现
+
+- **Repository 层**: `src/audit-core/persistence/repositories/`
+- **Workflow Service**: `src/audit-core/workflow/audit-session.service.ts`
+- **乐观锁**: `updateSessionWithLock()`, `OptimisticLockError`
+- **迁移文件**: `supabase/migrations/2026012600000*.sql`
+
+---
+
+## 2026-01-26 数据脱敏与隐私层
+
+**完成日期**: 2026-01-26  
+**原始文档**: `.opencode/.plans/data-desensitization-architecture.md`
+
+### 业务需求
+
+| 需求 | 说明 |
+|------|------|
+| **Training Data** | 匿名化审计数据用于 AI 训练 |
+| **Client Delivery** | 真实客户信息用于专业交付 |
+| **Demo Mode** | 匿名化报告用于演示 |
+| **Data Retention** | 真实数据: 30天 TTL, 匿名化: 永久 |
+
+### 完成组件
+
+| 组件 | 状态 | 说明 |
+|------|------|------|
+| `extractPIIFromProfile()` | ✅ | 从 CaseProfile 提取 PII |
+| `extractFeatures()` | ✅ | 抽象特征提取（年龄范围、资金范围） |
+| `sanitizeText()` | ✅ | 文本匿名化（3级别: minimal/conservative/aggressive）|
+| `sanitizeReport()` | ✅ | 报告匿名化（使用 knownNames 避免误匹配）|
+| `core-data-privacy` skill | ✅ | Agent 隐私工作流指南 |
+| Reporter dual-output | ✅ | 标准 + 匿名双报告输出 |
+| UCI 格式支持 | ✅ | 8位 + 10位 UCI（符合 IRCC 规范）|
+
+### 关键修复 (2026-01-26)
+
+**问题**: PII 检测过于激进，误匹配 "Application Type", "Legal Basis" 等非 PII 术语
+
+**解决方案**:
+- 移除正则表达式名字检测
+- 改用 `knownNames` 参数显式传递已知名字
+- 支持 8 位和 10 位 UCI（IRCC 官方格式: `0000-0000` 或 `00-0000-0000`）
+
+### 关键文件
+
+- `src/audit-core/privacy/extract-pii.ts`
+- `src/audit-core/privacy/sanitize.ts`
+- `src/audit-core/privacy/privacy.service.ts`
+- `.claude/skills/core-data-privacy/SKILL.md`
+
+---
+
+## 2026-01-18 Verifier + Learned Guardrails
+
+**完成日期**: 2026-01-18  
+**原始文档**: `.chief/plans/Verifier_Solution_Proposal_2026-01-18.md`
+
+### 问题背景
+
+在 Tian-Huang 配偶担保案件中发现语义边界错误：
+- 系统将 "no formal wedding ceremony"（没有婚礼仪式）误解为 "no formal marriage"（尚未结婚）
+- 实际情况：已于 2023-06-06 合法结婚，只是没有举办婚礼宴席
+
+### 解决方案
+
+**双层防御机制**: Verifier Agent + Learned Guardrails
+
+```
+[阶段1：分析]
+案件文档 -> Detective -> Strategist -> 初步结论
+
+[阶段2：验证] <-- 新增
+初步结论 -> Verifier Agent -> 验证后结论
+               |
+          Learned Guardrails
+          (经验知识库)
+
+[阶段3：合规]
+验证后结论 -> Gatekeeper -> 最终报告
+```
+
+### Verifier Agent 核心原则
+
+1. **不继承任何前序 Agent 的假设**
+2. **独立阅读原始文档**
+3. **交叉验证关键事实**
+4. **检测语义混淆和逻辑不一致**
+
+### Learned Guardrails Skill
+
+位置: `.claude/skills/learned-guardrails/`
+
+记录从人工发现的错误中学习的规则：
+- 语义混淆检测
+- 时间线错误检测
+- 文档不一致检测
+
+---
+
+## 2026-01-16 多层级审计系统 (Tiered System)
+
+**完成日期**: 2026-01-16  
+**原始文档**: `.chief/plans/tiered-audit-system.md`
+
+### 层级定义
+
+| 层级 | 定位 | 订阅费 | AI 审计层级 |
+|------|------|--------|-------------|
+| **Guest** | DIY 申请人 | $0 | `guest` (基础) |
+| **Pro** | 独立持牌顾问 | $99 CAD/月 | `pro` (标准) |
+| **Ultra** | 高产出顾问 | $299 CAD/月 | `ultra` (高级) |
+
+### 模型配置
+
+| Agent | Guest | Pro | Ultra |
+|-------|-------|-----|-------|
+| AuditManager | gemini-3-flash | claude-sonnet-4-5 | claude-opus-4-5 |
+| Detective | gemini-3-flash | gemini-3-pro-high | claude-sonnet-4-5 |
+| Strategist | gemini-3-flash | claude-sonnet-4-5 | claude-sonnet-4-5 |
+| Gatekeeper | gemini-3-flash | claude-sonnet-4-5 | claude-sonnet-4-5 |
+| Verifier | N/A | gemini-3-flash | claude-haiku-4-5 |
+
+### 功能差异
+
+| 特性 | Guest | Pro | Ultra |
+|------|-------|-----|-------|
+| Verifier (引用验证) | No | Yes | Yes |
+| KG 搜索 (相似案例) | No | Yes | Yes |
+| L2 深度分析 (MCP) | No | No | Yes |
+| 多轮验证 | No | No | Yes |
+| 最大引用数 | 3 | 10 | 20 |
+
+### 实现位置
+
+- `src/audit-core/tiers/config.ts`
+- `src/audit-core/tiers/types.ts`
+- `docs/agent-guides/audit/tiers.md`

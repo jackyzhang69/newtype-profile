@@ -317,7 +317,7 @@ bun test               # Run tests (76 test files, 2559+ BDD assertions)
 | Framework | Common pitfalls: agent empty response... | `docs/agent-guides/framework/pitfalls.md` |
 | Framework | OpenCode/OMO framework: plugin system... | `docs/agent-guides/framework/opencode-omo.md` |
 | Framework | Agent/skill selection guide: when to ... | `docs/agent-guides/framework/agent-skill-selection.md` |
-| Audit | Archived milestones: spousal knowledg... | `docs/agent-guides/audit/completed-milestones.md` |
+| Audit | Archived milestones: Supabase persist... | `docs/agent-guides/audit/completed-milestones.md` |
 | Framework | Guide for building custom multi-agent... | `docs/agent-guides/framework/building-agentic-workflows.md` |
 | Audit | 搭积木式多智能体审计系统设计：6 Agents, 16 Skills, 3... | `docs/agent-guides/audit/architecture.md` |
 <!-- KNOWLEDGE_INDEX:END -->

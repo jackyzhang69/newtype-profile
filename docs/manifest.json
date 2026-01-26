@@ -190,7 +190,7 @@
       "id": "audit-completed-milestones",
       "path": "agent-guides/audit/completed-milestones.md",
       "category": "audit",
-      "summary": "Archived milestones: spousal knowledge migration, core audit features, MVP completion",
+      "summary": "Archived milestones: Supabase persistence, data privacy layer, Verifier+Guardrails, tiered system, spousal knowledge migration",
       "keywords": [
         "milestone",
         "completed",
@@ -198,7 +198,8 @@
         "archive",
         "spousal",
         "migration"
-      ]
+      ],
+      "last_updated": "2026-01-26"
     },
     {
       "id": "framework-building-agentic-workflows",
