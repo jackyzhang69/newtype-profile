@@ -185,18 +185,30 @@ describe("privacy/extract-pii", () => {
   })
 
   describe("extractPIIEntities", () => {
-    it("extracts multiple entity types", () => {
+    it("extracts multiple entity types with known names", () => {
       // #given
       const text = "John Smith (AB1234567) can be reached at john@email.com or 416-555-1234. DOB: 1985-03-15"
+      const knownNames = ["John Smith"]
 
       // #when
-      const entities = extractPIIEntities(text)
+      const entities = extractPIIEntities(text, knownNames)
 
       // #then
       expect(entities.names).toContain("John Smith")
       expect(entities.numbers).toContain("AB1234567")
       expect(entities.emails).toContain("john@email.com")
       expect(entities.dates).toContain("1985-03-15")
+    })
+
+    it("does not auto-detect names via regex to avoid false positives", () => {
+      // #given - text with terms that look like names but aren't
+      const text = "Application Type and Legal Basis are not names"
+
+      // #when - no knownNames provided
+      const entities = extractPIIEntities(text)
+
+      // #then - no false positives
+      expect(entities.names).toHaveLength(0)
     })
 
     it("filters out common words from names", () => {
@@ -361,17 +373,31 @@ describe("privacy/extract-features", () => {
 
 describe("privacy/sanitize", () => {
   describe("sanitizeText", () => {
-    it("replaces names with placeholders", () => {
+    it("replaces names when provided via customReplacements", () => {
       // #given
       const text = "John Smith applied for sponsorship"
+      const customReplacements = new Map([["John Smith", "[SPONSOR]"]])
+
+      // #when
+      const result = sanitizeText(text, { level: "conservative", customReplacements })
+
+      // #then
+      expect(result.text).toContain("[SPONSOR]")
+      expect(result.text).not.toContain("John Smith")
+      expect(result.piiCount).toBeGreaterThan(0)
+    })
+
+    it("does not auto-detect names to avoid false positives", () => {
+      // #given
+      const text = "Application Type is Spousal Sponsorship with Legal Basis"
 
       // #when
       const result = sanitizeText(text, { level: "conservative" })
 
-      // #then
-      expect(result.text).toContain("[PERSON_1]")
-      expect(result.text).not.toContain("John Smith")
-      expect(result.piiCount).toBeGreaterThan(0)
+      // #then - no false positive replacements
+      expect(result.text).toContain("Application Type")
+      expect(result.text).toContain("Spousal Sponsorship")
+      expect(result.text).toContain("Legal Basis")
     })
 
     it("replaces emails", () => {
@@ -439,9 +465,9 @@ describe("privacy/sanitize", () => {
   })
 
   describe("sanitizeReasoningChain", () => {
-    it("sanitizes reasoning while preserving structure", () => {
-      // #given
-      const chain = "Step 1: Review John Smith's application. Step 2: Check passport AB1234567."
+    it("sanitizes identifiers while preserving names and structure", () => {
+      // #given - names are NOT auto-detected to avoid false positives
+      const chain = "Step 1: Review the application. Step 2: Check passport AB1234567."
 
       // #when
       const result = sanitizeReasoningChain(chain, "conservative")
@@ -449,7 +475,8 @@ describe("privacy/sanitize", () => {
       // #then
       expect(result).toContain("Step 1:")
       expect(result).toContain("Step 2:")
-      expect(result).not.toContain("John Smith")
+      expect(result).toContain("[PASSPORT_1]")
+      expect(result).not.toContain("AB1234567")
     })
   })
 

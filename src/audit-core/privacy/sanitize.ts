@@ -17,11 +17,17 @@ export function sanitizeText(
   text: string,
   options: SanitizeOptions = { level: "conservative" }
 ): SanitizeResult {
-  const entities = extractPIIEntities(text)
+  // Extract known names from customReplacements to pass to extractPIIEntities
+  const knownNames = options.customReplacements 
+    ? [...options.customReplacements.keys()] 
+    : []
+  
+  const entities = extractPIIEntities(text, knownNames)
   const replacements = new Map<string, string>()
   let result = text
   let piiCount = 0
 
+  // Apply custom replacements first (profile names with semantic labels)
   if (options.customReplacements) {
     for (const [original, replacement] of options.customReplacements) {
       if (result.includes(original)) {
@@ -32,17 +38,8 @@ export function sanitizeText(
     }
   }
 
-  let nameCounter = 1
-  for (const name of entities.names) {
-    if (!replacements.has(name)) {
-      const replacement = options.level === "aggressive" 
-        ? "[PERSON]" 
-        : `[PERSON_${nameCounter++}]`
-      result = result.split(name).join(replacement)
-      replacements.set(name, replacement)
-      piiCount++
-    }
-  }
+  // No generic name replacement - we only replace names explicitly provided
+  // This prevents false positives like "Application Type" -> "[PERSON_1]"
 
   for (const email of entities.emails) {
     if (!replacements.has(email)) {
@@ -71,7 +68,8 @@ export function sanitizeText(
   for (const num of entities.numbers) {
     if (!replacements.has(num)) {
       let replacement: string
-      if (num.length === 10) {
+      const isUci = (num.length === 8 || num.length === 10) && /^\d+$/.test(num)
+      if (isUci) {
         replacement = options.level === "aggressive" ? "[UCI]" : `[UCI_${idCounter}]`
       } else if (/^[A-Z]{2}/.test(num)) {
         replacement = options.level === "aggressive" ? "[PASSPORT]" : `[PASSPORT_${idCounter}]`
