@@ -4,7 +4,7 @@
 
 ## 1. 概览
 
-移民审计系统是基于 `newtype-profile` 框架的专业扩展，旨在通过 AI 代理协作模拟真实的移民律师审计流程。系统通过动态注入业务知识库（Knowledge Base）和接入外部法律服务（MCP Bridge），对移民申请案件进行全方位的风险评估和抗辩得分（Defensibility Score）分析。
+移民审计系统是基于 `immi-os` 框架的专业扩展，旨在通过 AI 代理协作模拟真实的移民律师审计流程。系统通过动态注入业务知识库（Knowledge Base）和接入外部法律服务（MCP Bridge），对移民申请案件进行全方位的风险评估和抗辩得分（Defensibility Score）分析。
 
 ## 2. 系统架构
 

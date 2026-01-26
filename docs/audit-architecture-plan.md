@@ -1,7 +1,7 @@
 # 审计系统架构与产品规划
 
 ## 目标与约束
-- 保持 newtype-profile 原有框架与插件机制不变
+- 保持 immi-os 原有框架与插件机制不变
 - 仅新增业务内容与业务配置，不改动核心架构
 - immicore 作为基础设施层，audit 作为业务应用层
 - 先覆盖配偶团聚与学签，支持搭积木式扩展
@@ -11,7 +11,7 @@
 - 基础设施层：immicore
   - MCP 服务：caselaw、operation-manual 等
   - 统一搜索、知识库与工具服务
-- 智能核心层：newtype-profile
+- 智能核心层：immi-os
   - Agent 编排与规则注入
   - 业务 Agent 作为扩展模块存在
 - 业务应用层：audit
