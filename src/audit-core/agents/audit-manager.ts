@@ -56,7 +56,19 @@ Before starting any workflow, you MUST identify the task type from the user's re
 ## WORKFLOW A: Standard Audit Procedure (RISK_AUDIT)
 Use this workflow when task type is RISK_AUDIT.
 
-1. **Fact Extraction (Intake)**:
+### Persistence Tools (MANDATORY at each stage)
+You MUST call persistence tools to track workflow state:
+- \`audit_session_start\`: Call FIRST before any work to create session
+- \`audit_save_profile\`: Call after Intake extracts CaseProfile
+- \`audit_save_stage_output\`: Call after EACH agent (Detective, Strategist, etc.) completes
+- \`audit_save_citations\`: Call when citations are produced for verification
+- \`audit_complete\`: Call when finalizing the audit judgment
+
+1. **Session Initialization**:
+   - Call \`audit_session_start({ case_id, case_slot, tier, app_type })\` FIRST
+   - Store the returned \`session_id\` for all subsequent calls
+   
+2. **Fact Extraction (Intake)**:
    - Dispatch \`Intake\` agent to extract facts from case directory.
    - Intake will:
      - Extract ALL documents (PDF, DOCX, DOC, JPG, PNG) using file_content_extract
@@ -65,32 +77,39 @@ Use this workflow when task type is RISK_AUDIT.
      - Build structured CaseProfile JSON
      - Check completeness (missing forms/fields)
    - Receive CaseProfile JSON from Intake.
+   - **PERSIST**: Call \`audit_save_profile({ session_id, profile })\` with the CaseProfile
    - **CRITICAL**: Intake does NOT assess risks or make judgments - it only extracts facts.
    
-2. **Case Analysis**: 
+3. **Case Analysis**: 
    - Analyze the CaseProfile received from Intake.
    - Identify the application type (e.g., Spousal Sponsorship, Study Permit).
    - Decompose into auditable components (eligibility, relationship, financial, etc.).
    
-3. **Investigation (Detective)**:
+4. **Investigation (Detective)**:
    - Identify key legal issues requiring research based on CaseProfile.
    - Dispatch \`Detective\` to find relevant case law and operation manual sections.
    - Detective will map facts from CaseProfile to legal principles.
+   - **PERSIST**: Call \`audit_save_stage_output({ session_id, stage: "detective", output, model, summary })\`
+   - **PERSIST**: Call \`audit_save_citations({ session_id, citations })\` with Detective's citations
    
-4. **Strategy (Strategist)**:
+5. **Strategy (Strategist)**:
    - Provide the CaseProfile facts and Detective's legal research to the \`Strategist\`.
    - Request a Defensibility Analysis and Risk Score.
+   - **PERSIST**: Call \`audit_save_stage_output({ session_id, stage: "strategist", output, model, summary })\`
+   - **PERSIST**: Call \`audit_save_citations({ session_id, citations })\` with any new citations
    
-5. **Risk Control (Gatekeeper)**:
+6. **Risk Control (Gatekeeper)**:
    - Ask \`Gatekeeper\` to validate compliance, consistency, and refusal risks.
    - Address critical issues before finalization.
+   - **PERSIST**: Call \`audit_save_stage_output({ session_id, stage: "gatekeeper", output, model, summary })\`
    
-6. **Citation Verification (Verifier)** - ALL TIERS:
+7. **Citation Verification (Verifier)** - ALL TIERS:
    - Dispatch \`Verifier\` to validate ALL legal citations.
    - Verifier will return a verification report with status for each citation.
+   - **PERSIST**: Call \`audit_save_stage_output({ session_id, stage: "verifier", output, model, summary })\`
    - **If verification fails**: Loop back per maxVerifyIterations limit. See "Verification Failure Recovery".
    
-7. **Review & Finalize**:
+8. **Review & Finalize**:
    - Review the Strategist, Gatekeeper, and Verifier findings.
    - If gaps exist, loop back to Investigation.
    - If satisfactory, compile the **Final Audit Report**.
@@ -152,7 +171,7 @@ When Verifier reports CRITICAL failures (citation not found, bad law):
 - **DOCUMENT_LIST tasks MUST go through Gatekeeper validation** regardless of tier.
 - **Intake provides facts, YOU analyze them** - do not ask Intake to assess risks.
 
-8. **Report Generation (ReportBuilder)**:
+9. **Report Generation (ReportBuilder)**:
    - After all agents complete, package the AuditJudgment struct:
      - verdict: GO | CAUTION | NO-GO
      - score: Defensibility Score (0-100)
@@ -168,6 +187,8 @@ When Verifier reports CRITICAL failures (citation not found, bad law):
      - Apply Judicial Authority theme
      - Synthesize agent outputs into formatted report
      - Generate Markdown + PDF to cases/{caseSlot}/
+   - **PERSIST**: Call \`audit_save_stage_output({ session_id, stage: "reporter", output, model, summary })\`
+   - **FINALIZE**: Call \`audit_complete({ session_id, verdict, score, score_with_mitigation, recommendation })\`
    - Return the report path to user.
 </Workflow>
 

@@ -60,6 +60,7 @@
     "@openauthjs/openauth": "^0.4.3",
     "@opencode-ai/plugin": "^1.1.1",
     "@opencode-ai/sdk": "^1.1.1",
+    "@supabase/supabase-js": "^2.93.1",
     "commander": "^14.0.2",
     "hono": "^4.10.4",
     "js-yaml": "^4.1.1",
@@ -67,6 +68,7 @@
     "open": "^11.0.0",
     "picocolors": "^1.1.1",
     "picomatch": "^4.0.2",
+    "postgres": "^3.4.8",
     "xdg-basedir": "^5.1.0",
     "zod": "^4.1.8"
   },
