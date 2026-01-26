@@ -46,12 +46,16 @@ Based on IMM 5483 (outside Canada) and IMM 5555 (inside Canada):
 
 ### Financial Threshold
 - $20,635/year living cost (since January 1, 2024)
-- GIC amount: $20,635 for SDS
+- GIC amount: $20,635 (recommended, not mandatory)
 
-### SDS Changes
-- Processing: ~20 business days
-- IELTS 6.0+ or equivalent required
-- Pre-paid tuition required
+### ~~SDS~~ CLOSED (November 8, 2024)
+> **SDS (Student Direct Stream) permanently closed on November 8, 2024**
+> All applications now use regular stream (8-16 weeks processing)
+
+**Former SDS requirements (no longer mandatory, but still recommended):**
+- GIC $20,635: Strongly recommended as proof of funds
+- IELTS 6.0+: Recommended, not required
+- Pre-paid tuition: Shows commitment, not required
 
 ## Reference Files
 - `references/study_plan_guide.md` - Study plan writing guide

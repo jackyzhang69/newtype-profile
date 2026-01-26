@@ -5,8 +5,9 @@
 根据申请人情况动态生成文档清单：
 
 ```
-if application_type == "SDS":
-    include GIC, tuition_payment, language_score
+# SDS 已于 2024-11-08 关闭，以下材料现为"强烈推荐"而非强制
+if wants_strong_application:
+    recommend GIC, tuition_payment, language_score  # 原 SDS 要求，仍有帮助
 if age < 18:
     include custody_declaration, parental_consent
 if has_spouse:
@@ -58,15 +59,17 @@ if province == "Quebec":
 - [ ] 其他约束力证明
 ```
 
-### SDS 附加文件
+### ~~SDS 附加文件~~ → 强化材料建议（SDS 已关闭）
+
+> **注意**: SDS 于 2024年11月8日关闭，以下材料不再强制，但仍为强有力的申请支持
 
 ```markdown
-## SDS 特别要求
+## 强化材料（原 SDS 要求，现为推荐）
 
-- [ ] GIC 证明 ($20,635)
-- [ ] 第一年学费缴纳证明 ($XX,XXX)
-- [ ] 语言成绩 (IELTS Academic 6.0+)
-- [ ] 提前体检报告
+- [ ] GIC 证明 ($20,635) — 强烈推荐，有效证明资金能力
+- [ ] 第一年学费缴纳证明 ($XX,XXX) — 推荐，显示留学诚意
+- [ ] 语言成绩 (IELTS Academic 6.0+) — 推荐，提升成功率
+- [ ] 提前体检报告 — 可选，可能加速审批
 ```
 
 ### 未成年人附加文件

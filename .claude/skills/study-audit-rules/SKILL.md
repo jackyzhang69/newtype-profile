@@ -65,4 +65,4 @@ description: |
 - Use with `audit_app=study` to apply study-specific rules
 - PAL requirements apply since January 22, 2024
 - Financial threshold increased to $20,635/year in 2024
-- SDS pathway available for eligible countries
+- ~~SDS pathway~~ **CLOSED November 8, 2024** - all applications now use regular stream

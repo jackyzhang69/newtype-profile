@@ -34,8 +34,8 @@ description: |
 |----------|----------|------------|
 | Bank Statements | Yes | Balance, 4-6 month history |
 | Bank Certificate | Yes | Frozen amount, date |
-| GIC Certificate | SDS | $20,635, bank name |
-| Tuition Payment | SDS | Amount, receipt |
+| GIC Certificate | Recommended | $20,635, bank name (~~SDS closed 2024-11-08~~) |
+| Tuition Payment | Recommended | Amount, receipt (~~SDS closed 2024-11-08~~) |
 | Income Proof | Sponsor | Salary, employer |
 | Tax Returns | Sponsor | Annual income |
 
@@ -109,7 +109,7 @@ description: |
 - [ ] Passport expiry before program end
 - [ ] PAL expired or expiring soon
 - [ ] Financial gap (< required amount)
-- [ ] Missing language scores for SDS
+- [ ] Missing language scores (recommended, not mandatory since SDS closed 2024-11-08)
 - [ ] Incomplete family information
 
 ## Outputs
