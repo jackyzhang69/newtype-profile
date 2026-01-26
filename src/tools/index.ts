@@ -21,6 +21,14 @@ import { grep } from "./grep"
 import { glob } from "./glob"
 import { file_content_extract } from "./file-content"
 import {
+  audit_session_start,
+  audit_save_profile,
+  audit_save_stage_output,
+  audit_save_citations,
+  audit_complete,
+  audit_get_session,
+} from "./audit-persistence"
+import {
   kg_search,
   kg_case,
   kg_similar_cases,
@@ -152,4 +160,10 @@ export const builtinTools: Record<string, ToolDefinition> = {
   mcp_call_tool,
   mcp_list_tools,
   file_content_extract,
+  audit_session_start,
+  audit_save_profile,
+  audit_save_stage_output,
+  audit_save_citations,
+  audit_complete,
+  audit_get_session,
 }
