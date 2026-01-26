@@ -241,9 +241,47 @@ Validation criteria:
 6. All R criteria citations are valid format
 7. **Landmark cases validated** - All FC cases have `_authority_verified` with `is_good_law: true`
 
-### Phase 5: Registration
+### Phase 5: Registration (Multi-Layer)
 
-Update `src/audit-core/apps/index.ts`:
+新增 App Type 需要更新**多个层级**以确保类型安全和完整支持：
+
+#### 5.1 TypeScript 类型定义
+
+**File:** `src/audit-core/types/case-profile.ts`
+
+```typescript
+// 添加到 ApplicationType union
+export type ApplicationType = "spousal" | "study" | "work" | "family" | "{app-type}" | "other"
+```
+
+#### 5.2 数据库 Migration
+
+**File:** `supabase/migrations/YYYYMMDD_add_{app-type}_app_type.sql`
+
+```sql
+-- 更新 io_audit_sessions 表的 CHECK 约束
+ALTER TABLE io_audit_sessions 
+DROP CONSTRAINT IF EXISTS io_audit_sessions_app_type_check;
+
+ALTER TABLE io_audit_sessions
+ADD CONSTRAINT io_audit_sessions_app_type_check 
+CHECK (app_type IN ('spousal', 'study', 'work', 'family', '{app-type}', 'other'));
+```
+
+#### 5.3 工具 Schema 更新
+
+**File:** `src/tools/audit-persistence/tools.ts`
+
+```typescript
+// 更新 audit_session_start 的 app_type enum
+app_type: tool.schema
+  .enum(["spousal", "study", "work", "family", "{app-type}", "other"])
+  .describe("Application type"),
+```
+
+#### 5.4 App 注册表
+
+**File:** `src/audit-core/apps/index.ts`
 
 ```typescript
 // Add to APP_TYPES
@@ -268,6 +306,20 @@ export const APP_SKILL_MAP: Record<AppType, string[]> = {
   ],
 };
 ```
+
+#### 5.5 注册检查清单
+
+| 步骤 | 文件 | 操作 |
+|------|------|------|
+| 1 | `src/audit-core/types/case-profile.ts` | 添加到 `ApplicationType` union |
+| 2 | `supabase/migrations/` | 创建 migration 更新 CHECK 约束 |
+| 3 | `src/tools/audit-persistence/tools.ts` | 更新 `app_type` enum schema |
+| 4 | `src/audit-core/apps/index.ts` | 注册 APP_TYPES 和 APP_SKILL_MAP |
+| 5 | 运行 `bun run typecheck` | 确保类型一致 |
+| 6 | 运行 `bun test` | 确保无回归 |
+| 7 | 执行 SQL migration | 应用到 Supabase |
+
+> **设计原则**: App Type 是有限且稳定的（移民申请类型），硬编码确保类型安全。新增 app 是重大功能，需要配套的 skills、agents、knowledge，不是简单加个字符串。
 
 ## Output Format
 
