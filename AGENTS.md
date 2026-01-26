@@ -320,9 +320,4 @@ bun test               # Run tests (76 test files, 2559+ BDD assertions)
 | Audit | Archived milestones: spousal knowledg... | `docs/agent-guides/audit/completed-milestones.md` |
 | Framework | Guide for building custom multi-agent... | `docs/agent-guides/framework/building-agentic-workflows.md` |
 | Audit | 搭积木式多智能体审计系统设计：6 Agents, 16 Skills, 3... | `docs/agent-guides/audit/architecture.md` |
-| OS System | os-compliance-checker: Validate app c... | `.claude/skills/os-compliance-checker/SKILL.md` |
-| OS System | os-doclist-generator: Generate custom... | `.claude/skills/os-doclist-generator/SKILL.md` |
-| OS System | os-knowledge-extractor: Extract knowl... | `.claude/skills/os-knowledge-extractor/SKILL.md` |
-| OS System | os-knowledge-updater: Update existing... | `.claude/skills/os-knowledge-updater/SKILL.md` |
-| OS System | os-app-builder agent: Orchestrate ful... | `.claude/agents/os-app-builder.md` |
 <!-- KNOWLEDGE_INDEX:END -->

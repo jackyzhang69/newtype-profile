@@ -1,6 +1,16 @@
 # Immi-OS - Immigration Audit System
 
-> AI-powered immigration application audit system built on oh-my-opencode framework. Orchestrates specialized agents to simulate real immigration lawyer workflows.
+> **Today's Date:** Run `date "+%Y-%m-%d"` to get current date. NEVER use year 2024 in any output.
+
+AI-powered immigration audit system built on oh-my-opencode framework. Orchestrates specialized agents to simulate real immigration lawyer workflows.
+
+---
+
+## 语言规则 (Language Rules)
+
+- **代码**: 全部使用英文（变量名、注释、commit message）
+- **对话**: 与用户交流使用中文
+- **文档**: 面向用户的文档使用中文（如审计报告、说明文档）
 
 ---
 
@@ -64,6 +74,7 @@ export SEARCH_SERVICE_TOKEN=xxx # MCP/KG auth token
 - Hallucinate case citations (use Verifier)
 - Suppress type errors with `as any`
 - Return `skills` property in agent config if already using `buildAuditPrompt` (causes double processing)
+- Create temp files outside `./tmp/` directory (all temporary files MUST go to `./tmp/`)
 
 ---
 
@@ -93,6 +104,7 @@ immi-os/
 │   │   ├── audit/            # Audit workflow docs
 │   │   └── apps/             # App-specific docs
 │   └── manifest.json         # Knowledge index (SSOT)
+├── tmp/                      # ALL temporary files go here
 └── CLAUDE.md                 # This file (auto-loaded)
 ```
 
@@ -190,6 +202,9 @@ Every audit report MUST include:
 | Framework | Common pitfalls: agent empty response... | `docs/agent-guides/framework/pitfalls.md` |
 | Framework | OpenCode/OMO framework: plugin system... | `docs/agent-guides/framework/opencode-omo.md` |
 | Framework | Agent/skill selection guide: when to ... | `docs/agent-guides/framework/agent-skill-selection.md` |
+| Audit | Archived milestones: spousal knowledg... | `docs/agent-guides/audit/completed-milestones.md` |
+| Framework | Guide for building custom multi-agent... | `docs/agent-guides/framework/building-agentic-workflows.md` |
+| Audit | 搭积木式多智能体审计系统设计：6 Agents, 16 Skills, 3... | `docs/agent-guides/audit/architecture.md` |
 <!-- KNOWLEDGE_INDEX:END -->
 
 ---

@@ -185,6 +185,50 @@
         "verifier",
         "auditmanager"
       ]
+    },
+    {
+      "id": "audit-completed-milestones",
+      "path": "agent-guides/audit/completed-milestones.md",
+      "category": "audit",
+      "summary": "Archived milestones: spousal knowledge migration, core audit features, MVP completion",
+      "keywords": [
+        "milestone",
+        "completed",
+        "history",
+        "archive",
+        "spousal",
+        "migration"
+      ]
+    },
+    {
+      "id": "framework-building-agentic-workflows",
+      "path": "agent-guides/framework/building-agentic-workflows.md",
+      "category": "framework",
+      "summary": "Guide for building custom multi-agent systems using oh-my-opencode framework",
+      "keywords": [
+        "agentic",
+        "workflow",
+        "multi-agent",
+        "orchestration",
+        "tutorial",
+        "guide",
+        "building"
+      ]
+    },
+    {
+      "id": "audit-architecture",
+      "path": "agent-guides/audit/architecture.md",
+      "category": "audit",
+      "summary": "搭积木式多智能体审计系统设计：6 Agents, 16 Skills, 3 Tiers 的模块化架构",
+      "keywords": [
+        "architecture",
+        "building-blocks",
+        "modular",
+        "intake",
+        "skills",
+        "injection",
+        "design"
+      ]
     }
   ]
 }
