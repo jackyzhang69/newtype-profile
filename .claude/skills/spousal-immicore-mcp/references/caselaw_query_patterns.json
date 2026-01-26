@@ -1,8 +1,15 @@
 {
-  "version": "2.0",
+  "version": "3.0",
   "description": "配偶担保判例法查询模式，支持 ImmiCore Caselaw Search v3.0 API",
   "api_version": "v3.0",
   "api_endpoint": "POST /api/v1/caselaw/search",
+  "_landmark_cases_policy": {
+    "description": "Landmark cases 管理策略",
+    "policy": "仅列出经 KG 验证的 FC/FCA 权威案例，IAD 案例由 Detective 动态获取",
+    "verification_method": "caselaw_authority(citation) - 确认 is_good_law=true",
+    "update_frequency": "每季度使用 kg_top_authorities(issue_code='SUB_FAMILY_GENUINENESS') 检查更新",
+    "last_verified": "2026-01-25"
+  },
   "spousal_specific_queries": {
     "genuineness_cases": {
       "description": "关系真实性相关判例",
@@ -11,42 +18,53 @@
           "id": "rushed_relationship",
           "label": "关系发展仓促",
           "kg_search": {
-            "issue_code": "rushed_relationship",
+            "issue_code": "SUB_FAMILY_GENUINENESS",
             "limit": 10
           },
           "keywords": ["short courtship", "quick marriage", "met briefly"],
           "landmark_cases": [
-            "Basazenew v Canada 2022 CanLII 125801",
-            "Grewal v Canada 2022 CanLII 125795",
-            "Medica v Canada 2021 CanLII 134436"
-          ]
+            "Kaur Gill v Canada (Citizenship and Immigration), 2012 FC 1522",
+            "Nguyen v Canada (Citizenship and Immigration), 2016 FC 1207"
+          ],
+          "_authority_verified": {
+            "2012 FC 1522": {"cited_by": 1, "is_good_law": true, "citing_case": "2024 FC 1072"},
+            "2016 FC 1207": {"cited_by": 2, "is_good_law": true, "citing_cases": ["2025 FC 1933", "2019 FC 374"]}
+          },
+          "_dynamic_lookup": "kg_top_authorities(issue_code='SUB_FAMILY_GENUINENESS', court='FC', limit=5)"
         },
         {
           "id": "lack_cohabitation",
           "label": "缺乏共同生活证据",
           "kg_search": {
-            "issue_code": "cohabitation_evidence",
+            "issue_code": "SUB_FAMILY_GENUINENESS",
             "limit": 10
           },
           "keywords": ["no cohabitation", "separate residences", "living apart"],
           "landmark_cases": [
-            "Menjivar Melgar v Canada 2019 CanLII 22178",
-            "Johal v Canada 2006 CanLII 62396"
-          ]
+            "Nguyen v Canada (Citizenship and Immigration), 2016 FC 1207",
+            "Fung v Canada (Citizenship and Immigration), 2019 FC 374"
+          ],
+          "_authority_verified": {
+            "2016 FC 1207": {"cited_by": 2, "is_good_law": true},
+            "2019 FC 374": {"cited_by": 2, "is_good_law": true}
+          },
+          "_dynamic_lookup": "caselaw_optimized_search(query='lack cohabitation spousal', court='fc', target_count=5)"
         },
         {
           "id": "immigration_purpose",
-          "label": "移民目的",
+          "label": "移民目的 (IRPR 4(1)(a))",
           "kg_search": {
-            "issue_code": "immigration_purpose",
+            "issue_code": "SUB_FAMILY_GENUINENESS",
             "limit": 10
           },
           "keywords": ["primarily for immigration", "IRPR 4(1)(a)", "immigration motive"],
           "landmark_cases": [
-            "Kaur Gill v Canada 2012 FC 1522",
-            "Medica v Canada 2021 CanLII 134436",
-            "Sandhu v Canada 2016 CanLII 98290"
-          ]
+            "Kaur Gill v Canada (Citizenship and Immigration), 2012 FC 1522"
+          ],
+          "_authority_verified": {
+            "2012 FC 1522": {"cited_by": 1, "is_good_law": true, "note": "确立 IRPR 4(1) 双重测试 (disjunctive test)"}
+          },
+          "_dynamic_lookup": "caselaw_keyword_search(query='IRPR 4(1)(a) primarily for immigration', court='fc', top_k=5)"
         }
       ]
     },
@@ -57,28 +75,29 @@
           "id": "concealed_history",
           "label": "隐瞒婚史/前关系",
           "kg_search": {
-            "issue_code": "concealed_marriage",
+            "issue_code": "SUB_MISREP_S40",
             "limit": 10
           },
           "keywords": ["concealed marriage", "undisclosed relationship", "hidden divorce"],
           "landmark_cases": [
-            "Grewal v Canada 2022 CanLII 125795",
-            "Sidhu v Canada 2015 CanLII 94449",
-            "Nguyen v Canada 2012 CanLII 61969"
-          ]
+            "Nguyen v Canada (Citizenship and Immigration), 2016 FC 1207"
+          ],
+          "_authority_verified": {
+            "2016 FC 1207": {"cited_by": 2, "is_good_law": true}
+          },
+          "_dynamic_lookup": "kg_top_authorities(issue_code='SUB_MISREP_S40', court='FC', limit=5)"
         },
         {
           "id": "false_documents",
           "label": "虚假文件",
           "kg_search": {
-            "issue_code": "document_fraud",
+            "issue_code": "SUB_MISREP_S40",
             "limit": 10
           },
           "keywords": ["forged document", "fraudulent certificate", "false evidence"],
-          "landmark_cases": [
-            "Medica v Canada 2021 CanLII 134436",
-            "Sidhu v Canada 2015 CanLII 94449"
-          ]
+          "landmark_cases": [],
+          "_note": "Detective 应使用 MCP 动态获取最新案例",
+          "_dynamic_lookup": "caselaw_optimized_search(query='forged document spousal sponsorship', court='fc', target_count=5)"
         }
       ]
     },
@@ -89,28 +108,29 @@
           "id": "testimony_contradiction",
           "label": "证词矛盾",
           "kg_search": {
-            "issue_code": "credibility",
+            "issue_code": "SUB_FAMILY_GENUINENESS",
             "limit": 10
           },
           "keywords": ["contradictory testimony", "inconsistent statements", "credibility concerns"],
           "landmark_cases": [
-            "Menjivar Melgar v Canada 2019 CanLII 22178",
-            "Punia v Canada 2010 CanLII 94335",
-            "Basazenew v Canada 2022 CanLII 125801"
-          ]
+            "Nguyen v Canada (Citizenship and Immigration), 2016 FC 1207"
+          ],
+          "_authority_verified": {
+            "2016 FC 1207": {"cited_by": 2, "is_good_law": true}
+          },
+          "_dynamic_lookup": "caselaw_optimized_search(query='contradictory testimony spousal sponsorship credibility', court='fc', target_count=5)"
         },
         {
           "id": "lack_knowledge",
           "label": "对配偶不了解",
           "kg_search": {
-            "issue_code": "lack_knowledge",
+            "issue_code": "SUB_FAMILY_GENUINENESS",
             "limit": 10
           },
           "keywords": ["limited knowledge", "basic information unknown", "unfamiliar with spouse"],
-          "landmark_cases": [
-            "Ha v Canada 2010 CanLII 94501",
-            "Abu Jacob v Canada 2013 CanLII 99816"
-          ]
+          "landmark_cases": [],
+          "_note": "Detective 应使用 MCP 动态获取最新案例",
+          "_dynamic_lookup": "caselaw_optimized_search(query='lack mutual knowledge spousal genuineness', court='fc', target_count=5)"
         }
       ]
     },
@@ -121,19 +141,23 @@
           "id": "cohabitation_duration",
           "label": "共同居住时间不足",
           "kg_search": {
-            "issue_code": "cohabitation_duration",
+            "issue_code": "SUB_FAMILY_GENUINENESS",
             "limit": 10
           },
-          "keywords": ["12 months cohabitation", "continuous residence", "living together requirement"]
+          "keywords": ["12 months cohabitation", "continuous residence", "living together requirement"],
+          "landmark_cases": [],
+          "_dynamic_lookup": "caselaw_optimized_search(query='common-law 12 months cohabitation requirement', court='fc', target_count=5)"
         },
         {
           "id": "conjugal_relationship",
           "label": "关系性质证明",
           "kg_search": {
-            "issue_code": "relationship_nature",
+            "issue_code": "SUB_FAMILY_GENUINENESS",
             "limit": 10
           },
-          "keywords": ["conjugal relationship", "marriage-like", "spousal nature"]
+          "keywords": ["conjugal relationship", "marriage-like", "spousal nature"],
+          "landmark_cases": [],
+          "_dynamic_lookup": "caselaw_optimized_search(query='conjugal relationship common-law partner', court='fc', target_count=5)"
         }
       ]
     }
@@ -145,47 +169,60 @@
         "id": "procedural_fairness",
         "label": "程序公平性",
         "kg_search": {
-          "issue_code": "procedural_fairness",
+          "issue_code": "PF_OPPORTUNITY_RESPOND",
           "limit": 5
         },
-        "keywords": ["procedural fairness", "duty to disclose", "opportunity to respond"]
+        "keywords": ["procedural fairness", "duty to disclose", "opportunity to respond"],
+        "landmark_cases": [
+          "Baker v Canada (Minister of Citizenship and Immigration), [1999] 2 SCR 817"
+        ],
+        "_authority_verified": {
+          "Baker [1999] 2 SCR 817": {"cited_by": 154, "is_good_law": true, "note": "程序公平性里程碑案例"}
+        }
       },
       {
         "id": "section_4_interpretation",
         "label": "IRPR 第4条解释",
         "kg_search": {
-          "issue_code": "section_4_test",
+          "issue_code": "SUB_FAMILY_GENUINENESS",
           "limit": 5
         },
         "keywords": ["IRPR 4(1)", "dual test", "or test", "genuineness vs purpose"],
         "landmark_cases": [
-          "Kaur Gill v Canada 2012 FC 1522"
-        ]
+          "Kaur Gill v Canada (Citizenship and Immigration), 2012 FC 1522"
+        ],
+        "_authority_verified": {
+          "2012 FC 1522": {"cited_by": 1, "is_good_law": true, "note": "确立 IRPR 4(1)(a) 和 4(1)(b) 是独立测试 (disjunctive)"}
+        }
       }
     ]
   },
   "country_specific_queries": {
-    "description": "按国家查询",
+    "description": "按国家查询 - 使用 MCP 动态获取",
     "high_volume_countries": [
       {
         "country_code": "IND",
         "country_name": "India",
-        "common_issues": ["arranged_marriage", "rushed_relationship", "family_involvement"]
+        "common_issues": ["arranged_marriage", "rushed_relationship", "family_involvement"],
+        "_dynamic_lookup": "kg_similar_cases(country='IND', issue_codes=['rushed_relationship'], limit=5)"
       },
       {
         "country_code": "CHN",
         "country_name": "China",
-        "common_issues": ["age_difference", "communication_evidence", "financial_support"]
+        "common_issues": ["age_difference", "communication_evidence", "financial_support"],
+        "_dynamic_lookup": "kg_similar_cases(country='CHN', issue_codes=['cohabitation_evidence'], limit=5)"
       },
       {
         "country_code": "PAK",
         "country_name": "Pakistan",
-        "common_issues": ["cousin_marriage", "arranged_marriage", "credibility"]
+        "common_issues": ["cousin_marriage", "arranged_marriage", "credibility"],
+        "_dynamic_lookup": "kg_similar_cases(country='PAK', issue_codes=['credibility'], limit=5)"
       },
       {
         "country_code": "PHL",
         "country_name": "Philippines",
-        "common_issues": ["age_difference", "online_relationship", "financial_motive"]
+        "common_issues": ["age_difference", "online_relationship", "financial_motive"],
+        "_dynamic_lookup": "kg_similar_cases(country='PHL', issue_codes=['immigration_purpose'], limit=5)"
       }
     ]
   },
@@ -232,13 +269,15 @@
           "with_authority": "immicore_caselaw_search(query='bona fide relationship', enhance_with_kg=true, rerank_by_authority=true)"
         }
       },
-      "kg_search": {
-        "description": "Knowledge Graph 结构化搜索",
-        "usage": "kg_search(issue_code='...', country_code='...', limit=10)"
+      "kg_top_authorities": {
+        "description": "获取指定 issue_code 的最高权威案例",
+        "usage": "kg_top_authorities(issue_code='SUB_FAMILY_GENUINENESS', court='FC', limit=10)",
+        "note": "用于动态更新 landmark_cases，每季度执行一次"
       },
-      "kg_case": {
-        "description": "获取具体案例详情",
-        "usage": "kg_case(citation='2022 CanLII 125795')"
+      "caselaw_authority": {
+        "description": "验证单个案例的权威性",
+        "usage": "caselaw_authority(citation='2012 FC 1522')",
+        "note": "返回 cited_by_count, is_good_law, top_citing_cases"
       },
       "kg_similar_cases": {
         "description": "查找相似案例",
@@ -276,7 +315,7 @@
     "risk_assessment": {
       "description": "风险评估时查询模板",
       "v3_template": "immicore_caselaw_search(query='{risk_description}', enhance_with_kg=true, must_include=['{risk_pattern_id}'])",
-      "kg_template": "kg_search(issue_code='{risk_pattern_id}', country_code='{applicant_country}', limit=5)",
+      "kg_template": "kg_top_authorities(issue_code='SUB_FAMILY_GENUINENESS', limit=5)",
       "note": "v3 API 可检查案例有效性，避免引用已被推翻的案例"
     },
     "defense_strategy": {
@@ -288,13 +327,13 @@
     "precedent_research": {
       "description": "判例研究",
       "v3_template": "immicore_caselaw_search(query='{legal_issue}', include_text=true, top_k=5)",
-      "kg_template": "kg_case(citation='{case_citation}')",
+      "kg_template": "caselaw_authority(citation='{case_citation}')",
       "note": "v3 API 返回 RRF 融合排序结果"
     },
     "validity_check": {
       "description": "检查案例是否仍为有效法律",
-      "v3_template": "immicore_caselaw_search(query='{case_name}', enhance_with_kg=true, top_k=1)",
-      "note": "检查 validity.is_good_law 字段确认案例未被推翻"
+      "v3_template": "caselaw_authority(citation='{case_citation}')",
+      "note": "检查 is_good_law 字段确认案例未被推翻"
     }
   }
 }

@@ -54,3 +54,7 @@ ALWAYS use `caselaw_validity` to verify case is still good law before citing.
 ## Notes
 - Enforce domain whitelist when web fallback is needed
 - See `references/caselaw_query_patterns.json` for detailed query patterns
+
+## Inheritance
+- **Base Policy**: Inherits from `core-immicore-mcp/references/baseline_mcp_policy.md`
+- This skill extends core MCP policy with spousal-specific query patterns
