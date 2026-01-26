@@ -12,6 +12,93 @@
     "design_principles_ref": "../../../os-design-principles.md"
   },
   "study_specific_queries": {
+    "academic_progression_risks": {
+      "description": "学术进阶风险相关判例 - R215 新申请分类时必查",
+      "queries": [
+        {
+          "id": "academic_transition_scrutiny",
+          "label": "学术转换审查",
+          "kg_search": {
+            "issue_code": "SUB_STUDY_PLAN",
+            "limit": 10
+          },
+          "keywords": ["academic transition", "program change", "institution transfer", "level change"],
+          "landmark_cases": [
+            "Singh v Canada (Citizenship and Immigration), 2012 FC 526"
+          ],
+          "_authority_verified": {
+            "2012 FC 526": {
+              "cited_by": 3,
+              "is_good_law": true,
+              "principle": "学术转换（机构/项目变更）受到移民官严格审查",
+              "risk_level": "medium_to_high",
+              "triggers": ["institution_change", "program_level_change", "field_change"],
+              "application": "当学生变更机构或项目级别时应用此先例"
+            }
+          },
+          "_dynamic_lookup": "caselaw_optimized_search(query='study permit academic transition program change institution transfer', court='fc', target_count=5)"
+        },
+        {
+          "id": "academic_regression",
+          "label": "学术倒退风险",
+          "kg_search": {
+            "issue_code": "SUB_STUDY_PLAN",
+            "limit": 10
+          },
+          "keywords": ["academic regression", "downgrade", "lower level", "diploma after degree"],
+          "landmark_cases": [
+            "Khazaie v Canada (Citizenship and Immigration), 2023 FC 288"
+          ],
+          "_authority_verified": {
+            "2023 FC 288": {
+              "cited_by": 1,
+              "is_good_law": true,
+              "principle": "学术倒退（从高级别转向低级别项目）被视为不合理进阶",
+              "risk_level": "very_high",
+              "triggers": ["master_to_bachelor", "master_to_diploma", "bachelor_to_diploma", "bachelor_to_certificate"],
+              "application": "当学生从高学历转向低级别项目时应用此先例"
+            }
+          },
+          "_dynamic_lookup": "caselaw_optimized_search(query='study permit academic regression downgrade diploma after degree unreasonable', court='fc', target_count=5)"
+        },
+        {
+          "id": "diploma_to_bachelor_progression",
+          "label": "Diploma 转 Bachelor 进阶",
+          "kg_search": {
+            "issue_code": "SUB_STUDY_PLAN",
+            "limit": 10
+          },
+          "keywords": ["diploma to bachelor", "college to university", "transfer credits", "academic progression"],
+          "landmark_cases": [],
+          "_note": "此类案例需要 Detective 动态获取 - Singh 先例提供中等风险框架",
+          "_risk_assessment": {
+            "risk_level": "medium",
+            "rationale": "Diploma→Bachelor 是常见进阶路径，但 Singh 判例要求证明合理性",
+            "mitigation_factors": [
+              "transfer_credits_accepted",
+              "same_field_of_study",
+              "clear_career_progression",
+              "reputable_institution"
+            ]
+          },
+          "_dynamic_lookup": "caselaw_optimized_search(query='study permit diploma bachelor transfer college university progression', court='fc', target_count=5)"
+        }
+      ],
+      "risk_matrix": {
+        "description": "学术进阶风险矩阵 - 基于 Singh 和 Khazaie 判例",
+        "progressions": {
+          "certificate_to_diploma": {"risk": "low", "precedent": "none", "note": "自然进阶"},
+          "diploma_to_bachelor": {"risk": "medium", "precedent": "Singh_applies", "note": "需证明合理性"},
+          "bachelor_to_master": {"risk": "low", "precedent": "none", "note": "自然进阶"},
+          "master_to_phd": {"risk": "low", "precedent": "none", "note": "自然进阶"},
+          "bachelor_to_diploma": {"risk": "high", "precedent": "Khazaie_risk", "note": "学术倒退"},
+          "master_to_bachelor": {"risk": "very_high", "precedent": "Khazaie_applies", "note": "严重学术倒退"},
+          "master_to_diploma": {"risk": "very_high", "precedent": "Khazaie_applies", "note": "严重学术倒退"},
+          "phd_to_master": {"risk": "high", "precedent": "Khazaie_risk", "note": "学术倒退"},
+          "phd_to_bachelor": {"risk": "very_high", "precedent": "Khazaie_applies", "note": "严重学术倒退"}
+        }
+      }
+    },
     "genuine_intent_cases": {
       "description": "真实学习意图相关判例",
       "queries": [

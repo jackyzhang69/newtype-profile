@@ -3,6 +3,135 @@
   "description": "学习许可风险评估模式",
   "last_updated": "2026-01-25",
   "risk_categories": {
+    "r215_classification": {
+      "id": "R215_CLASSIFICATION",
+      "name": "R215 申请通道风险",
+      "description": "基于 R215 条款的申请通道分类风险评估",
+      "patterns": [
+        {
+          "id": "R215_EXTENSION_INVALID",
+          "name": "延期申请不成立",
+          "severity": "high",
+          "description": "申请人以延期方式提交，但实际应为新申请",
+          "indicators": [
+            "机构变更（不同 DLI）",
+            "显著项目级别变更",
+            "专业领域显著变更",
+            "学签已过期但未申请恢复"
+          ],
+          "mitigation": "重新分类为新申请，准备完整新申请材料，应用 Singh 先例框架",
+          "case_reference": "Singh v Canada, 2012 FC 526"
+        },
+        {
+          "id": "R215_RESTORATION_REQUIRED",
+          "name": "需要恢复申请",
+          "severity": "medium",
+          "description": "学习许可已过期但不超过90天，需要恢复身份",
+          "indicators": [
+            "学签过期 < 90 天",
+            "未及时申请延期",
+            "当前为访客身份或无身份"
+          ],
+          "mitigation": "立即提交恢复申请，解释延误原因，证明持续学习意图"
+        },
+        {
+          "id": "R215_STATUS_EXPIRED",
+          "name": "身份已失效",
+          "severity": "fatal",
+          "description": "学习许可过期超过90天，无法在境内恢复",
+          "indicators": [
+            "学签过期 > 90 天",
+            "无有效访客身份",
+            "错过恢复窗口期"
+          ],
+          "mitigation": "必须离境重新申请，考虑 flagpole 或回国申请"
+        },
+        {
+          "id": "R215_INSTITUTION_CHANGE",
+          "name": "机构变更风险",
+          "severity": "medium",
+          "description": "从一个 DLI 转到另一个 DLI",
+          "indicators": [
+            "不同的 DLI 编号",
+            "不同省份的学校",
+            "从学院转大学或反之"
+          ],
+          "mitigation": "清晰解释转学原因，证明学术进阶合理性，展示新项目优势",
+          "case_reference": "Singh v Canada, 2012 FC 526"
+        },
+        {
+          "id": "R215_PROGRAM_LEVEL_CHANGE",
+          "name": "项目级别变更风险",
+          "severity": "medium",
+          "description": "项目级别发生显著变化",
+          "indicators": [
+            "Diploma → Bachelor",
+            "Bachelor → Master",
+            "Certificate → Diploma"
+          ],
+          "mitigation": "证明学术进阶逻辑，展示转学分情况，强调职业发展需求",
+          "case_reference": "Singh v Canada, 2012 FC 526"
+        }
+      ]
+    },
+    "academic_progression": {
+      "id": "ACADEMIC_PROGRESSION",
+      "name": "学术进阶风险",
+      "description": "基于 Singh 和 Khazaie 判例的学术进阶风险评估",
+      "patterns": [
+        {
+          "id": "AP_REGRESSION_SEVERE",
+          "name": "严重学术倒退",
+          "severity": "high",
+          "description": "从高级别学位转向低级别项目（如 Master → Diploma）",
+          "indicators": [
+            "Master → Bachelor",
+            "Master → Diploma",
+            "PhD → Bachelor",
+            "Bachelor → Certificate"
+          ],
+          "mitigation": "需要极强的职业转型理由，行业需求证明，雇主支持信",
+          "case_reference": "Khazaie v Canada, 2023 FC 288"
+        },
+        {
+          "id": "AP_REGRESSION_MODERATE",
+          "name": "中度学术倒退",
+          "severity": "medium",
+          "description": "从较高级别转向稍低级别项目",
+          "indicators": [
+            "Bachelor → Diploma",
+            "PhD → Master"
+          ],
+          "mitigation": "解释职业需求，展示技能补充价值，提供行业分析",
+          "case_reference": "Khazaie v Canada, 2023 FC 288"
+        },
+        {
+          "id": "AP_TRANSITION_STANDARD",
+          "name": "标准学术转换",
+          "severity": "low",
+          "description": "Diploma → Bachelor 等常见进阶路径",
+          "indicators": [
+            "Diploma → Bachelor",
+            "Certificate → Diploma",
+            "有转学分安排"
+          ],
+          "mitigation": "强调转学分效率，展示学术进阶逻辑，证明职业目标",
+          "case_reference": "Singh v Canada, 2012 FC 526"
+        },
+        {
+          "id": "AP_NATURAL_PROGRESSION",
+          "name": "自然学术进阶",
+          "severity": "low",
+          "description": "Bachelor → Master, Master → PhD 等自然进阶",
+          "indicators": [
+            "Bachelor → Master",
+            "Master → PhD",
+            "同一领域深造"
+          ],
+          "mitigation": "正常申请，强调研究兴趣和职业目标"
+        }
+      ]
+    },
     "study_plan": {
       "id": "STUDY_PLAN",
       "name": "学习计划风险",

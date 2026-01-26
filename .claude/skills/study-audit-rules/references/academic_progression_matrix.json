@@ -1,0 +1,314 @@
+{
+  "version": "1.0",
+  "description": "学术进阶风险矩阵 - 基于 Singh v Canada (2012 FC 526) 和 Khazaie v Canada (2023 FC 288) 判例",
+  "last_updated": "2026-01-25",
+  "legal_framework": {
+    "primary_precedents": {
+      "Singh v Canada (2012 FC 526)": {
+        "principle": "学术转换（机构变更/项目变更）受到移民官严格审查",
+        "application": "所有涉及机构或项目变更的申请",
+        "risk_implication": "medium_to_high",
+        "url": "https://canlii.ca/t/fqv2h"
+      },
+      "Khazaie v Canada (2023 FC 288)": {
+        "principle": "学术倒退（从高级别转向低级别项目）被视为不合理进阶",
+        "application": "Master→Bachelor, Master→Diploma, Bachelor→Certificate 等",
+        "risk_implication": "very_high",
+        "url": "https://canlii.ca/t/jw8k9"
+      }
+    },
+    "r215_context": {
+      "extension_r215_1_a": "同一机构 + 同一/相似项目 = 延期",
+      "new_application_r215": "不同机构 OR 显著项目变更 = 新申请",
+      "restoration_r215_1_b": "学签过期 < 90天 + 真实学习意图 = 恢复"
+    }
+  },
+  "progression_risk_matrix": {
+    "description": "从 [origin_level] 到 [target_level] 的风险评估",
+    "levels_hierarchy": [
+      "language_program",
+      "certificate",
+      "diploma",
+      "associate_degree",
+      "bachelor",
+      "postgrad_certificate",
+      "postgrad_diploma",
+      "master",
+      "phd"
+    ],
+    "progressions": {
+      "upward_natural": {
+        "description": "自然向上进阶 - 低风险",
+        "patterns": [
+          {
+            "from": "language_program",
+            "to": "certificate",
+            "risk": "low",
+            "precedent": "none",
+            "score_adjustment": 0,
+            "note": "语言课程后进入学术项目是常见路径"
+          },
+          {
+            "from": "certificate",
+            "to": "diploma",
+            "risk": "low",
+            "precedent": "none",
+            "score_adjustment": 0,
+            "note": "自然学术进阶"
+          },
+          {
+            "from": "diploma",
+            "to": "bachelor",
+            "risk": "medium",
+            "precedent": "Singh_applies",
+            "score_adjustment": -3,
+            "note": "常见路径但 Singh 判例要求证明合理性",
+            "mitigation_factors": [
+              "transfer_credits_accepted",
+              "same_field_of_study",
+              "reputable_target_institution",
+              "clear_career_goals"
+            ]
+          },
+          {
+            "from": "bachelor",
+            "to": "master",
+            "risk": "low",
+            "precedent": "none",
+            "score_adjustment": 0,
+            "note": "自然学术深造"
+          },
+          {
+            "from": "master",
+            "to": "phd",
+            "risk": "low",
+            "precedent": "none",
+            "score_adjustment": 0,
+            "note": "自然学术深造"
+          },
+          {
+            "from": "bachelor",
+            "to": "postgrad_certificate",
+            "risk": "low",
+            "precedent": "none",
+            "score_adjustment": 0,
+            "note": "技能补充，合理进阶"
+          },
+          {
+            "from": "bachelor",
+            "to": "postgrad_diploma",
+            "risk": "low",
+            "precedent": "none",
+            "score_adjustment": 0,
+            "note": "职业技能提升"
+          }
+        ]
+      },
+      "lateral_transition": {
+        "description": "横向转换 - 中等风险",
+        "patterns": [
+          {
+            "from": "diploma",
+            "to": "diploma",
+            "risk": "medium",
+            "precedent": "Singh_applies",
+            "score_adjustment": -5,
+            "note": "同级别不同专业需要解释转换原因",
+            "mitigation_factors": [
+              "career_change_justified",
+              "industry_demand",
+              "employer_support"
+            ]
+          },
+          {
+            "from": "bachelor",
+            "to": "bachelor",
+            "risk": "medium",
+            "precedent": "Singh_applies",
+            "score_adjustment": -5,
+            "note": "第二学位需要清晰的职业理由"
+          },
+          {
+            "from": "master",
+            "to": "master",
+            "risk": "medium",
+            "precedent": "Singh_applies",
+            "score_adjustment": -5,
+            "note": "第二硕士需要强有力的专业理由"
+          }
+        ]
+      },
+      "downward_regression": {
+        "description": "向下倒退 - 高/极高风险",
+        "patterns": [
+          {
+            "from": "bachelor",
+            "to": "diploma",
+            "risk": "high",
+            "precedent": "Khazaie_risk",
+            "score_adjustment": -15,
+            "note": "学术倒退，需要极强的职业转型理由",
+            "red_flags": [
+              "appears_as_immigration_pathway",
+              "extends_stay_unnecessarily",
+              "inconsistent_career_narrative"
+            ],
+            "mitigation_factors": [
+              "regulated_profession_requirement",
+              "employer_sponsorship",
+              "specific_skill_certification_needed"
+            ]
+          },
+          {
+            "from": "bachelor",
+            "to": "certificate",
+            "risk": "high",
+            "precedent": "Khazaie_risk",
+            "score_adjustment": -15,
+            "note": "显著学术倒退"
+          },
+          {
+            "from": "master",
+            "to": "bachelor",
+            "risk": "very_high",
+            "precedent": "Khazaie_applies",
+            "score_adjustment": -25,
+            "note": "严重学术倒退，Khazaie 判例直接适用",
+            "red_flags": [
+              "unreasonable_academic_progression",
+              "likely_immigration_motivated",
+              "officer_highly_skeptical"
+            ]
+          },
+          {
+            "from": "master",
+            "to": "diploma",
+            "risk": "very_high",
+            "precedent": "Khazaie_applies",
+            "score_adjustment": -25,
+            "note": "严重学术倒退，Khazaie 判例直接适用"
+          },
+          {
+            "from": "master",
+            "to": "certificate",
+            "risk": "very_high",
+            "precedent": "Khazaie_applies",
+            "score_adjustment": -30,
+            "note": "极端学术倒退"
+          },
+          {
+            "from": "phd",
+            "to": "master",
+            "risk": "high",
+            "precedent": "Khazaie_risk",
+            "score_adjustment": -15,
+            "note": "学术倒退，需要解释"
+          },
+          {
+            "from": "phd",
+            "to": "bachelor",
+            "risk": "very_high",
+            "precedent": "Khazaie_applies",
+            "score_adjustment": -30,
+            "note": "严重学术倒退"
+          },
+          {
+            "from": "phd",
+            "to": "diploma",
+            "risk": "very_high",
+            "precedent": "Khazaie_applies",
+            "score_adjustment": -30,
+            "note": "严重学术倒退"
+          }
+        ]
+      }
+    }
+  },
+  "institution_change_risk": {
+    "description": "机构变更风险评估",
+    "patterns": [
+      {
+        "from_type": "college",
+        "to_type": "university",
+        "risk": "medium",
+        "precedent": "Singh_applies",
+        "score_adjustment": -3,
+        "note": "学院转大学是常见路径，但需证明合理性"
+      },
+      {
+        "from_type": "university",
+        "to_type": "college",
+        "risk": "high",
+        "precedent": "Khazaie_risk",
+        "score_adjustment": -10,
+        "note": "大学转学院需要强有力的理由"
+      },
+      {
+        "from_type": "college",
+        "to_type": "college",
+        "risk": "medium",
+        "precedent": "Singh_applies",
+        "score_adjustment": -5,
+        "note": "学院间转学需要解释原因"
+      },
+      {
+        "from_type": "university",
+        "to_type": "university",
+        "risk": "low",
+        "precedent": "none",
+        "score_adjustment": -2,
+        "note": "大学间转学相对常见"
+      }
+    ],
+    "same_province_bonus": 2,
+    "different_province_penalty": -3,
+    "prestigious_institution_bonus": 3
+  },
+  "mitigation_strategies": {
+    "for_singh_applies": {
+      "description": "Singh 判例适用时的缓解策略",
+      "required_evidence": [
+        "详细的学术进阶理由说明",
+        "转学分协议（如适用）",
+        "新项目的具体优势分析",
+        "与职业目标的明确关联"
+      ],
+      "recommended_documents": [
+        "新学校的录取确认信（含转学分详情）",
+        "原学校的成绩单和完成证明",
+        "职业规划说明信",
+        "行业分析或雇主支持信"
+      ]
+    },
+    "for_khazaie_applies": {
+      "description": "Khazaie 判例适用时的缓解策略（极难）",
+      "required_evidence": [
+        "职业转型的必要性证明",
+        "新领域的行业需求证明",
+        "无法通过其他方式获得技能的说明",
+        "雇主的书面支持或工作邀请"
+      ],
+      "recommended_documents": [
+        "雇主意向书或担保信",
+        "行业监管机构的要求说明",
+        "专业资格认证的必要性证明",
+        "详细的职业转型计划"
+      ],
+      "warning": "即使准备充分，Khazaie 类情况的拒签风险仍然很高"
+    }
+  },
+  "scoring_integration": {
+    "description": "与整体可辩护性评分的集成",
+    "base_study_plan_score": 30,
+    "adjustments": {
+      "natural_progression": 0,
+      "standard_transition": -3,
+      "moderate_regression": -10,
+      "severe_regression": -20,
+      "institution_change": -3,
+      "field_change": -5
+    },
+    "minimum_score": 0,
+    "maximum_penalty": -30
+  }
+}
