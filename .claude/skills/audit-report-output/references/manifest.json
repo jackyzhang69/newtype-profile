@@ -1,0 +1,33 @@
+{
+  "name": "audit-report-output",
+  "version": "1.0.0",
+  "description": "Professional immigration audit report generation with Judicial Authority theme",
+  "categories": ["output", "report", "immigration"],
+  "tech_stack": {
+    "document_format": "PDF",
+    "theme": "Judicial Authority",
+    "accessibility": "WCAG AA"
+  },
+  "files": [
+    {
+      "path": "theme.md",
+      "description": "Color palette, typography, and visual elements for Judicial Authority theme",
+      "lines": 58
+    },
+    {
+      "path": "judicial-authority-philosophy.md",
+      "description": "Design philosophy and visual principles for the theme",
+      "lines": 18
+    },
+    {
+      "path": "client_report_template.md",
+      "description": "Template structure and length constraints for client-facing audit reports by tier",
+      "lines": 200
+    }
+  ],
+  "quickstart_paths": {
+    "theme_overview": ["theme.md"],
+    "report_generation": ["client_report_template.md"],
+    "design_philosophy": ["judicial-authority-philosophy.md"]
+  }
+}
