@@ -63,6 +63,7 @@ import {
   discoverCommandsSync,
   sessionExists,
   createChiefTask,
+  createAuditTask,
   interactive_bash,
   startTmuxCheck,
 } from "./tools";
@@ -70,7 +71,7 @@ import { BackgroundManager } from "./features/background-agent";
 import { SkillMcpManager } from "./features/skill-mcp-manager";
 import { initTaskToastManager } from "./features/task-toast-manager";
 import { type HookName } from "./config";
-import { log, detectExternalNotificationPlugin, getNotificationConflictWarning } from "./shared";
+import { log, detectExternalNotificationPlugin, getNotificationConflictWarning, loadEnvFile } from "./shared";
 import { loadPluginConfig } from "./plugin-config";
 import { createModelCacheState, getModelLimit } from "./plugin-state";
 import { createConfigHandler } from "./plugin-handlers";
@@ -78,6 +79,7 @@ import { createConfigHandler } from "./plugin-handlers";
 import { setProjectDirectory } from "./audit-core/http-client";
 
 const OhMyOpenCodePlugin: Plugin = async (ctx) => {
+  loadEnvFile(ctx.directory);
   setProjectDirectory(ctx.directory);
   startTmuxCheck();
 
@@ -247,6 +249,10 @@ const OhMyOpenCodePlugin: Plugin = async (ctx) => {
     client: ctx.client,
     userCategories: pluginConfig.categories,
   });
+  const auditTask = createAuditTask({
+    manager: backgroundManager,
+    client: ctx.client,
+  });
   const disabledSkills = new Set(pluginConfig.disabled_skills ?? []);
   const systemMcpNames = getSystemMcpServerNames();
   const builtinSkills = createBuiltinSkills().filter((skill) => {
@@ -315,6 +321,7 @@ const OhMyOpenCodePlugin: Plugin = async (ctx) => {
       call_omo_agent: callOmoAgent,
       look_at: lookAt,
       chief_task: chiefTask,
+      audit_task: auditTask,
       skill: skillTool,
       skill_mcp: skillMcpTool,
       slashcommand: slashcommandTool,

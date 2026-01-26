@@ -57,6 +57,8 @@ description: |
 ## Reference Files
 
 - `references/eligibility_rules.md` - Detailed eligibility checks
+- `references/baseline_rules.md` - Baseline audit rules
+- `references/imm0276_odn_policy.md` - **NEW (2025-10)** Officer Decision Notes policy
 - `references/risk_patterns.json` - Risk assessment patterns
 - `references/risk_framework.json` - Scoring thresholds
 - `references/checklist_templates.json` - Document checklists
@@ -66,3 +68,4 @@ description: |
 - PAL requirements apply since January 22, 2024
 - Financial threshold increased to $20,635/year in 2024
 - ~~SDS pathway~~ **CLOSED November 8, 2024** - all applications now use regular stream
+- **IMM 0276 ODN policy** **EFFECTIVE October 2025** - GCMS notes no longer mandatory if ODN present

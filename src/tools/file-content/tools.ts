@@ -1,5 +1,6 @@
 import { tool } from "@opencode-ai/plugin"
-import { existsSync } from "fs"
+import { existsSync, writeFileSync, mkdirSync } from "fs"
+import { dirname } from "path"
 import { getFileContentClient } from "../../audit-core/file-content"
 import { FILE_CONTENT_EXTRACT_DESCRIPTION } from "./constants"
 import type { FileContentExtractArgs } from "./types"
@@ -30,6 +31,10 @@ export const file_content_extract = tool({
       .boolean()
       .optional()
       .describe("Wait for extraction to complete (default: true)"),
+    save_to_file: tool.schema
+      .string()
+      .optional()
+      .describe("Save full content to this file path. Returns summary only when set."),
   },
   execute: async (args: FileContentExtractArgs) => {
     try {
@@ -53,6 +58,43 @@ export const file_content_extract = tool({
         extract_xfa: args.extract_xfa,
         include_structure: args.include_structure,
       })
+
+      if (args.save_to_file) {
+        const dir = dirname(args.save_to_file)
+        if (!existsSync(dir)) {
+          mkdirSync(dir, { recursive: true })
+        }
+
+        const fullContent = JSON.stringify({
+          status: result.failed_files.length === 0 ? "completed" : "partial",
+          total_files: result.total_files,
+          total_batches: result.total_batches,
+          extracted_count: result.files.length,
+          failed_count: result.failed_files.length,
+          files: result.files,
+          failed_files: result.failed_files.length > 0 ? result.failed_files : undefined,
+        }, null, 2)
+
+        writeFileSync(args.save_to_file, fullContent, "utf-8")
+
+        const fileSummaries = result.files.map((f) => ({
+          filename: f.filename,
+          format: f.format,
+          pdf_type: f.pdf_type,
+          char_count: f.content?.length ?? 0,
+          page_count: f.metadata?.page_count,
+        }))
+
+        return JSON.stringify({
+          status: result.failed_files.length === 0 ? "completed" : "partial",
+          total_files: result.total_files,
+          extracted_count: result.files.length,
+          failed_count: result.failed_files.length,
+          saved_to: args.save_to_file,
+          files: fileSummaries,
+          failed_files: result.failed_files.length > 0 ? result.failed_files : undefined,
+        })
+      }
 
       return JSON.stringify({
         status: result.failed_files.length === 0 ? "completed" : "partial",

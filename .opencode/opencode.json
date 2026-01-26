@@ -2,5 +2,6 @@
   "plugin": [
     "/Users/jacky/immi-os"
   ],
+  "default_agent": "audit-manager",
   "$schema": "https://opencode.ai/config.json"
 }

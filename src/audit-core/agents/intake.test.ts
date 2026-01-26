@@ -5,15 +5,15 @@ describe("Intake Agent", () => {
   it("#given no parameters #when creating agent #then uses default model and temperature", () => {
     const agent = createIntakeAgent()
 
-    expect(agent.model).toBe("anthropic/claude-sonnet-4")
+    expect(agent.model).toBe("anthropic/claude-sonnet-4-5")
     expect(agent.temperature).toBe(0.1)
     expect(agent.mode).toBe("primary")
   })
 
   it("#given custom model and temperature #when creating agent #then uses provided values", () => {
-    const agent = createIntakeAgent("openai/gpt-4", 0.2)
+    const agent = createIntakeAgent("anthropic/claude-opus-4-5", 0.2)
 
-    expect(agent.model).toBe("openai/gpt-4")
+    expect(agent.model).toBe("anthropic/claude-opus-4-5")
     expect(agent.temperature).toBe(0.2)
   })
 
@@ -61,6 +61,16 @@ describe("Intake Agent", () => {
     expect(agent.description).toContain("Intake")
     expect(agent.description).toContain("facts")
     expect(agent.description).toContain("intent")
+  })
+
+  it("#given agent created #when checking prompt #then includes refusal analysis instructions", () => {
+    const agent = createIntakeAgent()
+
+    expect(agent.prompt).toContain("Refusal Analysis")
+    expect(agent.prompt).toContain("Officer Decision Notes")
+    expect(agent.prompt).toContain("IMM 0276")
+    expect(agent.prompt).toContain("needs_gcms")
+    expect(agent.prompt).toContain("refusal_analysis")
   })
 
   it("#given agent created #when checking prompt #then supports multiple document formats", () => {

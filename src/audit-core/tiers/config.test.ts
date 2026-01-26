@@ -14,12 +14,12 @@ describe("TIER_CONFIGS", () => {
   describe("guest tier", () => {
     const config = TIER_CONFIGS.guest
 
-    it("#given guest tier #when checking models #then all use gemini-flash", () => {
-      expect(config.models.auditManager).toBe("google/gemini-3-flash")
-      expect(config.models.detective).toBe("google/gemini-3-flash")
-      expect(config.models.strategist).toBe("google/gemini-3-flash")
-      expect(config.models.gatekeeper).toBe("google/gemini-3-flash")
-      expect(config.models.verifier).toBe("google/gemini-3-flash")
+    it("#given guest tier #when checking models #then all use haiku-4-5", () => {
+      expect(config.models.auditManager).toBe("anthropic/claude-haiku-4-5")
+      expect(config.models.detective).toBe("anthropic/claude-haiku-4-5")
+      expect(config.models.strategist).toBe("anthropic/claude-haiku-4-5")
+      expect(config.models.gatekeeper).toBe("anthropic/claude-haiku-4-5")
+      expect(config.models.verifier).toBe("anthropic/claude-haiku-4-5")
     })
 
     it("#given guest tier #when checking features #then verifier enabled but no KG", () => {
@@ -37,10 +37,10 @@ describe("TIER_CONFIGS", () => {
   describe("pro tier", () => {
     const config = TIER_CONFIGS.pro
 
-    it("#given pro tier #when checking models #then uses sonnet for all agents except verifier", () => {
+    it("#given pro tier #when checking models #then uses sonnet for core agents and haiku for verifier", () => {
       expect(config.models.auditManager).toBe("anthropic/claude-sonnet-4-5")
       expect(config.models.detective).toBe("anthropic/claude-sonnet-4-5")
-      expect(config.models.verifier).toBe("google/gemini-3-flash")
+      expect(config.models.verifier).toBe("anthropic/claude-haiku-4-5")
     })
 
     it("#given pro tier #when checking features #then verifier is enabled", () => {

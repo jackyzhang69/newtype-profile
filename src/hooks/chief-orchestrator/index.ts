@@ -328,12 +328,14 @@ function getMessageDir(sessionID: string): string | null {
   return null
 }
 
+const ORCHESTRATOR_AGENTS = ["audit-manager", "chief"]
+
 function isCallerOrchestrator(sessionID?: string): boolean {
   if (!sessionID) return false
   const messageDir = getMessageDir(sessionID)
   if (!messageDir) return false
   const nearest = findNearestMessageWithFields(messageDir)
-  return nearest?.agent === "chief"
+  return ORCHESTRATOR_AGENTS.includes(nearest?.agent ?? "")
 }
 
 interface SessionState {
@@ -403,7 +405,7 @@ export function createChiefOrchestratorHook(
       await ctx.client.session.prompt({
         path: { id: sessionID },
         body: {
-          agent: "chief",
+          agent: "audit-manager",
           parts: [{ type: "text", text: prompt }],
         },
         query: { directory: ctx.directory },

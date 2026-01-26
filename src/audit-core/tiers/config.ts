@@ -3,12 +3,12 @@ import type { AuditTier, TierConfig } from "./types"
 export const TIER_CONFIGS: Record<AuditTier, TierConfig> = {
   guest: {
     models: {
-      auditManager: "google/gemini-3-flash",
-      detective: "google/gemini-3-flash",
-      strategist: "google/gemini-3-flash",
-      gatekeeper: "google/gemini-3-flash",
-      verifier: "google/gemini-3-flash",
-      reporter: "google/gemini-3-flash",
+      auditManager: "anthropic/claude-haiku-4-5",
+      detective: "anthropic/claude-haiku-4-5",
+      strategist: "anthropic/claude-haiku-4-5",
+      gatekeeper: "anthropic/claude-haiku-4-5",
+      verifier: "anthropic/claude-haiku-4-5",
+      reporter: "anthropic/claude-haiku-4-5",
     },
     temperatures: {
       auditManager: 0.3,
@@ -49,7 +49,7 @@ export const TIER_CONFIGS: Record<AuditTier, TierConfig> = {
       detective: "anthropic/claude-sonnet-4-5",
       strategist: "anthropic/claude-sonnet-4-5",
       gatekeeper: "anthropic/claude-sonnet-4-5",
-      verifier: "google/gemini-3-flash",
+      verifier: "anthropic/claude-haiku-4-5",
       reporter: "anthropic/claude-haiku-4-5",
     },
     temperatures: {

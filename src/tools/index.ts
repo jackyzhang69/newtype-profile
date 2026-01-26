@@ -83,6 +83,7 @@ export { createCallOmoAgent } from "./call-omo-agent"
 export { createLookAt } from "./look-at"
 export { file_content_extract } from "./file-content"
 export { createChiefTask, type ChiefTaskToolOptions, DEFAULT_CATEGORIES, CATEGORY_PROMPT_APPENDS } from "./chief-task"
+export { createAuditTask, type AuditTaskToolOptions, AUDIT_AGENTS, IMMI_OS_TOOLS } from "./audit-task"
 export {
   kg_search,
   kg_case,

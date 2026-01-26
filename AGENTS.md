@@ -2,7 +2,7 @@
 
 > **Today's Date:** Run `date "+%Y-%m-%d"` to get current date. NEVER use year 2024 in any output.
 
-**Last Updated:** 2026-01-25
+**Last Updated:** 2026-01-26
 **Branch:** dev
 
 ## OVERVIEW
@@ -241,6 +241,21 @@ export SEARCH_SERVICE_TOKEN=your_token
 | frontend-ui-ux-engineer | google/gemini-3-pro-preview | UI generation |
 | document-writer | google/gemini-3-pro-preview | Technical docs |
 | multimodal-looker | google/gemini-3-flash | PDF/image analysis |
+
+## LEGACY NAME MIGRATION
+
+从 `oh-my-opencode` 迁移过来的旧名称会自动映射到新名称：
+
+| Legacy Name | Current Name | 说明 |
+|-------------|--------------|------|
+| chief, omo, sisyphus, prometheus | `audit-manager` | 主编排器 |
+| oracle, explore | `researcher` | 研究/探索 |
+| librarian | `archivist` | 文档/归档 |
+| frontend-ui-ux-engineer, document-writer | `writer` | 内容生成 |
+| multimodal-looker | `extractor` | PDF/图片提取 |
+| build | `deputy` | 任务执行 |
+
+**实现位置**: `src/shared/migration.ts`
 
 ## COMMANDS
 

@@ -1,6 +1,8 @@
 # Building Agentic Workflows with OpenCode/OMO
 
-> Guide for building custom multi-agent systems using the oh-my-opencode framework.
+> Guide for building custom multi-agent systems using the oh-my-opencode (OMO) framework.
+> 
+> **Note**: Legacy agent names (sisyphus, prometheus, omo) are auto-migrated to current names. See [migration.ts](../../../src/shared/migration.ts) for mapping.
 
 ---
 
@@ -16,16 +18,28 @@ OMO follows **"Separation of Planning and Execution"**:
 ┌─────────────────────────────────────────────────────────────────┐
 │  User Request                                                    │
 ├─────────────────────────────────────────────────────────────────┤
-│  Prometheus (Planner)                                           │
-│  └── Analyzes request, creates detailed execution plan          │
+│  Audit-Manager (Orchestrator)                                   │
+│  └── Analyzes request, creates plan, delegates to specialists   │
 ├─────────────────────────────────────────────────────────────────┤
-│  Sisyphus (Executor)                                            │
-│  └── Orchestrates plan execution, delegates to specialists      │
+│  Deputy (Executor)                                              │
+│  └── Executes delegated tasks via chief_task                    │
 ├─────────────────────────────────────────────────────────────────┤
 │  Domain Agents (Your Custom Agents)                             │
 │  └── Specialized agents for your business domain                │
+│  └── e.g., Detective, Strategist, Gatekeeper, Verifier          │
 └─────────────────────────────────────────────────────────────────┘
 ```
+
+### Agent Name Migration
+
+Legacy oh-my-opencode names are auto-migrated:
+
+| Legacy Name | Current Name | Role |
+|-------------|--------------|------|
+| chief, omo, sisyphus, prometheus | `audit-manager` | Primary orchestrator |
+| oracle, explore | `researcher` | Research/exploration |
+| librarian | `archivist` | Documentation/archives |
+| build | `deputy` | Task execution |
 
 ## Step 1: Define Your Agent Architecture
 
@@ -45,6 +59,7 @@ Design agents with clear, non-overlapping responsibilities:
 
 ```typescript
 // src/your-domain/agents/researcher.ts
+// Note: "researcher" is the current name for legacy "oracle"/"explore" agents
 import { createAgent } from "oh-my-opencode"
 
 export const createResearcherAgent = () => {
@@ -318,10 +333,11 @@ See **Immi-OS** (`src/audit-core/`) for a complete example:
 
 | Component | Location | Description |
 |-----------|----------|-------------|
-| Agents | `src/audit-core/agents/` | 5 specialized audit agents |
+| Agents | `src/audit-core/agents/` | 7 specialized audit agents |
 | Tiers | `src/audit-core/tiers/` | 3-tier configuration system |
 | Knowledge | `src/audit-core/knowledge/` | Dynamic injection loader |
-| Skills | `.claude/skills/` | 16 domain-specific skills |
+| Skills | `.claude/skills/` | 16+ domain-specific skills |
+| Migration | `src/shared/migration.ts` | Legacy name compatibility |
 
 ## Further Reading
 
@@ -329,3 +345,4 @@ See **Immi-OS** (`src/audit-core/`) for a complete example:
 - [Agent/Skill Selection](./agent-skill-selection.md)
 - [Tools Reference](./tools.md)
 - [Hooks Reference](./hooks.md)
+- [Audit Architecture](../audit/architecture.md) - Immi-OS building blocks design

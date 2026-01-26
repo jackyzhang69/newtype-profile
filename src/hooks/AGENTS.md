@@ -29,8 +29,8 @@ hooks/
 ├── ralph-loop/                 # Self-referential dev loop
 ├── rules-injector/             # Conditional rules from .claude/rules/
 ├── session-recovery/           # Recover from errors (432 lines)
-├── sisyphus-orchestrator/      # Main orchestration hook (660 lines)
-├── start-work/                 # Initialize Sisyphus work session
+├── chief-orchestrator/         # Main orchestration hook for audit-manager (663 lines)
+├── start-work/                 # Initialize audit-manager work session
 ├── task-resume-info/           # Track task resume state
 ├── think-mode/                 # Auto-detect thinking triggers
 ├── thinking-block-validator/   # Validate thinking block format

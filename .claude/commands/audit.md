@@ -35,24 +35,125 @@ file_content_extract({
 
 ## Workflow
 
+### Phase 1: Document Extraction (Intake)
 1. `find <case-directory> -name "*.pdf" -type f`
 2. `file_content_extract` with ALL files
 3. Verify: `extracted_count === total_files`
-4. Run audit agents (Detective -> Strategist -> Gatekeeper -> Verifier)
-5. Generate reports:
-   - `report.md` / `report.pdf` - Standard report with real client info
-   - `report_demo.md` / `report_demo.pdf` - Anonymized report (if `--anonymize=dual` or `true`)
-6. Save to `cases/<case-name>/`
+4. Dispatch `Intake` agent to extract structured CaseProfile
+
+### Phase 2: Multi-Agent Analysis
+5. **Detective** → Legal research (case law, operation manual, KG)
+6. **Strategist** → Risk assessment, defense strategy, Defensibility Score
+7. **Gatekeeper** → Compliance review, refusal triggers
+8. **Verifier** → Citation validation (ALL tiers)
+
+### Phase 3: Final Judgment & Report Generation
+9. **AuditManager** → Package AuditJudgment structure:
+   ```json
+   {
+     "verdict": "GO | CAUTION | NO-GO",
+     "score": 72,
+     "scoreWithMitigation": 85,
+     "tier": "pro",
+     "appType": "study",
+     "recommendation": "PROCEED | REVISE | HIGH-RISK",
+     "caseInfo": { "applicantName": "...", "caseSlot": "..." },
+     "agentOutputs": { "detective": {...}, "strategist": {...}, "gatekeeper": {...}, "verifier": {...} }
+   }
+   ```
+
+10. **Reporter** → Generate professional reports:
+    - Use `audit_task` to dispatch Reporter agent
+    - Reporter synthesizes agent outputs into tier-appropriate template
+    - Apply Judicial Authority theme (Navy/Gold/Slate colors)
+    - Generate JSON content structure
+    - Call `document-generator` script to produce PDF with Chinese font support
+    - Output files:
+      - `report.md` / `report.pdf` - Standard report with real client info
+      - `report_demo.md` / `report_demo.pdf` - Anonymized report (if `--anonymize=dual` or `true`)
+
+11. **Persistence** → Save to database:
+    - `audit_save_stage_output({ stage: "reporter", ... })`
+    - `audit_complete({ verdict, score, recommendation })`
+
+12. Save to `cases/<case-name>/`
 
 ## Output Files
 
 ```
 cases/<case-name>/
-├── report.md           # Standard report
-├── report.pdf          # Standard PDF
-├── report_demo.md      # Anonymized report (if enabled)
-└── report_demo.pdf     # Anonymized PDF (if enabled)
+├── case_profile.json      # Structured case data from Intake
+├── extracted_documents.json  # Document extraction results
+├── report.md              # Standard report (Markdown)
+├── report.pdf             # Standard PDF (Judicial Authority theme)
+├── report_demo.md         # Anonymized report (if enabled)
+└── report_demo.pdf        # Anonymized PDF (if enabled)
 ```
+
+## Implementation Details
+
+### How Reporter Generates PDF
+
+The Reporter agent uses a two-step process:
+
+1. **Generate JSON content structure**:
+   ```json
+   {
+     "title": "Study Permit Audit Report",
+     "subtitle": "Applicant Name - Program",
+     "sections": [
+       {"heading": "Executive Summary", "level": 1},
+       {"content": "Verdict: CAUTION..."},
+       {"table": {"headers": [...], "rows": [...]}},
+       ...
+     ]
+   }
+   ```
+
+2. **Execute document-generator script**:
+   ```bash
+   uv run --with reportlab,Pillow python3 ~/.claude/skills/document-generator/scripts/generate_pdf.py \
+     --input cases/{caseSlot}/report_content.json \
+     --output cases/{caseSlot}/report.pdf \
+     --theme judicial-authority
+   ```
+
+**Theme Features**:
+- Colors: Navy (#0A192F), Gold (#C5A059), Slate (#64748B)
+- Verdict badges: GO (Green), CAUTION (Amber), NO-GO (Red)
+- Chinese font support: CID fonts (STSong-Light, HeiseiMin-W3)
+- Typography: Georgia Bold (headers), Arial (body)
+
+### Tool Requirements
+
+The Reporter agent requires the `bash` tool to execute the PDF generation script. This is enabled in `IMMI_OS_TOOLS` (`src/tools/audit-task/constants.ts`).
+
+## Troubleshooting
+
+### PDF Not Generated
+
+**Symptom**: Only `report.md` exists, no `report.pdf`
+
+**Possible Causes**:
+1. **Reporter agent not called**: Check if AuditManager dispatched Reporter after Verifier
+2. **bash tool not available**: Verify `bash: true` in `IMMI_OS_TOOLS` (src/tools/audit-task/constants.ts)
+3. **document-generator script missing**: Check `~/.claude/skills/document-generator/scripts/generate_pdf.py` exists
+4. **Python dependencies missing**: Run `uv run --with reportlab,Pillow python3 -c "import reportlab; print('OK')"`
+
+**Manual Fix**:
+```bash
+cd cases/<case-name>
+uv run --with reportlab,Pillow python3 ~/.claude/skills/document-generator/scripts/generate_pdf.py \
+  report.pdf --title "Audit Report" --cover --toc
+```
+
+### Wrong PDF Generator Used
+
+**Symptom**: PDF created by "LaTeX via pandoc" instead of "ReportLab"
+
+**Cause**: Reporter agent was not called, user manually used pandoc
+
+**Fix**: Re-run audit with proper Reporter agent invocation
 
 ## User input
 

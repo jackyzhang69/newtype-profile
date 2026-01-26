@@ -18,6 +18,43 @@ describe("Audit Core Agents", () => {
       expect(auditManagerAgent.prompt).toContain("Gatekeeper")
       expect(auditManagerAgent.prompt).toContain("Business_Context")
     })
+
+    // #given Audit-Manager prompt with auto-start mechanism
+    // #when checking for automatic workflow trigger
+    // #then should contain trigger conditions and mandatory behavior
+    it("should have automatic workflow trigger mechanism", () => {
+      expect(auditManagerAgent.prompt).toContain("<Automatic_Workflow_Trigger>")
+      expect(auditManagerAgent.prompt).toContain("AUTO-START RULES")
+      expect(auditManagerAgent.prompt).toContain("MUST FIRST")
+      expect(auditManagerAgent.prompt).toContain("MUST IMMEDIATELY")
+      expect(auditManagerAgent.prompt).toContain("MUST NOT")
+    })
+
+    // #given Audit-Manager prompt with trigger conditions
+    // #when checking trigger patterns
+    // #then should map triggers to correct workflows
+    it("should have trigger conditions for RISK_AUDIT workflow", () => {
+      expect(auditManagerAgent.prompt).toContain("case directory path")
+      expect(auditManagerAgent.prompt).toContain("audit_session_start")
+      expect(auditManagerAgent.prompt).toContain("dispatch `Intake`")
+    })
+
+    // #given Audit-Manager configured for orchestration
+    // #when checking tool access
+    // #then should have audit_task tool enabled
+    it("should have audit_task tool enabled", () => {
+      expect(auditManagerAgent.tools).toBeDefined()
+      expect((auditManagerAgent.tools as Record<string, boolean>).audit_task).toBe(true)
+    })
+
+    // #given Audit-Manager prompt with wrong response example
+    // #when checking anti-patterns
+    // #then should explicitly show what NOT to do
+    it("should include anti-pattern examples", () => {
+      expect(auditManagerAgent.prompt).toContain("WRONG Response")
+      expect(auditManagerAgent.prompt).toContain("NEVER do this")
+      expect(auditManagerAgent.prompt).toContain("Could you tell me")
+    })
   })
 
   describe("Detective", () => {

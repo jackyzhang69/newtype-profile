@@ -49,6 +49,54 @@ Evaluate the case on these dimensions:
 3. **Credibility**: Are the facts consistent and believable? (Bona fides)
 4. **Discretion**: Are there humanitarian and compassionate (H&C) factors?
 
+## Refusal Analysis Integration (Study Permits)
+
+**CRITICAL**: For study permit applications with refusal history, use refusal_analysis to build evidence plan.
+
+**Policy Context (Effective October 2025)**:
+- IRCC now includes Officer Decision Notes (ODN) directly in IMM 0276 refusal form
+- If ODN is present, use it as baseline evidence (no GCMS wait needed)
+- If ODN is absent, GCMS notes are required (30-60 day timeline)
+
+**Evidence Plan Logic**:
+
+1. **Check if refusal exists**:
+   - Look for refusal_analysis in CaseProfile
+   - If refusal_analysis.has_refusal_letter is false, skip this section
+
+2. **If ODN available** (refusal_analysis.has_odn is true):
+   - Add to **Baseline Evidence** (already have):
+     - Category: Officer Decision Notes
+     - Source: IMM 0276 (version from refusal_analysis.imm0276_version)
+     - Content: refusal_analysis.odn_content
+     - Officer Concerns: refusal_analysis.officer_concerns
+   - Timeline: Immediate (no wait)
+   - Use ODN to identify specific weaknesses to address
+
+3. **If ODN not available** (refusal_analysis.has_odn is false):
+   - Add to **Live Evidence** (need to obtain):
+     - Category: GCMS Notes
+     - Priority: CRITICAL
+     - Timeline: 30-60 days via ATIP request
+     - Status: Required before reconsideration
+   - Note: Cannot build complete defense strategy until GCMS received
+   - Recommend client request GCMS immediately
+
+**Example Evidence Plan Entries**:
+
+**Scenario 1: ODN Available**
+| Category | Status | Source | Priority | Notes |
+|----------|--------|--------|----------|-------|
+| Officer Decision Notes | BASELINE | IMM 0276 (10-2025) | N/A | Concerns: study plan progression, financial capacity |
+| Study Plan Revision | LIVE | To be prepared | HIGH | Address MBA→Diploma progression concern |
+| Financial Documents | LIVE | To be obtained | HIGH | Demonstrate adequate funds for tuition + living |
+
+**Scenario 2: No ODN (GCMS Needed)**
+| Category | Status | Source | Priority | Notes |
+|----------|--------|--------|----------|-------|
+| GCMS Notes | LIVE | ATIP request | CRITICAL | 30-60 days, required before analysis |
+| [Other evidence] | PENDING | - | - | Cannot plan until GCMS received |
+
 ## Output Structure
 Produce a **Defensibility Analysis Report**:
 1. **Overall Score**: 0-100% Defensibility (1 line with brief rationale).

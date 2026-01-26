@@ -111,8 +111,6 @@ export function createConfigHandler(deps: ConfigHandlerDeps) {
       ])
     );
 
-    const isChiefEnabled = pluginConfig.chief_agent?.disabled !== true;
-
     type AgentConfig = Record<
       string,
       Record<string, unknown> | undefined
@@ -125,19 +123,23 @@ export function createConfigHandler(deps: ConfigHandlerDeps) {
     };
     const configAgent = config.agent as AgentConfig | undefined;
 
-    if (isChiefEnabled && builtinAgents.chief) {
-      (config as { default_agent?: string }).default_agent = "chief";
-
-      const agentConfig: Record<string, unknown> = {
-        chief: builtinAgents.chief,
-      };
+    // audit-manager is the primary orchestrator for immi-os
+    // It replaces the legacy "chief" agent from the original oh-my-opencode project
+    const hasAuditManager = !!builtinAgents["audit-manager"];
+    
+    if (hasAuditManager) {
+      // Set audit-manager as the default agent
+      (config as { default_agent?: string }).default_agent = "audit-manager";
 
       const agentsConfig = pluginConfig.agents as Record<string, { model?: string }> | undefined;
       const deputyModel = agentsConfig?.deputy?.model ?? "google/antigravity-claude-sonnet-4-5";
-      agentConfig["deputy"] = createDeputyAgent({
-        model: deputyModel,
-        temperature: 0.1,
-      });
+      
+      const agentConfig: Record<string, unknown> = {
+        deputy: createDeputyAgent({
+          model: deputyModel,
+          temperature: 0.1,
+        }),
+      };
 
       const filteredConfigAgents = configAgent
         ? Object.fromEntries(
@@ -159,10 +161,8 @@ export function createConfigHandler(deps: ConfigHandlerDeps) {
         : {};
 
       config.agent = {
+        ...builtinAgents,
         ...agentConfig,
-        ...Object.fromEntries(
-          Object.entries(builtinAgents).filter(([k]) => k !== "chief")
-        ),
         ...userAgents,
         ...projectAgents,
         ...pluginAgents,
@@ -178,9 +178,6 @@ export function createConfigHandler(deps: ConfigHandlerDeps) {
         ...pluginAgents,
         ...configAgent,
       };
-      if (!config.default_agent && builtinAgents["audit-manager"]) {
-        (config as { default_agent?: string }).default_agent = "audit-manager";
-      }
     }
 
     const agentResult = config.agent as AgentConfig;

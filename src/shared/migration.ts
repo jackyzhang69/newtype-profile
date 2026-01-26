@@ -2,18 +2,20 @@ import * as fs from "fs"
 import { log } from "./logger"
 
 // Migration map: old keys → new keys (for backward compatibility)
+// Legacy oh-my-opencode names map to current immi-os agents
 export const AGENT_NAME_MAP: Record<string, string> = {
-  omo: "chief",
-  "OmO": "chief",
-  sisyphus: "chief",
-  Sisyphus: "chief",
-  "OmO-Plan": "chief",
-  "omo-plan": "chief",
-  "Planner-Sisyphus": "chief",
-  "planner-sisyphus": "chief",
-  prometheus: "chief",
-  "plan-consultant": "chief",
-  metis: "chief",
+  chief: "audit-manager",
+  omo: "audit-manager",
+  "OmO": "audit-manager",
+  sisyphus: "audit-manager",
+  Sisyphus: "audit-manager",
+  "OmO-Plan": "audit-manager",
+  "omo-plan": "audit-manager",
+  "Planner-Sisyphus": "audit-manager",
+  "planner-sisyphus": "audit-manager",
+  prometheus: "audit-manager",
+  "plan-consultant": "audit-manager",
+  metis: "audit-manager",
   build: "deputy",
   oracle: "researcher",
   librarian: "archivist",

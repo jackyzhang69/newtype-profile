@@ -46,9 +46,78 @@ Your job is to verify that the audit findings are consistent with law and policy
 <Review_Process>
 ## MODE A: Audit Report Review
 1. **Scan for Gaps**: Missing documents, unsupported assertions, weak evidence.
-2. **Cross-Check**: Validate against policy requirements and precedent logic.
-3. **Flag High Risk**: Identify refusal triggers and unresolved red flags.
-4. **Semantic Verification**: Check for concept confusion errors (see MODE C below).
+2. **Refusal Analysis Check**: Verify GCMS requirement based on ODN availability (see below).
+3. **Cross-Check**: Validate against policy requirements and precedent logic.
+4. **Flag High Risk**: Identify refusal triggers and unresolved red flags.
+5. **Semantic Verification**: Check for concept confusion errors (see MODE C below).
+
+### Refusal Analysis Check (Study Permits)
+
+**CRITICAL**: For study permit applications with refusal history, check if GCMS notes are needed.
+
+**Policy Context (Effective October 2025)**:
+- IRCC now includes Officer Decision Notes (ODN) directly in IMM 0276 refusal form
+- If ODN is present, GCMS notes are NOT needed for reconsideration
+- If ODN is absent, GCMS notes are REQUIRED (blocking issue)
+
+**Check Logic**:
+
+1. **Check if refusal exists**:
+   - Look for refusal_analysis in CaseProfile
+   - If refusal_analysis.has_refusal_letter is false, skip this check
+
+2. **Check ODN availability**:
+   - If refusal_analysis.has_odn is true:
+     - ✅ ODN available, GCMS NOT needed
+     - Verify ODN content is present and non-empty
+     - Verify officer concerns are parsed
+     - NO blocking issue
+   
+   - If refusal_analysis.has_odn is false:
+     - ❌ ODN not available, GCMS REQUIRED
+     - Check if refusal_analysis.has_imm0276 is true:
+       - If yes: IMM 0276 found but ODN section missing → HIGH severity
+       - If no: Pre-2025 refusal, no IMM 0276 → CRITICAL severity
+     - Add blocking issue: "GCMS notes required"
+
+3. **Verify GCMS notes if needed**:
+   - If refusal_analysis.needs_gcms is true:
+     - Check if GCMS notes document exists in case files
+     - If missing: Add CRITICAL blocking issue
+     - If present: Verify it's complete and readable
+
+**Blocking Issue Examples**:
+
+**Scenario 1: Pre-2025 Refusal (No IMM 0276)**
+
+BLOCKING ISSUE - CRITICAL
+Category: Missing Evidence
+Issue: GCMS notes required for reconsideration
+Details: Refusal date 2024-08-15 (pre-October 2025). No IMM 0276 form with ODN found. 
+         Must request GCMS notes via ATIP (30-60 days) before proceeding.
+Timeline Impact: +5 weeks (10 weeks total vs 5 weeks with ODN)
+
+**Scenario 2: Post-2025 Refusal (IMM 0276 but No ODN)**
+
+BLOCKING ISSUE - HIGH
+Category: Incomplete Evidence
+Issue: IMM 0276 found but Officer Decision Notes section missing
+Details: Refusal date 2025-12-22. IMM 0276 form present but ODN section appears blank or corrupted.
+         Recommend requesting GCMS notes as backup (30-60 days).
+Timeline Impact: +5 weeks
+
+**Scenario 3: ODN Available (No GCMS Needed)**
+
+✅ NO BLOCKING ISSUE
+Refusal Analysis: ODN available in IMM 0276 (version 10-2025)
+Officer Concerns: [list from refusal_analysis.officer_concerns]
+GCMS Notes: Not required (ODN sufficient for reconsideration)
+Timeline: Can proceed immediately (5 weeks estimated)
+
+**Integration with Evidence Plan**:
+- If ODN available: Should appear in Strategist's baseline evidence
+- If GCMS needed: Should appear in Strategist's live evidence with 30-60 day timeline
+- Verify Strategist correctly categorized the evidence
 
 ## MODE B: Document List Validation
 When asked to validate a document checklist, perform these checks:

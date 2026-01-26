@@ -7,4 +7,5 @@ export interface FileContentExtractArgs {
   extract_xfa?: boolean
   include_structure?: boolean
   wait_for_result?: boolean
+  save_to_file?: string
 }

@@ -22,7 +22,8 @@ shared/
 ├── hook-disabled.ts      # Check if hook disabled
 ├── jsonc-parser.ts       # JSON with Comments
 ├── logger.ts             # File-based logging
-├── migration.ts          # Legacy name compat (omo → Sisyphus)
+├── migration.ts          # Legacy name migration (oh-my-opencode → immi-os)
+├── migration.test.ts     # TDD tests for migration utilities
 ├── model-sanitizer.ts    # Normalize model names
 ├── pattern-matcher.ts    # Tool name matching
 ├── snake-case.ts         # Case conversion
@@ -40,7 +41,7 @@ shared/
 | Truncate output | `dynamicTruncate(text, budget)` |
 | Resolve @file | `resolveFileReferencesInText()` |
 | Execute shell | `resolveCommandsInText()` |
-| Legacy names | `migrateLegacyAgentNames()` |
+| Legacy names | `migrateAgentNames()`, `migrateHookNames()`, `migrateConfigFile()` |
 
 ## CRITICAL PATTERNS
 
@@ -55,9 +56,26 @@ const final = deepMerge(deepMerge(defaults, userConfig), projectConfig)
 const { config, error } = parseJsoncSafe(content)
 ```
 
+## AGENT NAME MIGRATION
+
+Legacy oh-my-opencode agent names are auto-migrated to immi-os names:
+
+| Legacy Name | Current Name | Purpose |
+|-------------|--------------|---------|
+| chief, omo, OmO, sisyphus, prometheus | `audit-manager` | Primary orchestrator |
+| oracle, explore | `researcher` | Research/exploration |
+| librarian | `archivist` | Documentation/archives |
+| frontend-ui-ux-engineer, document-writer | `writer` | Content generation |
+| multimodal-looker | `extractor` | PDF/image extraction |
+| build | `deputy` | Task execution |
+
+**Hook name migration:**
+- `anthropic-auto-compact` → `anthropic-context-window-limit-recovery`
+
 ## ANTI-PATTERNS
 
 - Hardcoding paths (use getClaudeConfigDir, getUserConfigPath)
 - JSON.parse for user files (use parseJsonc)
 - Ignoring truncation (large outputs MUST use dynamicTruncate)
 - Direct string concat for configs (use deepMerge)
+- Using legacy agent names in new code (use current names from AGENT_NAME_MAP)

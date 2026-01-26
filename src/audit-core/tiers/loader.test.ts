@@ -70,7 +70,7 @@ describe("getAuditTier", () => {
 describe("getTierConfig", () => {
   it("#given specific tier #then returns that tier's config", () => {
     const guestConfig = getTierConfig("guest")
-    expect(guestConfig.models.auditManager).toBe("google/gemini-3-flash")
+    expect(guestConfig.models.auditManager).toBe("anthropic/claude-haiku-4-5")
 
     const proConfig = getTierConfig("pro")
     expect(proConfig.models.auditManager).toBe("anthropic/claude-sonnet-4-5")
@@ -82,14 +82,14 @@ describe("getTierConfig", () => {
 
 describe("getAgentModel", () => {
   it("#given agent name and tier #then returns correct model", () => {
-    expect(getAgentModel("auditManager", "guest")).toBe("google/gemini-3-flash")
+    expect(getAgentModel("auditManager", "guest")).toBe("anthropic/claude-haiku-4-5")
     expect(getAgentModel("auditManager", "pro")).toBe("anthropic/claude-sonnet-4-5")
     expect(getAgentModel("detective", "ultra")).toBe("anthropic/claude-sonnet-4-5")
   })
 
-  it("#given verifier on any tier #then returns model", () => {
-    expect(getAgentModel("verifier", "guest")).toBe("google/gemini-3-flash")
-    expect(getAgentModel("verifier", "pro")).toBe("google/gemini-3-flash")
+  it("#given verifier on any tier #then returns haiku-4-5 model", () => {
+    expect(getAgentModel("verifier", "guest")).toBe("anthropic/claude-haiku-4-5")
+    expect(getAgentModel("verifier", "pro")).toBe("anthropic/claude-haiku-4-5")
     expect(getAgentModel("verifier", "ultra")).toBe("anthropic/claude-haiku-4-5")
   })
 })

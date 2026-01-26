@@ -9,6 +9,15 @@ Features:
 - Batch processing with progress tracking
 - Async task queue to avoid timeout issues
 
-Returns extracted content with metadata. Use for batch file processing before audit analysis.
+IMPORTANT: Use save_to_file parameter to avoid large output:
+- When set, full content is saved to the specified file path
+- Returns summary only (filename, char_count, page_count per file)
+- Recommended for case audits with many documents
 
-Example usage: Extract content from visa application documents (IMM forms, bank statements, etc.)`
+Example:
+  file_content_extract({
+    file_paths: [...],
+    save_to_file: "/path/to/case/extracted_docs.json"
+  })
+  // Returns summary, full content saved to file
+  // Use read tool to access specific files from saved JSON`

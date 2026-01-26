@@ -10,7 +10,7 @@ import {
 } from "./migration"
 
 describe("migrateAgentNames", () => {
-  test("migrates legacy OmO names to chief", () => {
+  test("migrates legacy OmO names to audit-manager", () => {
     // #given: Config with legacy OmO agent names
     const agents = {
       omo: { model: "anthropic/claude-opus-4-5" },
@@ -21,9 +21,9 @@ describe("migrateAgentNames", () => {
     // #when: Migrate agent names
     const { migrated, changed } = migrateAgentNames(agents)
 
-    // #then: Legacy names should be migrated to chief
+    // #then: Legacy names should be migrated to audit-manager
     expect(changed).toBe(true)
-    expect(migrated["chief"]).toBeDefined()
+    expect(migrated["audit-manager"]).toBeDefined()
     expect(migrated["omo"]).toBeUndefined()
     expect(migrated["OmO"]).toBeUndefined()
     expect(migrated["OmO-Plan"]).toBeUndefined()
@@ -58,7 +58,7 @@ describe("migrateAgentNames", () => {
     const { migrated, changed } = migrateAgentNames(agents)
 
     // #then: Case-insensitive lookup should migrate correctly
-    expect(migrated["chief"]).toBeDefined()
+    expect(migrated["audit-manager"]).toBeDefined()
   })
 
   test("passes through unknown agent names unchanged", () => {
@@ -165,7 +165,7 @@ describe("migrateConfigFile", () => {
     // #then: Agent names should be migrated
     expect(needsWrite).toBe(true)
     const agents = rawConfig.agents as Record<string, unknown>
-    expect(agents["chief"]).toBeDefined()
+    expect(agents["audit-manager"]).toBeDefined()
   })
 
   test("migrates legacy hook names in disabled_hooks", () => {
@@ -188,7 +188,7 @@ describe("migrateConfigFile", () => {
     const rawConfig: Record<string, unknown> = {
       chief_agent: { disabled: false },
       agents: {
-        chief: { model: "test" },
+        "audit-manager": { model: "test" },
       },
       disabled_hooks: ["anthropic-context-window-limit-recovery"],
     }
@@ -219,7 +219,7 @@ describe("migrateConfigFile", () => {
     expect(rawConfig.chief_agent).toEqual({ disabled: false })
     expect(rawConfig.omo_agent).toBeUndefined()
     const agents = rawConfig.agents as Record<string, unknown>
-    expect(agents["chief"]).toBeDefined()
+    expect(agents["audit-manager"]).toBeDefined()
     expect(rawConfig.disabled_hooks).toContain("anthropic-context-window-limit-recovery")
   })
 })
@@ -228,9 +228,10 @@ describe("migration maps", () => {
   test("AGENT_NAME_MAP contains all expected legacy mappings", () => {
     // #given/#when: Check AGENT_NAME_MAP
     // #then: Should contain all legacy → current mappings
-    expect(AGENT_NAME_MAP["omo"]).toBe("chief")
-    expect(AGENT_NAME_MAP["OmO"]).toBe("chief")
-    expect(AGENT_NAME_MAP["sisyphus"]).toBe("chief")
+    expect(AGENT_NAME_MAP["omo"]).toBe("audit-manager")
+    expect(AGENT_NAME_MAP["OmO"]).toBe("audit-manager")
+    expect(AGENT_NAME_MAP["sisyphus"]).toBe("audit-manager")
+    expect(AGENT_NAME_MAP["chief"]).toBe("audit-manager")
     expect(AGENT_NAME_MAP["oracle"]).toBe("researcher")
     expect(AGENT_NAME_MAP["librarian"]).toBe("archivist")
   })
