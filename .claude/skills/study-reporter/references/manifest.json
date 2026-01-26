@@ -1,0 +1,13 @@
+{
+  "name": "study-reporter",
+  "version": "1.0.0",
+  "description": "Study permit reporter templates",
+  "files": [
+    "executive_summary.md",
+    "document_list.md"
+  ],
+  "dependencies": [
+    "core-reporter",
+    "audit-report-output"
+  ]
+}

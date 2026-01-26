@@ -1,0 +1,15 @@
+{
+  "name": "study-client-guidance",
+  "version": "1.0.0",
+  "description": "Study permit client guidance templates",
+  "files": [
+    "study_plan_guide.md",
+    "document_checklist.md",
+    "interview_prep.md",
+    "common_mistakes.md"
+  ],
+  "dependencies": [
+    "study-audit-rules",
+    "study-doc-analysis"
+  ]
+}

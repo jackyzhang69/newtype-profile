@@ -1,0 +1,14 @@
+{
+  "name": "study-workflow",
+  "version": "1.0.0",
+  "description": "Study permit audit workflow templates",
+  "files": [
+    "primary_assess_template.md",
+    "deep_analysis_template.md",
+    "final_assess_template.md"
+  ],
+  "dependencies": [
+    "study-audit-rules",
+    "study-doc-analysis"
+  ]
+}
