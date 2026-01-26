@@ -1,8 +1,108 @@
 {
-  "version": "study-baseline",
-  "order": ["skill_references"],
+  "version": "study-v3",
+  "description": "Study permit knowledge injection profile with output constraints",
+  "skills": {
+    "study-audit-rules": {
+      "description": "Risk patterns, eligibility rules, genuine student test",
+      "inject_to": ["detective", "strategist", "gatekeeper"],
+      "priority": 1,
+      "files": [
+        "risk_patterns.json",
+        "eligibility_rules.md",
+        "risk_framework.json"
+      ]
+    },
+    "study-doc-analysis": {
+      "description": "Document analysis rules and evidence standards",
+      "inject_to": ["detective", "strategist"],
+      "priority": 2,
+      "files": [
+        "extraction_schema.json",
+        "baseline_doc_analysis.md"
+      ]
+    },
+    "study-immicore-mcp": {
+      "description": "Caselaw and operation manual query patterns",
+      "inject_to": ["detective"],
+      "priority": 3,
+      "files": [
+        "caselaw_query_patterns.json"
+      ]
+    },
+    "study-workflow": {
+      "description": "Internal workflow templates (NOT output format)",
+      "inject_to": ["strategist", "gatekeeper"],
+      "priority": 4,
+      "files": [
+        "primary_assess_template.md",
+        "deep_analysis_template.md",
+        "final_assess_template.md"
+      ]
+    },
+    "study-client-guidance": {
+      "description": "Client-facing guides for document preparation",
+      "inject_to": ["gatekeeper"],
+      "priority": 5,
+      "files": [
+        "study_plan_guide.md",
+        "document_checklist.md",
+        "interview_prep.md"
+      ]
+    },
+    "learned-guardrails": {
+      "description": "Semantic verification rules to catch concept confusion errors",
+      "inject_to": ["gatekeeper"],
+      "priority": 6,
+      "files": [
+        "semantic_verification_guide.md"
+      ]
+    },
+    "audit-report-output": {
+      "description": "Final report format, Poison Pill templates, tier-based output constraints",
+      "inject_to": ["reporter"],
+      "priority": 7,
+      "files": [
+        "client_report_template.md"
+      ]
+    },
+    "core-reporter": {
+      "description": "Cross-app Reporter rules for synthesis, constraints, and document generation",
+      "inject_to": ["reporter"],
+      "priority": 8,
+      "files": [
+        "synthesis_rules.md",
+        "output_constraints.md",
+        "document_generation.md"
+      ]
+    },
+    "study-reporter": {
+      "description": "Study-specific Reporter templates for executive summary, document list",
+      "inject_to": ["reporter"],
+      "priority": 9,
+      "files": [
+        "executive_summary.md",
+        "document_list.md"
+      ]
+    }
+  },
+  "injection_order": [
+    "study-audit-rules",
+    "study-doc-analysis",
+    "study-immicore-mcp",
+    "study-workflow",
+    "study-client-guidance",
+    "learned-guardrails",
+    "audit-report-output",
+    "core-reporter",
+    "study-reporter"
+  ],
   "tags": {
-    "skill": "Skill_References"
+    "skill": "Skill_References",
+    "risk": "Risk_Patterns",
+    "doc": "Document_Analysis",
+    "caselaw": "Caselaw_Patterns",
+    "template": "Output_Templates",
+    "guidance": "Client_Guidance"
   },
   "stability": {
     "allow_rename": false,

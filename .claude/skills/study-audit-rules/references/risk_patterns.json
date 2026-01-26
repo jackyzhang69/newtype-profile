@@ -1,0 +1,246 @@
+{
+  "version": "2.0",
+  "description": "学习许可风险评估模式",
+  "last_updated": "2026-01-25",
+  "risk_categories": {
+    "study_plan": {
+      "id": "STUDY_PLAN",
+      "name": "学习计划风险",
+      "patterns": [
+        {
+          "id": "SP_DOWNGRADE",
+          "name": "学历倒读",
+          "severity": "high",
+          "description": "申请人拥有更高学历却申请较低级别项目",
+          "indicators": [
+            "硕士/博士申请本科或学院",
+            "专业人士申请基础证书",
+            "无合理解释的学历降级"
+          ],
+          "mitigation": "提供职业转型解释、行业需求证明、雇主支持信"
+        },
+        {
+          "id": "SP_MISMATCH",
+          "name": "专业不匹配",
+          "severity": "medium",
+          "description": "申请专业与教育/工作背景无关联",
+          "indicators": [
+            "工程背景申请艺术专业",
+            "无相关经验的职业转换",
+            "学习计划逻辑不连贯"
+          ],
+          "mitigation": "详细解释转专业原因、兴趣培养证据、职业规划"
+        },
+        {
+          "id": "SP_VAGUE",
+          "name": "学习计划模糊",
+          "severity": "medium",
+          "description": "学习计划缺乏具体细节和职业目标",
+          "indicators": [
+            "通用模板内容",
+            "无具体职业规划",
+            "对项目缺乏了解"
+          ],
+          "mitigation": "详细研究项目、具体化职业目标、展示对学校了解"
+        },
+        {
+          "id": "SP_AGE_CONCERN",
+          "name": "年龄不匹配",
+          "severity": "medium",
+          "description": "申请人年龄与学习项目不匹配",
+          "indicators": [
+            "35岁以上申请本科",
+            "大龄申请语言课程",
+            "年龄与职业发展计划不符"
+          ],
+          "mitigation": "强调职业发展需求、雇主支持、行业经验价值"
+        }
+      ]
+    },
+    "financial": {
+      "id": "FINANCIAL",
+      "name": "财务风险",
+      "patterns": [
+        {
+          "id": "FIN_INSUFFICIENT",
+          "name": "资金不足",
+          "severity": "high",
+          "description": "证明资金低于最低要求",
+          "indicators": [
+            "资金 < 学费 + $20,635",
+            "无法覆盖多年项目",
+            "未计入家属费用"
+          ],
+          "mitigation": "增加资金证明、获得额外担保人、申请奖学金"
+        },
+        {
+          "id": "FIN_HISTORY",
+          "name": "资金历史不足",
+          "severity": "medium",
+          "description": "存款历史过短或有大额突然存入",
+          "indicators": [
+            "存款历史 < 3个月",
+            "申请前大额存入",
+            "资金来源不明"
+          ],
+          "mitigation": "提供资金来源证明、收入证明、转账记录链"
+        },
+        {
+          "id": "FIN_SOURCE",
+          "name": "资金来源存疑",
+          "severity": "medium",
+          "description": "资金来源无法合理解释",
+          "indicators": [
+            "收入与存款不匹配",
+            "担保人经济能力不足",
+            "多个不相关来源"
+          ],
+          "mitigation": "详细解释信、税务证明、资产证明"
+        }
+      ]
+    },
+    "ties_to_home": {
+      "id": "TIES_HOME",
+      "name": "约束力风险",
+      "patterns": [
+        {
+          "id": "TIES_WEAK",
+          "name": "约束力薄弱",
+          "severity": "high",
+          "description": "与原籍国联系不足",
+          "indicators": [
+            "无家庭约束（父母已故/移民）",
+            "无财产",
+            "无稳定工作"
+          ],
+          "mitigation": "强调现有联系、提供回国计划、工作邀请信"
+        },
+        {
+          "id": "TIES_FAMILY_ABROAD",
+          "name": "家庭可转移",
+          "severity": "high",
+          "description": "整个家庭可以移居加拿大",
+          "indicators": [
+            "配偶申请陪读",
+            "子女随行",
+            "父母已移民或有移民计划"
+          ],
+          "mitigation": "说明配偶/子女回国计划、展示原籍国资产"
+        },
+        {
+          "id": "TIES_EMPLOYMENT",
+          "name": "就业前景不明",
+          "severity": "medium",
+          "description": "回国后就业前景不确定",
+          "indicators": [
+            "无工作经验",
+            "专业在原籍国需求低",
+            "无雇主回聘承诺"
+          ],
+          "mitigation": "行业分析、雇主意向书、职业发展计划"
+        }
+      ]
+    },
+    "immigration_history": {
+      "id": "IMMI_HISTORY",
+      "name": "移民历史风险",
+      "patterns": [
+        {
+          "id": "HIST_REFUSALS",
+          "name": "多次拒签",
+          "severity": "high",
+          "description": "有多次签证拒签记录",
+          "indicators": [
+            "2次以上学签拒签",
+            "其他类别签证拒签",
+            "多国拒签"
+          ],
+          "mitigation": "获取 GCMS notes、针对性解决问题、新证据"
+        },
+        {
+          "id": "HIST_OVERSTAY",
+          "name": "逾期滞留",
+          "severity": "high",
+          "description": "曾在加拿大或其他国家逾期滞留",
+          "indicators": [
+            "超过授权停留期限",
+            "违反签证条件",
+            "被遣返记录"
+          ],
+          "mitigation": "解释情况、提供合规证据、时间间隔"
+        },
+        {
+          "id": "HIST_MISREP",
+          "name": "虚假陈述历史",
+          "severity": "fatal",
+          "description": "曾被发现虚假陈述",
+          "indicators": [
+            "R40 虚假陈述认定",
+            "5年禁令期内",
+            "文件造假记录"
+          ],
+          "mitigation": "等待禁令期满、提供真实信息、寻求法律建议"
+        }
+      ]
+    },
+    "dual_intent": {
+      "id": "DUAL_INTENT",
+      "name": "双重意图风险",
+      "patterns": [
+        {
+          "id": "INTENT_EXPLICIT",
+          "name": "明确移民意图表述",
+          "severity": "high",
+          "description": "学习计划明确表达不离开加拿大的意图",
+          "indicators": [
+            "明确表示毕业后留加",
+            "将学签作为移民跳板",
+            "拒绝假设离开情景"
+          ],
+          "mitigation": "重写学习计划、平衡表述、准备假设性离境计划",
+          "case_reference": "Luk v Canada, 2024 FC 623"
+        },
+        {
+          "id": "INTENT_PATHWAY",
+          "name": "移民通道关联",
+          "severity": "medium",
+          "description": "选择与移民通道直接关联的项目",
+          "indicators": [
+            "专门为 PGWP 选择项目",
+            "配偶工签是主要目的",
+            "项目选择缺乏学术理由"
+          ],
+          "mitigation": "强调学术价值、职业发展、回国计划"
+        }
+      ]
+    }
+  },
+  "severity_levels": {
+    "fatal": {
+      "score": 100,
+      "action": "停止评估，标记为不合格",
+      "color": "red"
+    },
+    "high": {
+      "score": 30,
+      "action": "需要强有力的解释和证据",
+      "color": "orange"
+    },
+    "medium": {
+      "score": 15,
+      "action": "需要适当解释",
+      "color": "yellow"
+    },
+    "low": {
+      "score": 5,
+      "action": "记录但不影响整体评估",
+      "color": "green"
+    }
+  },
+  "scoring_thresholds": {
+    "low_risk": {"max": 20, "recommendation": "正常提交"},
+    "medium_risk": {"max": 50, "recommendation": "加强材料准备"},
+    "high_risk": {"max": 80, "recommendation": "寻求专业建议"},
+    "critical_risk": {"min": 80, "recommendation": "重新评估策略或延迟申请"}
+  }
+}

@@ -1,25 +1,223 @@
 {
-  "version": "study-baseline",
-  "fields": [
-    { "name": "full_name", "type": "string", "required": true },
-    { "name": "date_of_birth", "type": "date", "required": true },
-    { "name": "nationality", "type": "string", "required": false },
-    { "name": "document_id", "type": "string", "required": false },
-    { "name": "issue_date", "type": "date", "required": false },
-    { "name": "expiry_date", "type": "date", "required": false },
-    { "name": "school_name", "type": "string", "required": false },
-    { "name": "program_name", "type": "string", "required": false },
-    { "name": "program_start_date", "type": "date", "required": false },
-    { "name": "tuition_amount", "type": "number", "required": false },
-    { "name": "funds_amount", "type": "number", "required": false },
-    { "name": "sponsor_name", "type": "string", "required": false }
-  ],
+  "version": "2.0",
+  "description": "学习许可文档提取模式",
+  "last_updated": "2026-01-25",
+  "document_types": {
+    "passport": {
+      "id": "PASSPORT",
+      "required": true,
+      "fields": {
+        "full_name": {"type": "string", "required": true},
+        "given_name": {"type": "string", "required": true},
+        "surname": {"type": "string", "required": true},
+        "date_of_birth": {"type": "date", "required": true},
+        "nationality": {"type": "string", "required": true},
+        "passport_number": {"type": "string", "required": true},
+        "issue_date": {"type": "date", "required": true},
+        "expiry_date": {"type": "date", "required": true},
+        "place_of_birth": {"type": "string", "required": false}
+      },
+      "validations": [
+        {"rule": "expiry_date > program_end_date + 6_months", "severity": "high"},
+        {"rule": "expiry_date > application_date", "severity": "fatal"}
+      ]
+    },
+    "letter_of_acceptance": {
+      "id": "LOA",
+      "required": true,
+      "fields": {
+        "institution_name": {"type": "string", "required": true},
+        "dli_number": {"type": "string", "required": true, "pattern": "^O\\d+$"},
+        "program_name": {"type": "string", "required": true},
+        "program_level": {"type": "enum", "values": ["certificate", "diploma", "associate", "bachelor", "postgrad_diploma", "master", "phd"], "required": true},
+        "start_date": {"type": "date", "required": true},
+        "end_date": {"type": "date", "required": true},
+        "tuition_per_year": {"type": "number", "required": true},
+        "total_tuition": {"type": "number", "required": false},
+        "student_id": {"type": "string", "required": false},
+        "conditions": {"type": "array", "required": false}
+      },
+      "validations": [
+        {"rule": "dli_number in DLI_LIST", "severity": "fatal"},
+        {"rule": "start_date > current_date", "severity": "warning"}
+      ]
+    },
+    "provincial_attestation_letter": {
+      "id": "PAL",
+      "required": "conditional",
+      "condition": "not_exempt",
+      "fields": {
+        "province": {"type": "string", "required": true},
+        "attestation_number": {"type": "string", "required": true},
+        "issue_date": {"type": "date", "required": true},
+        "expiry_date": {"type": "date", "required": true},
+        "student_name": {"type": "string", "required": true},
+        "institution": {"type": "string", "required": true},
+        "program": {"type": "string", "required": true}
+      },
+      "validations": [
+        {"rule": "expiry_date > current_date", "severity": "fatal"},
+        {"rule": "student_name == passport.full_name", "severity": "high"},
+        {"rule": "institution == loa.institution_name", "severity": "high"}
+      ],
+      "exemptions": [
+        "master_or_phd_program",
+        "k12_student",
+        "exchange_student",
+        "study_permit_extension_in_canada"
+      ]
+    },
+    "bank_statement": {
+      "id": "BANK_STMT",
+      "required": true,
+      "fields": {
+        "account_holder": {"type": "string", "required": true},
+        "bank_name": {"type": "string", "required": true},
+        "account_number": {"type": "string", "required": true, "mask": true},
+        "currency": {"type": "string", "required": true},
+        "statement_period_start": {"type": "date", "required": true},
+        "statement_period_end": {"type": "date", "required": true},
+        "opening_balance": {"type": "number", "required": true},
+        "closing_balance": {"type": "number", "required": true},
+        "average_balance": {"type": "number", "required": false}
+      },
+      "validations": [
+        {"rule": "statement_period >= 4_months", "severity": "medium"},
+        {"rule": "statement_period >= 6_months", "severity": "low", "note": "preferred"},
+        {"rule": "closing_balance >= required_funds", "severity": "high"}
+      ]
+    },
+    "bank_certificate": {
+      "id": "BANK_CERT",
+      "required": true,
+      "fields": {
+        "account_holder": {"type": "string", "required": true},
+        "bank_name": {"type": "string", "required": true},
+        "certificate_date": {"type": "date", "required": true},
+        "balance": {"type": "number", "required": true},
+        "currency": {"type": "string", "required": true},
+        "frozen_until": {"type": "date", "required": false}
+      },
+      "validations": [
+        {"rule": "certificate_date within 30_days", "severity": "medium"},
+        {"rule": "balance >= required_funds", "severity": "high"}
+      ]
+    },
+    "gic_certificate": {
+      "id": "GIC",
+      "required": "sds_only",
+      "fields": {
+        "account_holder": {"type": "string", "required": true},
+        "bank_name": {"type": "string", "required": true},
+        "amount": {"type": "number", "required": true},
+        "currency": {"type": "string", "required": true, "value": "CAD"},
+        "purchase_date": {"type": "date", "required": true},
+        "gic_number": {"type": "string", "required": true}
+      },
+      "validations": [
+        {"rule": "amount >= 20635", "severity": "fatal"},
+        {"rule": "bank_name in APPROVED_GIC_BANKS", "severity": "fatal"}
+      ]
+    },
+    "language_test": {
+      "id": "LANG_TEST",
+      "required": "recommended",
+      "fields": {
+        "test_type": {"type": "enum", "values": ["IELTS_Academic", "IELTS_General", "TOEFL_iBT", "PTE_Academic", "CELPIP", "TEF", "TCF", "Duolingo"], "required": true},
+        "test_date": {"type": "date", "required": true},
+        "overall_score": {"type": "number", "required": true},
+        "listening": {"type": "number", "required": false},
+        "reading": {"type": "number", "required": false},
+        "writing": {"type": "number", "required": false},
+        "speaking": {"type": "number", "required": false},
+        "trf_number": {"type": "string", "required": false}
+      },
+      "validations": [
+        {"rule": "test_date within 2_years", "severity": "fatal"},
+        {"rule": "overall_score >= 6.0 for SDS_IELTS_Academic", "severity": "high"}
+      ],
+      "sds_requirements": {
+        "IELTS_Academic": {"overall": 6.0},
+        "IELTS_General": {"each_band": 6.0},
+        "CELPIP": {"each_band": 7},
+        "PTE_Academic": {"overall": 60},
+        "TOEFL_iBT": {"overall": 83},
+        "TEF_Canada": {"each_skill": "NCLC 7"},
+        "TCF_Canada": {"each_skill": "NCLC 7"}
+      }
+    },
+    "study_plan": {
+      "id": "STUDY_PLAN",
+      "required": "recommended",
+      "fields": {
+        "word_count": {"type": "number", "required": false},
+        "sections": {
+          "background": {"present": "boolean"},
+          "why_canada": {"present": "boolean"},
+          "why_institution": {"present": "boolean"},
+          "career_plan": {"present": "boolean"},
+          "return_plan": {"present": "boolean"},
+          "financial_plan": {"present": "boolean"}
+        }
+      },
+      "quality_indicators": [
+        {"check": "specific_details", "weight": 2},
+        {"check": "logical_flow", "weight": 2},
+        {"check": "genuine_motivation", "weight": 3},
+        {"check": "realistic_goals", "weight": 2},
+        {"check": "no_immigration_language", "weight": 1}
+      ]
+    },
+    "transcript": {
+      "id": "TRANSCRIPT",
+      "required": true,
+      "fields": {
+        "institution": {"type": "string", "required": true},
+        "student_name": {"type": "string", "required": true},
+        "program": {"type": "string", "required": true},
+        "issue_date": {"type": "date", "required": true},
+        "gpa": {"type": "number", "required": false},
+        "graduation_date": {"type": "date", "required": false},
+        "status": {"type": "enum", "values": ["completed", "in_progress", "withdrawn"], "required": true}
+      }
+    },
+    "diploma_degree": {
+      "id": "DIPLOMA",
+      "required": true,
+      "fields": {
+        "institution": {"type": "string", "required": true},
+        "degree_type": {"type": "string", "required": true},
+        "major": {"type": "string", "required": true},
+        "graduation_date": {"type": "date", "required": true},
+        "student_name": {"type": "string", "required": true}
+      }
+    }
+  },
   "checks": [
     "cross_document_identity",
     "purpose_consistency",
     "funds_consistency",
     "ties_consistency",
     "signature_presence",
-    "page_completeness"
+    "page_completeness",
+    "translation_completeness",
+    "notarization_validity"
+  ],
+  "financial_requirements": {
+    "base_living_cost": 20635,
+    "spouse_addition": 4000,
+    "child_addition": 3000,
+    "quebec_living_cost": 24000,
+    "currency": "CAD",
+    "effective_date": "2024-01-01"
+  },
+  "approved_gic_banks": [
+    "Scotiabank",
+    "RBC Royal Bank",
+    "CIBC",
+    "TD Bank",
+    "BMO Bank of Montreal",
+    "ICICI Bank Canada",
+    "SBI Canada Bank"
   ]
 }
