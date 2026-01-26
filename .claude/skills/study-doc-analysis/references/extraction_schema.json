@@ -1,7 +1,39 @@
 {
-  "version": "2.0",
-  "description": "学习许可文档提取模式",
+  "version": "2.1",
+  "description": "学习许可文档提取模式 - 支持境内外申请差异",
   "last_updated": "2026-01-25",
+  "application_context": {
+    "description": "申请情境决定必需文件和表格类型",
+    "contexts": {
+      "outside_canada": {
+        "id": "OUTSIDE",
+        "label": "境外申请 (首次入境)",
+        "checklist_form": "IMM 5483",
+        "application_form": "IMM 1294",
+        "pal_required": true,
+        "biometrics": "required_at_vac",
+        "current_status_required": false
+      },
+      "inside_canada_extension": {
+        "id": "INSIDE_EXT",
+        "label": "境内延期",
+        "checklist_form": "IMM 5555",
+        "application_form": "IMM 5709",
+        "pal_required": false,
+        "biometrics": "usually_valid",
+        "current_status_required": true
+      },
+      "inside_canada_initial": {
+        "id": "INSIDE_INIT",
+        "label": "境内首次申请 (有其他身份)",
+        "checklist_form": "IMM 5555",
+        "application_form": "IMM 5709",
+        "pal_required": true,
+        "biometrics": "may_be_required",
+        "current_status_required": true
+      }
+    }
+  },
   "document_types": {
     "passport": {
       "id": "PASSPORT",
@@ -191,6 +223,75 @@
         "graduation_date": {"type": "date", "required": true},
         "student_name": {"type": "string", "required": true}
       }
+    },
+    "current_status_document": {
+      "id": "CURRENT_STATUS",
+      "required": "inside_canada_only",
+      "description": "境内申请必需 - 证明当前合法身份",
+      "fields": {
+        "document_type": {
+          "type": "enum",
+          "values": ["study_permit", "work_permit", "visitor_record", "trp", "other"],
+          "required": true
+        },
+        "document_number": {"type": "string", "required": true},
+        "issue_date": {"type": "date", "required": true},
+        "expiry_date": {"type": "date", "required": true},
+        "status": {
+          "type": "enum",
+          "values": ["valid", "expired", "implied_status"],
+          "required": true
+        },
+        "conditions": {"type": "array", "required": false},
+        "employer_or_institution": {"type": "string", "required": false}
+      },
+      "validations": [
+        {"rule": "expiry_date >= current_date OR status == implied_status", "severity": "fatal", "note": "必须有有效身份或隐含身份"},
+        {"rule": "document_type matches application_context", "severity": "high"}
+      ],
+      "implied_status_rules": {
+        "description": "如果当前许可已过期但已提交延期申请，申请人享有隐含身份",
+        "conditions": [
+          "original_permit_was_valid_when_extension_filed",
+          "extension_application_pending"
+        ]
+      }
+    },
+    "tuition_payment_receipt": {
+      "id": "TUITION_RECEIPT",
+      "required": "sds_only",
+      "description": "SDS 申请必需 - 第一年学费全额缴纳证明",
+      "fields": {
+        "institution": {"type": "string", "required": true},
+        "student_name": {"type": "string", "required": true},
+        "student_id": {"type": "string", "required": true},
+        "payment_date": {"type": "date", "required": true},
+        "amount_paid": {"type": "number", "required": true},
+        "currency": {"type": "string", "required": true},
+        "academic_year": {"type": "string", "required": true},
+        "receipt_number": {"type": "string", "required": false}
+      },
+      "validations": [
+        {"rule": "amount_paid >= loa.tuition_per_year", "severity": "high", "note": "SDS 要求第一年学费全额"},
+        {"rule": "student_name matches passport.full_name", "severity": "high"}
+      ]
+    },
+    "medical_exam_receipt": {
+      "id": "MEDICAL",
+      "required": "conditional",
+      "description": "SDS 需提前体检；常规通道可能后续要求",
+      "fields": {
+        "applicant_name": {"type": "string", "required": true},
+        "exam_date": {"type": "date", "required": true},
+        "panel_physician": {"type": "string", "required": true},
+        "clinic_location": {"type": "string", "required": true},
+        "uci_number": {"type": "string", "required": false},
+        "e_medical_number": {"type": "string", "required": false}
+      },
+      "validations": [
+        {"rule": "exam_date within 12_months for SDS", "severity": "high"},
+        {"rule": "e_medical_number present for SDS", "severity": "medium"}
+      ]
     }
   },
   "checks": [
@@ -201,8 +302,31 @@
     "signature_presence",
     "page_completeness",
     "translation_completeness",
-    "notarization_validity"
+    "notarization_validity",
+    "application_context_validation",
+    "pal_exemption_verification",
+    "current_status_validity",
+    "sds_eligibility_check"
   ],
+  "context_specific_checks": {
+    "outside_canada": [
+      {"check": "pal_present_if_required", "severity": "fatal"},
+      {"check": "biometrics_instruction_present", "severity": "medium"},
+      {"check": "visa_office_instructions_followed", "severity": "medium"}
+    ],
+    "inside_canada": [
+      {"check": "current_status_valid_or_implied", "severity": "fatal"},
+      {"check": "maintenance_of_status", "severity": "high"},
+      {"check": "application_before_expiry_or_within_90_days", "severity": "high"}
+    ],
+    "sds": [
+      {"check": "gic_amount_minimum_20635", "severity": "fatal"},
+      {"check": "tuition_fully_paid", "severity": "fatal"},
+      {"check": "language_score_meets_minimum", "severity": "fatal"},
+      {"check": "medical_exam_completed_upfront", "severity": "high"},
+      {"check": "applicant_from_sds_country", "severity": "fatal"}
+    ]
+  },
   "financial_requirements": {
     "base_living_cost": 20635,
     "spouse_addition": 4000,
