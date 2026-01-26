@@ -84,6 +84,32 @@ The `{app}-knowledge-injection/references/injection_profile.json` must:
 - Maintain correct `injection_order`
 - Use valid `priority` values (1-10)
 
+### 6. Landmark Cases Validation
+
+> **NEW**: 遵循 [os-design-principles.md](../os-design-principles.md) 中的案例引用策略。
+
+The `{app}-immicore-mcp/references/caselaw_query_patterns.json` must:
+
+| 检查项 | 要求 | 验证方法 |
+|--------|------|----------|
+| **案例类型** | 仅 FC/FCA/SCC 权威案例 | 检查引用格式 |
+| **权威性验证** | 每个案例有 `_authority_verified` | 检查字段存在 |
+| **有效性确认** | 所有案例 `is_good_law: true` | 检查验证记录 |
+| **动态获取指导** | 有 `_dynamic_lookup` 字段 | 检查字段存在 |
+| **验证时效** | `_last_verified` 在 90 天内 | 检查日期 |
+
+**验证命令**：
+```bash
+caselaw_authority(citation='YYYY FC XXXX')
+# 确认 is_good_law=true
+```
+
+**不合规情况**：
+- ❌ 包含 IAD/IRB (CanLII) 案例在 `landmark_cases` 中
+- ❌ 缺少 `_authority_verified` 验证记录
+- ❌ 案例 `is_good_law: false`
+- ❌ `_last_verified` 超过 90 天未更新
+
 ## Output Format
 
 ```markdown
@@ -108,9 +134,17 @@ The `{app}-knowledge-injection/references/injection_profile.json` must:
 - [x] All skills referenced
 - [ ] ISSUE: {app}-workflow not in injection_order
 
+### Landmark Cases Validation
+- [x] All cases are FC/FCA/SCC (no IAD/IRB)
+- [x] All cases have _authority_verified
+- [x] All cases is_good_law=true
+- [x] _last_verified within 90 days
+- [ ] ISSUE: Case "XXXX CanLII YYYY" is IAD, should use _dynamic_lookup
+
 ### Recommendations
 1. Add missing file: {app}-workflow/references/submission_letter_template.md
 2. Update injection_profile.json to include {skill}
+3. Remove IAD cases from landmark_cases, add _dynamic_lookup instead
 ```
 
 ## What Is NOT Checked (Out of Scope)

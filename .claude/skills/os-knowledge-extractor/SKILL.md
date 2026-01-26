@@ -197,11 +197,56 @@ After extraction, verify:
 2. **Consistent categories** - Risk patterns use standard categories
 3. **Complete coverage** - Major refusal reasons captured
 4. **Proper formatting** - JSON is valid, Markdown is clean
+5. **Landmark cases verified** - All FC cases validated via KG (see below)
 
 Run compliance check after extraction:
 
 ```bash
 /os-check {app}
+```
+
+## Landmark Cases Policy
+
+> **CRITICAL**: 遵循 [os-design-principles.md](../os-design-principles.md) 中的案例引用策略。
+
+### 提取规则
+
+| 案例类型 | 提取到 Skills | 验证方法 |
+|----------|---------------|----------|
+| **FC/FCA/SCC** | ✅ 经验证后可以 | `caselaw_authority(citation)` 确认 `is_good_law=true` |
+| **IAD/IRB** | ❌ 不提取 | 使用 `_dynamic_lookup` 指导 Detective 动态获取 |
+
+### 验证流程
+
+提取 `landmark_cases` 时必须：
+
+```bash
+# 1. 验证案例权威性
+caselaw_authority(citation='YYYY FC XXXX')
+
+# 2. 确认满足条件
+# - is_good_law: true
+# - 优先选择 cited_by_count > 0
+
+# 3. 添加验证记录
+"_authority_verified": {
+  "YYYY FC XXXX": {"cited_by": N, "is_good_law": true}
+}
+```
+
+### 输出格式
+
+```json
+{
+  "landmark_cases": [
+    "Case Name v Canada, YYYY FC XXXX"
+  ],
+  "_authority_verified": {
+    "YYYY FC XXXX": {"cited_by": 2, "is_good_law": true}
+  },
+  "_dynamic_lookup": "kg_top_authorities(issue_code='XXX', court='FC', limit=5)",
+  "_last_verified": "2026-01-25"
+}
 ```
 
 ## References
