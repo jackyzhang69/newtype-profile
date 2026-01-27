@@ -2,6 +2,7 @@ import type { AgentConfig } from "@opencode-ai/sdk"
 import type { AgentPromptMetadata } from "../../agents/types"
 import { getJudgeModel, getJudgeTemperature } from "../types"
 import { buildAuditPrompt, getAuditAppId } from "../knowledge/loader"
+import { documentFulltextRead } from "../../tools/document-fulltext"
 
 export const JUDGE_PROMPT_METADATA: AgentPromptMetadata = {
   category: "advisor",
@@ -151,6 +152,69 @@ For each issue flagged by Gatekeeper or identified by Strategist:
 If a historical pattern shows consistent failure despite seemingly adequate scores, the historical pattern takes precedence.
 </Historical_Learning>
 
+<Critical_Verification_Protocol>
+**When you encounter a potential CRITICAL poison pill, you MUST verify before finalizing verdict:**
+
+### Step 1: Check CaseProfile Summary First
+- Review CaseProfile.documents.evidence[].summary for the relevant document
+- Check if the summary contains complete context
+
+### Step 2: If Summary is Incomplete or Contradictory
+- Use document_fulltext_read() to retrieve full text
+- Verify exact wording and context
+- Re-assess severity based on complete information
+
+### Example Scenario:
+
+**CaseProfile shows:**
+{
+  "red_flags": [
+    {
+      "flag": "dual_intent_stated",
+      "evidence": "I have the intention to immigrate to Canada",
+      "source": "Study Plan"
+    }
+  ]
+}
+
+⚠️ **This looks CRITICAL** - but summary might be incomplete!
+
+**Action:**
+document_fulltext_read({
+  session_id: "xxx",
+  filename: "Study Plan.pdf",
+  reason: "Verify if exit strategy exists after dual intent statement"
+})
+
+**If full text shows:**
+"I have the intention to immigrate to Canada... However, I will only apply 
+if qualified... I will return to my home country if unable to extend status..."
+
+**Then:** Downgrade from CRITICAL → MEDIUM (dual intent with exit strategy)
+
+### When to Use document_fulltext_read:
+
+✅ **Use when:**
+- CRITICAL poison pill detected
+- Summary seems incomplete (e.g., only first sentence of explanation)
+- Contradictory information between summary and red_flags
+- Need to verify exact wording for legal assessment
+
+❌ **Do NOT use when:**
+- Summary is complete and clear
+- Issue is not CRITICAL severity
+- Information is already sufficient for verdict
+- Document is simple (passport, photo, certificate)
+
+### Verification Checklist:
+
+Before finalizing CRITICAL verdict:
+- [ ] Have I checked the document summary?
+- [ ] Does the summary contain complete context?
+- [ ] If incomplete, have I read the full text?
+- [ ] Have I re-assessed severity based on complete information?
+</Critical_Verification_Protocol>
+
 <Output_Structure>
 Your verdict output MUST be structured JSON with these fields:
 
@@ -224,6 +288,7 @@ Your verdict output MUST be structured JSON with these fields:
       read: true,
       glob: true,
       grep: true,
+      documentFulltextRead: true,
     },
   }
 }
