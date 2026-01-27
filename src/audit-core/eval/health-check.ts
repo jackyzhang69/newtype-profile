@@ -39,7 +39,7 @@ function checkImmicorePath(): string | null {
 }
 
 async function checkMcpHttp(): Promise<string | null> {
-  const host = process.env.AUDIT_MCP_HOST || "http://localhost"
+  const host = process.env.AUDIT_MCP_HOST || "http://192.168.1.98"
   const ports = [3105, 3106, 3107, 3108, 3109, 3009]
   for (const port of ports) {
     try {
