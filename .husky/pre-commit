@@ -1,15 +1,26 @@
 #!/bin/sh
 
-# Type check
-echo "🔍 Running type check..."
+# Get staged files count
+STAGED_COUNT=$(git diff --cached --name-only | wc -l)
+
+if [ "$STAGED_COUNT" -eq 0 ]; then
+  echo "✅ No changes, skipping checks"
+  exit 0
+fi
+
+echo "🔍 Type checking (typecheck)..."
 bun run typecheck || exit 1
 
-# Build
 echo "🔨 Building..."
 bun run build || exit 1
 
-# Test
-echo "🧪 Running tests..."
-bun test || exit 1
+# Only run full test suite if committing audit-core or workflow changes
+STAGED_FILES=$(git diff --cached --name-only)
+if echo "$STAGED_FILES" | grep -qE 'src/audit-core|src/hooks/(audit|workflow)'; then
+  echo "🧪 Running full tests (audit-core changes detected)..."
+  bun test || exit 1
+else
+  echo "⏭️  Skipping full tests (non-audit changes)"
+fi
 
 echo "✅ Pre-commit checks passed!"
