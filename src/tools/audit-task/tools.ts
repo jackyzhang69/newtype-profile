@@ -9,6 +9,7 @@ import { resolveMultipleSkills } from "../../features/opencode-skill-loader/skil
 import { createBuiltinSkills } from "../../features/builtin-skills/skills"
 import { getTaskToastManager } from "../../features/task-toast-manager"
 import { subagentSessions } from "../../features/claude-code-session-state"
+import { log } from "../../shared/logger"
 
 type OpencodeClient = PluginInput["client"]
 
@@ -108,7 +109,10 @@ export function createAuditTask(options: AuditTaskToolOptions): ToolDefinition {
 
       const runInBackground = args.run_in_background === true
 
+      log(`[audit_task] Executing agent: ${agentToUse}, background: ${runInBackground}, skills: ${args.skills.join(", ") || "none"}`)
+
       if (args.resume) {
+        log(`[audit_task] Resuming session: ${args.resume}`)
         if (runInBackground) {
           try {
             const task = await manager.resume({
@@ -271,6 +275,8 @@ System notifies on completion. Use \`background_output\` with task_id="${task.id
         taskId = `audit_sync_${sessionID.slice(0, 8)}`
         const startTime = new Date()
 
+        log(`[audit_task] Created session: ${sessionID} for agent: ${agentToUse}`)
+
         if (toastManager) {
           toastManager.addTask({
             id: taskId,
@@ -288,19 +294,32 @@ System notifies on completion. Use \`background_output\` with task_id="${task.id
 
         let promptError: Error | undefined
         let promptResponse: unknown
+        let promptRetries = 0
+        const MAX_PROMPT_RETRIES = 2
 
-        try {
-          promptResponse = await client.session.promptAsync({
-            path: { id: sessionID },
-            body: {
-              agent: agentToUse,
-              system: systemContent,
-              tools: auditToolConfig,
-              parts: [{ type: "text", text: args.prompt }],
-            },
-          })
-        } catch (error) {
-          promptError = error instanceof Error ? error : new Error(String(error))
+        while (promptRetries <= MAX_PROMPT_RETRIES) {
+          try {
+            promptResponse = await client.session.promptAsync({
+              path: { id: sessionID },
+              body: {
+                agent: agentToUse,
+                system: systemContent,
+                tools: auditToolConfig,
+                parts: [{ type: "text", text: args.prompt }],
+              },
+            })
+            break
+          } catch (error) {
+            promptError = error instanceof Error ? error : new Error(String(error))
+            promptRetries++
+            
+            if (promptRetries <= MAX_PROMPT_RETRIES) {
+              log(`[audit_task] Prompt failed (attempt ${promptRetries}/${MAX_PROMPT_RETRIES}), retrying in 1s...`)
+              await new Promise(resolve => setTimeout(resolve, 1000))
+            } else {
+              log(`[audit_task] Prompt failed after ${MAX_PROMPT_RETRIES} retries`)
+            }
+          }
         }
 
         if (promptError) {
@@ -316,27 +335,51 @@ System notifies on completion. Use \`background_output\` with task_id="${task.id
 
         const POLL_INTERVAL_MS = 500
         const MAX_POLL_TIME_MS = 10 * 60 * 1000
+        const MAX_RETRIES = 2
         const pollStart = Date.now()
 
         let lastStatus: string | undefined
+        let isStarted = false
+        let retryCount = 0
 
         while (Date.now() - pollStart < MAX_POLL_TIME_MS) {
           await new Promise(resolve => setTimeout(resolve, POLL_INTERVAL_MS))
 
           try {
             const statusResult = await client.session.status()
-            const allStatuses = (statusResult.data ?? {}) as Record<string, { type: string }>
+            const allStatuses = (statusResult.data ?? {}) as Record<string, { type: string; error?: string }>
             const sessionStatus = allStatuses[sessionID]
 
             if (sessionStatus?.type !== lastStatus) {
               lastStatus = sessionStatus?.type
+              log(`[audit_task] Session ${sessionID} status changed to: ${lastStatus}`)
             }
 
-            if (!sessionStatus || sessionStatus.type === "idle") {
-              break
+            // Mark as started once we see a running state
+            if (sessionStatus?.type === "running" || sessionStatus?.type === "queued") {
+              isStarted = true
+            }
+
+            // If we haven't seen it start yet, and it's idle, it might be too fast or just created.
+            // But if promptAsync succeeded, it should transition.
+            // We wait at least 2 seconds before accepting "idle" if we haven't seen "running" to avoid race conditions.
+            if (!isStarted && Date.now() - pollStart < 2000) {
+              continue
+            }
+
+            if (!sessionStatus || sessionStatus.type === "idle" || sessionStatus.type === "error" || sessionStatus.type === "failed") {
+               if (sessionStatus?.type === "error" || sessionStatus?.type === "failed") {
+                 log(`[audit_task] Session ${sessionID} failed with status: ${sessionStatus.type}`)
+               }
+               break
             }
           } catch (error) {
-            // Continue polling despite status check errors
+            log(`[audit_task] Status check failed for ${sessionID}: ${error}`)
+            retryCount++
+            if (retryCount > MAX_RETRIES) {
+              log(`[audit_task] Max retries (${MAX_RETRIES}) exceeded for status check`)
+              break
+            }
           }
         }
         const messagesResult = await client.session.messages({
@@ -358,7 +401,11 @@ System notifies on completion. Use \`background_output\` with task_id="${task.id
         const lastMessage = assistantMessages[0]
 
         if (!lastMessage) {
-          return `❌ No assistant response found.\n\nThis typically means the agent failed to execute or timed out.\n\nSession ID: ${sessionID}\n\nDebug info:\n- Total messages: ${messages.length}\n- Message roles: ${Array.from(new Set(messages.map(m => m.info?.role))).join(", ")}`
+           // Debug: Check if there are ANY messages
+           const userMessages = messages.filter(m => m.info?.role === "user");
+           const statusDebug = lastStatus || "unknown";
+           
+          return `❌ No assistant response found.\n\nThis typically means the agent failed to execute or timed out.\n\nSession ID: ${sessionID}\nLast Status: ${statusDebug}\nUser Messages: ${userMessages.length}\nDebug info:\n- Total messages: ${messages.length}\n- Message roles: ${Array.from(new Set(messages.map(m => m.info?.role))).join(", ")}`
         }
 
         const textParts = lastMessage?.parts?.filter((p) => p.type === "text") ?? []

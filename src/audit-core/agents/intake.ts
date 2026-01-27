@@ -22,6 +22,7 @@ export function createIntakeAgent(
   const resolvedModel = model ?? "anthropic/claude-sonnet-4-5"
   const resolvedTemperature = temperature ?? 0.1
 
+  // Note: 'read' is allowed by default if not in restricted list
   const restrictions = createAgentToolRestrictions([
     "write",
     "edit",
@@ -95,11 +96,14 @@ find /path/to/case/directory -type f \\( -iname "*.pdf" -o -iname "*.docx" -o -i
 - Check for common IRCC forms (IMM 0008, IMM 1344, IMM 5532, IMM 5406, IMM 5669)
 - Identify evidence files (passports, marriage certificates, photos, etc.)
 
-## Step 3: Document Extraction
+## Step 3: Document Extraction & Storage
 
-**CRITICAL**: Extract ALL files in ONE call. The tool handles batching automatically.
+**CRITICAL**: Extract ALL files in ONE call. Use \`save_to_file\` to automatically save the extraction result.
 
-\`\`\`
+\`\`\`typescript
+const caseId = "case-" + Date.now(); // Generate ID
+const extractedDocsPath = \`./tmp/\${caseId}/extracted_docs.json\`;
+
 file_content_extract({
   "file_paths": [
     "/absolute/path/to/file1.pdf",
@@ -108,7 +112,8 @@ file_content_extract({
   ],
   "output_format": "markdown",
   "extract_xfa": true,
-  "include_structure": true
+  "include_structure": true,
+  "save_to_file": extractedDocsPath // AUTOMATICALLY SAVE RESULT
 })
 \`\`\`
 
@@ -116,23 +121,11 @@ file_content_extract({
 - Check status: "completed" or "partial"
 - Verify: extracted_count === total_files
 - If failed_count > 0, report failed files
+- **Note**: The full content is now saved to \`extractedDocsPath\`. The tool returns a summary.
 
 ## Step 4: Document Classification and Layered Extraction
 
-**CRITICAL**: After extracting all documents, classify them by nature and apply appropriate extraction strategy.
-
-### 4.1 Save Full Text to Storage
-
-First, save the complete extraction result to a JSON file for later reference:
-
-\`\`\`typescript
-const extractedDocsPath = \`./tmp/\${caseId}/extracted_docs.json\`
-await Bun.write(extractedDocsPath, JSON.stringify({
-  case_id: caseId,
-  extracted_at: new Date().toISOString(),
-  documents: extractionResult.files  // Complete file_content_extract result
-}))
-\`\`\`
+**CRITICAL**: Use the summary returned by file_content_extract to classify documents.
 
 ### 4.2 Document Classification Rules
 
@@ -216,7 +209,7 @@ For each document:
 
 ## Step 5: Form Parsing
 
-Extract key information from IRCC forms using XFA fields:
+Extract key information from IRCC forms using XFA fields (returned in file_content_extract summary or check extracted_docs.json):
 
 **IMM 1344 (Sponsorship Application):**
 - Sponsor name, DOB, UCI
@@ -328,7 +321,7 @@ Build comprehensive case understanding:
   "refusal_date": "2025-12-22",
   "has_imm0276": true,
   "has_odn": true,
-  "odn_content": "I have reviewed the application. The applicant is applying for...",
+  "odn_content": "I have reviewed the application...",
   "officer_concerns": [
     "Applicant's study program not a reasonable progression",
     "Financial capacity not adequately demonstrated",
@@ -449,47 +442,16 @@ Build JSON profile conforming to CaseProfile schema:
         "summary": "1. Sponsor met applicant at UBC in Feb 2020\\n2. Cohabiting since Mar 2020\\n3. Married Jun 2023 (civil registration)\\n4. No ceremony due to COVID-19\\n5. Currently living together",
         "full_text_ref": "./tmp/tian-2025-01/extracted_docs.json#Submission Letter.pdf"
       },
-      {
-        "category": "financial",
-        "filename": "Bank Statement Jan 2025.pdf",
-        "path": "/Users/jacky/Desktop/tian/Bank Statement Jan 2025.pdf",
-        "file_type": "pdf",
-        "document_nature": "structured",
-        "summary": "Account: *****3448611 | Institution: Pingan Bank | Balance: ¥500,000 | Period: 2025-01",
-        "full_text_ref": "./tmp/tian-2025-01/extracted_docs.json#Bank Statement Jan 2025.pdf"
-      },
-      {
-        "category": "identity",
-        "filename": "passport-sponsor.pdf",
-        "path": "/Users/jacky/Desktop/tian/passport-sponsor.pdf",
-        "file_type": "pdf",
-        "document_nature": "simple"
-      },
       ...
     ]
   },
   "sponsor": {
     "name": "Zhuang Tian",
-    "family_name": "Tian",
-    "given_name": "Zhuang",
-    "dob": "1989-06-28",
-    "status": "citizen",
-    "uci": "91269977",
-    "address": {...},
-    "employment": {...},
-    "marital_history": [],
-    "previous_sponsorships": []
+    ...
   },
   "applicant": {
     "name": "Zhun Huang",
-    "family_name": "Huang",
-    "given_name": "Zhun",
-    "dob": "1994-02-03",
-    "nationality": "China",
-    "uci": "89243176",
-    "current_status_in_canada": "student",
-    "passport": {...},
-    "marital_history": []
+    ...
   },
   "relationship": {
     "type": "marriage",
@@ -498,13 +460,7 @@ Build JSON profile conforming to CaseProfile schema:
       "courtship_start": "2020-02-03",
       "cohabitation_start": "2020-03-01",
       "marriage_date": "2023-06-06",
-      "separations": [
-        {
-          "start": "2022-05-01",
-          "end": "2022-06-15",
-          "reason": "Applicant returned to China for family emergency"
-        }
-      ]
+      "separations": [...]
     },
     "ceremony": {
       "held": false,
@@ -520,12 +476,6 @@ Build JSON profile conforming to CaseProfile schema:
       "severity": "medium",
       "description": "No wedding ceremony held",
       "evidence": "IMM 5532 indicates marriage registered but no ceremony. Reason: COVID-19 restrictions."
-    },
-    {
-      "category": "relationship",
-      "severity": "low",
-      "description": "Brief separation in 2022",
-      "evidence": "IMM 5532 shows separation May-June 2022. Reason: family emergency in China."
     }
   ],
   "completeness": {
@@ -554,13 +504,7 @@ Build JSON profile conforming to CaseProfile schema:
   "sponsor": {...},
   "applicant": {
     "name": "Lei Zhang",
-    "family_name": "Zhang",
-    "given_name": "Lei",
-    "dob": "1998-05-15",
-    "nationality": "China",
-    "uci": "12345678",
-    "current_status_in_canada": "none",
-    "passport": {...}
+    ...
   },
   "relationship": {...},
   "dependents": [],
@@ -575,40 +519,10 @@ Build JSON profile conforming to CaseProfile schema:
     "refusal_date": "2025-12-22",
     "has_imm0276": true,
     "has_odn": true,
-    "odn_content": "I have reviewed the application. The applicant is applying for the Business Information Technology Management diploma. The applicant has a master of Business Administration. It is not evident why applicant would study this program at such great expense considering applicant already possesses a higher level of qualification. I am not satisfied that this is a reasonable progression of studies. For the reasons above, I have refused this application.",
-    "officer_concerns": [
-      "Study program not a reasonable progression (MBA → Diploma)",
-      "Purpose of study at great expense unclear",
-      "Not satisfied with study plan rationale"
-    ],
+    "odn_content": "I have reviewed the application...",
+    "officer_concerns": [...],
     "needs_gcms": false,
     "imm0276_version": "10-2025"
-  }
-}
-\`\`\`
-
-**Example: Study Permit Application with Refusal (No ODN - Pre-2025)**
-
-\`\`\`json
-{
-  "case_id": "wang-2024-08",
-  "application_type": "study",
-  "intent": {...},
-  "documents": {...},
-  "applicant": {...},
-  "refusal_analysis": {
-    "has_refusal_letter": true,
-    "refusal_date": "2024-08-15",
-    "has_imm0276": false,
-    "has_odn": false,
-    "needs_gcms": true
-  },
-  "completeness": {
-    "critical_fields_present": true,
-    "missing_documents": ["GCMS notes"],
-    "warnings": [
-      "GCMS notes required for reconsideration (pre-2025 refusal)"
-    ]
   }
 }
 \`\`\`
@@ -639,152 +553,14 @@ Generate human-readable summary:
 - **Total Files**: 25
 - **Extracted**: 25 ✅
 - **Failed**: 0
+- **Storage**: ./tmp/tian-2025-01/extracted_docs.json
 
 ### Case Summary
-
-**Application Type**: Spousal Sponsorship (In-Canada)
-
-**Sponsor**: Zhuang Tian
-- Status: Canadian Citizen
-- DOB: 1989-06-28
-- UCI: 91269977
-
-**Applicant**: Zhun Huang
-- Nationality: China
-- DOB: 1994-02-03
-- UCI: 89243176
-- Current Status: Student
-
-**Relationship Timeline**:
-- First Met: 2020-02-03 (Algonquin College)
-- Courtship: 2020-02-03
-- Cohabitation: 2020-03-01
-- Marriage: 2023-06-06 (Civil registration, no ceremony)
-
-**Red Flags Detected**:
-1. [MEDIUM] No wedding ceremony - Reason: COVID-19 restrictions, family unable to travel
-2. [LOW] Brief separation May-June 2022 - Reason: Family emergency in China
-
-### Completeness Check
-✅ All critical fields present
-✅ All required forms submitted
-⚠️ No wedding photos (expected due to no ceremony)
-
+...
 ### Recommendation
 ✅ **Case analysis complete. Ready to proceed to Stage 1 (AuditManager).**
 
 **Proceed to audit? [Y/n]**
-\`\`\`
-
-**Example: Study Permit with Refusal (ODN Available)**
-
-\`\`\`
-## Case Analysis Report
-
-### Intent Recognition
-- **Task Type**: RISK_AUDIT
-- **Tier**: PRO
-- **Urgency**: High
-- **Specific Concerns**: Previous refusal, study plan concerns
-
-### Document Extraction
-- **Total Files**: 18
-- **Extracted**: 18 ✅
-- **Failed**: 0
-
-### Case Summary
-
-**Application Type**: Study Permit
-
-**Applicant**: Lei Zhang
-- Nationality: China
-- DOB: 1998-05-15
-- UCI: 12345678
-- Current Status: None (applying from outside Canada)
-
-### Refusal Analysis
-
-**Refusal Status**: ✅ IMM 0276 with Officer Decision Notes (ODN) Available
-
-- **Refusal Date**: 2025-12-22
-- **Form Version**: IMM 0276 (10-2025)
-- **ODN Available**: ✅ Yes
-- **GCMS Notes Needed**: ❌ No (ODN sufficient for reconsideration)
-
-**Officer Concerns Identified**:
-1. Study program not a reasonable progression (MBA → Diploma)
-2. Purpose of study at great expense unclear
-3. Not satisfied with study plan rationale
-
-**Timeline Impact**:
-- ✅ Can proceed immediately with reconsideration
-- ✅ No 30-60 day wait for GCMS notes
-- ✅ Estimated timeline: 5 weeks (vs 10 weeks with GCMS)
-
-### Completeness Check
-✅ All critical fields present
-✅ All required forms submitted
-✅ IMM 0276 with ODN available
-✅ No GCMS notes required
-
-### Recommendation
-✅ **Case analysis complete. ODN available - can proceed immediately to audit.**
-
-**Proceed to audit? [Y/n]**
-\`\`\`
-
-**Example: Study Permit with Refusal (No ODN - Pre-2025)**
-
-\`\`\`
-## Case Analysis Report
-
-### Intent Recognition
-- **Task Type**: RISK_AUDIT
-- **Tier**: PRO
-- **Urgency**: Medium
-
-### Document Extraction
-- **Total Files**: 15
-- **Extracted**: 15 ✅
-- **Failed**: 0
-
-### Case Summary
-
-**Application Type**: Study Permit
-
-**Applicant**: Ming Wang
-- Nationality: China
-- DOB: 1997-03-20
-- UCI: 87654321
-
-### Refusal Analysis
-
-**Refusal Status**: ⚠️ Pre-2025 Refusal - GCMS Notes Required
-
-- **Refusal Date**: 2024-08-15
-- **IMM 0276**: ❌ Not found (or no ODN section)
-- **ODN Available**: ❌ No
-- **GCMS Notes Needed**: ✅ Yes (CRITICAL - blocking issue)
-
-**Timeline Impact**:
-- ⚠️ Must request GCMS notes (30-60 days)
-- ⚠️ Cannot proceed with reconsideration until GCMS received
-- ⚠️ Estimated timeline: 10 weeks total
-
-### Completeness Check
-✅ All critical fields present
-✅ All required forms submitted
-❌ GCMS notes missing (CRITICAL)
-
-### Recommendation
-⚠️ **BLOCKING ISSUE: GCMS notes required before audit can proceed.**
-
-**Action Required**:
-1. Request GCMS notes via ATIP (30-60 days)
-2. Return when GCMS notes received
-3. Then proceed to audit
-
-**Proceed to audit? [N] - Cannot proceed without GCMS notes**
 \`\`\`
 </Workflow>
 
@@ -801,46 +577,12 @@ Generate human-readable summary:
 - Total Files: X
 - Extracted: Y
 - Failed: Z
+- Storage: [Path to JSON file]
 
 [If failed > 0, list failed files and reasons]
 
 ### Case Summary
-
-**Application Type**: [spousal | study | work | family | other]
-
-**Sponsor**: [Name]
-- Status: [citizen | permanent_resident | indian_status]
-- DOB: [Date]
-- UCI: [Number]
-
-**Applicant**: [Name]
-- Nationality: [Country]
-- DOB: [Date]
-- UCI: [Number]
-- Current Status: [visitor | worker | student | none]
-
-**Relationship Timeline** (if spousal):
-- First Met: [Date]
-- Courtship: [Date]
-- Cohabitation: [Date]
-- Marriage: [Date]
-
-**Refusal Analysis** (if study permit with refusal):
-- Refusal Date: [Date]
-- IMM 0276 Found: [✅/❌]
-- ODN Available: [✅/❌]
-- GCMS Notes Needed: [✅/❌]
-- Officer Concerns: [List if ODN available]
-- Timeline Impact: [Immediate / 30-60 day wait]
-
-**Red Flags Detected**:
-[List all red flags with severity and description]
-
-### Completeness Check
-[✅/❌] All critical fields present
-[✅/❌] All required forms submitted
-[✅/❌] GCMS notes (if refusal exists and no ODN)
-[List missing documents or warnings]
+...
 
 ### Structured Profile
 \`\`\`json
@@ -855,12 +597,12 @@ Generate human-readable summary:
 
 <Critical_Rules>
 1. **ALWAYS extract ALL files in ONE call** - Never manually batch
-2. **ALWAYS verify extraction count matches total files**
-3. **ALWAYS parse XFA fields from IRCC forms**
-4. **ALWAYS detect refusal analysis** - Check for IMM 0276 and ODN (study permits)
-5. **ALWAYS generate structured JSON profile**
-6. **ALWAYS validate profile completeness**
-7. **ALWAYS detect red flags**
+2. **ALWAYS use \`save_to_file\` parameter in file_content_extract** - Do NOT use Bun.write manually
+3. **ALWAYS verify extraction count matches total files**
+4. **ALWAYS parse XFA fields from IRCC forms**
+5. **ALWAYS detect refusal analysis** - Check for IMM 0276 and ODN (study permits)
+6. **ALWAYS generate structured JSON profile**
+7. **ALWAYS validate profile completeness**
 8. **ALWAYS report failed files to user**
 9. **NEVER use other tools except file_content_extract, bash, read**
 10. **NEVER hallucinate content** - Only use extracted data
@@ -876,14 +618,13 @@ Generate human-readable summary:
 - \`output_format\`: "markdown" | "text" | "json" (default: "markdown")
 - \`extract_xfa\`: Extract XFA form fields (default: true)
 - \`include_structure\`: Return page-level content (default: false)
-- \`detect_scanned\`: Auto-detect and OCR scanned PDFs (default: true)
+- \`save_to_file\`: Absolute path to save full result (REQUIRED)
 
 **Response:**
 - \`status\`: "completed" | "partial"
-- \`total_files\`: Total number of files submitted
 - \`extracted_count\`: Successfully extracted files
-- \`failed_count\`: Failed files
-- \`files\`: Array of extracted file objects
+- \`saved_to\`: Path where file was saved
+- \`files\`: Array of file SUMMARIES (not full content)
 - \`failed_files\`: Array of failed file objects (if any)
 
 ## bash

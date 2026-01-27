@@ -1,8 +1,107 @@
 # Post-Graduation Work Permit (PGWP) Audit Rules
 
+**Source Data**: pgwp-official-policy-2026.md, DETECTIVE_FINDINGS_SUMMARY.md
+**Last Updated**: January 2026
+**Refusal Rate**: 25-35% (中高风险 per Detective investigation)
+**Fraud Risk Level**: Medium (假学位、DLI伪造)
+
 ## Definition & Eligibility
 
 Post-Graduation Work Permit is a temporary work permit issued to international students who have graduated from a Designated Learning Institution (DLI) in Canada.
+
+### ALL Four Mandatory Criteria (Source: IRCC Official Policy)
+
+ALL of the following must be satisfied - applicant fails if ANY criteria not met:
+
+#### 1. Education Credential Requirement (Source: pgwp-official-policy-2026.md)
+
+**Eligible Programs** (from PGWP-eligible DLI):
+- ✅ Bachelor's degree
+- ✅ Master's degree
+- ✅ Doctoral degree
+- ✅ Other university programs (diploma, certificate)
+- ✅ College programs (polytechnic)
+- ✅ Non-university programs (if 8+ months)
+- ✅ Flight school (+ Canadian pilot license or instructor rating + job offer)
+
+**Program Duration Requirements**:
+- Minimum: 8 months (minimum 24 weeks of actual instruction)
+- Quebec exception: 900 hours minimum
+- Cannot be entirely online (COVID-19 exceptions ended)
+
+**Ineligible Programs** (AUTOMATIC REFUSAL):
+- ❌ English/French language courses only
+- ❌ General interest courses
+- ❌ ESL/Language proficiency programs
+- ❌ Non-degree programs from non-DLI schools
+- ❌ Programs at non-Canadian institutions
+- ❌ Programs >50% completed via distance learning
+
+**Language & Field of Study Requirements** (Effective Nov 1, 2024):
+- Bachelor's/Master's/Doctoral: CLB 7 (if app on/after Nov 1, 2024)
+- College/Polytechnic: CLB 5 (if app on/after Nov 1, 2024)
+- Flight school: NO language requirement
+- Exemption: NO requirement if study permit applied before Nov 1, 2024
+
+#### 2. Study Status Requirement
+
+- **Full-time student status**: Must maintain throughout each semester
+- **Exception**: Part-time study acceptable in final semester only
+- **Verification**: Through official student records from institution
+
+#### 3. Application Timing Requirement (180-Day Window - CRITICAL)
+
+**NOT 18 months - this is a common refusal cause**
+- **Deadline**: Apply within 180 days of program completion confirmation
+- **Start Date**: When school confirms graduation (official date)
+- **End Date**: 180 days later (approximately 6 months)
+- **Grace Period**: Additional 90 days if study permit expires before 180 days (restore status + apply)
+- **Absolute Rule**: Missing this deadline = automatic ineligibility
+- **Port of Entry**: Cannot apply at ports of entry (as of June 21, 2024)
+
+#### 4. Study Permit Validity Requirement
+
+- **Requirement**: Must have held valid study permit at some point during 180-day post-graduation window
+- **Does Not Need**: Study permit to be held at time of PGWP application
+- **Exception**: Can restore status if expired, then apply for PGWP
+
+### Validity Period & Passport Rule
+
+- **PGWP Validity** (per program length):
+  - 8 months to <2 years: Up to program length
+  - 2 years or longer: Up to 3 years
+  - Master's degree: Up to 3 years (as of Feb 15, 2024)
+  - Multiple programs: Combined length (if each eligible)
+
+- **Passport Expiry Rule** (CRITICAL):
+  - Permit expires with passport, whichever comes first
+  - Can extend on paper after obtaining new passport
+
+### DLI Verification (Source: pgwp-official-policy-2026.md)
+
+**What is DLI?**
+- Definition: School approved by provincial/territorial government to host international students
+
+**Critical Point**:
+- NOT all programs at a DLI are PGWP-eligible
+- Must verify: (1) DLI status, (2) Program PGWP eligibility
+
+**How to Verify**:
+1. Visit: DLI list on canada.ca
+2. Select province/territory
+3. Search by institution name
+4. Verify "Offers PGWP-eligible programs" = Yes
+5. Cross-reference specific program eligibility
+
+**2026 Update** (Effective Jan 1, 2026):
+- Graduate degree students at public institutions: PALs/TALs NO LONGER required
+- Still required: Letters of acceptance, standard documentation
+
+### One-Time Only Rule
+
+**Ineligibility Factor**: Cannot get PGWP if already had one from earlier program
+- Each graduate receives only one PGWP per lifetime
+- Subsequent eligible programs: Cannot apply for second PGWP
 
 ### Core Eligibility Criteria (Hard Requirements)
 
@@ -11,30 +110,30 @@ Post-Graduation Work Permit is a temporary work permit issued to international s
    - DLI enrollment confirmed by institution
    - No work permit while studying (unless authorized)
 
-2. **Graduation from DLI**
-   - Institution recognized as DLI in IRCC database
-   - Completion of eligible program:
-     - Minimum 8 months duration
-     - Full-time study required
-     - Certificate, diploma, degree programs
-     - Specialized certificate programs
-   - NOT eligible: Language training, ESL-only programs
-   - Graduation date within eligible timeframe (typically 180 days from graduation)
-
-3. **Admissibility**
+2. **Admissibility**
    - No grounds for inadmissibility
    - Security and criminality clearance
    - Medical examination if required
    - No misrepresentation in application
 
-4. **Temporary Intent**
+3. **Temporary Intent**
    - Clear commitment to leave Canada upon permit expiration
    - PGWP work not to settle permanently
 
 ### Duration Calculation
-- PGWP validity = 2x program duration (minimum 8 months, maximum 3 years)
-- Example: 2-year Bachelor's degree = 3-year PGWP (capped)
-- Part-time studies may not count toward duration
+- PGWP validity = equal to program length (minimum 8 months, maximum 3 years)
+- Programs 2 years or longer: Up to 3 years
+- Master's degree: Up to 3 years (as of Feb 15, 2024)
+- Multiple eligible programs: Combined length (if each meets eligibility)
+- Passport expiry rule: Permit expires with passport, whichever comes first
+
+### 180-Day Application Window (CRITICAL)
+**NOT 18 months - this is a common misunderstanding**
+- Window starts: Date graduation is confirmed by school
+- Window ends: 180 days later (approximately 6 months)
+- Deadline is absolute: Apply within this window or lose eligibility
+- Grace period: Additional 90 days if study permit expires before 180 days (by restoring status)
+- Note: Cannot apply at ports of entry (as of June 21, 2024)
 
 ## Risk Assessment Framework
 
@@ -87,18 +186,23 @@ Post-Graduation Work Permit is a temporary work permit issued to international s
   - Institutional status change history
 - **Recovery**: None if revocation occurred before graduation
 
-#### Pattern: GRADUATION_TIMING_VIOLATION
-- **Severity**: HIGH
-- **Definition**: Application submitted outside eligible timeframe
+#### Pattern: GRADUATION_TIMING_VIOLATION (180-Day Window Exceeded)
+- **Severity**: HIGH (8-12% refusal rate per pgwp-risk-analysis-2026)
+- **Definition**: Application submitted outside 180-day eligibility window
 - **Indicators**:
-  - Application > 180 days post-graduation
-  - More than 18 months between graduation and PGWP application
+  - Application > 180 days post-graduation confirmation
+  - Study permit expired before application filed
   - Extended travel or study delay
+  - Calculation error on application deadline
 - **Assessment Method**:
-  - Date comparison (graduation vs. PGWP receipt)
+  - Date comparison (graduation confirmation vs. PGWP receipt)
+  - Study permit expiry date verification
   - Timeline explanation letter
-  - Justification for delay
-- **Recovery**: Reapply if still within valid study permit status (rare)
+  - Grace period verification (if study permit expired < 180 days)
+- **Recovery**: Grace period if study permit expired within 180 days
+  - Can restore study status
+  - Then apply for PGWP within extended window
+  - Requires explanation letter
 
 #### Pattern: WORK_HISTORY_INCONSISTENCY
 - **Severity**: MEDIUM

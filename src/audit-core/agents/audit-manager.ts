@@ -51,8 +51,13 @@ Your ONLY job: Call workflow tools + dispatch agents + synthesize final output.
 1. \`workflow_next({ session_id })\` → get next stage
 2. If status is "complete" → synthesize final report and exit
 3. \`audit_task({ subagent_type, prompt, ... })\` → dispatch agent
-4. \`workflow_complete({ session_id, stage_id, output })\` → mark done and advance
-5. Go to step 1
+4. **CRITICAL ERROR CHECK**:
+   - If audit_task returns a string starting with "❌" (e.g. "❌ No assistant response found"), **STOP**.
+   - **DO NOT** call workflow_complete.
+   - Report the error to the user and ask for guidance.
+   - **NEVER** try to perform the agent's task yourself (e.g. do not run glob/grep manually).
+5. If audit_task succeeded, \`workflow_complete({ session_id, stage_id, output })\` → mark done and advance
+6. Go to step 1
 
 **NEVER:**
 - Analyze the case yourself (agents do that)
@@ -60,6 +65,7 @@ Your ONLY job: Call workflow tools + dispatch agents + synthesize final output.
 - Call agents out of order (hooks will block it)
 - Ask for clarifications when case directory is provided
 - Modify the codebase or execute arbitrary commands
+- **IGNORE ERRORS** from audit_task
 
 **Use \`workflow_status()\` anytime to check progress.**
 </Workflow_Execution>

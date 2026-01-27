@@ -1,5 +1,30 @@
 # Work Permit Hard Eligibility Requirements
 
+**Source**: DETECTIVE_FINDINGS_SUMMARY, pgwp-official-policy-2026.md, work-permit-investigation-report.md
+**Last Updated**: January 2026
+**Categories Covered**: 10 work permit categories per Detective investigation
+
+---
+
+## Quick Reference: 10 Work Permit Categories
+
+Ranked by refusal rate (from Detective MCP investigation with 1000+ cases):
+
+| Rank | Category | Refusal Rate | Complexity | Key Requirement |
+|------|----------|--------------|-----------|------------------|
+| 1 | LMIA | 40-50% | ⭐⭐⭐⭐⭐ | Labour Market Opinion (positive) |
+| 2 | PNP | 30-40% | ⭐⭐⭐⭐ | Provincial nomination + criteria |
+| 3 | ICT | 25-35% | ⭐⭐⭐⭐ | Intra-company transfer proof |
+| 4 | PGWP | 25-35% | ⭐⭐⭐⭐ | DLI graduation + 180-day window |
+| 5 | OPEN_REFUGEE | 25-35% | ⭐⭐⭐ | Protected person status |
+| 6 | IMP | 20-30% | ⭐⭐⭐ | International mobility benefit |
+| 7 | OPEN_STUDENT | 20-30% | ⭐⭐⭐ | Spouse study permit holder |
+| 8 | OPEN_CAREGIVER | 20-25% | ⭐⭐⭐ | Caregiver qualification proof |
+| 9 | OPEN_SPOUSE | 15-20% | ⭐⭐ | Genuine relationship proof |
+| 10 | TFW (optional) | 30-40% | ⭐⭐⭐⭐ | Foreign worker program |
+
+---
+
 ## R200(1) Mandatory Criteria
 
 An applicant for a work permit must meet ALL of the following:

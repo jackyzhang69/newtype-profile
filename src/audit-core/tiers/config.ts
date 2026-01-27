@@ -47,7 +47,7 @@ export const TIER_CONFIGS: Record<AuditTier, TierConfig> = {
 
   pro: {
     models: {
-      auditManager: "anthropic/claude-sonnet-4-5",
+      auditManager: "anthropic/claude-opus-4-5",
       detective: "anthropic/claude-sonnet-4-5",
       strategist: "anthropic/claude-sonnet-4-5",
       gatekeeper: "anthropic/claude-sonnet-4-5",
