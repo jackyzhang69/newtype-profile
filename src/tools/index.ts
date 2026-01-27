@@ -20,6 +20,7 @@ import {
 import { grep } from "./grep"
 import { glob } from "./glob"
 import { file_content_extract } from "./file-content"
+import { documentFulltextRead } from "./document-fulltext"
 import {
   audit_session_start,
   audit_save_profile,
@@ -88,7 +89,7 @@ type OpencodeClient = PluginInput["client"]
 export { createCallOmoAgent } from "./call-omo-agent"
 export { createLookAt } from "./look-at"
 export { file_content_extract } from "./file-content"
-export { createChiefTask, type ChiefTaskToolOptions, DEFAULT_CATEGORIES, CATEGORY_PROMPT_APPENDS } from "./chief-task"
+export { documentFulltextRead } from "./document-fulltext"
 export { createAuditTask, type AuditTaskToolOptions, AUDIT_AGENTS, IMMI_OS_TOOLS } from "./audit-task"
 export {
   kg_search,
@@ -167,6 +168,7 @@ export const builtinTools: Record<string, ToolDefinition> = {
   mcp_call_tool,
   mcp_list_tools,
   file_content_extract,
+  documentFulltextRead,
   audit_session_start,
   audit_save_profile,
   audit_save_stage_output,
