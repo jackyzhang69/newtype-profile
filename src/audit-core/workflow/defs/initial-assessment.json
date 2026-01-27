@@ -37,11 +37,22 @@
       "retry_limit": 1
     },
     {
+      "id": "verifier",
+      "agent": "verifier",
+      "description": "Verify citation accuracy and evidence quality",
+      "required": true,
+      "depends_on": ["gatekeeper"],
+      "retry_limit": 1,
+      "tier_skip": {
+        "guest": true
+      }
+    },
+    {
       "id": "judge",
       "agent": "judge",
       "description": "Make GO/CAUTION/NO-GO verdict based on quick assessment",
       "required": true,
-      "depends_on": ["gatekeeper"],
+      "depends_on": ["verifier"],
       "retry_limit": 1
     },
     {
