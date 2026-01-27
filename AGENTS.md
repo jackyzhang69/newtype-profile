@@ -1,13 +1,14 @@
-# PROJECT KNOWLEDGE BASE
+# Immigration Audit System - Agent Architecture
 
 > **Today's Date:** Run `date "+%Y-%m-%d"` to get current date. NEVER use year 2024 in any output.
 
-**Last Updated:** 2026-01-26
+**Last Updated:** 2026-01-27
 **Branch:** dev
+**Domain**: Canadian Immigration Application Audit (Spousal, Study Permit)
 
 ## OVERVIEW
 
-OpenCode plugin implementing Claude Code/AmpCode features. Multi-model agent orchestration (GPT-5.2, Claude, Gemini, Grok), LSP tools (11), AST-Grep search, MCP integrations (context7, websearch_exa, grep_app). "oh-my-zsh" for OpenCode.
+AI-powered immigration audit system orchestrated by **AuditManager** agent. Multi-tier audit workflow (guest/pro/ultra) with specialized agents for legal research (Detective), risk assessment (Strategist), compliance review (Gatekeeper), citation verification (Verifier), and report generation (Reporter).
 
 ## 语言规则 (Language Rules)
 
@@ -15,68 +16,104 @@ OpenCode plugin implementing Claude Code/AmpCode features. Multi-model agent orc
 - **对话**: 与用户交流使用中文
 - **文档**: 面向用户的文档使用中文（如审计报告、说明文档）
 
-## ⚠️ OPENCODE FRAMEWORK DEVELOPMENT
+## ⚠️ CORE PRINCIPLES
 
-This project is developed within the **OpenCode framework**. When encountering systemic issues related to:
-- Plugin lifecycle (initialization, hooks, tools)
-- Tool execution context (process.env, working directory, ctx parameters)
-- Agent/session management
-- MCP integration patterns
+This immigration audit system is **workflow-driven** with strict state machine enforcement:
+- **AuditManager** orchestrates the complete workflow sequence
+- **Workflow tools** (workflow_next, workflow_complete, workflow_status) manage state machine
+- **Agents** are purely specialized and never analyze cases themselves
+- **Enforcement hooks** prevent out-of-order agent execution
+- **No hallucinations** allowed - all citations must be verified by Verifier agent
 
-**MUST use Context7 to query OpenCode documentation:**
-```
-context7_resolve-library-id: libraryName="opencode", query="your specific question"
-context7_query-docs: libraryId="/anomalyco/opencode", query="detailed question"
-```
-
-Key OpenCode concepts:
-- Plugin receives `ctx.directory` and `ctx.worktree` at initialization
-- Tool `execute(args, context)` only has `agent`, `sessionID`, `messageID` - NO directory access
-- To access project directory in tools, store it globally during plugin init
-
-## STRUCTURE
+## AUDIT-CORE STRUCTURE
 
 ```
-oh-my-opencode/
-├── src/
-│   ├── agents/        # AI agents (7): Sisyphus, oracle, librarian, explore, frontend, document-writer, multimodal-looker
-│   ├── hooks/         # 22 lifecycle hooks - see src/hooks/AGENTS.md
-│   ├── tools/         # LSP, AST-Grep, Grep, Glob, session mgmt - see src/tools/AGENTS.md
-│   ├── features/      # Claude Code compat layer - see src/features/AGENTS.md
-│   ├── auth/          # Google Antigravity OAuth - see src/auth/AGENTS.md
-│   ├── shared/        # Cross-cutting utilities - see src/shared/AGENTS.md
-│   ├── cli/           # CLI installer, doctor - see src/cli/AGENTS.md
-│   ├── mcp/           # MCP configs: context7, grep_app
-│   ├── config/        # Zod schema, TypeScript types
-│   └── index.ts       # Main plugin entry (548 lines)
-├── script/            # build-schema.ts, publish.ts, generate-changelog.ts
-├── assets/            # JSON schema
-└── dist/              # Build output (ESM + .d.ts)
+immi-os/src/audit-core/
+├── agents/                 # 6 audit agents
+│   ├── audit-manager.ts   # Orchestrator (workflow controller)
+│   ├── intake.ts          # Case intake and document extraction
+│   ├── detective.ts       # Legal research via MCP
+│   ├── strategist.ts      # Risk assessment and defense strategy
+│   ├── gatekeeper.ts      # Compliance validation
+│   ├── verifier.ts        # Citation verification
+│   └── reporter.ts        # Final report generation
+├── apps/                   # App-specific logic
+│   ├── spousal/           # Spousal sponsorship rules
+│   └── study/             # Study permit rules
+├── tiers/                 # Tier configuration (guest/pro/ultra)
+│   └── config.ts
+├── knowledge/             # Knowledge injection system
+│   └── loader.ts
+├── search/                # Search policy enforcement
+│   └── policy.ts
+├── workflow/              # State machine and orchestration
+│   ├── engine.ts          # WorkflowEngine implementation
+│   ├── types.ts           # Workflow types
+│   └── defs/              # Workflow definitions (JSON)
+│       ├── risk-audit.json
+│       ├── document-list.json
+│       └── client-guidance.json
+└── file-content/          # Document extraction service
+    └── client.ts
 ```
 
-## WHERE TO LOOK
+## AUDIT AGENT REFERENCE
+
+| Agent | File | Responsibility |
+|-------|------|-----------------|
+| **AuditManager** | `src/audit-core/agents/audit-manager.ts` | Workflow orchestration, agent dispatch, final synthesis |
+| **Intake** | `src/audit-core/agents/intake.ts` | Extract case facts, list documents, initialize session |
+| **Detective** | `src/audit-core/agents/detective.ts` | Legal research via MCP (caselaw, operation manual) |
+| **Strategist** | `src/audit-core/agents/strategist.ts` | Risk assessment, strengths/weaknesses, evidence plan |
+| **Gatekeeper** | `src/audit-core/agents/gatekeeper.ts` | Compliance validation, refusal risk check |
+| **Verifier** | `src/audit-core/agents/verifier.ts` | Citation validation against MCP sources |
+| **Reporter** | `src/audit-core/agents/reporter.ts` | Final report generation with all sections |
 
 | Task | Location | Notes |
 |------|----------|-------|
-| Add agent | `src/agents/` | Create .ts, add to builtinAgents in index.ts, update types.ts |
-| Add hook | `src/hooks/` | Create dir with createXXXHook(), export from index.ts |
-| Add tool | `src/tools/` | Dir with index/types/constants/tools.ts, add to builtinTools |
-| Add MCP | `src/mcp/` | Create config, add to index.ts and types.ts |
-| Add skill | `src/features/builtin-skills/` | Create skill dir with SKILL.md |
-| LSP behavior | `src/tools/lsp/` | client.ts (connection), tools.ts (handlers) |
-| AST-Grep | `src/tools/ast-grep/` | napi.ts for @ast-grep/napi binding |
-| Google OAuth | `src/auth/antigravity/` | OAuth plugin for Google/Gemini models |
-| Config schema | `src/config/schema.ts` | Zod schema, run `bun run build:schema` after changes |
-| Claude Code compat | `src/features/claude-code-*-loader/` | Command, skill, agent, mcp loaders |
-| Background agents | `src/features/background-agent/` | manager.ts for task management |
-| Skill MCP | `src/features/skill-mcp-manager/` | MCP servers embedded in skills |
-| Interactive terminal | `src/tools/interactive-bash/` | tmux session management |
-| CLI installer | `src/cli/install.ts` | Interactive TUI installation |
-| Doctor checks | `src/cli/doctor/checks/` | Health checks for environment |
-| Shared utilities | `src/shared/` | Cross-cutting utilities |
-| Slash commands | `src/hooks/auto-slash-command/` | Auto-detect and execute `/command` patterns |
-| Ralph Loop | `src/hooks/ralph-loop/` | Self-referential dev loop until completion |
-| Orchestrator | `src/hooks/sisyphus-orchestrator/` | Main orchestration hook (660 lines) |
+| Add agent | `src/audit-core/agents/` | Must implement proper prompt with delegation rules |
+| Modify tier | `src/audit-core/tiers/config.ts` | Update model/temperature per tier (guest/pro/ultra) |
+| Add app | `src/audit-core/apps/` | New spousal/study variant, add audit rules skills |
+| Workflow engine | `src/audit-core/workflow/engine.ts` | State machine, stage transitions |
+| Knowledge injection | `src/audit-core/knowledge/loader.ts` | Dynamic skill loading per app/tier |
+| Search policy | `src/audit-core/search/policy.ts` | MCP-first enforcement, domain whitelist |
+| File extraction | `src/audit-core/file-content/client.ts` | PDF/DOCX parser, XFA form extraction |
+
+## AUDIT-MANAGER WORKFLOW (CORE PATTERN)
+
+**AuditManager is the central orchestrator** that controls the entire audit process via strict workflow state machine:
+
+```
+User Request (audit/checklist/guidance)
+    ↓
+AuditManager.workflow_next({ session_id })
+    ↓
+[Stage Available?]
+    ├─ YES: Dispatch Agent → audit_task({ subagent_type, prompt, ... })
+    │       ↓ [Agent Completes]
+    │       workflow_complete({ session_id, stage_id, output })
+    │       ↓ Go back to workflow_next()
+    │
+    └─ NO: Synthesize Final Report and Exit
+```
+
+**Key Workflow Methods:**
+- `workflow_next(session_id)` → Returns `{ stage, agent, description, progress }` or `{ status: "complete" }`
+- `audit_task(subagent_type, prompt, ...)` → Dispatches Detective/Strategist/Gatekeeper/Verifier/Reporter
+- `workflow_complete(session_id, stage_id, output)` → Marks stage done, advances state machine
+- `workflow_status(session_id)` → Check current progress
+
+**Critical Rules:**
+- ✅ ALWAYS call `workflow_complete()` after each agent finishes (state machine depends on it)
+- ✅ ALWAYS follow agent dispatch order (enforcement hooks block out-of-sequence calls)
+- ✅ Synthesize final report using outputs from all agents
+- ❌ NEVER analyze case yourself (agents handle that)
+- ❌ NEVER skip workflow steps or modify checkpoint files directly
+
+**Workflow Definitions** (auto-selected based on request type):
+- `risk-audit.json`: Full audit (6 stages) - intake → detective → strategist → gatekeeper → verifier → reporter
+- `document-list.json`: Checklist only (2 stages) - intake → gatekeeper
+- `client-guidance.json`: Guidance only (2 stages) - intake → guidance
 
 ## TDD (Test-Driven Development)
 
@@ -124,9 +161,7 @@ oh-my-opencode/
 - **Over-exploration**: Stop searching when sufficient context found
 - **High temperature**: Don't use >0.3 for code-related agents
 - **Broad tool access**: Prefer explicit `include` over unrestricted access
-- **Sequential agent calls**: Use `sisyphus_task` for parallel execution
 - **Heavy PreToolUse logic**: Slows every tool call
-- **Self-planning for complex tasks**: Spawn planning agent (Prometheus) instead
 - **Trust agent self-reports**: ALWAYS verify results independently
 - **Skip TODO creation**: Multi-step tasks MUST have todos first
 - **Batch completions**: Mark TODOs complete immediately, don't group
@@ -134,7 +169,9 @@ oh-my-opencode/
 - **Separate test from impl**: Same commit always
 - **Double skill injection**: Don't return `skills` property in agent config if using `buildAuditPrompt` (see pitfalls.md)
 - **Exact tool name matching**: Use case-insensitive matching for tool names in hooks (see pitfalls.md)
-- **Temp files outside ./tmp/**: ALL temporary files MUST be saved to `./tmp/` directory
+- **Temp files outside ./tmp/**: ⚠️ **ALL temporary files MUST be saved to `./tmp/` directory** (checkpoints, logs, JSON, intermediate outputs)
+- **Unrequested report generation**: ⚠️ **NEVER output report files user didn't request** (only generate final audit report when explicitly asked for full audit)
+- **Unsolicited output files**: ⚠️ **Don't create intermediate report files in project root** - save to `./tmp/` or keep in memory
 
 ## ⚠️ MANDATORY: READ PITFALLS BEFORE CODING
 
@@ -151,16 +188,15 @@ This document contains:
 3. Config not taking effect → Plugin not reloaded
 4. Skills not injecting → Wrong injection method
 
-## UNIQUE STYLES
+## AUDIT SYSTEM PATTERNS
 
-- **Platform**: Union type `"darwin" | "linux" | "win32" | "unsupported"`
-- **Optional props**: Extensive `?` for optional interface properties
-- **Flexible objects**: `Record<string, unknown>` for dynamic configs
-- **Error handling**: Consistent try/catch with async/await
-- **Agent tools**: `tools: { include: [...] }` or `tools: { exclude: [...] }`
-- **Temperature**: Most agents use `0.1` for consistency
-- **Hook naming**: `createXXXHook` function convention
-- **Factory pattern**: Components created via `createXXX()` functions
+- **Agent structure**: Each agent has prompt (role, rules, examples), tools config, model/temperature per tier
+- **Error handling**: Consistent try/catch with async/await for all service calls
+- **Tier awareness**: All models resolved via getter functions (e.g., `getAuditManagerModel()`)
+- **Knowledge injection**: Dynamic skill loading based on app + tier combination
+- **Search policy**: MCP-first enforcement, fallback to web search with domain restrictions
+- **File handling**: All temp files in `./tmp/`, no side effects in project root
+- **Workflow state**: Persisted in checkpoint files, managed via WorkflowEngine
 
 ## ⚠️ CRITICAL: 服务器访问规则
 
@@ -230,87 +266,68 @@ export SEARCH_SERVICE_TOKEN=your_token
 - Detective/Strategist agent 禁止使用 webfetch 工具
 - 域名白名单过滤（government/professional/public 三级）
 
-## AGENT MODELS
+## AUDIT AGENT MODELS (TIER-DEPENDENT)
 
-| Agent | Default Model | Purpose |
-|-------|---------------|---------|
-| Sisyphus | anthropic/claude-opus-4-5 | Primary orchestrator |
-| oracle | openai/gpt-5.2 | Read-only consultation. High-IQ debugging, architecture |
-| librarian | anthropic/claude-sonnet-4-5 | Multi-repo analysis, docs |
-| explore | opencode/grok-code | Fast codebase exploration |
-| frontend-ui-ux-engineer | google/gemini-3-pro-preview | UI generation |
-| document-writer | google/gemini-3-pro-preview | Technical docs |
-| multimodal-looker | google/gemini-3-flash | PDF/image analysis |
+| Agent | Guest | Pro | Ultra | Purpose |
+|-------|-------|-----|-------|---------|
+| **AuditManager** | gemini-3-flash | claude-sonnet-4-5 | claude-opus-4-5 | Orchestration & synthesis |
+| **Detective** | gemini-3-flash | gemini-3-pro-high | claude-sonnet-4-5 | Legal research via MCP |
+| **Strategist** | gemini-3-flash | claude-sonnet-4-5 | claude-sonnet-4-5 | Risk assessment |
+| **Gatekeeper** | gemini-3-flash | claude-sonnet-4-5 | claude-sonnet-4-5 | Compliance validation |
+| **Verifier** | N/A | gemini-3-flash | claude-haiku-4-5 | Citation verification |
+| **Reporter** | N/A | N/A | claude-sonnet-4-5 | Report generation |
 
-## LEGACY NAME MIGRATION
-
-从 `oh-my-opencode` 迁移过来的旧名称会自动映射到新名称：
-
-| Legacy Name | Current Name | 说明 |
-|-------------|--------------|------|
-| chief, omo, sisyphus, prometheus | `audit-manager` | 主编排器 |
-| oracle, explore | `researcher` | 研究/探索 |
-| librarian | `archivist` | 文档/归档 |
-| frontend-ui-ux-engineer, document-writer | `writer` | 内容生成 |
-| multimodal-looker | `extractor` | PDF/图片提取 |
-| build | `deputy` | 任务执行 |
-
-**实现位置**: `src/shared/migration.ts`
+**Model Selection**: Configured in `src/audit-core/tiers/config.ts` based on `AUDIT_TIER` environment variable (guest | pro | ultra)
 
 ## COMMANDS
 
 ```bash
-bun run typecheck      # Type check
-bun run build          # ESM + declarations + schema
-bun run rebuild        # Clean + Build
-bun run build:schema   # Schema only
-bun test               # Run tests (76 test files, 2559+ BDD assertions)
+bun run typecheck           # Type check all TypeScript
+bun run build              # Build and test
+bun run rebuild            # Clean rebuild
+bun test                   # Run audit test suite (TDD workflow)
+bun test -- --watch       # Watch mode for development
 ```
 
-## DEPLOYMENT
+## AUDIT EXECUTION
 
-**GitHub Actions workflow_dispatch only**
+**Starting an audit workflow:**
 
-1. Never modify package.json version locally
-2. Commit & push changes
-3. Trigger `publish` workflow: `gh workflow run publish -f bump=patch`
+```bash
+# Example: Start spousal sponsorship audit with pro tier
+export AUDIT_TIER=pro
+export AUDIT_APP=spousal
+export SEARCH_SERVICE_TOKEN=your_token
+export AUDIT_MCP_TRANSPORT=http
 
-**Critical**: Never `bun publish` directly. Never bump version locally.
+# AuditManager will auto-detect and execute correct workflow
+```
 
-## CI PIPELINE
-
-- **ci.yml**: Parallel test/typecheck, build verification, auto-commit schema on master, rolling `next` draft release
-- **publish.yml**: Manual workflow_dispatch, version bump, changelog, OIDC npm publish
-- **sisyphus-agent.yml**: Agent-in-CI for automated issue handling via `@sisyphus-dev-ai` mentions
+**Workflow automation:**
+- AuditManager receives case directory
+- Automatically selects workflow (risk-audit/document-list/client-guidance)
+- Calls workflow_next() → audit_task() → workflow_complete() loop
+- Synthesizes final report when workflow_next() returns `{ status: "complete" }`
 
 ## COMPLEXITY HOTSPOTS
 
-| File | Lines | Description |
-|------|-------|-------------|
-| `src/agents/orchestrator-sisyphus.ts` | 1484 | Orchestrator agent, complex delegation |
-| `src/features/builtin-skills/skills.ts` | 1230 | Skill definitions (frontend-ui-ux, playwright) |
-| `src/agents/prometheus-prompt.ts` | 982 | Planning agent system prompt |
-| `src/auth/antigravity/fetch.ts` | 798 | Token refresh, URL rewriting |
-| `src/auth/antigravity/thinking.ts` | 755 | Thinking block extraction |
-| `src/cli/config-manager.ts` | 725 | JSONC parsing, env detection |
-| `src/hooks/sisyphus-orchestrator/index.ts` | 660 | Orchestrator hook impl |
-| `src/agents/sisyphus.ts` | 641 | Main Sisyphus prompt |
-| `src/tools/lsp/client.ts` | 612 | LSP protocol, JSON-RPC |
-| `src/features/background-agent/manager.ts` | 608 | Task lifecycle |
-| `src/auth/antigravity/response.ts` | 599 | Response transformation, streaming |
-| `src/hooks/anthropic-context-window-limit-recovery/executor.ts` | 556 | Multi-stage recovery |
-| `src/index.ts` | 548 | Main plugin, all hook/tool init |
+| File | Purpose | Complexity |
+|------|---------|------------|
+| `src/audit-core/agents/audit-manager.ts` | Workflow orchestration | Moderate (workflow loop, agent delegation) |
+| `src/audit-core/agents/intake.ts` | Document extraction, fact gathering | High (multi-file parsing, state init) |
+| `src/audit-core/agents/reporter.ts` | Final report synthesis | High (multi-section markdown gen) |
+| `src/audit-core/workflow/engine.ts` | State machine implementation | High (checkpoint persistence, validation) |
+| `src/audit-core/knowledge/loader.ts` | Dynamic skill injection | Moderate (tier/app-based selection) |
+| `src/audit-core/file-content/client.ts` | PDF/DOCX extraction | Moderate (service client, batching) |
 
 ## NOTES
 
-- **Testing**: Bun native test (`bun test`), BDD-style `#given/#when/#then`, 76 test files
-- **OpenCode**: Requires >= 1.0.150
-- **Multi-lang docs**: README.md (EN), README.ko.md (KO), README.ja.md (JA), README.zh-cn.md (ZH-CN)
-- **Config**: `~/.config/opencode/oh-my-opencode.json` (user) or `.opencode/oh-my-opencode.json` (project)
-- **Trusted deps**: @ast-grep/cli, @ast-grep/napi, @code-yeongyu/comment-checker
-- **JSONC support**: Config files support comments (`// comment`, `/* block */`) and trailing commas
-- **Claude Code Compat**: Full compatibility layer for settings.json hooks, commands, skills, agents, MCPs
-- **Skill MCP**: Skills can embed MCP server configs in YAML frontmatter
+- **Testing**: Bun native test (`bun test`), BDD-style `#given/#when/#then`, audit test files in `src/audit-core/agents/`
+- **Tier System**: Model/feature selection via `AUDIT_TIER` environment variable (guest | pro | ultra)
+- **MCP Services**: caselaw (3105), operation-manual (3106), help-centre (3107), noc (3108), immi-tools (3109)
+- **Temporary Files**: ALL intermediate outputs stored in `./tmp/` directory, never in project root
+- **Report Generation**: Only generated when explicitly requested, never as side effect
+- **Workflow State**: Persisted in case directory under `.audit-checkpoints/`, checkpoint files read-only for agents
 
 ---
 

@@ -74,11 +74,13 @@ export SEARCH_SERVICE_TOKEN=xxx # MCP/KG auth token
 - Hallucinate case citations (use Verifier)
 - Suppress type errors with `as any`
 - Return `skills` property in agent config if already using `buildAuditPrompt` (causes double processing)
-- Create temp files outside `./tmp/` directory (all temporary files MUST go to `./tmp/`)
+- Create temp files outside `./tmp/` directory (**ALL temporary files MUST go to `./tmp/`**)
 - **Skip workflow_complete() calls** - state machine will become inconsistent
 - **Call agents out of order** - enforcement hooks will block it
 - **Modify audit checkpoint files** directly - use workflow tools instead
 - **Skip workflow_next() validation** - always check before dispatching agents
+- **Output report files user didn't request** - only generate reports when explicitly asked
+- **Save temporary outputs outside ./tmp/** - ALL intermediate files (JSON, markdown, logs) MUST be in `./tmp/`
 
 ---
 
