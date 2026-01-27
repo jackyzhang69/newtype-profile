@@ -6,6 +6,7 @@ export type AuditAgentName =
   | "strategist"
   | "gatekeeper"
   | "verifier"
+  | "judge"
   | "reporter"
 
 export interface TierModelConfig {
@@ -14,6 +15,7 @@ export interface TierModelConfig {
   strategist: string
   gatekeeper: string
   verifier?: string
+  judge?: string
   reporter?: string
 }
 
@@ -23,6 +25,7 @@ export interface TierTemperatures {
   strategist: number
   gatekeeper: number
   verifier?: number
+  judge?: number
   reporter?: number
 }
 

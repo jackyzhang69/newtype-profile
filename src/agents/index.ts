@@ -4,6 +4,7 @@ import { createDetectiveAgent } from "../audit-core/agents/detective"
 import { createStrategistAgent } from "../audit-core/agents/strategist"
 import { createGatekeeperAgent } from "../audit-core/agents/gatekeeper"
 import { createVerifierAgent } from "../audit-core/agents/verifier"
+import { createJudgeAgent } from "../audit-core/agents/judge"
 import { createIntakeAgent } from "../audit-core/agents/intake"
 import { createReporterAgent } from "../audit-core/agents/reporter"
 
@@ -13,6 +14,7 @@ export function getBuiltinAgents(): Record<string, AgentConfig> {
     detective: createDetectiveAgent(),
     strategist: createStrategistAgent(),
     gatekeeper: createGatekeeperAgent(),
+    judge: createJudgeAgent(),
     intake: createIntakeAgent(),
     reporter: createReporterAgent(),
   }

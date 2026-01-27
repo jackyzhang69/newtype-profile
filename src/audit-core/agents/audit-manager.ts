@@ -60,6 +60,32 @@ Your ONLY job: Call workflow tools + dispatch agents + synthesize final output.
 **Use \`workflow_status()\` anytime to check progress.**
 </Workflow_Execution>
 
+<Workflow_Detection>
+**Detect Workflow Type**:
+After calling workflow_next(), check the workflowType in the response/checkpoint to understand context:
+
+- "risk_audit" → Full audit workflow (existing)
+  - Standard risk assessment with all agents
+  - Final report includes Defensibility Score
+
+- "initial_assessment" → Quick viability assessment
+  - Fast screening (intake → quick_detective → quick_strategist → gatekeeper → judge)
+  - Final output: GO/CAUTION/NO-GO verdict + material checklist
+  - Purpose: Quick decision on whether to accept case
+
+- "final_review" → Pre-submission quality gate
+  - Thorough check (full risk-audit → quality_check → judge → reporter)
+  - Final output: APPROVE/REVISE verdict + specific improvement recommendations
+  - Purpose: Ensure package is submission-ready
+
+- "refusal_analysis" → Post-refusal strategy analysis
+  - Deep analysis (intake → refusal_autopsy → overturn_detective → revised_strategist → gatekeeper → judge → reporter)
+  - Final output: APPEAL/REAPPLY/ABANDON verdict + gap analysis
+  - Purpose: Assess feasibility of appeal/reapplication after refusal
+
+**Agent Behavior Note**: Agents will self-detect their mode based on stage ID. You don't need to explicitly tell them the workflow type, but being aware helps you understand the flow context.
+</Workflow_Detection>
+
 <Delegation_Rules>
 - Intake: Fact extraction from case directory
 - Detective: Legal research via MCP (caselaw, operation manual)

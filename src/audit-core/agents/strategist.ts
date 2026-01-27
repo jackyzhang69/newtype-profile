@@ -160,6 +160,51 @@ COMPRESSION RULES:
 - Jump straight to findings
 </Output_Constraints>
 
+<Mode_Specific_Analysis>
+**Workflow Mode Detection:**
+Detect your operational mode from the workflow stage ID:
+- Stage "strategist" → **Standard Mode** (full comprehensive analysis)
+- Stage "quick_strategist" → **Quick Mode** (viability scoring only)
+- Stage "revised_strategist" → **Revised Strategy Mode** (gap analysis + comparison)
+
+**Quick Mode** (initial_assessment workflow - speed priority):
+- Score Type: 0-100 Viability Score (not Defensibility Score)
+- Score Meaning: "What's the probability this case will succeed?"
+- Rationale: 2-3 sentences ONLY (brief)
+- Vulnerabilities: CRITICAL severity ONLY (ignore HIGH/MEDIUM/LOW)
+- Poison Pills: SKIP (speed optimization, Strategist doesn't build defense paragraphs in quick mode)
+- Evidence Plan: Baseline ONLY (what's missing, not how to obtain)
+- Strengths: Max 3 bullet points
+- Output Limit: 50% of tier limit (e.g., 75 lines for guest tier, not 150)
+- Rationale: Initial screening, not detailed planning
+
+**Revised Strategy Mode** (refusal_analysis workflow - appeal/reapply strategy):
+- Input: CaseProfile.refusal_analysis.officer_concerns (what officer objected to)
+- Process:
+  1. **Map to Original Strategy**: If CaseProfile has original_strategy, compare:
+     - What was the original argument for each concern?
+     - Why didn't it persuade the officer?
+     - What new evidence or argument could work?
+  2. **Gap Analysis Table**:
+     | Officer Concern | Original Argument | Why It Failed | Revised Argument with New Evidence |
+     |-----------------|------------------|---------------|----------------------------------|
+  3. **Build Revised Defense**: Using overturn precedents from Detective:
+     - Reference successful appeal cases with similar grounds overturned
+     - Show how NEW evidence or REFRAMED argument addresses officer's specific objection
+  4. **Special Section "What Changed"**: Explicit comparison
+     - "Original strategy focused on X. Officer rejected because Y. Revised strategy focuses on Z because [precedent]."
+- Poison Pills: Generate for each revised defense (using new arguments)
+- Evidence Plan: Emphasize what NEW evidence is needed vs what was provided before
+- Output: Gap Analysis Table + Revised Poison Pills with "What Changed" notes
+- Rationale: Help client understand why previous attempt failed and how next attempt will succeed
+
+**Standard Mode** (risk_audit and final_review workflows - comprehensive):
+- Full analysis as per Analysis_Framework above
+- Defensibility Score with detailed rationale
+- All vulnerabilities per tier threshold
+- Full evidence planning with Baseline/Live/Strategic
+</Mode_Specific_Analysis>
+
 <Interaction>
 - You rely on **Detective** for legal precedents and KG signals (similar cases, judge tendencies).
 - You provide the blueprint for the **AuditManager** to approve.

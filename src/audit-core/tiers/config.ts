@@ -8,6 +8,7 @@ export const TIER_CONFIGS: Record<AuditTier, TierConfig> = {
       strategist: "anthropic/claude-haiku-4-5",
       gatekeeper: "anthropic/claude-haiku-4-5",
       verifier: "anthropic/claude-haiku-4-5",
+      judge: "anthropic/claude-sonnet-4-5",
       reporter: "anthropic/claude-haiku-4-5",
     },
     temperatures: {
@@ -16,6 +17,7 @@ export const TIER_CONFIGS: Record<AuditTier, TierConfig> = {
       strategist: 0.4,
       gatekeeper: 0.2,
       verifier: 0.0,
+      judge: 0.1,
       reporter: 0.1,
     },
     features: {
@@ -50,6 +52,7 @@ export const TIER_CONFIGS: Record<AuditTier, TierConfig> = {
       strategist: "anthropic/claude-sonnet-4-5",
       gatekeeper: "anthropic/claude-sonnet-4-5",
       verifier: "anthropic/claude-haiku-4-5",
+      judge: "anthropic/claude-opus-4-5",
       reporter: "anthropic/claude-haiku-4-5",
     },
     temperatures: {
@@ -58,6 +61,7 @@ export const TIER_CONFIGS: Record<AuditTier, TierConfig> = {
       strategist: 0.3,
       gatekeeper: 0.1,
       verifier: 0.0,
+      judge: 0.1,
       reporter: 0.1,
     },
     features: {
@@ -92,6 +96,7 @@ export const TIER_CONFIGS: Record<AuditTier, TierConfig> = {
       strategist: "anthropic/claude-sonnet-4-5",
       gatekeeper: "anthropic/claude-sonnet-4-5",
       verifier: "anthropic/claude-haiku-4-5",
+      judge: "anthropic/claude-opus-4-5",
       reporter: "anthropic/claude-haiku-4-5",
     },
     temperatures: {
@@ -100,6 +105,7 @@ export const TIER_CONFIGS: Record<AuditTier, TierConfig> = {
       strategist: 0.3,
       gatekeeper: 0.1,
       verifier: 0.0,
+      judge: 0.1,
       reporter: 0.1,
     },
     features: {

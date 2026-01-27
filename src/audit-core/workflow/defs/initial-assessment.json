@@ -1,0 +1,48 @@
+{
+  "workflow_id": "initial_assessment",
+  "stages": [
+    {
+      "id": "intake",
+      "agent": "intake",
+      "description": "Extract documents and build case profile from case directory",
+      "required": true,
+      "depends_on": [],
+      "retry_limit": 2
+    },
+    {
+      "id": "quick_detective",
+      "agent": "detective",
+      "description": "Quick scan for deal-breaker precedents (admissibility, eligibility red flags only)",
+      "required": true,
+      "depends_on": ["intake"],
+      "retry_limit": 1,
+      "tier_skip": {
+        "guest": true
+      }
+    },
+    {
+      "id": "quick_strategist",
+      "agent": "strategist",
+      "description": "Rapid viability assessment focusing on critical vulnerabilities only",
+      "required": true,
+      "depends_on": ["quick_detective"],
+      "retry_limit": 1
+    },
+    {
+      "id": "gatekeeper",
+      "agent": "gatekeeper",
+      "description": "Check for obvious missing documents and deal-breaker compliance issues",
+      "required": true,
+      "depends_on": ["quick_strategist"],
+      "retry_limit": 1
+    },
+    {
+      "id": "judge",
+      "agent": "judge",
+      "description": "Make GO/CAUTION/NO-GO verdict based on quick assessment",
+      "required": true,
+      "depends_on": ["gatekeeper"],
+      "retry_limit": 1
+    }
+  ]
+}

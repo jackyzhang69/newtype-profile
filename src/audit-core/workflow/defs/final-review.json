@@ -1,0 +1,72 @@
+{
+  "workflow_id": "final_review",
+  "stages": [
+    {
+      "id": "intake",
+      "agent": "intake",
+      "description": "Re-extract all documents to verify completeness and consistency",
+      "required": true,
+      "depends_on": [],
+      "retry_limit": 2
+    },
+    {
+      "id": "detective",
+      "agent": "detective",
+      "description": "Deep case law research with full MCP/KG integration",
+      "required": true,
+      "depends_on": ["intake"],
+      "retry_limit": 2
+    },
+    {
+      "id": "strategist",
+      "agent": "strategist",
+      "description": "Comprehensive risk assessment with full Poison Pill generation",
+      "required": true,
+      "depends_on": ["detective"],
+      "retry_limit": 2
+    },
+    {
+      "id": "gatekeeper",
+      "agent": "gatekeeper",
+      "description": "Full compliance audit: consistency, missing docs, refusal triggers, semantic errors",
+      "required": true,
+      "depends_on": ["strategist"],
+      "retry_limit": 1
+    },
+    {
+      "id": "verifier",
+      "agent": "verifier",
+      "description": "Verify all legal citations and case law references for accuracy",
+      "required": true,
+      "depends_on": ["gatekeeper"],
+      "retry_limit": 3,
+      "tier_skip": {
+        "guest": true
+      }
+    },
+    {
+      "id": "quality_check",
+      "agent": "gatekeeper",
+      "description": "Final quality gate: verify all fixes applied and no blocking issues remain",
+      "required": true,
+      "depends_on": ["verifier"],
+      "retry_limit": 1
+    },
+    {
+      "id": "judge",
+      "agent": "judge",
+      "description": "Make APPROVE/REVISE verdict with detailed improvement recommendations",
+      "required": true,
+      "depends_on": ["quality_check"],
+      "retry_limit": 1
+    },
+    {
+      "id": "reporter",
+      "agent": "reporter",
+      "description": "Generate submission-ready report with Judicial Authority theme",
+      "required": true,
+      "depends_on": ["judge"],
+      "retry_limit": 1
+    }
+  ]
+}

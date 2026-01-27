@@ -210,6 +210,113 @@ Apply learned-guardrails rules to detect concept confusion errors. This is CRITI
 **Corrected Assessment**: [revised conclusion]
 **Severity Adjustment**: [e.g., CRITICAL → LOW]
 \`\`\`
+
+## MODE D: Refusal Autopsy (refusal_analysis workflow)
+
+**When Invoked**: Stage is "refusal_autopsy" in refusal_analysis workflow
+
+**Purpose**: Analyze why a case was refused and identify what needs to change
+
+**Process**:
+
+1. **Parse Refusal Letter**:
+   - Extract IMM 0276 Officer Decision Notes (ODN)
+   - If pre-2025: Extract GCMS notes from provided documents
+   - Identify refusal grounds (IRPR/IRPA sections cited)
+   - Extract specific officer concerns (verbatim quotes preferred)
+
+2. **Categorize Officer Concerns**:
+   - **Eligibility**: Does applicant meet statutory requirements? (e.g., IRPR 216(1)(b))
+   - **Admissibility**: Medical, criminal, security issues? (IRPA s. 11)
+   - **Bona Fides**: Is the application genuine? (intent to study, ties to home country)
+   - **Discretion**: H&C factors considered?
+
+3. **Gap Analysis**:
+   - Compare CaseProfile.documents vs officer expectations
+   - Identify evidence officer claimed was missing
+   - Identify evidence officer found insufficient
+   - Identify evidence officer explicitly rejected as credible
+
+4. **Addressability Assessment**:
+   - For each concern, determine: Can this be fixed?
+   - **Addressable**: New evidence can overcome this
+   - **Partially Addressable**: Mitigable but not fully solvable
+   - **Unaddressable**: Core eligibility failure or policy bar
+
+5. **Build RefusalAutopsy Output**:
+
+\`\`\`json
+{
+  "refusal_date": "2025-12-22",
+  "refusal_grounds": ["IRPR 216(1)(b)", "IRPA 11(1)"],
+  "officer_concerns": [
+    {
+      "id": 1,
+      "category": "bona_fides",
+      "concern": "Study plan not reasonable progression",
+      "officer_quote": "Applicant holds MBA from 2020 but now seeks diploma. This is not a reasonable progression.",
+      "evidence_cited": "MBA degree (Exhibit A), study plan (Exhibit B)",
+      "officer_reasoning": "Applicant appears to be seeking backdoor PR rather than genuine study"
+    },
+    {
+      "id": 2,
+      "category": "eligibility",
+      "concern": "Financial capacity not demonstrated",
+      "officer_quote": "Bank statements show only $25,000. Tuition is $30,000/year.",
+      "evidence_cited": "Bank statement from Dec 2024",
+      "officer_reasoning": "Insufficient funds to support full program"
+    }
+  ],
+  "missing_evidence": [
+    "Detailed study plan rationale (why diploma after MBA?)",
+    "Career progression explanation",
+    "Parents' financial support commitment"
+  ],
+  "insufficient_evidence": [
+    "Financial documents (deemed inadequate)",
+    "Employment reference letters (deemed insufficient)"
+  ],
+  "unaddressable_issues": [],
+  "addressable": true,
+  "assessment": "All refusal grounds are addressable with new evidence and revised explanations"
+}
+\`\`\`
+
+6. **Output Structure**:
+
+\`\`\`
+## Refusal Autopsy Report
+
+### Refusal Summary
+- Refusal Date: [date]
+- Refusal Grounds: [IRPR/IRPA sections]
+- Overall Officer Assessment: [1-2 sentence summary from ODN]
+
+### Officer Concerns Identified
+| # | Category | Concern | Officer Quote | Evidence Officer Cited | Can Be Addressed? |
+|---|----------|---------|----------------|----------------------|-----------------|
+| 1 | [cat] | [concern] | "[quote]" | [evidence] | ✅ Yes / ⚠️ Partial / ❌ No |
+
+### Gap Analysis
+| Concern | Original Evidence Provided | What Officer Wanted | What's Missing |
+|---------|---------------------------|------------------|-----------------|
+| [concern] | [provided] | [wanted] | [gap] |
+
+### Addressability Assessment
+✅ Addressable Issues: [list]
+⚠️ Partially Addressable: [list]
+❌ Unaddressable: [list]
+
+### Recommendations for Next Steps
+1. [specific action with evidence type]
+2. [specific action with evidence type]
+
+### Timeline Impact
+- Current Refusal Analysis: Ready for [Judge decision]
+- Recommended Actions: [X weeks to gather evidence]
+- Expected Reapplication Timeline: [X weeks total]
+\`\`\`
+
 </Review_Process>
 
 <Interaction>

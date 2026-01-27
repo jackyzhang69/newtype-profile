@@ -1,0 +1,73 @@
+{
+  "workflow_id": "refusal_analysis",
+  "stages": [
+    {
+      "id": "intake",
+      "agent": "intake",
+      "description": "Extract refusal letter, IMM 0276, ODN/GCMS notes, and original application docs",
+      "required": true,
+      "depends_on": [],
+      "retry_limit": 2
+    },
+    {
+      "id": "refusal_autopsy",
+      "agent": "gatekeeper",
+      "description": "Parse refusal reasons, extract officer concerns, identify gaps between original strategy and outcome",
+      "required": true,
+      "depends_on": ["intake"],
+      "retry_limit": 2
+    },
+    {
+      "id": "overturn_detective",
+      "agent": "detective",
+      "description": "Search for overturn precedents and similar successful appeals based on refusal reasons",
+      "required": true,
+      "depends_on": ["refusal_autopsy"],
+      "retry_limit": 2
+    },
+    {
+      "id": "revised_strategist",
+      "agent": "strategist",
+      "description": "Compare officer reasoning vs original strategy, build revised defense addressing each concern",
+      "required": true,
+      "depends_on": ["overturn_detective"],
+      "retry_limit": 2
+    },
+    {
+      "id": "gatekeeper",
+      "agent": "gatekeeper",
+      "description": "Validate revised strategy addresses all refusal grounds and compliance requirements",
+      "required": true,
+      "depends_on": ["revised_strategist"],
+      "retry_limit": 1
+    },
+    {
+      "id": "verifier",
+      "agent": "verifier",
+      "description": "Verify all legal citations and case law references for accuracy",
+      "required": true,
+      "depends_on": ["gatekeeper"],
+      "retry_limit": 3,
+      "tier_skip": {
+        "guest": true,
+        "pro": true
+      }
+    },
+    {
+      "id": "judge",
+      "agent": "judge",
+      "description": "Make APPEAL/REAPPLY/ABANDON verdict based on success probability and cost-benefit analysis",
+      "required": true,
+      "depends_on": ["verifier"],
+      "retry_limit": 1
+    },
+    {
+      "id": "reporter",
+      "agent": "reporter",
+      "description": "Generate refusal analysis report with gap analysis and revised strategy",
+      "required": true,
+      "depends_on": ["judge"],
+      "retry_limit": 1
+    }
+  ]
+}
