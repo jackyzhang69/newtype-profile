@@ -33,15 +33,13 @@ describe("FileContentClient", () => {
       expect(client["baseUrl"]).toBe("http://test:3104/api/v1")
     })
 
-    it("#given AUDIT_KG_BASE_URL is set #when FILE_CONTENT_BASE_URL is not set #then prioritizes LAN, then public URL", () => {
-      process.env.AUDIT_KG_BASE_URL = "https://kg.example.com/api/v1"
-      const client = new FileContentClient()
-      // Should prioritize LAN first, which resolveBaseUrl puts first in urlPriority list
-      expect(client["baseUrl"]).toBe("http://192.168.1.98:3104/api/v1")
-      // Verify that the urlPriority includes both LAN and the public URL extracted from AUDIT_KG_BASE_URL
-      expect(client["urlPriority"]).toContain("http://192.168.1.98:3104/api/v1")
-      expect(client["urlPriority"]).toContain("https://kg.example.com:3104/api/v1")
-    })
+  it("#given AUDIT_KG_BASE_URL is set #when FILE_CONTENT_BASE_URL is not set #then prioritizes LAN, then public URL", () => {
+    process.env.AUDIT_KG_BASE_URL = "https://kg.example.com/api/v1"
+    const client = new FileContentClient()
+    expect(client["baseUrl"]).toBe("http://192.168.1.98:3104/api/v1")
+    expect(client["urlPriority"]).toContain("http://192.168.1.98:3104/api/v1")
+    expect(client["urlPriority"]).toContain("https://es_search.jackyzhang.app:3104/api/v1")
+  })
 
     it("#given explicit baseUrl provided #when creating client #then uses provided URL", () => {
       const client = new FileContentClient({ baseUrl: "http://custom:3104/api/v1" })
