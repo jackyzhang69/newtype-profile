@@ -64,14 +64,19 @@
       "id": "audit-workflow",
       "path": "agent-guides/audit/workflow.md",
       "category": "audit",
-      "summary": "5-agent audit workflow with verification loop-back, INCOMPLETE report handling, all tiers",
+      "summary": "8-agent workflow orchestration with WorkflowEngine: workflow_next, workflow_complete, workflow_status tools; state machine loops; checkpoint persistence",
       "keywords": [
         "workflow",
         "agents",
         "audit",
         "defensibility",
         "verification",
-        "loop-back"
+        "workflow_next",
+        "workflow_complete",
+        "workflow_status",
+        "state-machine",
+        "orchestration",
+        "checkpoint"
       ]
     },
     {
@@ -220,7 +225,7 @@
       "id": "audit-architecture",
       "path": "agent-guides/audit/architecture.md",
       "category": "audit",
-      "summary": "搭积木式多智能体审计系统设计：6 Agents, 16 Skills, 3 Tiers 的模块化架构",
+      "summary": "搭积木式多智能体审计系统设计：8 Agents（含 Judge）, 16 Skills, 3 Tiers + WorkflowEngine 状态机核心、6 种 workflow 定义、checkpoint 机制",
       "keywords": [
         "architecture",
         "building-blocks",
@@ -228,7 +233,13 @@
         "intake",
         "skills",
         "injection",
-        "design"
+        "design",
+        "WorkflowEngine",
+        "state-machine",
+        "workflow-definitions",
+        "checkpoint",
+        "judge",
+        "8-agents"
       ]
     },
     {

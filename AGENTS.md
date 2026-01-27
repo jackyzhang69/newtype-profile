@@ -341,7 +341,7 @@ export AUDIT_MCP_TRANSPORT=http
 | Framework | 22+ lifecycle hooks for context injec... | `docs/agent-guides/framework/hooks.md` |
 | Framework | Claude Code compatibility layer, back... | `docs/agent-guides/framework/features.md` |
 | Framework | CLI installer, doctor health checks, ... | `docs/agent-guides/framework/cli.md` |
-| Audit | 5-agent audit workflow with verificat... | `docs/agent-guides/audit/workflow.md` |
+| Audit | 8-agent workflow orchestration with W... | `docs/agent-guides/audit/workflow.md` |
 | Audit | Tiered system: guest/pro/ultra, Verif... | `docs/agent-guides/audit/tiers.md` |
 | Audit | MCP services (caselaw, operation-manu... | `docs/agent-guides/audit/mcp-integration.md` |
 | Apps | Spousal sponsorship: genuineness, evi... | `docs/agent-guides/apps/spousal.md` |
@@ -352,6 +352,6 @@ export AUDIT_MCP_TRANSPORT=http
 | Framework | Agent/skill selection guide: when to ... | `docs/agent-guides/framework/agent-skill-selection.md` |
 | Audit | Archived milestones: Supabase persist... | `docs/agent-guides/audit/completed-milestones.md` |
 | Framework | Guide for building custom multi-agent... | `docs/agent-guides/framework/building-agentic-workflows.md` |
-| Audit | 搭积木式多智能体审计系统设计：6 Agents, 16 Skills, 3... | `docs/agent-guides/audit/architecture.md` |
+| Audit | 搭积木式多智能体审计系统设计：8 Agents（含 Judge）, 16 ... | `docs/agent-guides/audit/architecture.md` |
 | System | Server URL configuration: Try LAN (19... | `docs/system/server.md` |
 <!-- KNOWLEDGE_INDEX:END -->

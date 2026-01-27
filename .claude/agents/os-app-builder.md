@@ -188,6 +188,149 @@ Generate 7 skill directories under `.claude/skills/{app-type}-*/`:
     └── disclaimer.md
 ```
 
+### Phase 2.5: Workflow Definitions
+
+在生成 skill 目录后，需要为新 app 创建对应的 workflow definitions。这些定义驱动 audit workflow 的自动编排。
+
+**文件位置**: `src/audit-core/workflow/defs/{workflow-id}.json`
+
+**必需的 6 种 Workflow**:
+
+1. `{app-type}-risk-audit.json` - 完整审计流程（所有 agents）
+2. `{app-type}-initial-assessment.json` - 快速评估（需要 Judge 判决）
+3. `{app-type}-final-review.json` - 提交前审查（需要 Judge 判决）
+4. `{app-type}-refusal-analysis.json` - 拒签后分析（需要 Judge 判决）
+5. `{app-type}-document-list.json` - 文档清单生成（仅 Intake + Gatekeeper）
+6. `{app-type}-client-guidance.json` - 客户指导（仅 Intake + Reporter）
+
+**Workflow 定义结构**:
+
+```json
+{
+  "workflow_id": "{app-type}_risk_audit",
+  "description": "Complete audit workflow for {app-type} applications",
+  "stages": [
+    {
+      "id": "intake",
+      "agent": "intake",
+      "description": "Extract and normalize application documents",
+      "required": true,
+      "depends_on": [],
+      "retry_limit": 2,
+      "timeout_seconds": 300
+    },
+    {
+      "id": "detective",
+      "agent": "detective",
+      "description": "Research case law and policy via MCP",
+      "required": true,
+      "depends_on": ["intake"],
+      "retry_limit": 2,
+      "timeout_seconds": 600
+    },
+    {
+      "id": "strategist",
+      "agent": "strategist",
+      "description": "Assess risks and create defense strategy",
+      "required": true,
+      "depends_on": ["detective"],
+      "retry_limit": 2,
+      "timeout_seconds": 600
+    },
+    {
+      "id": "gatekeeper",
+      "agent": "gatekeeper",
+      "description": "Validate compliance and identify issues",
+      "required": true,
+      "depends_on": ["strategist"],
+      "retry_limit": 2,
+      "timeout_seconds": 300
+    },
+    {
+      "id": "verifier",
+      "agent": "verifier",
+      "description": "Verify citation accuracy",
+      "required": false,
+      "depends_on": ["gatekeeper"],
+      "retry_limit": 3,
+      "timeout_seconds": 300,
+      "tier_availability": ["pro", "ultra"]
+    },
+    {
+      "id": "judge",
+      "agent": "judge",
+      "description": "Make final verdict (GO/CAUTION/NO-GO)",
+      "required": false,
+      "depends_on": ["verifier"],
+      "retry_limit": 1,
+      "timeout_seconds": 300,
+      "only_in": ["risk_audit", "initial_assessment", "final_review", "refusal_analysis"]
+    },
+    {
+      "id": "reporter",
+      "agent": "reporter",
+      "description": "Generate final report",
+      "required": true,
+      "depends_on": ["judge"],
+      "retry_limit": 1,
+      "timeout_seconds": 300
+    }
+  ]
+}
+```
+
+**关键字段说明**:
+
+| 字段 | 用途 | 示例 |
+|------|------|------|
+| `workflow_id` | Workflow 全局唯一标识 | `{app-type}_risk_audit` |
+| `agent` | 对应的 agent 名称 | 必须匹配 `dist/audit-manifest.json` 中的 agent |
+| `depends_on` | 依赖关系数组 | `["intake"]` 表示此 stage 依赖 intake 完成 |
+| `required` | 是否必需 | risk-audit 所有 stage 都是 required=true |
+| `retry_limit` | 失败重试次数 | 通常 2-3 次 |
+| `tier_availability` | 仅在特定 tier 运行 | verifier 仅在 pro/ultra tier |
+
+**设计规则**:
+
+1. **Stage ID 命名**：全小写 + 下划线（`intake`, `detective`, `gatekeeper`）
+2. **依赖关系**：不能存在循环依赖
+3. **Judge 的特殊性**：
+   - 仅在需要明确判决的 workflows 中出现
+   - 如果 workflow 没有 judge，AuditManager 在报告时自动做判决
+4. **Tier 约束**：verifier 仅在 pro/ultra tier 运行，guest tier 跳过
+5. **超时设置**：
+   - Intake/Reporter: 300 秒
+   - Detective/Strategist: 600 秒
+   - 其他: 300 秒
+
+**创建新 Workflow 的步骤**：
+
+```bash
+# 1. 在 src/audit-core/workflow/defs/ 创建 JSON 文件
+# (参考上面的 JSON 结构，复制并定制 stages 数组)
+
+# 2. 运行 build 命令（会自动生成 dist/audit-manifest.json）
+bun run build
+
+# 3. 验证 manifest 中包含新 workflow
+grep "{app-type}_risk_audit" dist/audit-manifest.json
+
+# 4. AuditManager 启动时会自动读取 manifest，获取新 workflow 能力
+```
+
+**验证清单**:
+
+- [ ] 6 个 workflow JSON 文件都创建了
+- [ ] 每个文件中的 `agent` 字段都对应真实的 agent
+- [ ] `depends_on` 字段没有循环依赖
+- [ ] `bun run build` 成功运行且没有错误
+- [ ] `dist/audit-manifest.json` 包含所有 6 个 workflows
+- [ ] 每个 workflow 的 stage 数量符合预期：
+  - risk-audit: 7 stages (intake → detective → strategist → gatekeeper → verifier → judge → reporter)
+  - initial-assessment: 5-6 stages (无 verifier)
+  - document-list: 2 stages (intake → gatekeeper)
+  - client-guidance: 2 stages (intake → reporter)
+
 ### Phase 3.5: Landmark Cases Verification (NEW)
 
 > **CRITICAL**: 遵循 [os-design-principles.md](../.claude/skills/os-design-principles.md) 中的案例引用策略。

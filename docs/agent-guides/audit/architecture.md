@@ -41,19 +41,20 @@ Immi-OS 采用**模块化积木式架构**，将复杂的移民审计流程分�
 
 ## 积木清单
 
-### Layer 1: Agent 积木 (7块)
+### Layer 1: Agent 积木 (8块)
 
 每个 Agent 是一个独立的处理单元，有明确的输入输出边界：
 
 | Agent | 职责边界 | 输入 | 输出 |
 |-------|---------|------|------|
 | **Intake** | 事实提取，不做判断 | 原始文档目录 | 结构化 CaseProfile |
-| **AuditManager** | 编排控制 + 最终判断 | CaseProfile + Agent 报告 | AuditJudgment (分数/判定) |
+| **AuditManager** | 编排控制（workflow 状态机）| CaseProfile + Workflow 定义 | 状态转换 + Agent 派遣指令 |
 | **Detective** | 法律检索，不做评估 | 检索指令 | 判例 + 政策引用 |
 | **Strategist** | 风险评估，不做验证 | 事实 + 法律研究 | 抗辩分数 + 证据计划 |
 | **Gatekeeper** | 合规校验，不做修改 | 策略报告 | 合规问题 + 修复建议 |
 | **Verifier** | 引用验证，不做其他 | 引用列表 | PASS/FAIL + 问题详情 |
-| **Reporter** | 报告呈现，不做判断 | AuditJudgment | Markdown + PDF 报告 |
+| **Judge** | 最终判决，汇总所有发现 | 所有 agents 输出 | GO/CAUTION/NO-GO（或 APPROVE/REVISE） |
+| **Reporter** | 报告呈现，不做判断 | Judge 判决或 AuditManager 判断 | Markdown + PDF 报告 |
 
 **设计原则**：
 
@@ -167,12 +168,180 @@ const config = TIER_CONFIGS[process.env.AUDIT_TIER || "guest"]
 Detective.model = config.models.detective  // "claude-sonnet-4-5"
 ```
 
-### Step 5: 执行工作流
+### Step 5: 加载 Workflow 定义
+
+```typescript
+// AuditManager 启动时：
+const workflowDef = loadWorkflowDefinition("spousal", "risk-audit")
+// → {
+//   workflow_id: "spousal_risk_audit",
+//   stages: [
+//     { id: "intake", agent: "intake", depends_on: [] },
+//     { id: "detective", agent: "detective", depends_on: ["intake"] },
+//     ...
+//   ]
+// }
+```
+
+### Step 6: 执行状态机循环（WorkflowEngine）
 
 ```
-Stage 0 → Stage 1 → Stage 2 → Stage 3 → Stage 4 → Stage 5
-Intake   AuditMgr  Detective  Strategist Gatekeeper AuditMgr
-                                         + Verifier
+while (workflow_next(session_id) !== null) {
+  1. workflow_next() → { stage: "detective", agent: "detective" }
+  2. audit_task({ agent: "detective", prompt: ... })
+  3. workflow_complete(session_id, "detective", output)
+  4. checkpoint 自动保存到 cases/.audit-checkpoints/{session_id}.json
+}
+→ workflow_next() 返回 { status: "complete" }
+```
+
+---
+
+## WorkflowEngine - 自动状态机核心
+
+### WorkflowEngine 的定义
+
+**WorkflowEngine** 是 Immi-OS 的核心编排引擎，它：
+
+1. **管理状态转换**：从 JSON workflow definitions 读取 stage 定义，自动计算下一个 stage
+2. **持久化检查点**：每次 workflow_complete() 时保存状态到 `cases/.audit-checkpoints/{session_id}.json`
+3. **支持断点续传**：用户可以中断审计，第二天继续，状态完全恢复
+4. **错误恢复**：支持 stage 级别的重试、验证失败后的回溯
+
+**位置**: `src/audit-core/workflow/engine.ts`
+
+### 6 种 Workflow 类型及其应用场景
+
+| Workflow | 场景 | Stage 数 | 输出 | Tier 支持 |
+|----------|------|---------|------|----------|
+| **risk-audit** | 完整审计（所有 agents） | 7 | Defensibility Score (0-100) + 完整报告 | 全 |
+| **initial-assessment** | 快速 GO/CAUTION/NO-GO 判决 | 5-6 | 判决 + 材料清单 | 全 |
+| **final-review** | 提交前最后审查 | 8 | APPROVE/REVISE + 改进建议 | Pro+ |
+| **refusal-analysis** | 拒签后分析 | 8 | APPEAL/REAPPLY/ABANDON + 差距分析 | Pro+ |
+| **document-list** | 生成定制化文档清单 | 2 | 按 app 类型定制的清单 | 全 |
+| **client-guidance** | 生成客户指导文档 | 2 | 指导 markdown 文档 | 全 |
+
+### WorkflowEngine 状态机示例（risk-audit）
+
+```
+┌────────────┐
+│  workflow_ │ 调用: workflow_next(session_id="abc123")
+│   next()   │
+└────────────┘
+      │
+      ▼
+┌─────────────────────────────────────────────────────┐
+│ WorkflowEngine 读取 workflow definition JSON        │
+│ 查询 `cases/.audit-checkpoints/abc123.json`         │
+│ completedStages = ["intake", "detective"]          │
+│ 查找下一个 depends_on 满足的 stage                   │
+└─────────────────────────────────────────────────────┘
+      │
+      ▼
+  ┌─────────────────────────────────────────┐
+  │ 返回:                                    │
+  │ {                                       │
+  │   stage: "strategist",                  │
+  │   agent: "strategist",                  │
+  │   description: "Assess risks..."        │
+  │   progress: { completed: 2, total: 7 }  │
+  │ }                                       │
+  └─────────────────────────────────────────┘
+      │
+      ▼
+┌────────────┐
+│audit_task()│ 派遣 strategist agent
+└────────────┘
+      │
+      ▼
+┌─────────────────────────────────────────────┐
+│ Strategist 执行，返回:                       │
+│ {                                           │
+│   defensibility_score: 75,                  │
+│   strengths: [...],                         │
+│   weaknesses: [...]                         │
+│ }                                           │
+└─────────────────────────────────────────────┘
+      │
+      ▼
+┌──────────────────┐
+│ workflow_        │ 调用: workflow_complete(session_id, stage_id, output)
+│ complete()       │
+└──────────────────┘
+      │
+      ▼
+┌──────────────────────────────────────────────┐
+│ WorkflowEngine 更新 checkpoint:               │
+│ completedStages.push("strategist")           │
+│ 保存 strategist_output 到 checkpoint          │
+│ 原子写入到:                                   │
+│ cases/.audit-checkpoints/abc123.json         │
+└──────────────────────────────────────────────┘
+      │
+      ▼
+┌──────────────────────────────────┐
+│ 返回:                            │
+│ {                                │
+│   completed: "strategist",       │
+│   next_stage: "gatekeeper",      │
+│   progress: { completed: 3, total: 7 }  │
+│ }                                │
+└──────────────────────────────────┘
+      │
+      ▼
+┌────────────┐
+│  继续循环   │ workflow_next() → stage="gatekeeper" → audit_task() → ...
+└────────────┘
+```
+
+### Checkpoint 机制
+
+**保存位置**: `cases/.audit-checkpoints/{session_id}.json`
+
+**Checkpoint 内容**：
+
+```json
+{
+  "session_id": "abc123",
+  "case_id": "tian-2025-01",
+  "workflow_type": "spousal_risk_audit",
+  "current_stage": "strategist",
+  "completed_stages": ["intake", "detective"],
+  "stage_outputs": {
+    "intake": { /* CaseProfile */ },
+    "detective": { /* CaseResearch */ },
+    "strategist": { /* DefensibilityAnalysis */ }
+  },
+  "checkpoint_timestamp": "2026-01-27T12:30:45Z"
+}
+```
+
+**关键特性**：
+
+1. **原子写入**：每次保存都使用临时文件 + rename，防止 crash 损坏
+2. **完全恢复**：重启后调用 workflow_next()，自动从 completedStages 后继续
+3. **无重复执行**：completedStages 记录已执行，不会重复运行同一 stage
+
+### 依赖关系管理
+
+workflow definition 中的 `depends_on` 字段定义 stage 依赖：
+
+```json
+{
+  "id": "gatekeeper",
+  "agent": "gatekeeper",
+  "depends_on": ["strategist"],
+  "required": true
+}
+```
+
+**WorkflowEngine 的依赖检查**：
+
+```typescript
+function canExecuteStage(stage, completedStages) {
+  // 检查所有依赖都已完成
+  return stage.depends_on.every(dep => completedStages.includes(dep))
+}
 ```
 
 ---
