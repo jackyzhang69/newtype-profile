@@ -95,14 +95,49 @@ Visual indicators for risk levels:
 
 ## Output Files
 
-For each audit, Reporter generates:
+### File Structure by Tier
+
+**Guest Tier:**
+```
+cases/{caseSlot}/audit_reports/
+└── report.pdf          # Single comprehensive report
+```
+
+**Pro Tier:**
+```
+cases/{caseSlot}/audit_reports/
+└── report.pdf          # Main report with integrated executive summary
+```
+
+**Ultra Tier:**
+```
+cases/{caseSlot}/audit_reports/
+├── report.pdf                  # Main report with integrated executive summary
+└── technical_appendix.pdf      # Detailed technical analysis
+```
+
+**With --anonymize flag (any tier):**
+```
+cases/{caseSlot}/audit_reports/
+├── report.pdf
+├── technical_appendix.pdf      # Ultra only
+└── report_demo.pdf             # Anonymized version
+```
+
+### Internal Files (Not for Users)
 
 ```
-cases/{caseSlot}/
-├── report.md           # Markdown version (human-readable)
-├── report.pdf          # PDF version (formal document)
-└── report_content.json # Structured content (for regeneration)
+cases/{caseSlot}/audit_reports/.internal/
+├── report.md                   # Markdown version (for regeneration)
+├── report_content.json         # Structured content (for debugging)
+└── technical_appendix.md       # Markdown version (Ultra only)
 ```
+
+**Rules:**
+- ❌ Never expose `.md` or `.json` files to users
+- ❌ Never generate separate executive summary files
+- ✅ Only PDF files in `audit_reports/` directory
+- ✅ Internal files in `.internal/` subdirectory
 
 ## Multi-Language Support
 

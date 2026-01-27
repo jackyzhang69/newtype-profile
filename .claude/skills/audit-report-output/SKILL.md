@@ -32,8 +32,12 @@ The **Judicial Authority** theme combines:
 
 ### Output Formats
 - **PDF** (primary): Print-ready, full theme support
-- **DOCX** (future): Editable templates with theme styles
-- **PPTX** (future): Interactive verdict dashboards
+- **Markdown** (internal): For regeneration and debugging only
+- **JSON** (internal): Structured content for programmatic access
+
+**User-Facing Files:**
+- ✅ PDF only (report.pdf, technical_appendix.pdf for Ultra)
+- ❌ No Markdown or JSON files exposed to users
 
 ## Color Palette
 
@@ -58,7 +62,7 @@ The **Judicial Authority** theme combines:
 
 ## Document Structure
 
-Every audit report follows this proven structure:
+### Main Report (report.pdf - All Tiers)
 
 ```
 [COVER PAGE]
@@ -66,10 +70,10 @@ Every audit report follows this proven structure:
   - Subtitle (10pt slate)
   - Application Type, Date, Case Reference
 
-[EXECUTIVE SUMMARY]
-  - Risk Overview (with verdict badges)
-  - Key Findings (1-3 bullets)
-  - Recommendation (Go/Caution/No-Go)
+[EXECUTIVE SUMMARY] (integrated, max 1/3 page)
+  - Score + Verdict
+  - Top 3 Risks
+  - Top 3 Strengths
 
 [DETAILED ANALYSIS]
   - Section 1: Identity & Admissibility
@@ -81,9 +85,33 @@ Every audit report follows this proven structure:
   - Action Items (color-coded by priority)
   - Next Steps
 
-[APPENDIX]
-  - Supporting Evidence Summary
-  - Source References
+[DISCLAIMER]
+  - Required legal disclaimer
+```
+
+### Technical Appendix (technical_appendix.pdf - Ultra Tier Only)
+
+```
+[LEGAL FRAMEWORK]
+  - Case law precedents table
+  - Legislation sections
+  - Policy manual references
+  - Judicial principles
+
+[VERIFICATION & QA]
+  - Citation validation results
+  - Source confidence levels
+  - Authority scores
+
+[EVIDENCE ANALYSIS]
+  - Document inventory
+  - Quality matrix
+  - Authenticity assessment
+
+[METHODOLOGY]
+  - Audit process flowchart
+  - Risk scoring methodology
+  - Tier capabilities comparison
 ```
 
 ## Verdict Badge System
