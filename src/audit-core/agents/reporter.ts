@@ -115,8 +115,10 @@ NEVER CUT:
 ## GUEST TIER (Max 400 lines)
 Target: DIY applicants who need actionable guidance
 
+**Files Generated:** report.pdf (single file)
+
 Structure:
-1. VERDICT (score + one-line rationale)
+1. EXECUTIVE SUMMARY (integrated, max 1/3 page: score, top 3 risks, top 3 strengths)
 2. TOP RISKS (max 3, with Poison Pills for CRITICAL only)
 3. ACTION ITEMS (Urgent + Before Decision)
 4. DISCLAIMER
@@ -124,8 +126,10 @@ Structure:
 ## PRO TIER (Max 500 lines)
 Target: RCICs who need technical details
 
+**Files Generated:** report.pdf (single file)
+
 Structure:
-1. VERDICT (score + risk level)
+1. EXECUTIVE SUMMARY (integrated, max 1/3 page: score, top 3 risks, top 3 strengths)
 2. CASE SNAPSHOT (key facts table, max 8 rows)
 3. VULNERABILITIES (with Poison Pills for CRITICAL + HIGH)
 4. STRENGTHS (max 6 bullets)
@@ -136,16 +140,37 @@ Structure:
 ## ULTRA TIER (Max 600 lines)
 Target: Lawyers who need full legal analysis
 
-Structure:
-1. EXECUTIVE SUMMARY (score current -> with mitigation)
+**Files Generated:** report.pdf + technical_appendix.pdf (two files)
+
+**Main Report (report.pdf):**
+1. EXECUTIVE SUMMARY (integrated, max 1/3 page: score current -> with mitigation, top 3 risks, top 3 strengths)
 2. CASE PROFILE (detailed facts)
 3. VULNERABILITIES WITH DEFENSE STRATEGY (all Poison Pills)
 4. STRENGTHS
-5. LEGAL FRAMEWORK (precedents table from Detective)
-6. VERIFICATION STATUS (from Verifier)
+5. LEGAL FRAMEWORK (summary only, full details in appendix)
+6. VERIFICATION STATUS (summary only, full details in appendix)
 7. COMPLIANCE REVIEW (from Gatekeeper)
 8. RECOMMENDATIONS
 9. DISCLAIMER
+
+**Technical Appendix (technical_appendix.pdf):**
+1. LEGAL FRAMEWORK (full details)
+   - Case law precedents table
+   - Legislation sections
+   - Policy manual references
+   - Judicial principles
+2. VERIFICATION & QA (full details)
+   - Citation validation results
+   - Source confidence levels
+   - Authority scores
+3. EVIDENCE ANALYSIS (full details)
+   - Document inventory
+   - Quality matrix
+   - Authenticity assessment
+4. METHODOLOGY
+   - Audit process flowchart
+   - Risk scoring methodology
+   - Tier capabilities comparison
 </Template_Selection>
 
 <Theme_Application>
@@ -172,25 +197,38 @@ Structure:
 </Theme_Application>
 
 <Output_Instructions>
-## Step 1: Generate Markdown Report
+## Step 1: Generate Markdown Report(s)
 
-Output the formatted report in Markdown, following the tier-appropriate template.
+Generate Markdown following the tier-appropriate template:
 
-## Step 2: Save Report Files (Dual Output)
+**Guest/Pro Tier:**
+- Generate report.md (single file)
 
-After generating Markdown, save BOTH standard and anonymized versions:
+**Ultra Tier:**
+- Generate report.md (main report)
+- Generate technical_appendix.md (detailed analysis)
+
+## Step 2: Directory Structure
+
+Save files to the correct directory:
 
 \`\`\`
 cases/{caseSlot}/
-  report.md           # Standard report (with real client names)
-  report.pdf          # Standard PDF (for client delivery)
-  report_demo.md      # Anonymized report (PII replaced)
-  report_demo.pdf     # Anonymized PDF (for demos/training)
+├── documents/                      # Original application materials
+└── audit_reports/                  # Audit reports
+    ├── report.pdf                  # Main report (all tiers)
+    ├── technical_appendix.pdf      # Ultra only
+    ├── report_demo.pdf             # Only with --anonymize flag
+    └── .internal/                  # Internal files (not for users)
+        ├── report.md
+        ├── report_content.json
+        ├── technical_appendix.md   # Ultra only
+        └── technical_appendix_content.json  # Ultra only
 \`\`\`
 
-## Step 3: Anonymization Rules
+## Step 3: Anonymization Rules (When --anonymize Flag Set)
 
-When generating the anonymized version (report_demo.*):
+Generate anonymized version ONLY if user specified --anonymize flag.
 
 **Replace these PII items:**
 | Original | Replacement |
@@ -217,19 +255,41 @@ When generating the anonymized version (report_demo.*):
 
 ## Step 4: PDF Generation
 
-Generate BOTH PDFs using document-generator:
+Generate PDFs using document-generator:
 
+**Guest/Pro Tier:**
 \`\`\`bash
-# Standard report
+# Main report
 uv run --with reportlab python3 ~/.claude/skills/document-generator/scripts/generate_pdf.py \\
-  --input cases/{caseSlot}/report_content.json \\
-  --output cases/{caseSlot}/report.pdf \\
+  --input cases/{caseSlot}/audit_reports/.internal/report_content.json \\
+  --output cases/{caseSlot}/audit_reports/report.pdf \\
   --theme judicial-authority
 
-# Anonymized report  
+# Anonymized (if --anonymize flag set)
 uv run --with reportlab python3 ~/.claude/skills/document-generator/scripts/generate_pdf.py \\
-  --input cases/{caseSlot}/report_demo_content.json \\
-  --output cases/{caseSlot}/report_demo.pdf \\
+  --input cases/{caseSlot}/audit_reports/.internal/report_demo_content.json \\
+  --output cases/{caseSlot}/audit_reports/report_demo.pdf \\
+  --theme judicial-authority
+\`\`\`
+
+**Ultra Tier:**
+\`\`\`bash
+# Main report
+uv run --with reportlab python3 ~/.claude/skills/document-generator/scripts/generate_pdf.py \\
+  --input cases/{caseSlot}/audit_reports/.internal/report_content.json \\
+  --output cases/{caseSlot}/audit_reports/report.pdf \\
+  --theme judicial-authority
+
+# Technical appendix
+uv run --with reportlab python3 ~/.claude/skills/document-generator/scripts/generate_pdf.py \\
+  --input cases/{caseSlot}/audit_reports/.internal/technical_appendix_content.json \\
+  --output cases/{caseSlot}/audit_reports/technical_appendix.pdf \\
+  --theme judicial-authority
+
+# Anonymized (if --anonymize flag set)
+uv run --with reportlab python3 ~/.claude/skills/document-generator/scripts/generate_pdf.py \\
+  --input cases/{caseSlot}/audit_reports/.internal/report_demo_content.json \\
+  --output cases/{caseSlot}/audit_reports/report_demo.pdf \\
   --theme judicial-authority
 \`\`\`
 
@@ -244,13 +304,25 @@ After generating reports, call persistence tools:
    The anonymized report content will be saved to io_knowledge_base for future model training.
 
 3. **Save Report Metadata**:
-   Call \`audit_save_stage_output\` with both report paths.
+   Call \`audit_save_stage_output\` with report paths:
+   - \`pdf_path\`: Path to main report.pdf
+   - \`technical_appendix_path\`: Path to technical_appendix.pdf (Ultra only)
+   - \`is_anonymized\`: false for main report
+   - \`anonymize_level\`: null for main report
 
 The content JSON should include:
 - title, subtitle, date
 - sections array with headings and content
 - verdict badge info
 - metadata (tier, app_type)
+
+## File Naming Rules
+
+**CRITICAL:**
+- ✅ All lowercase: report.pdf, technical_appendix.pdf, report_demo.pdf
+- ❌ No uppercase: NOT REPORT.pdf, NOT Report.pdf
+- ❌ No Markdown/JSON for users: Only in .internal/ directory
+- ✅ Executive summary integrated into main report, NOT separate file
 </Output_Instructions>
 
 <Mandatory_Disclaimer>
