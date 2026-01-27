@@ -1,5 +1,6 @@
 import { tool } from "@opencode-ai/plugin"
 import { getAuditSessionService } from "../../audit-core/workflow"
+import { WorkflowEngine } from "../../audit-core/workflow/engine"
 import {
   AUDIT_SESSION_START_DESCRIPTION,
   AUDIT_SAVE_PROFILE_DESCRIPTION,
@@ -17,6 +18,21 @@ import type {
   AuditGetSessionArgs,
 } from "./types"
 
+/**
+ * Map workflow_type parameter to workflow definition file name
+ */
+function resolveWorkflowType(workflowType?: string): string {
+  const mapping: Record<string, string> = {
+    risk_audit: "risk_audit",
+    initial_assessment: "initial_assessment",
+    final_review: "final_review",
+    refusal_analysis: "refusal_analysis",
+    document_list: "document_list",
+    client_guidance: "client_guidance",
+  }
+  return mapping[workflowType ?? "risk_audit"] ?? "risk_audit"
+}
+
 export const audit_session_start = tool({
   description: AUDIT_SESSION_START_DESCRIPTION,
   args: {
@@ -26,6 +42,10 @@ export const audit_session_start = tool({
     app_type: tool.schema
       .enum(["spousal", "study", "work", "family", "other"])
       .describe("Application type"),
+    workflow_type: tool.schema
+      .enum(["risk_audit", "initial_assessment", "final_review", "refusal_analysis", "document_list", "client_guidance"])
+      .optional()
+      .describe("Workflow type (default: risk_audit)"),
     user_id: tool.schema.string().optional().describe("User ID for multi-tenant"),
   },
   execute: async (args: AuditSessionStartArgs) => {
@@ -39,10 +59,16 @@ export const audit_session_start = tool({
         userId: args.user_id,
       })
 
+      // Create local workflow checkpoint file for WorkflowEngine
+      const workflowType = resolveWorkflowType(args.workflow_type)
+      const engine = new WorkflowEngine(workflowType, args.tier, session.id)
+      engine.saveState()
+
       return JSON.stringify({
         success: true,
         session_id: session.id,
         status: session.status,
+        workflow_type: workflowType,
       })
     } catch (error) {
       return JSON.stringify({

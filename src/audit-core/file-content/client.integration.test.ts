@@ -3,7 +3,7 @@
  * Tests fetchWithFallback, extractBatched, and end-to-end flow
  */
 
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, mock } from 'bun:test';
 
 interface FileContentResponse {
   content?: string;
@@ -279,7 +279,7 @@ describe('FileContentClient Integration Tests', () => {
           'http://fallback:3104',
           {},
         );
-        expect.fail('Should have thrown');
+        throw new Error('Should have thrown');
       } catch (error) {
         const err = error as Error;
         expect(err.message).toContain('failed');

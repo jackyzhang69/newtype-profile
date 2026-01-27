@@ -8,13 +8,11 @@ describe("createBuiltinAgents with model overrides", () => {
     // #when
     const agents = createBuiltinAgents()
 
-    // #then - model depends on AUDIT_TIER env (default: guest -> gemini-3-flash, pro -> claude-sonnet-4-5)
+    // #then - model depends on AUDIT_TIER env (default: guest -> haiku, pro/ultra -> opus)
     const tier = process.env.AUDIT_TIER || "guest"
-    const expectedModel = tier === "pro" 
-      ? "anthropic/claude-sonnet-4-5" 
-      : tier === "ultra" 
-        ? "anthropic/claude-opus-4-5" 
-        : "google/gemini-3-flash"
+    const expectedModel = tier === "pro" || tier === "ultra"
+      ? "anthropic/claude-opus-4-5" 
+      : "anthropic/claude-haiku-4-5"
     expect(agents["audit-manager"].model).toBe(expectedModel)
   })
 

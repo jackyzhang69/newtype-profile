@@ -43,6 +43,14 @@
       "required": true,
       "depends_on": ["gatekeeper"],
       "retry_limit": 1
+    },
+    {
+      "id": "reporter",
+      "agent": "reporter",
+      "description": "Generate initial assessment report with verdict summary",
+      "required": true,
+      "depends_on": ["judge"],
+      "retry_limit": 1
     }
   ]
 }

@@ -61,7 +61,7 @@ This program will enhance my skills for both Canadian and Chinese markets.`,
       session_id: testSessionId,
       filename: "Study Plan.pdf",
       reason: "Verify dual intent with exit strategy",
-    })
+    }, {} as any)
 
     const result = JSON.parse(resultStr)
 
@@ -78,7 +78,7 @@ This program will enhance my skills for both Canadian and Chinese markets.`,
       session_id: testSessionId,
       filename: "NonExistent.pdf",
       reason: "Test error handling",
-    })
+    }, {} as any)
 
     const result = JSON.parse(resultStr)
 
@@ -91,7 +91,7 @@ This program will enhance my skills for both Canadian and Chinese markets.`,
       session_id: "non-existent-session",
       filename: "Study Plan.pdf",
       reason: "Test error handling",
-    })
+    }, {} as any)
 
     const result = JSON.parse(resultStr)
 
@@ -104,7 +104,7 @@ This program will enhance my skills for both Canadian and Chinese markets.`,
       session_id: testSessionId,
       filename: "Study Plan.pdf",
       reason: "Verify dual intent context",
-    })
+    }, {} as any)
 
     const result = JSON.parse(resultStr)
     const fullText = result.full_text || ""
@@ -130,7 +130,7 @@ This program will enhance my skills for both Canadian and Chinese markets.`,
       session_id: testSessionId,
       filename: "Study Plan.pdf",
       reason: "Verify complete context for dual intent",
-    })
+    }, {} as any)
 
     const result = JSON.parse(resultStr)
     const fullText = result.full_text || ""

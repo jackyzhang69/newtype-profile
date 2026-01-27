@@ -134,7 +134,7 @@ describe("Audit Core Agents", () => {
 
     it("should use buildAuditPrompt for skill injection (not minimal prompt)", () => {
       // Should contain injected skills content
-      expect(reporterAgent.prompt.length).toBeGreaterThan(500)
+      expect(reporterAgent.prompt?.length ?? 0).toBeGreaterThan(500)
       // Should mention tier context from buildAuditPrompt
       expect(reporterAgent.prompt).toContain("<Tier_Context>")
     })

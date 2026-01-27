@@ -16,6 +16,14 @@
       "required": true,
       "depends_on": ["intake"],
       "retry_limit": 2
+    },
+    {
+      "id": "judge",
+      "agent": "judge",
+      "description": "Review document list completeness and make COMPLETE/INCOMPLETE verdict",
+      "required": true,
+      "depends_on": ["gatekeeper"],
+      "retry_limit": 1
     }
   ]
 }

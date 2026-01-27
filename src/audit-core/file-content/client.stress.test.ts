@@ -3,7 +3,7 @@
  * Tests concurrent operations, large files, and performance baselines
  */
 
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach } from 'bun:test';
 
 interface FileContentClient {
   extractBatched(

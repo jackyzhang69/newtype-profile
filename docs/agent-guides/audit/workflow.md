@@ -8,6 +8,19 @@
 
 The audit system orchestrates a team of 7 specialized AI agents to simulate real immigration lawyer audit workflows. It produces a **Defensibility Score** based on historical Federal Court jurisprudence.
 
+## 🔴 CRITICAL: Unified Workflow Architecture
+
+**ALL immigration audit apps (spousal, study, work) MUST use identical workflow definitions.**
+
+| Requirement | Rule |
+|-------------|------|
+| **Workflow Files** | Single set in `src/audit-core/workflow/defs/` (NO app-specific files like `work-risk-audit.json`) |
+| **Differentiation** | Via **skills layer ONLY** (spousal-*, study-*, work-audit-rules, etc.) |
+| **Agent Pipeline** | Same for all apps - no conditional skipping based on app type |
+| **Stage Descriptions** | Generic (mention "case" not "work permit" or "spousal") |
+
+**Violation**: Do NOT create work-initial-assessment.json, study-final-review.json, etc. All apps share the same workflow definitions.
+
 ## Agent Team
 
 | Agent | Role | Primary Tasks | Workflows |

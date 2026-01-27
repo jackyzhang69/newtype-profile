@@ -42,11 +42,19 @@
       "retry_limit": 3
     },
     {
+      "id": "judge",
+      "agent": "judge",
+      "description": "Make final verdict (GO/CAUTION/NO-GO) based on all agent findings",
+      "required": true,
+      "depends_on": ["verifier"],
+      "retry_limit": 1
+    },
+    {
       "id": "reporter",
       "agent": "reporter",
       "description": "Generate final audit report with all findings",
       "required": true,
-      "depends_on": ["verifier"],
+      "depends_on": ["judge"],
       "retry_limit": 1
     }
   ]

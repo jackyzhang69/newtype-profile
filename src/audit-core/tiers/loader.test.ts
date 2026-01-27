@@ -73,7 +73,7 @@ describe("getTierConfig", () => {
     expect(guestConfig.models.auditManager).toBe("anthropic/claude-haiku-4-5")
 
     const proConfig = getTierConfig("pro")
-    expect(proConfig.models.auditManager).toBe("anthropic/claude-sonnet-4-5")
+    expect(proConfig.models.auditManager).toBe("anthropic/claude-opus-4-5")
 
     const ultraConfig = getTierConfig("ultra")
     expect(ultraConfig.models.auditManager).toBe("anthropic/claude-opus-4-5")
@@ -83,7 +83,7 @@ describe("getTierConfig", () => {
 describe("getAgentModel", () => {
   it("#given agent name and tier #then returns correct model", () => {
     expect(getAgentModel("auditManager", "guest")).toBe("anthropic/claude-haiku-4-5")
-    expect(getAgentModel("auditManager", "pro")).toBe("anthropic/claude-sonnet-4-5")
+    expect(getAgentModel("auditManager", "pro")).toBe("anthropic/claude-opus-4-5")
     expect(getAgentModel("detective", "ultra")).toBe("anthropic/claude-sonnet-4-5")
   })
 

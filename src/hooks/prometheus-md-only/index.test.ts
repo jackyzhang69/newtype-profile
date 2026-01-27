@@ -151,11 +151,11 @@ describe("prometheus-md-only", () => {
       ).resolves.toBeUndefined()
     })
 
-    test("should inject read-only warning when Prometheus calls chief_task", async () => {
+    test("should inject read-only warning when Prometheus calls audit_task", async () => {
       // #given
       const hook = createPrometheusMdOnlyHook(createMockPluginInput())
       const input = {
-        tool: "chief_task",
+        tool: "audit_task",
         sessionID: TEST_SESSION_ID,
         callID: "call-1",
       }

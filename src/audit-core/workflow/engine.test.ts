@@ -113,8 +113,7 @@ describe("WorkflowEngine", () => {
     it("should return null when workflow is complete", () => {
       const engine = new WorkflowEngine("risk_audit", "pro", "test_session", TEST_CHECKPOINT_DIR)
 
-      // Simulate completing all stages
-      const requiredStages = ["intake", "detective", "strategist", "gatekeeper", "verifier", "reporter"]
+      const requiredStages = ["intake", "detective", "strategist", "gatekeeper", "verifier", "judge", "reporter"]
       for (const stage of requiredStages) {
         engine.markStageComplete(stage, { data: "test" })
       }
@@ -200,17 +199,16 @@ describe("WorkflowEngine", () => {
     it("should calculate progress correctly", () => {
       const engine = new WorkflowEngine("risk_audit", "pro", "test_session", TEST_CHECKPOINT_DIR)
 
-      // Initially 0/6
       let progress = engine.getProgress()
       expect(progress.completed).toBe(0)
-      expect(progress.total).toBe(6) // 6 required stages for pro tier
+      expect(progress.total).toBe(7)
 
       // After 1 stage
       const stage1 = engine.getNextStage()
       engine.markStageComplete(stage1!.stage, {})
       progress = engine.getProgress()
       expect(progress.completed).toBe(1)
-      expect(progress.percentage).toBe(Math.round((1 / 6) * 100))
+      expect(progress.percentage).toBe(Math.round((1 / 7) * 100))
     })
 
     it("should include progress in next stage info", () => {
@@ -218,7 +216,7 @@ describe("WorkflowEngine", () => {
 
       const stage = engine.getNextStage()
       expect(stage?.progress).toBeDefined()
-      expect(stage?.progress?.total).toBe(6)
+      expect(stage?.progress?.total).toBe(7)
       expect(stage?.progress?.completed).toBe(0)
     })
   })
@@ -317,8 +315,8 @@ describe("WorkflowEngine", () => {
     it("should indicate completion in recovery context", () => {
       const engine = new WorkflowEngine("risk_audit", "pro", "test_session", TEST_CHECKPOINT_DIR)
 
-      // Complete all stages
-      const requiredStages = ["intake", "detective", "strategist", "gatekeeper", "verifier", "reporter"]
+      // Complete all stages (including judge)
+      const requiredStages = ["intake", "detective", "strategist", "gatekeeper", "verifier", "judge", "reporter"]
       for (const stage of requiredStages) {
         engine.markStageComplete(stage, {})
       }

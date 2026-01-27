@@ -2,15 +2,17 @@ export const AUDIT_SESSION_START_NAME = "audit_session_start"
 export const AUDIT_SESSION_START_DESCRIPTION = `Start a new audit session for tracking workflow state.
 
 Call this FIRST before any audit workflow to initialize session tracking.
+This creates BOTH Supabase session record AND local workflow checkpoint file.
 
-Returns: { session_id: string, status: "intake" }
+Returns: { session_id: string, status: "pending", workflow_type: string }
 
 Example:
   audit_session_start({
     case_id: "tian-2026-01",
     case_slot: "20260126-tian",
     tier: "pro",
-    app_type: "spousal"
+    app_type: "spousal",
+    workflow_type: "final_review"  // optional, defaults to "risk_audit"
   })`
 
 export const AUDIT_SAVE_PROFILE_NAME = "audit_save_profile"

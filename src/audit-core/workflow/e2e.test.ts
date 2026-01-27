@@ -57,6 +57,7 @@ describe("Full Audit Workflow E2E", () => {
         "strategist",
         "gatekeeper",
         "verifier",
+        "judge",
         "reporter",
       ])
     })
@@ -94,13 +95,11 @@ describe("Full Audit Workflow E2E", () => {
       const sessionId = "test_e2e_4"
       const engine = new WorkflowEngine("risk_audit", "pro", sessionId, TEST_CHECKPOINT_DIR)
 
-      // Initially 0/6
       let progress = engine.getProgress()
       expect(progress.completed).toBe(0)
-      expect(progress.total).toBe(6)
+      expect(progress.total).toBe(7)
       expect(progress.percentage).toBe(0)
 
-      // After 3 stages
       const requiredStages = ["intake", "detective", "strategist"]
       for (const s of requiredStages) {
         engine.markStageComplete(s, {})
@@ -108,7 +107,7 @@ describe("Full Audit Workflow E2E", () => {
 
       progress = engine.getProgress()
       expect(progress.completed).toBe(3)
-      expect(progress.percentage).toBe(50)
+      expect(progress.percentage).toBe(Math.round((3 / 7) * 100))
     })
 
     it("should support retry logic with limits", () => {
@@ -145,7 +144,7 @@ describe("Full Audit Workflow E2E", () => {
         stage = engine.getNextStage()
       }
 
-      expect(stages).toEqual(["intake", "gatekeeper"])
+      expect(stages).toEqual(["intake", "gatekeeper", "judge"])
     })
   })
 
@@ -163,7 +162,7 @@ describe("Full Audit Workflow E2E", () => {
         stage = engine.getNextStage()
       }
 
-      expect(stages).toEqual(["intake", "guidance"])
+      expect(stages).toEqual(["intake", "guidance", "judge"])
     })
   })
 
@@ -250,7 +249,7 @@ describe("Full Audit Workflow E2E", () => {
       const engine = new WorkflowEngine("risk_audit", "pro", sessionId, TEST_CHECKPOINT_DIR)
 
       // Complete all stages
-      const requiredStages = ["intake", "detective", "strategist", "gatekeeper", "verifier", "reporter"]
+      const requiredStages = ["intake", "detective", "strategist", "gatekeeper", "verifier", "judge", "reporter"]
       for (const stage of requiredStages) {
         engine.markStageComplete(stage, {})
       }
@@ -310,7 +309,7 @@ describe("Full Audit Workflow E2E", () => {
       expect(engine.isWorkflowComplete()).toBe(false)
 
       // Complete all required stages
-      const requiredStages = ["intake", "detective", "strategist", "gatekeeper", "verifier", "reporter"]
+      const requiredStages = ["intake", "detective", "strategist", "gatekeeper", "verifier", "judge", "reporter"]
       for (const stage of requiredStages) {
         engine.markStageComplete(stage, {})
       }

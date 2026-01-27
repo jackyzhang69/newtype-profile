@@ -1,0 +1,15 @@
+#!/bin/sh
+
+# Type check
+echo "🔍 Running type check..."
+bun run typecheck || exit 1
+
+# Build
+echo "🔨 Building..."
+bun run build || exit 1
+
+# Test
+echo "🧪 Running tests..."
+bun test || exit 1
+
+echo "✅ Pre-commit checks passed!"

@@ -29,9 +29,21 @@ file_content_extract({
 | Parameter | Default | Description |
 |-----------|---------|-------------|
 | `--tier` | `pro` | Service tier: `guest`, `pro`, `ultra` |
-| `--app` | `spousal` | Application type: `spousal`, `study` |
+| `--app` | `spousal` | Application type: `spousal`, `study`, `work` |
 | `--anonymize` | `dual` | Report output: `dual` (both), `true` (demo only), `false` (real only) |
 | `--anonymize-level` | `conservative` | PII anonymization level: `minimal`, `conservative`, `aggressive` |
+
+## Audit Scenarios
+
+**ALL scenarios use the FULL 7-agent pipeline**:
+
+| Scenario | Purpose | Judge Verdict | Agent Flow |
+|----------|---------|---------------|-----------|
+| **Initial Assessment** | Quick viability screening (5 min) | GO / CAUTION / NO-GO | Intake → Detective → Strategist → Gatekeeper → Verifier → Judge → Reporter |
+| **Final Review** | Pre-submission quality gate | APPROVE / REVISE | Intake → Detective → Strategist → Gatekeeper → Verifier → Judge → Reporter |
+| **Risk Audit** | Comprehensive case analysis | GO / CAUTION / NO-GO | Intake → Detective → Strategist → Gatekeeper → Verifier → Judge → Reporter |
+
+**Note**: Difference is in Judge's analysis depth and verdict criteria, NOT in agent count.
 
 ## Workflow
 
@@ -48,7 +60,11 @@ file_content_extract({
 8. **Verifier** → Citation validation (ALL tiers)
 
 ### Phase 3: Final Judgment & Report Generation
-9. **AuditManager** → Package AuditJudgment structure:
+9. **Judge** → Final verdict (GO/CAUTION/NO-GO for Initial/Full audit, APPROVE/REVISE for Final Review)
+10. **Reporter** → Generate professional audit report
+
+### Phase 4: Package & Persistence
+11. **AuditManager** → Package AuditJudgment structure:
    ```json
    {
      "verdict": "GO | CAUTION | NO-GO",
@@ -62,7 +78,7 @@ file_content_extract({
    }
    ```
 
-10. **Reporter** → Generate professional reports:
+12. **Report Generation** → Output files:
     - Use `audit_task` to dispatch Reporter agent
     - Reporter synthesizes agent outputs into tier-appropriate template
     - Apply Judicial Authority theme (Navy/Gold/Slate colors)
@@ -72,11 +88,10 @@ file_content_extract({
       - `report.md` / `report.pdf` - Standard report with real client info
       - `report_demo.md` / `report_demo.pdf` - Anonymized report (if `--anonymize=dual` or `true`)
 
-11. **Persistence** → Save to database:
+13. **Persistence** → Save to database:
     - `audit_save_stage_output({ stage: "reporter", ... })`
     - `audit_complete({ verdict, score, recommendation })`
-
-12. Save to `cases/<case-name>/`
+    - Save to `cases/<case-name>/`
 
 ## Output Files
 

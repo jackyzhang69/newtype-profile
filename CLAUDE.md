@@ -23,7 +23,6 @@ AI-powered immigration audit system built on oh-my-opencode framework. Orchestra
 ## 沟通规则 (Communication Rules)
 
 **中间过程不展示，只沟通核心内容和决策**：
-
 - ❌ 不展示：代码实现细节、工具调用过程、执行日志、查询结果
 - ✅ 只展示：核心发现、关键决策、建议方案、最终结果
 - 例外：用户明确要求时（"给我看代码"）才展示细节
@@ -33,7 +32,6 @@ AI-powered immigration audit system built on oh-my-opencode framework. Orchestra
 ## Quick Reference
 
 ### Project Identity
-
 - **Domain**: Canadian Immigration Application Audit
 - **Base Framework**: oh-my-opencode (Claude Code plugin)
 - **Runtime**: Bun (NOT npm/yarn)
@@ -67,7 +65,6 @@ AI-powered immigration audit system built on oh-my-opencode framework. Orchestra
 | Max Agent Calls | 4 | 8 | 15 |
 
 ### MCP Services
-
 - **Ports**: caselaw (3105), operation-manual (3106), help-centre (3107), noc (3108), immi-tools (3109)
 - **Auth**: `SEARCH_SERVICE_TOKEN` environment variable
 - **Transport**: `AUDIT_MCP_TRANSPORT=http` for server, `stdio` for local
@@ -76,7 +73,7 @@ AI-powered immigration audit system built on oh-my-opencode framework. Orchestra
 
 ```bash
 export AUDIT_TIER=pro                # guest | pro | ultra
-export AUDIT_APP=spousal             # spousal | study | work
+export AUDIT_APP=work             # spousal | study | work
 export AUDIT_MCP_TRANSPORT=http      # http | stdio
 export SEARCH_SERVICE_TOKEN=xxx      # MCP/KG auth token
 export FILE_CONTENT_BASE_URL=http... # File extraction service (optional)
@@ -87,7 +84,6 @@ export FILE_CONTENT_BASE_URL=http... # File extraction service (optional)
 ## Critical Rules
 
 ### DO
-
 - Business logic in `src/audit-core/` ONLY
 - Use MCP tools BEFORE web search (Detective/Strategist)
 - Include disclaimer in all audit reports
@@ -95,7 +91,6 @@ export FILE_CONTENT_BASE_URL=http... # File extraction service (optional)
 - **MUST READ `docs/agent-guides/framework/pitfalls.md` before writing code** - contains known issues and their solutions
 
 ### DO NOT
-
 - Modify `src/index.ts` (plugin core) or `src/agents/` (framework agents)
 - Use npm/yarn (Bun only)
 - Hallucinate case citations - use Verifier (Pro+ tier) or avoid citations entirely
@@ -109,7 +104,6 @@ export FILE_CONTENT_BASE_URL=http... # File extraction service (optional)
 - **Skip workflow_next() validation** - always check before dispatching agents
 - **Output report files user didn't request** - only generate reports when explicitly asked
 - **Save temporary outputs outside ./tmp/** - ALL intermediate files (JSON, markdown, logs) MUST be in `./tmp/`
-- **Make Judge calls from outside workflow** - Judge is only called by AuditManager in workflow Stage 5
 - **Request file extraction without Intake** - Intake handles ALL file extraction (batch mode)
 
 ---
@@ -172,29 +166,29 @@ User Request
 Intake (Stage 0)
 ├─ Extract case facts from directory
 ├─ Recognize user intent (RISK_AUDIT / DOCUMENT_LIST / INTERVIEW_PREP / etc)
-└─ Create CaseProfile (structured JSON)
+└─ Create CaseProfile
     |
     v
 AuditManager (orchestrator)
 ├─ Load workflow definition (risk-audit.json / document-list.json / etc)
 └─ Coordinate state machine via WorkflowEngine
     |
-    +---> workflow_next() → get next stage info
+    +---> workflow_next() → get next stage
     |
     +---> audit_task() → dispatch stage agent
     |         |
-    |         v (stages are conditional based on tier & intent)
-    |     Stage 1: Detective (MCP case law search - always if RISK_AUDIT)
-    |     Stage 2: Strategist (risk analysis - Pro+ tier only)
-    |     Stage 3: Gatekeeper (compliance review - always if RISK_AUDIT)
-    |     Stage 4: Verifier (citation validation - Pro+ tier only)
-    |     Stage 5: Judge (verdict synthesis - Pro+ tier only)
-    |     Stage 6: Reporter (report generation - always)
+    |         v (ALL scenarios use full 7-agent pipeline)
+    |     Stage 1: Detective (MCP search)
+    |     Stage 2: Strategist (risk analysis)
+    |     Stage 3: Gatekeeper (compliance)
+    |     Stage 4: Verifier (citations - Pro+ only)
+    |     Stage 5: Judge (verdict - Pro+ only)
+    |     Stage 6: Reporter (report)
     |         |
     |         v
-    |     [agent executes, output stored in checkpoint]
+    |     [agent executes, output stored]
     |
-    +---> workflow_complete(session_id, stage_id, output) → advance state
+    +---> workflow_complete() → advance state
     |
     +---> [repeat until workflow_next() returns { status: "complete" }]
     |
@@ -214,11 +208,13 @@ Final Output (Audit Report / Document List / Client Guidance / etc.)
 
 **Workflow State Machine Definitions**:
 
-| Workflow | Stages | Trigger | Output |
-|----------|--------|---------|--------|
-| `risk-audit.json` | 7 (intake → detective → strategist → gatekeeper → verifier → judge → reporter) | "audit", "risk assessment" | Audit report + scores |
+| Workflow | Stages | Scenario | Output |
+|----------|--------|----------|--------|
+| `risk-audit.json` | 7 (full pipeline) | Initial Assessment / Final Review / Risk Audit | Audit report + verdict + scores |
 | `document-list.json` | 2 (intake → gatekeeper) | "document checklist", "what documents" | Document list (IMM forms, evidence) |
 | `client-guidance.json` | 2 (intake → guidance) | "interview prep", "love story" | Client guidance (statements, preparation) |
+
+**CRITICAL**: ALL audit scenarios (Initial Assessment, Final Review, Risk Audit) use the **SAME 7-agent pipeline**. Differences are in Judge's analysis depth and verdict criteria, NOT in agent count.
 
 ---
 
@@ -235,7 +231,7 @@ Final Output (Audit Report / Document List / Client Guidance / etc.)
 | User provides case directory | **Intake** | Stage 0 | All | Always runs first (facts extraction) |
 | "audit", "risk assessment", "analyze" | **AuditManager** | Orchestrator | All | Loads workflow & calls workflow_next/complete |
 | Inside audit workflow | **Detective** | Stage 1 | All | Case law search (MCP-first, never hallucinate) |
-| Inside audit workflow | **Strategist** | Stage 2 | Pro+ | Risk analysis & defense strategy |
+| Inside audit workflow | **Strategist** | Stage 2 | All | Risk analysis & defense strategy |
 | Inside audit workflow | **Gatekeeper** | Stage 3 | All | Compliance & refusal triggers |
 | Inside audit workflow | **Verifier** | Stage 4 | Pro+ | Citation validation (prevents hallucination) |
 | Inside audit workflow | **Judge** | Stage 5 | Pro+ | Final verdict (GO/CAUTION/NO-GO or APPROVE/REVISE) |
@@ -266,10 +262,11 @@ Final Output (Audit Report / Document List / Client Guidance / etc.)
 
 ### Judge (Stage 5) - Final Verdict & Decision Synthesis
 - Does NOT re-analyze cases - only synthesizes prior agent analysis
-- Operates in 3 scenarios:
-  1. **Initial Assessment** (quick viability) → GO | CAUTION | NO-GO
-  2. **Final Review** (pre-submission) → APPROVE | REVISE
-  3. **Refusal Analysis** (post-refusal) → APPEAL | REAPPLY | ABANDON
+- **ALL scenarios use full 7-agent pipeline** (Intake → Detective → Strategist → Gatekeeper → Verifier → Judge → Reporter)
+- Operates in 3 scenarios with different verdict criteria:
+  1. **Initial Assessment** (quick viability screening, 5 min max) → GO | CAUTION | NO-GO
+  2. **Final Review** (pre-submission quality gate) → APPROVE | REVISE
+  3. **Risk Audit** (comprehensive case analysis) → GO | CAUTION | NO-GO
 - Weighs Detective + Strategist + Gatekeeper + Verifier outputs
 - Produces clear, actionable verdict with rationale
 - **Pro+ tier only** (not available in Guest tier)
@@ -296,27 +293,25 @@ Every audit report (RISK_AUDIT) MUST include:
 ## Knowledge Index
 
 <!-- KNOWLEDGE_INDEX:START -->
-
-| Category  | Topic                                                      | Path                                                        |
-| --------- | ---------------------------------------------------------- | ----------------------------------------------------------- |
-| Framework | LSP (11 tools), AST-Grep, Glob, Sessi...                   | `docs/agent-guides/framework/tools.md`                      |
-| Framework | 22+ lifecycle hooks for context injec...                   | `docs/agent-guides/framework/hooks.md`                      |
-| Framework | Claude Code compatibility layer, back...                   | `docs/agent-guides/framework/features.md`                   |
-| Framework | CLI installer, doctor health checks, ...                   | `docs/agent-guides/framework/cli.md`                        |
-| Audit     | 8-agent workflow: Intake, AuditManager, Detective, Strategist, Gatekeeper, Verifier, Judge, Reporter | `docs/agent-guides/audit/workflow.md`                       |
-| Audit     | Tiered system: guest/pro/ultra, Verif...                   | `docs/agent-guides/audit/tiers.md`                          |
-| Audit     | MCP services (caselaw, operation-manu...                   | `docs/agent-guides/audit/mcp-integration.md`                |
-| Apps      | Spousal sponsorship: genuineness, evi...                   | `docs/agent-guides/apps/spousal.md`                         |
-| Apps      | Study permit: genuine intent, financi...                   | `docs/agent-guides/apps/study.md`                           |
-| System    | 服务器访问规则、测试环境配置、环境变量、ImmiCore 服务依赖  | `docs/system/environment.md`                                |
-| Framework | Common pitfalls: agent empty response...                   | `docs/agent-guides/framework/pitfalls.md`                   |
-| Framework | OpenCode/OMO framework: plugin system...                   | `docs/agent-guides/framework/opencode-omo.md`               |
-| Framework | Agent/skill selection guide: when to ...                   | `docs/agent-guides/framework/agent-skill-selection.md`      |
-| Audit     | Archived milestones: Supabase persist...                   | `docs/agent-guides/audit/completed-milestones.md`           |
-| Framework | Guide for building custom multi-agent...                   | `docs/agent-guides/framework/building-agentic-workflows.md` |
-| Audit     | 搭积木式多智能体审计系统设计：8 Agents（含 Judge）, 16 ... | `docs/agent-guides/audit/architecture.md`                   |
-| System    | Server URL configuration: Try LAN (19...                   | `docs/system/server.md`                                     |
-
+| Category | Topic | Path |
+|----------|-------|------|
+| Framework | LSP (11 tools), AST-Grep, Glob, Sessi... | `docs/agent-guides/framework/tools.md` |
+| Framework | 22+ lifecycle hooks for context injec... | `docs/agent-guides/framework/hooks.md` |
+| Framework | Claude Code compatibility layer, back... | `docs/agent-guides/framework/features.md` |
+| Framework | CLI installer, doctor health checks, ... | `docs/agent-guides/framework/cli.md` |
+| Audit | 8-agent workflow: ALL scenarios (Initial/Final/Risk) use full 7-agent pipeline | `docs/agent-guides/audit/workflow.md` |
+| Audit | Tiered system: guest/pro/ultra, Verif... | `docs/agent-guides/audit/tiers.md` |
+| Audit | MCP services (caselaw, operation-manu... | `docs/agent-guides/audit/mcp-integration.md` |
+| Apps | Spousal sponsorship: genuineness, evi... | `docs/agent-guides/apps/spousal.md` |
+| Apps | Study permit: genuine intent, financi... | `docs/agent-guides/apps/study.md` |
+| System | 服务器访问规则、测试环境配置、环境变量、ImmiCore 服务依赖 | `docs/system/environment.md` |
+| Framework | Common pitfalls: agent empty response... | `docs/agent-guides/framework/pitfalls.md` |
+| Framework | OpenCode/OMO framework: plugin system... | `docs/agent-guides/framework/opencode-omo.md` |
+| Framework | Agent/skill selection guide: when to ... | `docs/agent-guides/framework/agent-skill-selection.md` |
+| Audit | Archived milestones: Supabase persist... | `docs/agent-guides/audit/completed-milestones.md` |
+| Framework | Guide for building custom multi-agent... | `docs/agent-guides/framework/building-agentic-workflows.md` |
+| Audit | 搭积木式多智能体审计系统设计：8 Agents（含 Judge）, 16 ... | `docs/agent-guides/audit/architecture.md` |
+| System | Server URL configuration: Try LAN (19... | `docs/system/server.md` |
 <!-- KNOWLEDGE_INDEX:END -->
 
 ---
