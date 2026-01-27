@@ -270,12 +270,13 @@ export SEARCH_SERVICE_TOKEN=your_token
 
 | Agent | Guest | Pro | Ultra | Purpose |
 |-------|-------|-----|-------|---------|
-| **AuditManager** | gemini-3-flash | claude-sonnet-4-5 | claude-opus-4-5 | Orchestration & synthesis |
-| **Detective** | gemini-3-flash | gemini-3-pro-high | claude-sonnet-4-5 | Legal research via MCP |
-| **Strategist** | gemini-3-flash | claude-sonnet-4-5 | claude-sonnet-4-5 | Risk assessment |
-| **Gatekeeper** | gemini-3-flash | claude-sonnet-4-5 | claude-sonnet-4-5 | Compliance validation |
-| **Verifier** | N/A | gemini-3-flash | claude-haiku-4-5 | Citation verification |
-| **Reporter** | N/A | N/A | claude-sonnet-4-5 | Report generation |
+| **AuditManager** | claude-haiku-4-5 | claude-sonnet-4-5 | claude-opus-4-5 | Orchestration & synthesis |
+| **Detective** | claude-haiku-4-5 | claude-sonnet-4-5 | claude-sonnet-4-5 | Legal research via MCP |
+| **Strategist** | claude-haiku-4-5 | claude-sonnet-4-5 | claude-sonnet-4-5 | Risk assessment |
+| **Gatekeeper** | claude-haiku-4-5 | claude-sonnet-4-5 | claude-sonnet-4-5 | Compliance validation |
+| **Verifier** | claude-haiku-4-5 | claude-haiku-4-5 | claude-haiku-4-5 | Citation verification |
+| **Judge** | claude-sonnet-4-5 | claude-opus-4-5 | claude-opus-4-5 | Final judgment & scoring |
+| **Reporter** | claude-haiku-4-5 | claude-haiku-4-5 | claude-haiku-4-5 | Report generation |
 
 **Model Selection**: Configured in `src/audit-core/tiers/config.ts` based on `AUDIT_TIER` environment variable (guest | pro | ultra)
 

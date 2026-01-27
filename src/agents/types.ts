@@ -62,6 +62,7 @@ export type BuiltinAgentName =
   | "strategist"
   | "gatekeeper"
   | "verifier"
+  | "judge"
   | "reporter"
 
 export type OverridableAgentName =

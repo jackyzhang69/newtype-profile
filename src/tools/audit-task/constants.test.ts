@@ -4,8 +4,8 @@ import { AUDIT_AGENTS, IMMI_OS_TOOLS, BLOCKED_TOOLS } from "./constants"
 describe("audit-task constants", () => {
   describe("AUDIT_AGENTS", () => {
     test("includes all required agents", () => {
-      // #given the audit workflow requires 6 agents
-      const requiredAgents = ["intake", "detective", "strategist", "gatekeeper", "verifier", "reporter"] as const
+      // #given the audit workflow requires 7 agents
+      const requiredAgents = ["intake", "detective", "strategist", "gatekeeper", "verifier", "judge", "reporter"] as const
 
       // #when checking AUDIT_AGENTS
       // #then all required agents should be present

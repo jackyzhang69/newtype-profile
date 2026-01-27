@@ -6,6 +6,7 @@ import { createDetectiveAgent, DETECTIVE_PROMPT_METADATA } from "../audit-core/a
 import { createStrategistAgent, STRATEGIST_PROMPT_METADATA } from "../audit-core/agents/strategist"
 import { createGatekeeperAgent, GATEKEEPER_PROMPT_METADATA } from "../audit-core/agents/gatekeeper"
 import { createVerifierAgent, VERIFIER_PROMPT_METADATA } from "../audit-core/agents/verifier"
+import { createJudgeAgent, JUDGE_PROMPT_METADATA } from "../audit-core/agents/judge"
 import { createReporterAgent, REPORTER_PROMPT_METADATA } from "../audit-core/agents/reporter"
 import { deepMerge } from "../shared"
 import { DEFAULT_CATEGORIES } from "../tools/chief-task/constants"
@@ -19,6 +20,7 @@ const agentSources: Record<string, AgentSource> = {
   detective: createDetectiveAgent,
   strategist: createStrategistAgent,
   gatekeeper: createGatekeeperAgent,
+  judge: createJudgeAgent,
   reporter: createReporterAgent,
 }
 
@@ -32,6 +34,7 @@ const agentMetadata: Partial<Record<BuiltinAgentName, AgentPromptMetadata>> = {
   strategist: STRATEGIST_PROMPT_METADATA,
   gatekeeper: GATEKEEPER_PROMPT_METADATA,
   verifier: VERIFIER_PROMPT_METADATA,
+  judge: JUDGE_PROMPT_METADATA,
   reporter: REPORTER_PROMPT_METADATA,
 }
 

@@ -95,12 +95,13 @@ opencode
 | Agent | Guest | Pro | Ultra |
 |-------|-------|-----|-------|
 | **Intake** | claude-sonnet-4 | claude-sonnet-4 | claude-sonnet-4 |
-| **AuditManager** | gemini-3-flash | claude-sonnet-4-5 | claude-opus-4-5 |
-| **Detective** | gemini-3-flash | claude-sonnet-4-5 | claude-sonnet-4-5 |
-| **Strategist** | gemini-3-flash | claude-sonnet-4-5 | claude-sonnet-4-5 |
-| **Gatekeeper** | gemini-3-flash | claude-sonnet-4-5 | claude-sonnet-4-5 |
-| **Verifier** | gemini-3-flash | gemini-3-flash | claude-haiku-4-5 |
-| **Reporter** | gemini-3-flash | claude-haiku-4-5 | claude-haiku-4-5 |
+| **AuditManager** | claude-haiku-4-5 | claude-sonnet-4-5 | claude-opus-4-5 |
+| **Detective** | claude-haiku-4-5 | claude-sonnet-4-5 | claude-sonnet-4-5 |
+| **Strategist** | claude-haiku-4-5 | claude-sonnet-4-5 | claude-sonnet-4-5 |
+| **Gatekeeper** | claude-haiku-4-5 | claude-sonnet-4-5 | claude-sonnet-4-5 |
+| **Verifier** | claude-haiku-4-5 | claude-haiku-4-5 | claude-haiku-4-5 |
+| **Judge** | claude-sonnet-4-5 | claude-opus-4-5 | claude-opus-4-5 |
+| **Reporter** | claude-haiku-4-5 | claude-haiku-4-5 | claude-haiku-4-5 |
 
 ## Tier Features
 

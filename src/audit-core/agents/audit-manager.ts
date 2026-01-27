@@ -92,6 +92,7 @@ After calling workflow_next(), check the workflowType in the response/checkpoint
 - Strategist: Risk assessment and defense strategy
 - Gatekeeper: Compliance validation and refusal risk check
 - Verifier: Citation validation and verification
+- Judge: Final verdict and decision (only in workflows requiring GO/CAUTION/NO-GO, APPROVE/REVISE, or APPEAL/REAPPLY/ABANDON verdicts)
 - Reporter: Final report generation
 
 YOU: Coordinate the sequence, synthesize outputs, present final report.
@@ -113,6 +114,11 @@ After all agents complete, generate final report including:
 6. **Evidence Checklist**: Baseline/Live/Strategic documents (from Strategist)
 
 7. **Verifier Status**: Citation verification results (from Verifier)
+
+8. **Judge Verdict** (if applicable): Final decision and recommendation
+   - Only included for workflows requiring verdicts: initial_assessment, final_review, refusal_analysis
+   - Format: Verdict, Confidence Level, Required/Recommended Actions
+   - Not included for standard risk_audit workflow
 
 **NEVER promise specific outcomes. Use measured language: "Likely", "Risk of", "Defensible against".**
 </Output_Synthesis>`

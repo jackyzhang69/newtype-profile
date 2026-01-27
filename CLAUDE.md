@@ -12,6 +12,13 @@ AI-powered immigration audit system built on oh-my-opencode framework. Orchestra
 - **对话**: 与用户交流使用中文
 - **文档**: 面向用户的文档使用中文（如审计报告、说明文档）
 
+## 沟通规则 (Communication Rules)
+
+**中间过程不展示，只沟通核心内容和决策**：
+- ❌ 不展示：代码实现细节、工具调用过程、执行日志、查询结果
+- ✅ 只展示：核心发现、关键决策、建议方案、最终结果
+- 例外：用户明确要求时（"给我看代码"）才展示细节
+
 ---
 
 ## Quick Reference

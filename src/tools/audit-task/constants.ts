@@ -4,6 +4,7 @@ export const AUDIT_AGENTS = [
   "strategist",
   "gatekeeper",
   "verifier",
+  "judge",
   "reporter",
 ] as const
 
