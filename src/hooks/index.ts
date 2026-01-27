@@ -31,3 +31,4 @@ export { createStartWorkHook } from "./start-work";
 export { createChiefOrchestratorHook } from "./chief-orchestrator";
 export { createAuditSearchGuardHook } from "./audit-search-guard";
 export { createAuditDocumentGuardHook } from "./audit-document-guard";
+export { createAuditWorkflowEnforcer, CheckpointValidator, TierEnforcer } from "./audit-workflow-enforcer";

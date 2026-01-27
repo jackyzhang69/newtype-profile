@@ -1,0 +1,21 @@
+{
+  "workflow_id": "document_list",
+  "stages": [
+    {
+      "id": "intake",
+      "agent": "intake",
+      "description": "Extract client information and case facts from input",
+      "required": true,
+      "depends_on": [],
+      "retry_limit": 2
+    },
+    {
+      "id": "gatekeeper",
+      "agent": "gatekeeper",
+      "description": "Validate generated document list against IRCC requirements",
+      "required": true,
+      "depends_on": ["intake"],
+      "retry_limit": 2
+    }
+  ]
+}

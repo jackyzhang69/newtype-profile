@@ -335,4 +335,5 @@ bun test               # Run tests (76 test files, 2559+ BDD assertions)
 | Audit | Archived milestones: Supabase persist... | `docs/agent-guides/audit/completed-milestones.md` |
 | Framework | Guide for building custom multi-agent... | `docs/agent-guides/framework/building-agentic-workflows.md` |
 | Audit | 搭积木式多智能体审计系统设计：6 Agents, 16 Skills, 3... | `docs/agent-guides/audit/architecture.md` |
+| System | Server URL configuration: Try LAN (19... | `docs/system/server.md` |
 <!-- KNOWLEDGE_INDEX:END -->

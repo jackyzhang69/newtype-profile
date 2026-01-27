@@ -90,6 +90,12 @@ ssh jacky@192.168.1.98 "docker compose up -d"
 
 ---
 
+## 🌐 服务器 URL
+
+详见 [`docs/system/server.md`](server.md) - 所有服务先尝试局域IP (192.168.1.98:PORT)，不行就用公网
+
+---
+
 ## 环境变量
 
 ### 本地 `.env` 文件
@@ -129,7 +135,7 @@ IMMICORE_PATH=/Users/jacky/immicore
 
 | 服务 | 端口 | 外网域名 | 用途 |
 |------|------|----------|------|
-| search-service | 3104 | `es_search.jackyzhang.app` | 主 API 服务 |
+| search-service (file-content) | 3104 | `es_search.jackyzhang.app` | 文件提取 API 服务 |
 | caselaw MCP | 3105 | - | 案例法搜索 |
 | email-kg MCP | 3106 | - | 邮件知识图谱 |
 | operation-manual MCP | 3107 | - | IRCC 操作手册 |
@@ -143,6 +149,8 @@ IMMICORE_PATH=/Users/jacky/immicore
 | 域名 | 服务 | 用途 |
 |------|------|------|
 | `es_search.jackyzhang.app` | search-service:3104 | API 服务（供 HTTP 模式调用） |
+
+**详见**: [`docs/system/file-content-service.md`](file-content-service.md) - FileContentClient URL 配置与 URL 自动发现机制
 
 ---
 

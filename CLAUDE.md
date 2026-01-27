@@ -75,6 +75,10 @@ export SEARCH_SERVICE_TOKEN=xxx # MCP/KG auth token
 - Suppress type errors with `as any`
 - Return `skills` property in agent config if already using `buildAuditPrompt` (causes double processing)
 - Create temp files outside `./tmp/` directory (all temporary files MUST go to `./tmp/`)
+- **Skip workflow_complete() calls** - state machine will become inconsistent
+- **Call agents out of order** - enforcement hooks will block it
+- **Modify audit checkpoint files** directly - use workflow tools instead
+- **Skip workflow_next() validation** - always check before dispatching agents
 
 ---
 
@@ -88,12 +92,21 @@ immi-os/
 │   │   ├── apps/             # spousal/, study/
 │   │   ├── tiers/            # Tier config system
 │   │   ├── knowledge/        # Dynamic injection
-│   │   └── search/           # Search policy
+│   │   ├── search/           # Search policy
+│   │   ├── workflow/         # WorkflowEngine + state machine
+│   │   │   ├── defs/         # risk-audit.json, document-list.json, client-guidance.json
+│   │   │   ├── engine.ts     # Core workflow state machine
+│   │   │   └── types.ts      # Workflow type definitions
+│   │   └── file-content/     # File extraction (PDF, DOCX, etc.)
 │   ├── agents/               # Framework agents (Sisyphus, Oracle...)
-│   ├── hooks/                # 22+ lifecycle hooks
+│   ├── hooks/                # 22+ lifecycle hooks + audit-workflow-enforcer
+│   │   └── audit-workflow-enforcer/  # Enforcement hooks for workflow
 │   ├── tools/                # LSP, AST-Grep, Glob...
+│   │   └── workflow-manager/ # workflow_next, workflow_complete, workflow_status tools
 │   ├── features/             # Claude Code compat layer
 │   └── shared/               # Cross-cutting utilities
+├── cases/                    # Case files and checkpoints
+│   └── .audit-checkpoints/   # Workflow state checkpoints (auto-generated)
 ├── .claude/
 │   ├── agents/               # External agent configs (audit-report-builder)
 │   ├── skills/               # 16 project skills (core-*, spousal-*, study-*, standalone)
@@ -118,29 +131,38 @@ User Request
     v
 AuditManager (orchestrator)
     |
-    +---> Detective (case law search via MCP)
+    +---> workflow_next() → get stage info
+    |
+    +---> audit_task() → dispatch agent
     |         |
     |         v
-    |     [caselaw, operation-manual, KG]
-    |
-    +---> Strategist (risk assessment)
+    |     Detective | Strategist | Gatekeeper | Verifier
     |         |
     |         v
-    |     [Defensibility Score + Evidence Plan]
+    |     [agent completes]
     |
-    +---> Gatekeeper (compliance check)
-    |         |
-    |         v
-    |     [Refusal triggers + Required fixes]
+    +---> workflow_complete() → advance state
     |
-    +---> Verifier (all tiers)
-              |
-              v
-          [Citation validation]
+    +---> [repeat until workflow_next() returns null]
     |
     v
 Final Audit Report
 ```
+
+### Workflow Tools (NEW)
+
+**Three main workflow tools for orchestration**:
+
+| Tool | Purpose | Returns |
+|------|---------|---------|
+| `workflow_next(session_id)` | Get next stage to execute | `{ stage, agent, description, progress }` or `{ status: "complete" }` |
+| `workflow_complete(session_id, stage_id, output)` | Mark stage done and advance | `{ completed, next_stage, progress }` |
+| `workflow_status(session_id)` | Check workflow progress | `{ current, completed, progress, is_complete }` |
+
+**Workflow Definitions** (automatic state machine):
+- `risk-audit.json`: 6-stage full audit (intake → detective → strategist → gatekeeper → verifier → reporter)
+- `document-list.json`: 2-stage checklist (intake → gatekeeper)
+- `client-guidance.json`: 2-stage guidance (intake → guidance)
 
 ---
 
@@ -205,6 +227,7 @@ Every audit report MUST include:
 | Audit | Archived milestones: Supabase persist... | `docs/agent-guides/audit/completed-milestones.md` |
 | Framework | Guide for building custom multi-agent... | `docs/agent-guides/framework/building-agentic-workflows.md` |
 | Audit | 搭积木式多智能体审计系统设计：6 Agents, 16 Skills, 3... | `docs/agent-guides/audit/architecture.md` |
+| System | Server URL configuration: Try LAN (19... | `docs/system/server.md` |
 <!-- KNOWLEDGE_INDEX:END -->
 
 ---

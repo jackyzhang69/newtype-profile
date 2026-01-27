@@ -1,0 +1,21 @@
+{
+  "workflow_id": "client_guidance",
+  "stages": [
+    {
+      "id": "intake",
+      "agent": "intake",
+      "description": "Understand guidance requirements from user request",
+      "required": true,
+      "depends_on": [],
+      "retry_limit": 1
+    },
+    {
+      "id": "guidance",
+      "agent": "guidance",
+      "description": "Generate client guidance materials (interview prep, love story, etc.)",
+      "required": true,
+      "depends_on": ["intake"],
+      "retry_limit": 2
+    }
+  ]
+}

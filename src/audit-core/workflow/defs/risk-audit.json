@@ -1,0 +1,53 @@
+{
+  "workflow_id": "risk_audit",
+  "stages": [
+    {
+      "id": "intake",
+      "agent": "intake",
+      "description": "Extract documents and build case profile from case directory",
+      "required": true,
+      "depends_on": [],
+      "retry_limit": 2
+    },
+    {
+      "id": "detective",
+      "agent": "detective",
+      "description": "Research case law and operation manual via MCP services",
+      "required": true,
+      "depends_on": ["intake"],
+      "retry_limit": 2
+    },
+    {
+      "id": "strategist",
+      "agent": "strategist",
+      "description": "Assess risks and build defense strategy with mitigation plans",
+      "required": true,
+      "depends_on": ["detective"],
+      "retry_limit": 2
+    },
+    {
+      "id": "gatekeeper",
+      "agent": "gatekeeper",
+      "description": "Validate compliance, consistency, and identify refusal risks",
+      "required": true,
+      "depends_on": ["strategist"],
+      "retry_limit": 1
+    },
+    {
+      "id": "verifier",
+      "agent": "verifier",
+      "description": "Verify all legal citations and case law references",
+      "required": true,
+      "depends_on": ["gatekeeper"],
+      "retry_limit": 3
+    },
+    {
+      "id": "reporter",
+      "agent": "reporter",
+      "description": "Generate final audit report with all findings",
+      "required": true,
+      "depends_on": ["verifier"],
+      "retry_limit": 1
+    }
+  ]
+}

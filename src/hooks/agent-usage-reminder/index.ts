@@ -28,6 +28,7 @@ interface EventInput {
 
 export function createAgentUsageReminderHook(_ctx: PluginInput) {
   const sessionStates = new Map<string, AgentUsageState>();
+  const auditSessions = new Set<string>(); // Track sessions using audit_task
 
   function getOrCreateState(sessionID: string): AgentUsageState {
     if (!sessionStates.has(sessionID)) {
@@ -52,6 +53,7 @@ export function createAgentUsageReminderHook(_ctx: PluginInput) {
 
   function resetState(sessionID: string): void {
     sessionStates.delete(sessionID);
+    auditSessions.delete(sessionID);
     clearAgentUsageState(sessionID);
   }
 
@@ -61,6 +63,13 @@ export function createAgentUsageReminderHook(_ctx: PluginInput) {
   ) => {
     const { tool, sessionID } = input;
     const toolLower = tool.toLowerCase();
+
+    // Track audit sessions (don't suggest chief_task for them)
+    if (toolLower === "audit_task") {
+      auditSessions.add(sessionID);
+      markAgentUsed(sessionID);
+      return;
+    }
 
     if (AGENT_TOOLS.has(toolLower)) {
       markAgentUsed(sessionID);
@@ -74,6 +83,12 @@ export function createAgentUsageReminderHook(_ctx: PluginInput) {
     const state = getOrCreateState(sessionID);
 
     if (state.agentUsed) {
+      return;
+    }
+
+    // Don't show chief_task reminder for audit sessions
+    // AuditManager uses audit_task for orchestration, not chief_task
+    if (auditSessions.has(sessionID)) {
       return;
     }
 

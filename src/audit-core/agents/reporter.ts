@@ -2,6 +2,7 @@ import type { AgentConfig } from "@opencode-ai/sdk"
 import type { AgentPromptMetadata } from "../../agents/types"
 import { buildAuditPrompt, getAuditAppId } from "../knowledge/loader"
 import { getAgentModel, getAgentTemperature } from "../tiers"
+import { createAgentToolRestrictions } from "../../shared/permission-compat"
 
 export const REPORTER_PROMPT_METADATA: AgentPromptMetadata = {
   category: "specialist",
@@ -302,17 +303,24 @@ export function createReporterAgent(
   const appId = getAuditAppId()
   const skillPrefix = appId
 
-  // Four-layer skill architecture:
-  // Layer 1: Core Reporter (cross-app rules)
-  // Layer 2: App-specific Reporter (spousal/study templates)
-  // Layer 3: Theme (Judicial Authority from audit-report-output)
-  // Layer 4: Privacy (data anonymization for dual output)
-  const skills = [
-    "core-reporter",              // Synthesis rules, constraints, PDF integration
-    `${skillPrefix}-reporter`,    // App-specific templates (executive summary, doc list, submission letter)
-    "audit-report-output",        // Judicial Authority theme
-    "core-data-privacy",          // PII anonymization rules for demo reports
+  // Reporter needs tool restrictions (cannot write/edit files directly)
+  const restrictions = createAgentToolRestrictions([
+    "write",
+    "edit",
+    "webfetch",
+  ])
+
+  // Configure skills for Reporter
+  const coreSkills = [
+    "core-reporter",
+    "core-data-privacy",
+    "core-knowledge-injection",
   ]
+  const appSkills = [
+    `${skillPrefix}-reporter`,
+    `${skillPrefix}-knowledge-injection`,
+  ]
+  const skills = [...coreSkills, ...appSkills]
 
   return {
     description:
@@ -320,6 +328,7 @@ export function createReporterAgent(
     mode: "subagent" as const,
     model: resolvedModel,
     temperature: resolvedTemperature,
+    ...restrictions,
     prompt: buildAuditPrompt(REPORTER_PROMPT, appId, "reporter", skills),
   }
 }

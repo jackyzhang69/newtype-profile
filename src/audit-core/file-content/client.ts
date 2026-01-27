@@ -1,6 +1,7 @@
 import { readFileSync, statSync } from "fs"
 import { basename } from "path"
 import { getEnvVar } from "../http-client"
+import { getServiceUrlsWithFallback } from "../config"
 import type {
   TaskCreatedResponse,
   TaskStatusResponse,
@@ -25,7 +26,7 @@ export interface FileContentClientOptions {
 }
 
 export class FileContentClient {
-  private readonly baseUrl: string
+  private baseUrl: string
   private readonly authToken?: string
 
   constructor(options: FileContentClientOptions = {}) {
@@ -34,13 +35,45 @@ export class FileContentClient {
   }
 
   private resolveBaseUrl(): string {
-    const explicit = getEnvVar("FILE_CONTENT_BASE_URL")
-    if (explicit) return explicit.replace(/\/$/, "")
+    this.urlPriority = getServiceUrlsWithFallback("fileContent")
+    console.log(`[FileContentClient] URL priority: ${this.urlPriority.join(" -> ")}`)
+    return this.urlPriority[0]
+  }
 
-    const kgUrl = getEnvVar("AUDIT_KG_BASE_URL")
-    if (kgUrl) return kgUrl.replace(/\/$/, "")
+  private urlPriority: string[] = []
 
-    return "http://localhost:3104/api/v1"
+  /**
+   * Try multiple URLs in priority order
+   * Falls back to next URL if one fails
+   */
+  private async fetchWithFallback<T>(
+    fetchFn: (url: string) => Promise<T>
+  ): Promise<T> {
+    if (this.urlPriority.length === 0) {
+      // 如果没有初始化优先列表，尝试一次
+      this.resolveBaseUrl()
+    }
+
+    let lastError: Error | undefined
+
+    for (const url of this.urlPriority) {
+      try {
+        console.log(`[FileContentClient] Trying URL: ${url}`)
+        const result = await fetchFn(url)
+        console.log(`[FileContentClient] ✅ Success with URL: ${url}`)
+        this.baseUrl = url // 更新 baseUrl 为成功的 URL
+        return result
+      } catch (error) {
+        lastError = error instanceof Error ? error : new Error(String(error))
+        console.warn(`[FileContentClient] ⚠️ Failed with ${url}: ${lastError.message}`)
+        // 继续尝试下一个 URL
+      }
+    }
+
+    throw new Error(
+      `All URLs failed. Last error: ${lastError?.message}\n` +
+      `Tried: ${this.urlPriority.join(", ")}`
+    )
   }
 
   private getHeaders(isMultipart = false): Record<string, string> {
@@ -58,68 +91,74 @@ export class FileContentClient {
     filePaths: string[],
     options: ExtractOptions = {}
   ): Promise<TaskCreatedResponse> {
-    const formData = new FormData()
+    return this.fetchWithFallback(async (baseUrl) => {
+      const formData = new FormData()
 
-    for (const filePath of filePaths) {
-      const content = readFileSync(filePath)
-      const filename = basename(filePath)
-      const blob = new Blob([content])
-      formData.append("files", blob, filename)
-    }
+      for (const filePath of filePaths) {
+        const content = readFileSync(filePath)
+        const filename = basename(filePath)
+        const blob = new Blob([content])
+        formData.append("files", blob, filename)
+      }
 
-    if (options.output_format) {
-      formData.append("output_format", options.output_format)
-    }
-    if (options.detect_scanned !== undefined) {
-      formData.append("detect_scanned", String(options.detect_scanned))
-    }
-    if (options.extract_xfa !== undefined) {
-      formData.append("extract_xfa", String(options.extract_xfa))
-    }
-    if (options.include_structure !== undefined) {
-      formData.append("include_structure", String(options.include_structure))
-    }
+      if (options.output_format) {
+        formData.append("output_format", options.output_format)
+      }
+      if (options.detect_scanned !== undefined) {
+        formData.append("detect_scanned", String(options.detect_scanned))
+      }
+      if (options.extract_xfa !== undefined) {
+        formData.append("extract_xfa", String(options.extract_xfa))
+      }
+      if (options.include_structure !== undefined) {
+        formData.append("include_structure", String(options.include_structure))
+      }
 
-    const response = await fetch(`${this.baseUrl}/file-content/extract`, {
-      method: "POST",
-      headers: this.getHeaders(true),
-      body: formData,
+      const response = await fetch(`${baseUrl}/file-content/extract`, {
+        method: "POST",
+        headers: this.getHeaders(true),
+        body: formData,
+      })
+
+      if (!response.ok) {
+        const text = await response.text()
+        throw new Error(`Failed to submit extraction: ${response.status} ${text}`)
+      }
+
+      return response.json() as Promise<TaskCreatedResponse>
     })
-
-    if (!response.ok) {
-      const text = await response.text()
-      throw new Error(`Failed to submit extraction: ${response.status} ${text}`)
-    }
-
-    return response.json() as Promise<TaskCreatedResponse>
   }
 
   async getTaskStatus(taskId: string): Promise<TaskStatusResponse> {
-    const response = await fetch(
-      `${this.baseUrl}/file-content/tasks/${taskId}`,
-      { headers: this.getHeaders() }
-    )
+    return this.fetchWithFallback(async (baseUrl) => {
+      const response = await fetch(
+        `${baseUrl}/file-content/tasks/${taskId}`,
+        { headers: this.getHeaders() }
+      )
 
-    if (!response.ok) {
-      const text = await response.text()
-      throw new Error(`Failed to get task status: ${response.status} ${text}`)
-    }
+      if (!response.ok) {
+        const text = await response.text()
+        throw new Error(`Failed to get task status: ${response.status} ${text}`)
+      }
 
-    return response.json() as Promise<TaskStatusResponse>
+      return response.json() as Promise<TaskStatusResponse>
+    })
   }
 
   async getTaskResult(taskId: string): Promise<ExtractionResult> {
-    const response = await fetch(
-      `${this.baseUrl}/file-content/tasks/${taskId}/result`,
-      { headers: this.getHeaders() }
-    )
+    return this.fetchWithFallback(async (baseUrl) => {
+      const response = await fetch(
+        `${baseUrl}/file-content/tasks/${taskId}/result`,
+        { headers: this.getHeaders() }
+      )
 
-    if (!response.ok) {
-      const text = await response.text()
-      throw new Error(`Failed to get task result: ${response.status} ${text}`)
-    }
+      if (!response.ok) {
+        const text = await response.text()
+        throw new Error(`Failed to get task result: ${response.status} ${text}`)
+      }
 
-    return response.json() as Promise<ExtractionResult>
+      return response.json() as Promise<ExtractionResult>
+    })
   }
 
   async pollUntilComplete(

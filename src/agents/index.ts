@@ -5,6 +5,7 @@ import { createStrategistAgent } from "../audit-core/agents/strategist"
 import { createGatekeeperAgent } from "../audit-core/agents/gatekeeper"
 import { createVerifierAgent } from "../audit-core/agents/verifier"
 import { createIntakeAgent } from "../audit-core/agents/intake"
+import { createReporterAgent } from "../audit-core/agents/reporter"
 
 export function getBuiltinAgents(): Record<string, AgentConfig> {
   const baseAgents: Record<string, AgentConfig> = {
@@ -13,6 +14,7 @@ export function getBuiltinAgents(): Record<string, AgentConfig> {
     strategist: createStrategistAgent(),
     gatekeeper: createGatekeeperAgent(),
     intake: createIntakeAgent(),
+    reporter: createReporterAgent(),
   }
 
   const verifierAgent = createVerifierAgent()

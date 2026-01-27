@@ -64,6 +64,12 @@ import {
 
 export { sessionExists } from "./session-manager/storage"
 
+import {
+  workflow_next,
+  workflow_complete,
+  workflow_status,
+} from "./workflow-manager"
+
 export { interactive_bash, startBackgroundCheck as startTmuxCheck } from "./interactive-bash"
 export { createSkillTool } from "./skill"
 export { getTmuxPath } from "./interactive-bash/utils"
@@ -167,4 +173,7 @@ export const builtinTools: Record<string, ToolDefinition> = {
   audit_save_citations,
   audit_complete,
   audit_get_session,
+  workflow_next,
+  workflow_complete,
+  workflow_status,
 }

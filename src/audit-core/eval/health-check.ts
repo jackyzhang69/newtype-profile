@@ -2,7 +2,7 @@ import fs from "node:fs"
 import path from "node:path"
 
 function getKgBaseUrl(): string {
-  return process.env.AUDIT_KG_BASE_URL?.trim() || "http://localhost:3104/api/v1"
+  return process.env.AUDIT_KG_BASE_URL?.trim() || "http://192.168.1.98:3104/api/v1"
 }
 
 async function checkKg(): Promise<string | null> {

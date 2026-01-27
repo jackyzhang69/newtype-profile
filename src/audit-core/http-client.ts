@@ -199,7 +199,7 @@ export function getEnvVar(key: string): string | undefined {
 }
 
 export function createKgClient(): AuthenticatedHttpClient {
-  const baseUrl = getEnvVar('AUDIT_KG_BASE_URL') || 'http://localhost:3104/api/v1'
+  const baseUrl = getEnvVar('AUDIT_KG_BASE_URL') || 'http://192.168.1.98:3104/api/v1'
   const authToken = getEnvVar('SEARCH_SERVICE_TOKEN')
 
   return new AuthenticatedHttpClient({ baseUrl, authToken })
