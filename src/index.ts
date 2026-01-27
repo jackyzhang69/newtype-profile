@@ -62,7 +62,6 @@ import {
   createSlashcommandTool,
   discoverCommandsSync,
   sessionExists,
-  createChiefTask,
   createAuditTask,
   interactive_bash,
   startTmuxCheck,
@@ -244,11 +243,6 @@ const OhMyOpenCodePlugin: Plugin = async (ctx) => {
 
   const callOmoAgent = createCallOmoAgent(ctx, backgroundManager);
   const lookAt = createLookAt(ctx);
-  const chiefTask = createChiefTask({
-    manager: backgroundManager,
-    client: ctx.client,
-    userCategories: pluginConfig.categories,
-  });
   const auditTask = createAuditTask({
     manager: backgroundManager,
     client: ctx.client,
@@ -320,7 +314,6 @@ const OhMyOpenCodePlugin: Plugin = async (ctx) => {
       ...backgroundTools,
       call_omo_agent: callOmoAgent,
       look_at: lookAt,
-      chief_task: chiefTask,
       audit_task: auditTask,
       skill: skillTool,
       skill_mcp: skillMcpTool,
