@@ -1,0 +1,22 @@
+{
+  "skill_name": "work-immicore-mcp",
+  "version": "1.0.0",
+  "description": "MCP access policy for work permit audits (caselaw, operation manual, help centre)",
+  "app_type": "work",
+  "mcp_services": [
+    "caselaw",
+    "operation_manual",
+    "help_centre",
+    "noc",
+    "immi_tools"
+  ],
+  "files": [
+    "search_strategies.md",
+    "relevant_policy_codes.md",
+    "issue_codes.md"
+  ],
+  "landmark_cases": [],
+  "_authority_verified": {},
+  "_dynamic_lookup": "kg_top_authorities(issue_code='LMIA_REQ', court='FC', limit=5)",
+  "_last_verified": "2026-01-27"
+}

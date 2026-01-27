@@ -1,0 +1,42 @@
+{
+  "workflow_id": "work_document_list",
+  "name": "Work Permit Document Checklist",
+  "description": "Quick document checklist generation for work permit applications",
+  "app_type": "work",
+  "version": "1.0.0",
+  "stages": [
+    {
+      "id": "intake",
+      "agent": "intake",
+      "description": "Extract application documents",
+      "required": true,
+      "depends_on": [],
+      "retry_limit": 2,
+      "timeout_seconds": 300
+    },
+    {
+      "id": "gatekeeper",
+      "agent": "gatekeeper",
+      "description": "Validate document requirements and completeness",
+      "required": true,
+      "depends_on": ["intake"],
+      "retry_limit": 2,
+      "timeout_seconds": 300
+    },
+    {
+      "id": "reporter",
+      "agent": "reporter",
+      "description": "Generate document checklist report",
+      "required": true,
+      "depends_on": ["gatekeeper"],
+      "retry_limit": 1,
+      "timeout_seconds": 300
+    }
+  ],
+  "metadata": {
+    "created": "2026-01-27",
+    "audit_tier_compatibility": ["guest", "pro", "ultra"],
+    "estimated_duration_minutes": 15,
+    "description_full": "Quick 3-stage workflow for generating document checklists. No case law research or full risk assessment - focus on required vs. optional documents and what's missing."
+  }
+}

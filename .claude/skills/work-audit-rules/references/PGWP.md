@@ -1,0 +1,310 @@
+# Post-Graduation Work Permit (PGWP) Audit Rules
+
+## Definition & Eligibility
+
+Post-Graduation Work Permit is a temporary work permit issued to international students who have graduated from a Designated Learning Institution (DLI) in Canada.
+
+### Core Eligibility Criteria (Hard Requirements)
+
+1. **Valid Study Permit During Graduation**
+   - Maintained status as international student
+   - DLI enrollment confirmed by institution
+   - No work permit while studying (unless authorized)
+
+2. **Graduation from DLI**
+   - Institution recognized as DLI in IRCC database
+   - Completion of eligible program:
+     - Minimum 8 months duration
+     - Full-time study required
+     - Certificate, diploma, degree programs
+     - Specialized certificate programs
+   - NOT eligible: Language training, ESL-only programs
+   - Graduation date within eligible timeframe (typically 180 days from graduation)
+
+3. **Admissibility**
+   - No grounds for inadmissibility
+   - Security and criminality clearance
+   - Medical examination if required
+   - No misrepresentation in application
+
+4. **Temporary Intent**
+   - Clear commitment to leave Canada upon permit expiration
+   - PGWP work not to settle permanently
+
+### Duration Calculation
+- PGWP validity = 2x program duration (minimum 8 months, maximum 3 years)
+- Example: 2-year Bachelor's degree = 3-year PGWP (capped)
+- Part-time studies may not count toward duration
+
+## Risk Assessment Framework
+
+### Category-Specific Risk Patterns
+
+#### Pattern: FAKE_GRADUATION
+- **Severity**: CRITICAL
+- **Definition**: Applicant claims graduation but institution has no record
+- **Indicators**:
+  - Institution denies enrollment
+  - Graduation date inconsistent with enrollment records
+  - Fake diploma or forged documents
+  - Institution not in IRCC DLI database
+  - Program duration claims inconsistent
+- **Assessment Method**:
+  - DLI registry verification (mandatory)
+  - Direct institutional contact
+  - Diploma authentication
+  - Transcript verification through registrar
+- **Recovery**: None (automatic refusal)
+
+#### Pattern: INELIGIBLE_PROGRAM
+- **Severity**: HIGH
+- **Definition**: Study program does not meet PGWP eligibility requirements
+- **Indicators**:
+  - ESL/language training only
+  - Part-time study (< 10 hrs/week)
+  - Non-credential program
+  - Continuing education only
+  - Online/distance learning (if distance learning exemption period expired)
+  - Program < 8 months duration
+- **Assessment Method**:
+  - Program code verification
+  - DLI database cross-reference
+  - Curriculum documentation review
+  - Ministry of Education equivalency check
+- **Recovery**: Reapply if took eligible subsequent program after eligible graduation
+
+#### Pattern: DLI_STATUS_EXPIRED
+- **Severity**: CRITICAL
+- **Definition**: Institution was DLI at time of study, but status revoked before graduation
+- **Indicators**:
+  - DLI delisted by IRCC
+  - Institution lost accreditation
+  - Credentials issued by non-DLI
+  - Extended leave of absence before graduation
+- **Assessment Method**:
+  - DLI database status check for period of study
+  - Timeline verification
+  - Institutional status change history
+- **Recovery**: None if revocation occurred before graduation
+
+#### Pattern: GRADUATION_TIMING_VIOLATION
+- **Severity**: HIGH
+- **Definition**: Application submitted outside eligible timeframe
+- **Indicators**:
+  - Application > 180 days post-graduation
+  - More than 18 months between graduation and PGWP application
+  - Extended travel or study delay
+- **Assessment Method**:
+  - Date comparison (graduation vs. PGWP receipt)
+  - Timeline explanation letter
+  - Justification for delay
+- **Recovery**: Reapply if still within valid study permit status (rare)
+
+#### Pattern: WORK_HISTORY_INCONSISTENCY
+- **Severity**: MEDIUM
+- **Definition**: Work undertaken during study with insufficient work permit authorization
+- **Indicators**:
+  - On-campus employment without authorization
+  - Off-campus work during restricted periods
+  - Self-employment during study
+  - Employer-specific work permit overlap
+  - Work exceeding authorized hours
+- **Assessment Method**:
+  - Study permit work authorization review
+  - Employment timeline cross-reference
+  - Employer verification
+- **Recovery**: Explanation letter, employer confirmation
+
+#### Pattern: PROGRAM_COMPLETION_FRAUD
+- **Severity**: CRITICAL
+- **Definition**: Applicant did not actually complete program requirements
+- **Indicators**:
+  - Failed courses claimed as passed
+  - Incomplete thesis/capstone
+  - Required practicum not completed
+  - Insufficient credits toward degree
+  - Diploma issued in error or recalled
+- **Assessment Method**:
+  - Transcript verification (official)
+  - Registrar confirmation
+  - Academic record audit
+- **Recovery**: None (requires actual graduation)
+
+#### Pattern: TEMPORARY_RESIDENT_STATUS_LAPSE
+- **Severity**: CRITICAL
+- **Definition**: Study permit expired or was cancelled before graduation/application
+- **Indicators**:
+  - Study permit expired before graduation
+  - Permit cancelled due to non-compliance
+  - Out-of-status period before PGWP application
+  - No valid status maintained
+- **Assessment Method**:
+  - Timeline comparison
+  - Status history verification
+  - Explicit continuity confirmation
+- **Recovery**: None (requires in-status graduation)
+
+## Common Refusal Patterns
+
+### R205(1) - Refusal Decision Codes
+
+1. **Not a designated learning institution**
+   - Institution not DLI at time of application
+   - Prior delisting occurred
+   - Institution revoked status
+   - Applicant studied at non-DLI
+
+2. **Program duration insufficient**
+   - Completed program < 8 months
+   - Part-time did not meet full-time threshold
+   - Insufficient course load
+   - Credits below minimum
+
+3. **Ineligible program type**
+   - Language/ESL program only
+   - Preparatory program not eligible
+   - Continuing education without credential
+   - Online-only without prior exemption
+
+4. **Graduation not established**
+   - Institutional records show non-completion
+   - Diploma revoked or never issued
+   - Academic standing insufficient
+   - Conditions of graduation not met
+
+5. **Application timing**
+   - Submitted > 180 days post-graduation
+   - Study permit expired before application
+   - Continuity of status broken
+
+6. **Program start date misalignment**
+   - Post-secondary study began after international student status
+   - Study permit issued after program commencement
+   - No valid study permit overlap
+
+## Document Checklist
+
+### Baseline Documents (Required)
+- Valid passport (must be valid for duration of PGWP)
+- Original study permit (if still held)
+- Proof of graduation:
+  - Official diploma or degree certificate
+  - Official transcript showing completion
+  - Letter from institution confirming graduation
+- Medical examination (if required by IRCC)
+- Police certificate (if applicable)
+- Proof of compliance with study permit conditions during studies
+
+### Live Documents (Obtainable)
+- Official credentials assessment (WES, EVA, if applicable)
+- Work history documentation (if worked during study)
+- Proof of maintenance of status (if study permit expired)
+- Updated passport if close to expiration
+- Employment offer letter (optional but helpful)
+
+### Strategic Documents
+- Letter from institution confirming:
+  - Program eligibility for PGWP
+  - Graduation date
+  - Full-time status maintained
+  - DLI status during period of study
+- Official program outline showing duration and structure
+- Proof of financial support during studies
+- Employment timeline showing post-graduation job search
+
+## Case Law References
+
+### Key Federal Court Jurisprudence
+
+**Genuine Program Completion (High Confidence)**
+- Courts defer to institution graduation records
+- Diploma is prima facie evidence of completion
+- Institutional verification is determinative
+- Fraud claims require compelling evidence
+
+**DLI Status Verification (High Confidence)**
+- Officer must verify institution was DLI at time of study
+- Not current DLI status alone
+- Historical database records are authoritative
+- Burden on IRCC to demonstrate status loss
+
+**Program Duration Calculation (High Confidence)**
+- Days count: from first day of study to graduation
+- Part-time study: officer must calculate equivalent full-time weeks
+- Online study: pre-2023 exemption applied, post-2023 case-by-case
+- Overlapping programs: only one program counts toward maximum
+
+**Application Timing (High Confidence)**
+- "Following graduation" interpreted as 180 days post-graduation
+- Permissive interpretation for administrative delays
+- But interpretation becomes strict for > 180 days
+- Study permit expiry breaks timing chain
+
+**Ineligibility Irreversibility (Medium Confidence)**
+- Once deemed ineligible (e.g., ineligible program), may reapply
+- But only if new eligible graduation obtained
+- Cannot appeal ineligibility if facts accurate
+- Officer discretion not engaged once objective criteria fail
+
+### Risk Assessment Impact
+
+**High Risk Thresholds**
+- > 6 months post-graduation before application = document request likely
+- Missing institutional confirmation letter = near-automatic delay
+- Any DLI status ambiguity = verification delay (1-2 months typical)
+
+**Medium Risk Thresholds**
+- Program exactly 8-10 months duration = officer manual calculation required
+- Part-time study period during DLI enrollment = requires breakdown
+- Overseas completion of online final courses = assessment discretion engaged
+
+## Policy Code Mapping
+
+### IRPA/IRPR References
+- **R200(3)(c)**: Work permit eligibility (base)
+- **R205(1)**: PGWP eligibility conditions (specific)
+- **R205(1)(a)**: Graduation from DLI requirement
+- **R205(1)(b)**: Program duration requirement
+- **R205(1)(c)**: Application timing requirement
+- **R205(1)(d)**: Admissibility requirement
+
+### Operational Manual (IP 16)
+- **Chapter 16.2**: PGWP eligibility and assessment
+- **Section 16.2.1**: DLI definition and verification
+- **Section 16.2.2**: Program type eligibility matrix
+- **Section 16.2.3**: Duration calculation methodology
+- **Section 16.2.4**: Application processing steps
+- **Section 16.2.5**: Document verification procedures
+
+### Risk Badge System
+- `PGWP_FAKE_GRADUATION` - Institutional verification fails
+- `PGWP_INELIGIBLE_PROGRAM` - Program type does not qualify
+- `PGWP_DLI_STATUS_UNKNOWN` - Institution status ambiguous
+- `PGWP_GRADUATION_TIMING_VIOLATION` - Outside 180-day window
+- `PGWP_WORK_AUTH_VIOLATION` - Unauthorized work during study
+- `PGWP_PROGRAM_FRAUD` - Program completion claimed but unverified
+
+## Verification Checklist
+
+**Must Verify Before Approving**:
+- [ ] DLI registry: Institution was DLI at graduation date
+- [ ] Institutional confirmation: Program completion verified
+- [ ] Program eligibility: Duration, credential level, field of study
+- [ ] Application timing: Within 180 days (or justified exception)
+- [ ] Admissibility: Security, criminality, health, misrepresentation
+- [ ] Status maintenance: Study permit maintained until graduation
+- [ ] Work authorization: No work violations during study period
+
+**High-Confidence Indicators of Legitimacy**:
+- Official transcript from registrar showing degree completion
+- Diploma issued on institution letterhead with registrar signature
+- DLI registry confirmation document
+- Study permit documentation spanning full program duration
+- Employment history post-graduation showing actual job entry
+
+## See Also
+
+- [hard_eligibility.md](hard_eligibility.md) - General work permit requirements
+- [fraud_risk_flags.md](fraud_risk_flags.md) - Document fraud indicators
+- [refusal_patterns.md](refusal_patterns.md) - Historical refusal reasons
+- [risk_badges.json](risk_badges.json) - Risk classification system

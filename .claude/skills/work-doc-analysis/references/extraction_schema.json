@@ -1,0 +1,142 @@
+{
+  "document_extraction_schema": {
+    "job_offer_letter": {
+      "fields": {
+        "employer_legal_name": "string - Official registered employer name",
+        "employer_address": "string - Physical business address",
+        "employer_contact": "string - Phone and email",
+        "job_title": "string - Specific position title",
+        "job_duties": "string - Detailed description of responsibilities",
+        "start_date": "date - When employment begins",
+        "duration": "string - Duration or end date if fixed term",
+        "salary_amount": "number - Annual or hourly wage",
+        "salary_currency": "string - CAD, USD, etc.",
+        "payment_frequency": "string - Monthly, bi-weekly, hourly",
+        "benefits": "array - Health, dental, pension, etc.",
+        "working_hours": "string - Standard hours per week",
+        "work_location": "string - City and province",
+        "authorized_signatory": "string - Name and title of signer",
+        "signature_date": "date - When offer was signed"
+      },
+      "validation": {
+        "required_fields": ["employer_legal_name", "job_title", "job_duties", "start_date", "salary_amount", "authorized_signatory", "signature_date"],
+        "authenticity": ["Original signed copy or certified", "Not a template", "Consistent formatting"],
+        "consistency_checks": ["LMIA position match", "Wage alignment", "Employer name verification"]
+      }
+    },
+    "lmia_document": {
+      "fields": {
+        "service_canada_file_number": "string - LMIA reference number",
+        "employer_name": "string - Registered employer name",
+        "lmia_decision": "enum - Positive/Negative/Withdrawn",
+        "decision_date": "date - When LMIA was decided",
+        "validity_start": "date - When LMIA becomes valid",
+        "validity_end": "date - When LMIA expires",
+        "position_noc_code": "string - NOC 2021 code",
+        "position_title": "string - Job title in LMIA",
+        "position_duties": "string - Description from LMIA",
+        "salary": "number - Annual wages approved",
+        "province": "string - Where work occurs",
+        "number_positions": "number - How many positions approved",
+        "conditions": "array - Any special conditions"
+      },
+      "validation": {
+        "required_fields": ["service_canada_file_number", "employer_name", "lmia_decision", "decision_date", "validity_end"],
+        "authenticity": ["Official Service Canada document", "Contains file number", "Valid decision dates"],
+        "consistency_checks": ["Decision must be Positive", "LMIA not expired", "Employer name matches offer", "Position title aligns", "Salary consistent with offer"]
+      }
+    },
+    "educational_credentials": {
+      "fields": {
+        "institution_name": "string - University/college name",
+        "institution_country": "string - Country where issued",
+        "credential_type": "enum - Degree/Diploma/Certificate",
+        "degree_level": "enum - Bachelor/Master/PhD/etc.",
+        "field_of_study": "string - Program major/discipline",
+        "graduation_date": "date - When completed",
+        "gpa_if_relevant": "number - Grade point average",
+        "verification_source": "enum - Original/Certified/WES/EVA/other",
+        "verification_date": "date - When verified",
+        "credential_match_to_role": "string - How it matches job requirements"
+      },
+      "validation": {
+        "required_fields": ["institution_name", "credential_type", "field_of_study", "graduation_date"],
+        "authenticity": ["Institution is accredited", "Dates are plausible", "Verification completed"],
+        "relevance": ["Matches job requirements", "Appropriate level for position", "Field aligns with duties"]
+      }
+    },
+    "work_experience": {
+      "fields": {
+        "employer_name": "string - Company or organization",
+        "job_title": "string - Position title",
+        "start_date": "date - When employment began",
+        "end_date": "date - When employment ended (or 'current')",
+        "responsibilities": "array - Key duties and accomplishments",
+        "relevance_to_position": "string - How this experience qualifies for new role",
+        "reference_contact": "string - Person who can verify",
+        "reference_phone": "string - Contact phone",
+        "reference_email": "string - Contact email"
+      },
+      "validation": {
+        "required_fields": ["employer_name", "job_title", "start_date", "end_date"],
+        "authenticity": ["Reference is verifiable", "Employment dates confirmed", "Duties are credible"],
+        "relevance": ["Experience matches job level", "Responsibilities similar to new role", "No major gaps unexplained"]
+      }
+    },
+    "passport": {
+      "fields": {
+        "number": "string - Passport number",
+        "full_name": "string - Name as appears in passport",
+        "date_of_birth": "date",
+        "gender": "enum - Male/Female/Other",
+        "issuing_country": "string - Passport country",
+        "issue_date": "date",
+        "expiry_date": "date",
+        "passport_type": "enum - Regular/Diplomatic/Official",
+        "visa_pages": "array - Significant visas and stamps"
+      },
+      "validation": {
+        "required_fields": ["number", "full_name", "date_of_birth", "issuing_country", "issue_date", "expiry_date"],
+        "authenticity": ["Valid document physically", "No alterations", "Consistent with applicant"],
+        "timeliness": ["Passport valid for duration of work permit"]
+      }
+    },
+    "police_certificate": {
+      "fields": {
+        "issuing_country": "string - Country of residence",
+        "issue_date": "date - When certificate issued",
+        "validity_date": "date - Expiry if applicable",
+        "applicant_name": "string - Name on certificate",
+        "result": "enum - Clear/With_conditions/Failed",
+        "findings": "string - Any issues noted"
+      },
+      "validation": {
+        "required_fields": ["issuing_country", "issue_date", "applicant_name", "result"],
+        "authenticity": ["Issued by official government body", "Within validity period if applicable"],
+        "completeness": ["Result clearly stated", "Any concerning findings noted"]
+      }
+    },
+    "medical_examination": {
+      "fields": {
+        "examination_date": "date - When medical was performed",
+        "examining_physician": "string - Doctor name and credentials",
+        "clinic_name": "string - Where examination occurred",
+        "exam_form_number": "string - IMM 1017 or equivalent",
+        "result": "enum - Approved/Needs_further_review/Failed",
+        "conditions_noted": "array - Any medical concerns identified",
+        "vaccination_status": "string - COVID-19 and other vaccines"
+      },
+      "validation": {
+        "required_fields": ["examination_date", "examining_physician", "result"],
+        "authenticity": ["Conducted by panel physician", "Within 12 months"],
+        "completeness": ["All required tests performed", "Result clearly stated"]
+      }
+    }
+  },
+  "_extraction_notes": {
+    "priority": "Extract required fields first (marked in validation), then supporting fields",
+    "consistency": "Cross-reference dates and information across documents",
+    "authenticity": "Flag any documents that cannot be verified",
+    "gaps": "Note missing required documents clearly"
+  }
+}

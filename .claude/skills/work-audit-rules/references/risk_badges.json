@@ -1,0 +1,153 @@
+{
+  "risk_badges": {
+    "LMIA_NOT_OBTAINED": {
+      "id": "LMIA_NOT_OBTAINED",
+      "category": "employer_compliance",
+      "severity": "CRITICAL",
+      "description": "Required LMIA not provided or negative assessment",
+      "indicators": [
+        "job_offer_without_lmia",
+        "lmia_negative_assessment",
+        "lmia_expired",
+        "lmia_different_employer"
+      ],
+      "implications": "Application will be refused under R200",
+      "remediation": "Obtain valid LMIA or demonstrate exemption eligibility",
+      "court_authority": "IRPA R200(1) - mandatory LMIA requirement"
+    },
+    "CREDENTIALS_MISMATCH": {
+      "id": "CREDENTIALS_MISMATCH",
+      "category": "applicant_capability",
+      "severity": "HIGH",
+      "description": "Applicant qualifications insufficient for position",
+      "indicators": [
+        "education_below_requirements",
+        "experience_gap",
+        "credentials_unverified",
+        "language_barrier",
+        "missing_certifications"
+      ],
+      "implications": "Officer may refuse as applicant lacks capability",
+      "remediation": "Credential verification, reference letters, evidence of competency",
+      "court_authority": "Discretionary assessment of capability to perform duties"
+    },
+    "EMPLOYER_FRAUD_RISK": {
+      "id": "EMPLOYER_FRAUD_RISK",
+      "category": "employer_legitimacy",
+      "severity": "HIGH",
+      "description": "Employer legitimacy or fraud risk concerns",
+      "indicators": [
+        "employer_fraud_history",
+        "job_offer_inconsistencies",
+        "employer_unverifiable",
+        "shell_company_patterns",
+        "recent_registration"
+      ],
+      "implications": "Application escalated to fraud investigation",
+      "remediation": "Employer verification, third-party confirmation, LMIA documentation",
+      "court_authority": "Officer must assess genuineness of employment offer"
+    },
+    "IMMIGRANT_INTENT_SIGNAL": {
+      "id": "IMMIGRANT_INTENT_SIGNAL",
+      "category": "intent_determination",
+      "severity": "HIGH",
+      "description": "Evidence indicates intent to settle permanently in Canada",
+      "indicators": [
+        "family_in_canada",
+        "previous_pr_applications",
+        "canadian_property",
+        "no_ties_home_country",
+        "settlement_documentation"
+      ],
+      "implications": "Application refused due to permanent settlement intent",
+      "remediation": "Establish ties to home country, explicit return plan, family abroad",
+      "court_authority": "Applicant must demonstrate temporary intent under R200"
+    },
+    "WAGE_COMPLIANCE_ISSUE": {
+      "id": "WAGE_COMPLIANCE_ISSUE",
+      "category": "employment_conditions",
+      "severity": "MEDIUM",
+      "description": "Offered wages below prevailing standards or minimum",
+      "indicators": [
+        "below_provincial_minimum",
+        "below_lmia_rate",
+        "below_median_wage",
+        "wage_deductions",
+        "exploitative_conditions"
+      ],
+      "implications": "Officer may refuse as conditions exploitative or non-compliant",
+      "remediation": "Wage documentation, prevailing rate verification, contract amendment",
+      "court_authority": "Service Canada LMIA wage assessment; human trafficking concerns"
+    },
+    "ADMISSIBILITY_CONCERN": {
+      "id": "ADMISSIBILITY_CONCERN",
+      "category": "admissibility",
+      "severity": "CRITICAL",
+      "description": "Grounds for inadmissibility under IRPA identified",
+      "indicators": [
+        "criminal_record",
+        "security_concerns",
+        "misrepresentation",
+        "missing_medical_exam",
+        "missing_police_certificate"
+      ],
+      "implications": "Application will be refused automatically if inadmissible",
+      "remediation": "Legal clearance, medical examination, police certificate, waiver if applicable",
+      "court_authority": "IRPA s.36-42 inadmissibility provisions"
+    },
+    "TIES_ASSESSMENT_WEAK": {
+      "id": "TIES_ASSESSMENT_WEAK",
+      "category": "intent_determination",
+      "severity": "MEDIUM",
+      "description": "Applicant has minimal ties to home country",
+      "indicators": [
+        "no_immediate_family_abroad",
+        "minimal_assets_home",
+        "no_employment_history",
+        "young_age_no_dependents",
+        "multiple_visa_rejections"
+      ],
+      "implications": "Officer may infer intent to remain in Canada",
+      "remediation": "Family documentation, property proof, employment history, return plan",
+      "court_authority": "Discretionary assessment of return incentives"
+    },
+    "WORKPLACE_EXPLOITATION_RISK": {
+      "id": "WORKPLACE_EXPLOITATION_RISK",
+      "category": "human_trafficking",
+      "severity": "HIGH",
+      "description": "Indicators of workplace abuse or trafficking",
+      "indicators": [
+        "wage_theft",
+        "excessive_hours",
+        "unsafe_conditions",
+        "harassment_discrimination",
+        "isolation_tactics"
+      ],
+      "implications": "Application refused; human trafficking investigation possible",
+      "remediation": "Worker protection documentation, contract review, safe workplace confirmation",
+      "court_authority": "IRPA s.40 human trafficking inadmissibility"
+    },
+    "DOCUMENTATION_FRAUD_RISK": {
+      "id": "DOCUMENTATION_FRAUD_RISK",
+      "category": "integrity",
+      "severity": "CRITICAL",
+      "description": "Forged, falsified, or fraudulent documents detected",
+      "indicators": [
+        "forged_passport",
+        "false_credentials",
+        "fake_lmia",
+        "falsified_job_offer",
+        "misrepresentation"
+      ],
+      "implications": "Application refused; fraud investigation; potential deportation",
+      "remediation": "None - application cannot proceed if fraud confirmed",
+      "court_authority": "IRPA s.40(1)(d) misrepresentation inadmissibility"
+    }
+  },
+  "_audit_guidance": {
+    "scoring_system": "Each badge represents discrete risk factor. Multiple badges increase refusal probability.",
+    "assessment_process": "Identify badges present in case, assess severity, recommend mitigation strategy",
+    "validation_source": "Federal Court jurisprudence on work permit applications (2018-2025)",
+    "update_frequency": "Quarterly - aligned with court decisions and policy changes"
+  }
+}

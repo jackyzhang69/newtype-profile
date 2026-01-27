@@ -1,0 +1,29 @@
+{
+  "skill_name": "work-reporter",
+  "version": "1.0.0",
+  "description": "Work permit audit reporter skill for final report generation",
+  "app_type": "work",
+  "files": [
+    "report_structure.md",
+    "compliance_rules.md",
+    "disclaimer.md"
+  ],
+  "report_sections": [
+    "disclaimer",
+    "executive_summary",
+    "defensibility_assessment",
+    "risk_analysis",
+    "evidence_checklist",
+    "strengths_weaknesses",
+    "strategic_recommendations",
+    "conclusion"
+  ],
+  "compliance_requirements": [
+    "Include disclaimer first",
+    "Defensibility score 0-100",
+    "All case law cited (FC only)",
+    "No guaranteed outcomes",
+    "Balanced strengths/weaknesses",
+    "Professional tone"
+  ]
+}

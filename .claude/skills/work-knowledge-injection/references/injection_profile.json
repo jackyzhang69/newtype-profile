@@ -1,0 +1,249 @@
+{
+  "app_type": "work",
+  "version": "2.0.0",
+  "description": "Knowledge injection profile for work permit audit agents with category-specific routing",
+  "category_detection": {
+    "enabled": true,
+    "detection_rules": {
+      "PGWP": "Has study permit + graduation certificate + DLI institution",
+      "LMIA": "Has Labour Market Opinion (LMIA) document from ESDC",
+      "IMP": "Has IMP authorization letter (not LMIA, not provincial)",
+      "ICT": "Has intra-company transfer documentation + corporate structure",
+      "OPEN_WORK_PERMIT": "Has spouse/refugee/caregiver qualification",
+      "PNP": "Has provincial nomination letter from authorized PNP program"
+    },
+    "detection_priority": [
+      "PNP",
+      "PGWP",
+      "ICT",
+      "IMP",
+      "LMIA",
+      "OPEN_WORK_PERMIT"
+    ]
+  },
+  "injection_targets": {
+    "detective": {
+      "skills": [
+        "work-immicore-mcp",
+        "work-audit-rules"
+      ],
+      "prompt_file": "detective_prompt.md",
+      "priority": "case_law_search",
+      "focus_areas": [
+        "LMIA requirements and compliance",
+        "Employer legitimacy and fraud patterns",
+        "Credential assessment standards",
+        "Immigrant intent determination",
+        "Admissibility grounds"
+      ],
+      "category_routing": {
+        "PGWP": {
+          "primary_skills": ["work-audit-rules/PGWP.md"],
+          "search_focus": ["DLI verification", "graduation authenticity", "program eligibility"],
+          "issue_codes": ["WORK_PGWP_*"]
+        },
+        "LMIA": {
+          "primary_skills": ["work-immicore-mcp", "work-audit-rules/LMIA.md"],
+          "search_focus": ["LMIA compliance", "employer legitimacy", "wage standards"],
+          "issue_codes": ["WORK_LMIA_*", "WORK_E_*", "WORK_L_*"]
+        },
+        "IMP": {
+          "primary_skills": ["work-audit-rules/IMP.md"],
+          "search_focus": ["significant benefits assessment", "category eligibility"],
+          "issue_codes": ["WORK_IMP_*"]
+        },
+        "ICT": {
+          "primary_skills": ["work-audit-rules/ICT.md"],
+          "search_focus": ["corporate relationship verification", "specialized knowledge"],
+          "issue_codes": ["WORK_ICT_*"]
+        },
+        "OPEN_WORK_PERMIT": {
+          "primary_skills": ["work-audit-rules/open-work-permit.md"],
+          "search_focus": ["relationship authenticity", "status verification"],
+          "issue_codes": ["WORK_OPEN_*"]
+        },
+        "PNP": {
+          "primary_skills": ["work-audit-rules/PNP-work-permit.md"],
+          "search_focus": ["provincial nomination verification", "occupational eligibility"],
+          "issue_codes": ["WORK_PNP_*"]
+        }
+      }
+    },
+    "strategist": {
+      "skills": [
+        "work-audit-rules",
+        "work-doc-analysis"
+      ],
+      "prompt_file": "strategist_prompt.md",
+      "priority": "risk_assessment",
+      "focus_areas": [
+        "Risk badge identification",
+        "Strength and weakness analysis",
+        "Evidence gap analysis",
+        "Defense strategy development",
+        "Mitigation recommendations"
+      ],
+      "category_routing": {
+        "PGWP": {
+          "document_schema": "document_requirements_PGWP.md",
+          "risk_focus": ["graduation timing", "DLI status", "work authorization during study"],
+          "defense_priorities": ["institutional verification", "program eligibility proof"]
+        },
+        "LMIA": {
+          "document_schema": "document_requirements_LMIA.md",
+          "risk_focus": ["wage adequacy", "employer legitimacy", "recruitment sufficiency"],
+          "defense_priorities": ["wage documentation", "recruitment evidence", "employer verification"]
+        },
+        "IMP": {
+          "document_schema": "document_requirements_IMP.md",
+          "risk_focus": ["category mismatch", "benefit to Canada"],
+          "defense_priorities": ["category eligibility proof", "benefit articulation"]
+        },
+        "ICT": {
+          "document_schema": "document_requirements_ICT.md",
+          "risk_focus": ["corporate relationship", "12-month employment", "specialized knowledge"],
+          "defense_priorities": ["ownership documentation", "employment continuity", "expertise proof"]
+        },
+        "OPEN_WORK_PERMIT": {
+          "document_schema": "document_requirements_open_work_permit.md",
+          "risk_focus": ["relationship authenticity", "principal eligibility"],
+          "defense_priorities": ["cohabitation evidence", "financial interdependence"]
+        },
+        "PNP": {
+          "document_schema": "document_requirements_PNP.md",
+          "risk_focus": ["nomination validity", "occupational eligibility", "experience requirements"],
+          "defense_priorities": ["nomination confirmation", "experience documentation"]
+        }
+      }
+    },
+    "gatekeeper": {
+      "skills": [
+        "work-audit-rules"
+      ],
+      "prompt_file": "gatekeeper_prompt.md",
+      "priority": "compliance_check",
+      "focus_areas": [
+        "R200 requirement validation",
+        "Refusal pattern identification",
+        "Admissibility assessment",
+        "Document completeness",
+        "Compliance issue flagging"
+      ],
+      "category_routing": {
+        "PGWP": {
+          "compliance_rules": "PGWP.md - Hard Eligibility Criteria",
+          "critical_checks": ["DLI status", "graduation date", "application timing"]
+        },
+        "LMIA": {
+          "compliance_rules": "LMIA.md - Hard Eligibility Criteria",
+          "critical_checks": ["LMIA positive", "employer match", "wage compliance"]
+        },
+        "IMP": {
+          "compliance_rules": "IMP.md - Hard Eligibility Criteria",
+          "critical_checks": ["category qualification", "employer authorization"]
+        },
+        "ICT": {
+          "compliance_rules": "ICT.md - Hard Eligibility Criteria",
+          "critical_checks": ["corporate relationship", "12-month employment", "managerial/specialist role"]
+        },
+        "OPEN_WORK_PERMIT": {
+          "compliance_rules": "open-work-permit.md - Hard Eligibility Criteria",
+          "critical_checks": ["relationship genuineness", "principal eligibility", "status validity"]
+        },
+        "PNP": {
+          "compliance_rules": "PNP-work-permit.md - Hard Eligibility Criteria",
+          "critical_checks": ["nomination validity", "occupation eligibility", "experience threshold"]
+        }
+      }
+    },
+    "reporter": {
+      "skills": [
+        "work-workflow",
+        "work-client-guidance"
+      ],
+      "prompt_file": "reporter_prompt.md",
+      "priority": "report_synthesis",
+      "focus_areas": [
+        "Report structure and format",
+        "Disclaimer requirements",
+        "Defensibility scoring",
+        "Executive summary synthesis",
+        "Recommendation formulation"
+      ],
+      "category_routing": {
+        "PGWP": {
+          "report_sections": ["DLI verification results", "graduation authenticity assessment", "timing analysis"],
+          "risk_summary_template": "PGWP-specific risk patterns"
+        },
+        "LMIA": {
+          "report_sections": ["LMIA verification", "employer legitimacy assessment", "wage adequacy analysis"],
+          "risk_summary_template": "LMIA-specific risk patterns"
+        },
+        "IMP": {
+          "report_sections": ["category eligibility assessment", "significant benefits analysis"],
+          "risk_summary_template": "IMP-specific risk patterns"
+        },
+        "ICT": {
+          "report_sections": ["corporate relationship analysis", "employment continuity assessment"],
+          "risk_summary_template": "ICT-specific risk patterns"
+        },
+        "OPEN_WORK_PERMIT": {
+          "report_sections": ["relationship genuineness assessment", "principal eligibility verification"],
+          "risk_summary_template": "Open work permit-specific risk patterns"
+        },
+        "PNP": {
+          "report_sections": ["nomination verification", "occupational eligibility assessment"],
+          "risk_summary_template": "PNP-specific risk patterns"
+        }
+      }
+    }
+  },
+  "knowledge_integration": {
+    "baseline_skills": [
+      "work-audit-rules"
+    ],
+    "category_specific_skills": {
+      "PGWP": [
+        "work-audit-rules/references/PGWP.md",
+        "work-doc-analysis/references/document_requirements_PGWP.md"
+      ],
+      "LMIA": [
+        "work-audit-rules/references/LMIA.md",
+        "work-doc-analysis/references/document_requirements_LMIA.md",
+        "work-immicore-mcp/references/category_specific_search_strategies.md"
+      ],
+      "IMP": [
+        "work-audit-rules/references/IMP.md",
+        "work-doc-analysis/references/document_requirements_IMP.md",
+        "work-immicore-mcp/references/category_specific_search_strategies.md"
+      ],
+      "ICT": [
+        "work-audit-rules/references/ICT.md",
+        "work-doc-analysis/references/document_requirements_ICT.md",
+        "work-immicore-mcp/references/category_specific_search_strategies.md"
+      ],
+      "OPEN_WORK_PERMIT": [
+        "work-audit-rules/references/open-work-permit.md",
+        "work-doc-analysis/references/document_requirements_open_work_permit.md"
+      ],
+      "PNP": [
+        "work-audit-rules/references/PNP-work-permit.md",
+        "work-doc-analysis/references/document_requirements_PNP.md",
+        "work-immicore-mcp/references/category_specific_search_strategies.md"
+      ]
+    },
+    "specialized_skills": {
+      "detective": "work-immicore-mcp",
+      "strategist": "work-doc-analysis",
+      "gatekeeper": "work-audit-rules",
+      "reporter": ["work-workflow", "work-client-guidance"]
+    }
+  },
+  "_metadata": {
+    "created": "2026-01-27",
+    "last_updated": "2026-01-27",
+    "status": "active",
+    "version_notes": "v2.0.0: Added category-specific routing for 6 work permit types (PGWP, LMIA, IMP, ICT, OPEN, PNP)",
+    "audit_phases": ["intake", "detective", "strategist", "gatekeeper", "verifier", "reporter"]
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "workflow_id": "work_client_guidance",
+  "name": "Work Permit Client Guidance",
+  "description": "Client guidance and preparation recommendations for work permit applications",
+  "app_type": "work",
+  "version": "1.0.0",
+  "stages": [
+    {
+      "id": "intake",
+      "agent": "intake",
+      "description": "Extract application information and concerns",
+      "required": true,
+      "depends_on": [],
+      "retry_limit": 2,
+      "timeout_seconds": 300
+    },
+    {
+      "id": "reporter",
+      "agent": "reporter",
+      "description": "Generate client guidance and preparation recommendations",
+      "required": true,
+      "depends_on": ["intake"],
+      "retry_limit": 1,
+      "timeout_seconds": 300
+    }
+  ],
+  "metadata": {
+    "created": "2026-01-27",
+    "audit_tier_compatibility": ["guest", "pro", "ultra"],
+    "estimated_duration_minutes": 10,
+    "description_full": "2-stage workflow for generating client-facing guidance. Focus on preparation, common mistakes, interview readiness, and document gathering recommendations."
+  }
+}

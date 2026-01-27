@@ -1,0 +1,20 @@
+{
+  "skill_name": "work-client-guidance",
+  "version": "1.0.0",
+  "description": "Client guidance templates for work permit application preparation",
+  "app_type": "work",
+  "files": [
+    "document_checklist.md",
+    "statement_template.md",
+    "interview_prep.md",
+    "common_mistakes.md"
+  ],
+  "target_audience": "Work permit applicants",
+  "key_topics": [
+    "Document requirements",
+    "LMIA process",
+    "Demonstrating ties",
+    "Interview preparation",
+    "Common refusal reasons"
+  ]
+}

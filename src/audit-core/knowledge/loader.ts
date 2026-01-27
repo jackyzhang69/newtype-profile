@@ -227,6 +227,61 @@ export function getAuditAppId(): string {
   return process.env.AUDIT_APP?.trim() || "spousal"
 }
 
+function buildSystemIdentitySection(): string {
+  try {
+    // Load manifest from dist directory (generated at build time)
+    const manifestPath = path.join(process.cwd(), "dist", "audit-manifest.json")
+    const manifest = readJsonSafe<{
+      generated_at: string
+      agents: Array<{ name: string; description?: string }>
+      workflows: Array<{ id: string; stages: number }>
+      summary: { total_agents: number; total_workflows: number }
+    }>(manifestPath)
+
+    if (!manifest) {
+      return `<System_Identity>
+## Self-Awareness: Unable to Load Manifest
+Manifest not available. Run 'bun run build' to generate dist/audit-manifest.json
+</System_Identity>`
+    }
+
+    // Format agents list
+    const agentsList = manifest.agents
+      .map((agent) => `- **${agent.name}**: ${agent.description || "(no description)"}`)
+      .join("\n")
+
+    // Format workflows list
+    const workflowsList = manifest.workflows
+      .map((wf) => `- **${wf.id}**: ${wf.stages} stages`)
+      .join("\n")
+
+    return `<System_Identity>
+## Self-Awareness: Complete Capabilities Inventory
+
+Generated: ${manifest.generated_at}
+
+### Agents Under My Control (${manifest.summary.total_agents})
+I orchestrate these specialized agents in sequence:
+
+${agentsList}
+
+### Available Workflows (${manifest.summary.total_workflows})
+I can execute these workflow definitions:
+
+${workflowsList}
+
+### Key Note
+When workflow_next() returns a stage, the stage.agent field tells me which agent to dispatch. I always respect the workflow sequence and never deviate from it.
+</System_Identity>`
+  } catch (error) {
+    return `<System_Identity>
+## Self-Awareness: Error Loading Manifest
+Error: ${error instanceof Error ? error.message : String(error)}
+Fallback: Using hardcoded agent list. Run 'bun run build' to regenerate.
+</System_Identity>`
+  }
+}
+
 function buildTierContextSection(): string {
   const tier = getAuditTier()
   const config = getTierConfig(tier)
@@ -303,7 +358,7 @@ export function buildAuditPrompt(
   explicitSkills: string[] = []
 ): string {
   const profile = loadInjectionProfile(appId)
-  
+
   let skillNames: string[]
   if (profile) {
     const autoSkills = getSkillsForAgent(profile, agentName)
@@ -311,12 +366,23 @@ export function buildAuditPrompt(
   } else {
     skillNames = explicitSkills
   }
-  
+
   const skillReferences = loadSkillReferencesWithDependencies(skillNames).trim()
-  
+
   const agentPrompt = loadAuditAgentPrompt(appId, agentName).trim()
-  
+
   const sections: string[] = []
+
+  // For AuditManager, inject System_Identity at the beginning
+  if (agentName === "audit-manager") {
+    const systemIdentity = buildSystemIdentitySection()
+    // Replace placeholder with actual content
+    const updatedBasePrompt = basePrompt.replace(
+      /<System_Identity>[\s\S]*?<\/System_Identity>/,
+      systemIdentity
+    )
+    basePrompt = updatedBasePrompt
+  }
 
   const tierContext = buildTierContextSection()
   sections.push(tierContext)

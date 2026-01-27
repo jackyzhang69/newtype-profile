@@ -1,0 +1,20 @@
+{
+  "skill_name": "work-workflow",
+  "version": "1.0.0",
+  "description": "Workflow templates and report formats for work permit audits",
+  "app_type": "work",
+  "files": [
+    "primary_assessment.md",
+    "deep_analysis.md",
+    "final_review.md",
+    "submission_letter.md"
+  ],
+  "workflow_stages": [
+    "intake",
+    "detective",
+    "strategist",
+    "gatekeeper",
+    "verifier",
+    "reporter"
+  ]
+}

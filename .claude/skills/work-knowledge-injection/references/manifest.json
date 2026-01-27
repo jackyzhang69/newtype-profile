@@ -1,0 +1,26 @@
+{
+  "skill_name": "work-knowledge-injection",
+  "version": "1.0.0",
+  "description": "Knowledge injection system for work permit audit agents",
+  "app_type": "work",
+  "files": [
+    "injection_profile.json",
+    "detective_prompt.md",
+    "strategist_prompt.md",
+    "gatekeeper_prompt.md",
+    "reporter_prompt.md"
+  ],
+  "agent_targets": [
+    "detective",
+    "strategist",
+    "gatekeeper",
+    "reporter"
+  ],
+  "key_injections": [
+    "work-immicore-mcp for detective",
+    "work-audit-rules for all agents",
+    "work-doc-analysis for strategist",
+    "work-workflow for reporter",
+    "work-client-guidance for reporter"
+  ]
+}

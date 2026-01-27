@@ -1,0 +1,21 @@
+{
+  "skill_name": "work-audit-rules",
+  "version": "1.0.0",
+  "description": "Hard eligibility rules and fraud risk flags for work permit applications",
+  "app_type": "work",
+  "files": [
+    "hard_eligibility.md",
+    "fraud_risk_flags.md",
+    "refusal_patterns.md",
+    "risk_badges.json"
+  ],
+  "key_concepts": [
+    "LMIA compliance",
+    "Employer fraud risk",
+    "Credential assessment",
+    "Immigrant intent",
+    "Wage compliance",
+    "Admissibility",
+    "Ties assessment"
+  ]
+}
