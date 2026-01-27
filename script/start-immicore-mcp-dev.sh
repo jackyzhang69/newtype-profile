@@ -10,7 +10,7 @@ if [ -f "$ENV_FILE" ]; then
   set +a
 fi
 
-HOST_URL="${HOST_URL:-http://localhost:3104/api/v1}"
+HOST_URL="${HOST_URL:-https://es_search.jackyzhang.app/api/v1}"
 SEARCH_SERVICE_TOKEN="${SEARCH_SERVICE_TOKEN:-}"
 
 if [ -z "$SEARCH_SERVICE_TOKEN" ]; then

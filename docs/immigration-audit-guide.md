@@ -49,9 +49,7 @@ src/audit-core/
     "public": ["x.com", "reddit.com"]
   },
   "audit_validate_knowledge": true,
-  "audit_kg_base_url": "http://localhost:3104/api/v1",
-  "audit_mcp_transport": "http",
-  "audit_mcp_host": "http://localhost"
+  "audit_mcp_transport": "http"
 }
 ```
 
@@ -62,10 +60,12 @@ export AUDIT_APP=study
 export AUDIT_SEARCH_POLICY=mcp_first
 export AUDIT_WEB_WHITELIST='{"government":["ircc.gc.ca"],"professional":["gands.com"],"public":["x.com","reddit.com"]}'
 export AUDIT_VALIDATE_KNOWLEDGE=true
-export AUDIT_KG_BASE_URL=http://localhost:3104/api/v1
 export AUDIT_MCP_TRANSPORT=http
-export AUDIT_MCP_HOST=http://localhost
 export SEARCH_SERVICE_TOKEN=your_token
+
+# Optional: Override service URLs (defaults to LAN IP 192.168.1.98)
+# export FILE_CONTENT_BASE_URL=http://192.168.1.98:3104/api/v1
+# export AUDIT_KG_BASE_URL=http://192.168.1.98:3104/api/v1
 ```
 *优先级：环境变量 > 配置文件 > 默认值 (spousal)*
 
@@ -108,9 +108,19 @@ bun run build:schema
 如果 `~/immicore` 路径不符合预期，可通过环境变量修改：
 ```bash
 export IMMICORE_PATH=/path/to/your/immicore
-export HOST_URL=http://localhost:3104/api/v1
+export HOST_URL=https://es_search.jackyzhang.app/api/v1  # For MCP servers
 export SEARCH_SERVICE_TOKEN=***
+
+# Service URL configuration (automatic fallback: LAN → Public HTTPS → Public HTTP)
+# export FILE_CONTENT_BASE_URL=http://192.168.1.98:3104/api/v1
+# export AUDIT_KG_BASE_URL=http://192.168.1.98:3104/api/v1
 ```
+
+**Service URL Resolution**:
+- Default: LAN IP `192.168.1.98` (fastest when on same network)
+- Fallback 1: Public HTTPS `https://es_search.jackyzhang.app`
+- Fallback 2: Public HTTP `http://es_search.jackyzhang.app`
+- Override: Set `FILE_CONTENT_BASE_URL` or `AUDIT_KG_BASE_URL` environment variables
 
 ## 8. Agent → Skill → Knowledge（关系与结构）
 

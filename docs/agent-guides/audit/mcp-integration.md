@@ -26,9 +26,17 @@ The audit system connects to external legal databases via Model Context Protocol
 ### HTTP Mode (Production/Server)
 ```bash
 export AUDIT_MCP_TRANSPORT=http
-export AUDIT_MCP_HOST=http://localhost
 export SEARCH_SERVICE_TOKEN=your_token
+
+# Optional: Override service URLs (defaults to LAN IP 192.168.1.98)
+# export FILE_CONTENT_BASE_URL=http://192.168.1.98:3104/api/v1
+# export AUDIT_KG_BASE_URL=http://192.168.1.98:3104/api/v1
 ```
+
+**Service URL Resolution**:
+- Default: LAN IP `192.168.1.98` (fastest when on same network)
+- Fallback 1: Public HTTPS `https://es_search.jackyzhang.app`
+- Fallback 2: Public HTTP `http://es_search.jackyzhang.app`
 
 Ports must be accessible: 3105, 3106, 3107, 3108, 3109, 3104
 
@@ -36,11 +44,13 @@ Ports must be accessible: 3105, 3106, 3107, 3108, 3109, 3104
 ```bash
 export AUDIT_MCP_TRANSPORT=stdio
 export IMMICORE_PATH=/path/to/immicore
-export HOST_URL=http://localhost:3104/api/v1
+export HOST_URL=https://es_search.jackyzhang.app/api/v1  # For MCP servers
 export SEARCH_SERVICE_TOKEN=your_token
 ```
 
 Requires MCP servers installed at `~/immicore/mcp-servers/`
+
+**Note**: `HOST_URL` is passed to MCP server processes for their API calls. The main application uses `FILE_CONTENT_BASE_URL` and `AUDIT_KG_BASE_URL` with automatic fallback.
 
 ---
 
@@ -126,11 +136,11 @@ The audit system enforces a strict search policy:
     "public": ["x.com", "reddit.com"]
   },
   "audit_validate_knowledge": true,
-  "audit_kg_base_url": "http://localhost:3104/api/v1",
-  "audit_mcp_transport": "http",
-  "audit_mcp_host": "http://localhost"
+  "audit_mcp_transport": "http"
 }
 ```
+
+**Note**: Service URLs are now configured via centralized system with automatic fallback. No need to specify `audit_kg_base_url` or `audit_mcp_host` unless overriding defaults. See `src/audit-core/config/service-urls.ts` for details.
 
 ---
 
