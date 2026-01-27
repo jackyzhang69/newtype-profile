@@ -117,7 +117,104 @@ file_content_extract({
 - Verify: extracted_count === total_files
 - If failed_count > 0, report failed files
 
-## Step 4: Form Parsing
+## Step 4: Document Classification and Layered Extraction
+
+**CRITICAL**: After extracting all documents, classify them by nature and apply appropriate extraction strategy.
+
+### 4.1 Save Full Text to Storage
+
+First, save the complete extraction result to a JSON file for later reference:
+
+\`\`\`typescript
+const extractedDocsPath = \`./tmp/\${caseId}/extracted_docs.json\`
+await Bun.write(extractedDocsPath, JSON.stringify({
+  case_id: caseId,
+  extracted_at: new Date().toISOString(),
+  documents: extractionResult.files  // Complete file_content_extract result
+}))
+\`\`\`
+
+### 4.2 Document Classification Rules
+
+Classify each document by its nature to determine extraction strategy:
+
+**Narrative Documents** (保留完整原文):
+- Patterns: /submission.*letter/i, /explanation.*letter/i, /study.*plan/i, /personal.*statement/i, /relationship.*statement/i, /love.*story/i, /refusal.*letter/i, /gcms/i, /officer.*decision/i
+- Strategy: Extract 3-5 key points summary + preserve full text reference
+- Examples: "Submission Letter.pdf", "Study Plan.docx", "Explanation Letter.pdf"
+
+**Structured Documents** (提取关键字段):
+- Patterns: /bank.*statement/i, /employment.*letter/i, /tax.*return/i, /transcript/i, /pay.*stub/i, /income.*proof/i, /noa/i
+- Strategy: Extract structured fields (dates, amounts, names)
+- Examples: "Bank Statement Jan 2025.pdf", "Employment Letter.pdf"
+
+**Simple Documents** (仅元数据):
+- Patterns: /passport/i, /photo/i, /certificate/i, /diploma/i, /marriage.*cert/i, /birth.*cert/i
+- Strategy: Metadata only (filename, path, category)
+- Examples: "Passport.pdf", "Wedding Photos.jpg"
+
+### 4.3 Layered Extraction Process
+
+For each document:
+
+**A. Narrative Documents:**
+\`\`\`json
+{
+  "category": "relationship",
+  "filename": "Submission Letter.pdf",
+  "path": "/path/to/file.pdf",
+  "file_type": "pdf",
+  "document_nature": "narrative",
+  "summary": "1. Sponsor met applicant at UBC in Feb 2020\\n2. Cohabiting since Mar 2020 at [address]\\n3. Married Jun 2023 (civil registration only)\\n4. No ceremony due to COVID-19 restrictions\\n5. Currently living together, both employed",
+  "full_text_ref": "./tmp/case-123/extracted_docs.json#Submission Letter.pdf"
+}
+\`\`\`
+
+**B. Structured Documents:**
+\`\`\`json
+{
+  "category": "financial",
+  "filename": "Bank Statement Jan 2025.pdf",
+  "path": "/path/to/file.pdf",
+  "file_type": "pdf",
+  "document_nature": "structured",
+  "summary": "Account: *****3448611 | Institution: Pingan Bank | Balance: ¥500,000 | Period: 2025-01 | Currency: CNY",
+  "full_text_ref": "./tmp/case-123/extracted_docs.json#Bank Statement Jan 2025.pdf"
+}
+\`\`\`
+
+**C. Simple Documents:**
+\`\`\`json
+{
+  "category": "identity",
+  "filename": "Passport.pdf",
+  "path": "/path/to/file.pdf",
+  "file_type": "pdf",
+  "document_nature": "simple"
+  // No summary, no full_text_ref
+}
+\`\`\`
+
+### 4.4 Summary Generation Guidelines
+
+**For Narrative Documents:**
+- Extract 3-5 key points (max 200 words)
+- Focus on: timeline, key events, explanations, commitments
+- Preserve critical context (e.g., "dual intent WITH exit strategy")
+- Format: Numbered list for clarity
+
+**For Structured Documents:**
+- Extract key fields in structured format
+- Bank statements: Account, Institution, Balance, Period, Currency
+- Employment letters: Employer, Position, Salary, Start Date
+- Tax returns: Year, Income, Tax Paid
+- Format: "Field: Value | Field: Value"
+
+**For Simple Documents:**
+- No summary needed
+- Metadata captured in filename, path, category
+
+## Step 5: Form Parsing
 
 Extract key information from IRCC forms using XFA fields:
 
@@ -157,7 +254,7 @@ Extract key information from IRCC forms using XFA fields:
 - Employment letters → employer, occupation, income
 - Bank statements → financial evidence
 
-## Step 5: Case Background Analysis
+## Step 6: Case Background Analysis
 
 Build comprehensive case understanding:
 
@@ -184,7 +281,7 @@ Build comprehensive case understanding:
 **Dependents:**
 - Name, DOB, relationship, accompanying or not
 
-## Step 6: Refusal Analysis (Study Permit Only)
+## Step 7: Refusal Analysis (Study Permit Only)
 
 **CRITICAL**: For study permit applications with refusal history, detect if Officer Decision Notes (ODN) are available.
 
@@ -265,7 +362,7 @@ Build comprehensive case understanding:
 }
 \`\`\`
 
-## Step 7: Completeness Check
+## Step 8: Completeness Check
 
 **CRITICAL**: You are NOT assessing risks. You are ONLY checking if critical information is present.
 
@@ -309,7 +406,7 @@ Check for missing critical information:
 - ✅ Note if documents exist or don't exist
 - ✅ Detect if ODN is available (for study permit refusals)
 
-## Step 8: Structured Profile Generation
+## Step 9: Structured Profile Generation
 
 Build JSON profile conforming to CaseProfile schema:
 
@@ -329,6 +426,9 @@ Build JSON profile conforming to CaseProfile schema:
     "total_files": 25,
     "extracted_count": 25,
     "failed_count": 0,
+    "storage": {
+      "extracted_docs_path": "./tmp/tian-2025-01/extracted_docs.json"
+    },
     "forms": [
       {
         "type": "IMM0008",
@@ -341,9 +441,29 @@ Build JSON profile conforming to CaseProfile schema:
     ],
     "evidence": [
       {
+        "category": "relationship",
+        "filename": "Submission Letter.pdf",
+        "path": "/Users/jacky/Desktop/tian/Submission Letter.pdf",
+        "file_type": "pdf",
+        "document_nature": "narrative",
+        "summary": "1. Sponsor met applicant at UBC in Feb 2020\\n2. Cohabiting since Mar 2020\\n3. Married Jun 2023 (civil registration)\\n4. No ceremony due to COVID-19\\n5. Currently living together",
+        "full_text_ref": "./tmp/tian-2025-01/extracted_docs.json#Submission Letter.pdf"
+      },
+      {
+        "category": "financial",
+        "filename": "Bank Statement Jan 2025.pdf",
+        "path": "/Users/jacky/Desktop/tian/Bank Statement Jan 2025.pdf",
+        "file_type": "pdf",
+        "document_nature": "structured",
+        "summary": "Account: *****3448611 | Institution: Pingan Bank | Balance: ¥500,000 | Period: 2025-01",
+        "full_text_ref": "./tmp/tian-2025-01/extracted_docs.json#Bank Statement Jan 2025.pdf"
+      },
+      {
         "category": "identity",
         "filename": "passport-sponsor.pdf",
-        "path": "/Users/jacky/Desktop/tian/passport-sponsor.pdf"
+        "path": "/Users/jacky/Desktop/tian/passport-sponsor.pdf",
+        "file_type": "pdf",
+        "document_nature": "simple"
       },
       ...
     ]

@@ -14,6 +14,7 @@ export type CurrentStatus = "visitor" | "worker" | "student" | "none"
 export type RelationshipType = "marriage" | "common_law" | "conjugal"
 export type EndReason = "divorce" | "death" | "annulment"
 export type EvidenceCategory = "identity" | "relationship" | "financial" | "travel" | "other"
+export type DocumentNature = "narrative" | "structured" | "simple"
 export type RedFlagCategory = "relationship" | "documentation" | "immigration" | "financial" | "background" | "procedural"
 export type Severity = "low" | "medium" | "high" | "critical"
 export type CommunicationFrequency = "daily" | "weekly" | "monthly" | "rarely"
@@ -38,6 +39,13 @@ export interface Evidence {
   filename: string
   path: string
   file_type?: "pdf" | "docx" | "doc" | "jpg" | "jpeg" | "png" | "other"
+  document_nature?: DocumentNature
+  summary?: string
+  full_text_ref?: string
+}
+
+export interface DocumentStorage {
+  extracted_docs_path: string
 }
 
 export interface Documents {
@@ -46,6 +54,7 @@ export interface Documents {
   failed_count: number
   forms: Form[]
   evidence: Evidence[]
+  storage?: DocumentStorage
 }
 
 export interface Address {
