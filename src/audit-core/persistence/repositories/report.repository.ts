@@ -20,6 +20,7 @@ export async function saveReport(
       markdown_path: input.markdown_path ?? null,
       pdf_path: input.pdf_path ?? null,
       json_path: input.json_path ?? null,
+      technical_appendix_path: input.technical_appendix_path ?? null,
       tier: input.tier,
       theme: input.theme ?? "judicial-authority",
       is_anonymized: input.is_anonymized ?? false,
@@ -115,6 +116,7 @@ export async function updateReportPaths(
     markdown_path?: string
     pdf_path?: string
     json_path?: string
+    technical_appendix_path?: string
   }
 ): Promise<ReportRecord> {
   const client = getSupabaseClient()
@@ -160,6 +162,7 @@ export interface DualReportInput {
   tier: string
   standardMarkdownPath?: string
   standardPdfPath?: string
+  technicalAppendixPath?: string
   anonymizedMarkdownPath?: string
   anonymizeLevel?: AnonymizeLevel
 }
@@ -182,6 +185,7 @@ export async function saveDualReports(
     tier: input.tier,
     markdown_path: input.standardMarkdownPath,
     pdf_path: input.standardPdfPath,
+    technical_appendix_path: input.technicalAppendixPath,
     is_final: true,
     is_anonymized: false,
   })

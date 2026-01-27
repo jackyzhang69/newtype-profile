@@ -170,6 +170,7 @@ export interface ReportRecord {
   markdown_path: string | null
   pdf_path: string | null
   json_path: string | null
+  technical_appendix_path: string | null
   tier: string
   theme: string
   is_anonymized: boolean
@@ -184,6 +185,7 @@ export interface CreateReportInput {
   markdown_path?: string
   pdf_path?: string
   json_path?: string
+  technical_appendix_path?: string
   tier: string
   theme?: string
   is_anonymized?: boolean
@@ -216,6 +218,7 @@ export interface StoragePaths {
   extracted: (sessionId: string, filename: string) => string
   report: (sessionId: string, version: number, ext: string) => string
   reportAnonymized: (sessionId: string, version: number, ext: string) => string
+  technicalAppendix: (sessionId: string, version: number, ext: string) => string
   agentOutput: (sessionId: string, stage: string) => string
 }
 
@@ -224,6 +227,7 @@ export const storagePaths: StoragePaths = {
   extracted: (sessionId, filename) => `${sessionId}/extracted/${filename}`,
   report: (sessionId, version, ext) => `${sessionId}/reports/v${version}/report.${ext}`,
   reportAnonymized: (sessionId, version, ext) => `${sessionId}/reports/v${version}/report_demo.${ext}`,
+  technicalAppendix: (sessionId, version, ext) => `${sessionId}/reports/v${version}/technical_appendix.${ext}`,
   agentOutput: (sessionId, stage) => `${sessionId}/agent-outputs/${stage}.json`,
 }
 
