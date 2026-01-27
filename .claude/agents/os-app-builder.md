@@ -1,15 +1,12 @@
 ---
-description: Orchestrate complete Immigration Audit App creation using os-* system skills
-mode: subagent
+name: os-app-builder
+description: Orchestrate complete Immigration Audit App creation. Use when building new application types (spousal, study, work, etc.) with MCP bootstrap, skill generation, validation, and registration.
 model: sonnet
-temperature: 0.1
-tools:
-  read: true
-  write: true
-  edit: true
-  glob: true
-  grep: true
-  bash: true
+tools: Read, Write, Edit, Glob, Grep, Bash
+skills:
+  - os-knowledge-extractor
+  - os-compliance-checker
+  - os-design-principles
 ---
 
 # OS App Builder Agent
@@ -264,7 +261,12 @@ Generate 7 skill directories under `.claude/skills/{app-type}-*/`:
       "depends_on": ["verifier"],
       "retry_limit": 1,
       "timeout_seconds": 300,
-      "only_in": ["risk_audit", "initial_assessment", "final_review", "refusal_analysis"]
+      "only_in": [
+        "risk_audit",
+        "initial_assessment",
+        "final_review",
+        "refusal_analysis"
+      ]
     },
     {
       "id": "reporter",
@@ -281,14 +283,14 @@ Generate 7 skill directories under `.claude/skills/{app-type}-*/`:
 
 **关键字段说明**:
 
-| 字段 | 用途 | 示例 |
-|------|------|------|
-| `workflow_id` | Workflow 全局唯一标识 | `{app-type}_risk_audit` |
-| `agent` | 对应的 agent 名称 | 必须匹配 `dist/audit-manifest.json` 中的 agent |
-| `depends_on` | 依赖关系数组 | `["intake"]` 表示此 stage 依赖 intake 完成 |
-| `required` | 是否必需 | risk-audit 所有 stage 都是 required=true |
-| `retry_limit` | 失败重试次数 | 通常 2-3 次 |
-| `tier_availability` | 仅在特定 tier 运行 | verifier 仅在 pro/ultra tier |
+| 字段                | 用途                  | 示例                                           |
+| ------------------- | --------------------- | ---------------------------------------------- |
+| `workflow_id`       | Workflow 全局唯一标识 | `{app-type}_risk_audit`                        |
+| `agent`             | 对应的 agent 名称     | 必须匹配 `dist/audit-manifest.json` 中的 agent |
+| `depends_on`        | 依赖关系数组          | `["intake"]` 表示此 stage 依赖 intake 完成     |
+| `required`          | 是否必需              | risk-audit 所有 stage 都是 required=true       |
+| `retry_limit`       | 失败重试次数          | 通常 2-3 次                                    |
+| `tier_availability` | 仅在特定 tier 运行    | verifier 仅在 pro/ultra tier                   |
 
 **设计规则**:
 
@@ -350,6 +352,7 @@ caselaw_authority(citation='YYYY FC XXXX')
 ```
 
 **输出格式要求**：
+
 ```json
 {
   "landmark_cases": ["Case v Canada, YYYY FC XXXX"],
@@ -362,6 +365,7 @@ caselaw_authority(citation='YYYY FC XXXX')
 ```
 
 **禁止**：
+
 - ❌ 在 landmark_cases 中包含 IAD/IRB (CanLII) 案例
 - ❌ 未经验证的案例引用
 - ❌ 从其他 app 复制 landmark_cases
@@ -394,7 +398,13 @@ Validation criteria:
 
 ```typescript
 // 添加到 ApplicationType union
-export type ApplicationType = "spousal" | "study" | "work" | "family" | "{app-type}" | "other"
+export type ApplicationType =
+  | "spousal"
+  | "study"
+  | "work"
+  | "family"
+  | "{app-type}"
+  | "other";
 ```
 
 #### 5.2 数据库 Migration
@@ -403,11 +413,11 @@ export type ApplicationType = "spousal" | "study" | "work" | "family" | "{app-ty
 
 ```sql
 -- 更新 io_audit_sessions 表的 CHECK 约束
-ALTER TABLE io_audit_sessions 
+ALTER TABLE io_audit_sessions
 DROP CONSTRAINT IF EXISTS io_audit_sessions_app_type_check;
 
 ALTER TABLE io_audit_sessions
-ADD CONSTRAINT io_audit_sessions_app_type_check 
+ADD CONSTRAINT io_audit_sessions_app_type_check
 CHECK (app_type IN ('spousal', 'study', 'work', 'family', '{app-type}', 'other'));
 ```
 
@@ -452,15 +462,15 @@ export const APP_SKILL_MAP: Record<AppType, string[]> = {
 
 #### 5.5 注册检查清单
 
-| 步骤 | 文件 | 操作 |
-|------|------|------|
-| 1 | `src/audit-core/types/case-profile.ts` | 添加到 `ApplicationType` union |
-| 2 | `supabase/migrations/` | 创建 migration 更新 CHECK 约束 |
-| 3 | `src/tools/audit-persistence/tools.ts` | 更新 `app_type` enum schema |
-| 4 | `src/audit-core/apps/index.ts` | 注册 APP_TYPES 和 APP_SKILL_MAP |
-| 5 | 运行 `bun run typecheck` | 确保类型一致 |
-| 6 | 运行 `bun test` | 确保无回归 |
-| 7 | 执行 SQL migration | 应用到 Supabase |
+| 步骤 | 文件                                   | 操作                            |
+| ---- | -------------------------------------- | ------------------------------- |
+| 1    | `src/audit-core/types/case-profile.ts` | 添加到 `ApplicationType` union  |
+| 2    | `supabase/migrations/`                 | 创建 migration 更新 CHECK 约束  |
+| 3    | `src/tools/audit-persistence/tools.ts` | 更新 `app_type` enum schema     |
+| 4    | `src/audit-core/apps/index.ts`         | 注册 APP_TYPES 和 APP_SKILL_MAP |
+| 5    | 运行 `bun run typecheck`               | 确保类型一致                    |
+| 6    | 运行 `bun test`                        | 确保无回归                      |
+| 7    | 执行 SQL migration                     | 应用到 Supabase                 |
 
 > **设计原则**: App Type 是有限且稳定的（移民申请类型），硬编码确保类型安全。新增 app 是重大功能，需要配套的 skills、agents、knowledge，不是简单加个字符串。
 
@@ -518,13 +528,14 @@ This agent uses the following os-\* skills:
 - **Never** hardcode R section numbers without verification
 - **Never** skip validation phase even for quick iterations
 - **Never** register app before validation passes
-- **Never** include IAD/IRB cases in landmark_cases (use _dynamic_lookup instead)
+- **Never** include IAD/IRB cases in landmark_cases (use \_dynamic_lookup instead)
 - **Never** skip landmark_cases verification with caselaw_authority()
 - **Never** copy landmark_cases from other apps without re-verification
 
 ## Design Principles Reference
 
 See [os-design-principles.md](../.claude/skills/os-design-principles.md) for:
+
 - Landmark Cases Policy
 - Skills Content Strategy
 - MCP Tool Usage Strategy

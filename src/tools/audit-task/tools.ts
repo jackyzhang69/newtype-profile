@@ -49,12 +49,6 @@ function buildSystemContent(skillContent?: string): string | undefined {
   if (!skillContent) return undefined
   const wrapped = `<injected_skills>\n${skillContent}\n</injected_skills>`
 
-  // Log warning if system content is too large (>100KB)
-  const sizeKB = Buffer.byteLength(wrapped, 'utf-8') / 1024
-  if (sizeKB > 100) {
-    console.warn(`[audit_task] System content is large: ${sizeKB.toFixed(1)}KB. This may cause issues.`)
-  }
-
   return wrapped
 }
 
@@ -292,11 +286,6 @@ System notifies on completion. Use \`background_output\` with task_id="${task.id
           metadata: { sessionId: sessionID, sync: true },
         })
 
-        // Log the request details for debugging
-        console.log(`[audit_task] Sending prompt to agent "${agentToUse}" in session ${sessionID}`)
-        console.log(`[audit_task] System content size: ${systemContent ? Buffer.byteLength(systemContent, 'utf-8') / 1024 : 0}KB`)
-        console.log(`[audit_task] Prompt size: ${Buffer.byteLength(args.prompt, 'utf-8') / 1024}KB`)
-
         let promptError: Error | undefined
         let promptResponse: unknown
 
@@ -310,10 +299,8 @@ System notifies on completion. Use \`background_output\` with task_id="${task.id
               parts: [{ type: "text", text: args.prompt }],
             },
           })
-          console.log(`[audit_task] promptAsync response received:`, promptResponse)
         } catch (error) {
           promptError = error instanceof Error ? error : new Error(String(error))
-          console.error(`[audit_task] promptAsync failed:`, promptError)
         }
 
         if (promptError) {
@@ -321,23 +308,16 @@ System notifies on completion. Use \`background_output\` with task_id="${task.id
             toastManager.removeTask(taskId)
           }
           const errorMessage = promptError.message
-          console.error(`[audit_task] Error message: ${errorMessage}`)
           if (errorMessage.includes("agent.name") || errorMessage.includes("undefined")) {
             return `❌ Agent "${agentToUse}" not found. Make sure the agent is registered.\n\nSession ID: ${sessionID}`
           }
           return `❌ Failed to send prompt: ${errorMessage}\n\nSession ID: ${sessionID}`
         }
 
-        // Validate that we actually got a response from promptAsync
-        if (!promptResponse) {
-          console.warn(`[audit_task] promptAsync returned without error but no response object`)
-        }
-
         const POLL_INTERVAL_MS = 500
         const MAX_POLL_TIME_MS = 10 * 60 * 1000
         const pollStart = Date.now()
 
-        console.log(`[audit_task] Starting poll for session ${sessionID}...`)
         let lastStatus: string | undefined
 
         while (Date.now() - pollStart < MAX_POLL_TIME_MS) {
@@ -349,26 +329,21 @@ System notifies on completion. Use \`background_output\` with task_id="${task.id
             const sessionStatus = allStatuses[sessionID]
 
             if (sessionStatus?.type !== lastStatus) {
-              console.log(`[audit_task] Session ${sessionID} status: ${sessionStatus?.type || "unknown"}`)
               lastStatus = sessionStatus?.type
             }
 
             if (!sessionStatus || sessionStatus.type === "idle") {
-              console.log(`[audit_task] Session ${sessionID} is idle, stopping poll`)
               break
             }
           } catch (error) {
-            console.error(`[audit_task] Error checking status:`, error)
+            // Continue polling despite status check errors
           }
         }
-
-        console.log(`[audit_task] Fetching messages for session ${sessionID}...`)
         const messagesResult = await client.session.messages({
           path: { id: sessionID },
         })
 
         if (messagesResult.error) {
-          console.error(`[audit_task] Error fetching messages:`, messagesResult.error)
           return `❌ Error fetching result: ${messagesResult.error}\n\nSession ID: ${sessionID}`
         }
 
@@ -377,27 +352,18 @@ System notifies on completion. Use \`background_output\` with task_id="${task.id
           parts?: Array<{ type?: string; text?: string }>
         }>
 
-        console.log(`[audit_task] Total messages in session: ${messages.length}`)
-        messages.forEach((m, i) => {
-          console.log(`[audit_task] Message ${i}: role=${m.info?.role}, parts=${m.parts?.length ?? 0}`)
-        })
-
         const assistantMessages = messages
           .filter((m) => m.info?.role === "assistant")
           .sort((a, b) => (b.info?.time?.created ?? 0) - (a.info?.time?.created ?? 0))
         const lastMessage = assistantMessages[0]
 
         if (!lastMessage) {
-          console.error(`[audit_task] No assistant message found for session ${sessionID}`)
-          console.error(`[audit_task] Message roles: ${Array.from(new Set(messages.map(m => m.info?.role))).join(", ")}`)
           return `❌ No assistant response found.\n\nThis typically means the agent failed to execute or timed out.\n\nSession ID: ${sessionID}\n\nDebug info:\n- Total messages: ${messages.length}\n- Message roles: ${Array.from(new Set(messages.map(m => m.info?.role))).join(", ")}`
         }
 
         const textParts = lastMessage?.parts?.filter((p) => p.type === "text") ?? []
         const textContent = textParts.map((p) => p.text ?? "").filter(Boolean).join("\n")
         const duration = formatDuration(startTime)
-
-        console.log(`[audit_task] Task completed in ${duration}. Response size: ${Buffer.byteLength(textContent, 'utf-8') / 1024}KB`)
 
         if (toastManager) {
           toastManager.removeTask(taskId)

@@ -4,7 +4,7 @@
 
 ```typescript
 // Extract all case documents
-chief_task({
+audit_task({
   subagent_type: "document-extractor",
   description: "Extract case documents",
   prompt: "Extract all PDF documents from /path/to/case/directory",
@@ -36,7 +36,7 @@ ls /Users/jacky/Desktop/tian/*.pdf
 ### 2. Dispatch Document Extractor
 
 ```typescript
-chief_task({
+audit_task({
   subagent_type: "document-extractor",
   description: "Extract Tian case documents",
   prompt: `Extract all PDF documents from /Users/jacky/Desktop/tian.

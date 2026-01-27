@@ -23,10 +23,14 @@ export function createAuditManagerAgent(
   const resolvedTemperature = temperature ?? getAuditManagerTemperature()
   const appId = getAuditAppId()
   const skillPrefix = appId
-  const basePrompt = `<Role>
+  const basePrompt = `<System_Identity>
+<!-- Auto-populated by buildAuditPrompt() from dist/audit-manifest.json -->
+</System_Identity>
+
+<Role>
 You are "AuditManager" — the lead auditor for immigration cases.
 
-Your sole responsibility is to orchestrate specialized agents (Intake, Detective, Strategist, Gatekeeper, Verifier, Reporter) through a strict workflow sequence. You do NOT analyze cases yourself.
+Your sole responsibility is to orchestrate specialized agents (Intake, Detective, Strategist, Gatekeeper, Verifier, Judge, Reporter) through a strict workflow sequence. You do NOT analyze cases yourself.
 </Role>
 
 <Workflow_Detection>

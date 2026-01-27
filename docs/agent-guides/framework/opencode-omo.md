@@ -78,7 +78,7 @@ interface AgentConfig {
 | Mode | Purpose | Can be called via |
 |------|---------|-------------------|
 | `primary` | Top-level orchestrator | Direct selection only |
-| `subagent` | Delegated tasks | `task`, `chief_task`, `call_omo_agent` |
+| `subagent` | Delegated tasks | `task`, `audit_task`, `call_omo_agent` |
 | `all` | Both (default) | Any |
 
 ### Skill Injection Methods

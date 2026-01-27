@@ -6,7 +6,7 @@ Common mistakes and lessons learned in immi-os development.
 
 ### Pitfall: Agent Returns Empty Response
 
-**Symptom**: `chief_task` returns "(No text output)" or empty assistant message.
+**Symptom**: `audit_task` returns "(No text output)" or empty assistant message.
 
 **Root Causes**:
 1. **Double skill processing**: Agent config has `skills` property AND `buildAuditPrompt` already injects skills into prompt
@@ -140,7 +140,7 @@ return {
 
 **Better Approach**:
 - Use `bun -e "..."` for unit testing agent creation
-- Use `chief_task` with `run_in_background=false` for isolated agent tests
+- Use `audit_task` with `run_in_background=false` for isolated agent tests
 - Check `session_read` to see actual messages
 
 ---
@@ -149,10 +149,10 @@ return {
 
 ### Pitfall: Hook Not Detecting Tool Calls
 
-**Symptom**: Hook checks for tool name but doesn't trigger (e.g., `empty-task-response-detector` only checked `"Task"` but not `"chief_task"`).
+**Symptom**: Hook checks for tool name but doesn't trigger (e.g., `empty-task-response-detector` only checked `"Task"` but not `"audit_task"`).
 
 **Root Cause**: Tool names in OpenCode can have different cases and variants:
-- `Task` vs `task` vs `chief_task`
+- `Task` vs `task` vs `audit_task`
 - Hooks must handle all variants
 
 **Solution**: 
@@ -162,10 +162,10 @@ if (input.tool !== "Task") return
 
 // CORRECT - case-insensitive, handle all variants
 const toolName = input.tool.toLowerCase()
-if (toolName !== "task" && toolName !== "chief_task") return
+if (toolName !== "task" && toolName !== "audit_task") return
 ```
 
-**Fix Applied**: `src/hooks/empty-task-response-detector.ts` now detects both `task` and `chief_task` with case-insensitive matching.
+**Fix Applied**: `src/hooks/empty-task-response-detector.ts` now detects both `task` and `audit_task` with case-insensitive matching.
 
 ---
 
@@ -177,5 +177,5 @@ When something stops working:
 2. [ ] Rebuild: `bun run build`
 3. [ ] Restart OpenCode
 4. [ ] Query Context7 if unsure about framework behavior
-5. [ ] Test in isolation with `bun -e` or `chief_task`
+5. [ ] Test in isolation with `bun -e` or `audit_task`
 6. [ ] Check session content with `session_read`

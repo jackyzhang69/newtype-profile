@@ -64,7 +64,7 @@ export function createAgentUsageReminderHook(_ctx: PluginInput) {
     const { tool, sessionID } = input;
     const toolLower = tool.toLowerCase();
 
-    // Track audit sessions (don't suggest chief_task for them)
+    // Track audit sessions (specialized workflow)
     if (toolLower === "audit_task") {
       auditSessions.add(sessionID);
       markAgentUsed(sessionID);
@@ -86,8 +86,8 @@ export function createAgentUsageReminderHook(_ctx: PluginInput) {
       return;
     }
 
-    // Don't show chief_task reminder for audit sessions
-    // AuditManager uses audit_task for orchestration, not chief_task
+    // Don't show reminder for audit sessions
+    // AuditManager uses audit_task for orchestration
     if (auditSessions.has(sessionID)) {
       return;
     }

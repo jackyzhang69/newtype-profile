@@ -9,7 +9,6 @@ import { createVerifierAgent, VERIFIER_PROMPT_METADATA } from "../audit-core/age
 import { createJudgeAgent, JUDGE_PROMPT_METADATA } from "../audit-core/agents/judge"
 import { createReporterAgent, REPORTER_PROMPT_METADATA } from "../audit-core/agents/reporter"
 import { deepMerge } from "../shared"
-import { DEFAULT_CATEGORIES } from "../tools/chief-task/constants"
 import { resolveMultipleSkills } from "../features/opencode-skill-loader/skill-content"
 
 type AgentSource = AgentFactory | AgentConfig
@@ -45,21 +44,9 @@ function isFactory(source: AgentSource): source is AgentFactory {
 export function buildAgent(source: AgentSource, model?: string): AgentConfig {
   const base = isFactory(source) ? source(model) : source
 
-  const agentWithCategory = base as AgentConfig & { category?: string; skills?: string[] }
-  if (agentWithCategory.category) {
-    const categoryConfig = DEFAULT_CATEGORIES[agentWithCategory.category]
-    if (categoryConfig) {
-      if (!base.model) {
-        base.model = categoryConfig.model
-      }
-      if (base.temperature === undefined && categoryConfig.temperature !== undefined) {
-        base.temperature = categoryConfig.temperature
-      }
-    }
-  }
-
-  if (agentWithCategory.skills?.length) {
-    const { resolved } = resolveMultipleSkills(agentWithCategory.skills)
+  const agentWithSkills = base as AgentConfig & { skills?: string[] }
+  if (agentWithSkills.skills?.length) {
+    const { resolved } = resolveMultipleSkills(agentWithSkills.skills)
     if (resolved.size > 0) {
       const skillContent = Array.from(resolved.values()).join("\n\n")
       base.prompt = skillContent + (base.prompt ? "\n\n" + base.prompt : "")

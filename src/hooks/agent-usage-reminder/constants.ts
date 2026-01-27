@@ -24,7 +24,7 @@ export const TARGET_TOOLS = new Set([
 export const AGENT_TOOLS = new Set([
   "task",
   "call_omo_agent",
-  "chief_task",
+  "audit_task",
 ]);
 
 export const REMINDER_MESSAGE = `
@@ -32,23 +32,22 @@ export const REMINDER_MESSAGE = `
 
 You called a search/fetch tool directly without leveraging specialized agents.
 
-RECOMMENDED: Use chief_task with researcher/archivist agents for better results:
+RECOMMENDED: Use audit_task for immigration audit workflows:
 
 \`\`\`
-// Parallel exploration - fire multiple agents simultaneously
-chief_task(agent="researcher", prompt="Find information about topic X")
-chief_task(agent="researcher", prompt="Search for sources about Y") 
-chief_task(agent="archivist", prompt="Find related documents in knowledge base")
+// For audit-related searches, use audit_task to delegate to specialized agents
+audit_task(subagent_type="detective", prompt="Search case law for X")
+audit_task(subagent_type="strategist", prompt="Analyze risk for Y")
 
-// Then continue your work while they run in background
-// System will notify you when each completes
+// For general research, use call_omo_agent
+call_omo_agent(subagent_type="explore", prompt="Find information about Z")
 \`\`\`
 
 WHY:
-- Agents can perform deeper, more thorough searches
-- Background tasks run in parallel, saving time
 - Specialized agents have domain expertise
+- Background tasks run in parallel, saving time
 - Reduces context window usage in main session
+- Maintains proper workflow state
 
-ALWAYS prefer: Multiple parallel chief_task calls > Direct tool calls
+ALWAYS prefer: Specialized agent calls > Direct tool calls
 `;

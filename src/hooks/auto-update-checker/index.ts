@@ -29,12 +29,12 @@ export function createAutoUpdateCheckerHook(ctx: PluginInput, options: AutoUpdat
   const getToastMessage = (isUpdate: boolean, latestVersion?: string): string => {
     if (isChiefEnabled) {
       return isUpdate
-        ? `Chief is steering the content team.\nv${latestVersion} available. Restart to apply.`
-        : `Chief is steering the content team.`
+        ? `AuditManager is orchestrating the audit workflow.\nv${latestVersion} available. Restart to apply.`
+        : `AuditManager is orchestrating the audit workflow.`
     }
     return isUpdate
-      ? `Content creation mode active.\nv${latestVersion} available. Restart to apply.`
-      : `Content creation mode active.`
+      ? `Immigration audit mode active.\nv${latestVersion} available. Restart to apply.`
+      : `Immigration audit mode active.`
   }
 
   let hasChecked = false
@@ -239,7 +239,7 @@ async function showAutoUpdatedToast(ctx: PluginInput, oldVersion: string, newVer
 async function showLocalDevToast(ctx: PluginInput, version: string | null, isChiefEnabled: boolean): Promise<void> {
   const displayVersion = version ?? "dev"
   const message = isChiefEnabled
-    ? "Chief running in local development mode."
+    ? "AuditManager running in local development mode."
     : "Running in local development mode."
   await showSpinnerToast(ctx, `${displayVersion} (dev)`, message)
   log(`[auto-update-checker] Local dev toast shown: v${displayVersion}`)

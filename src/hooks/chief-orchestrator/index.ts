@@ -28,7 +28,7 @@ You just performed direct file modifications outside \`.chief/\`.
 **You are an ORCHESTRATOR, not an IMPLEMENTER.**
 
 As an orchestrator, you should:
-- **DELEGATE** implementation work to subagents via \`chief_task\`
+- **DELEGATE** implementation work to subagents via task delegation tools
 - **VERIFY** the work done by subagents
 - **COORDINATE** multiple tasks and ensure completion
 
@@ -38,7 +38,7 @@ You should NOT:
 - Implement features yourself
 
 **If you need to make changes:**
-1. Use \`chief_task\` to delegate to an appropriate subagent
+1. Use appropriate task delegation tool to delegate to a subagent
 2. Provide clear instructions in the prompt
 3. Verify the subagent's work after completion
 
@@ -93,7 +93,7 @@ const ORCHESTRATOR_DELEGATION_REQUIRED = `
 
 **STOP. YOU ARE VIOLATING ORCHESTRATOR PROTOCOL.**
 
-You (chief) are attempting to directly modify a file outside \`.chief/\`.
+You are attempting to directly modify a file outside \`.chief/\`.
 
 **Path attempted:** $FILE_PATH
 
@@ -102,7 +102,7 @@ You (chief) are attempting to directly modify a file outside \`.chief/\`.
 🚫 **THIS IS FORBIDDEN** (except for VERIFICATION purposes)
 
 As an ORCHESTRATOR, you MUST:
-1. **DELEGATE** all implementation work via \`chief_task\`
+1. **DELEGATE** all implementation work via task delegation tools
 2. **VERIFY** the work done by subagents (reading files is OK)
 3. **COORDINATE** - you orchestrate, you don't implement
 
@@ -120,15 +120,10 @@ As an ORCHESTRATOR, you MUST:
 
 **IF THIS IS FOR VERIFICATION:**
 Proceed if you are verifying subagent work by making a small fix.
-But for any substantial changes, USE \`chief_task\`.
+But for any substantial changes, USE task delegation tools.
 
 **CORRECT APPROACH:**
-\`\`\`
-chief_task(
-  category="...",
-  prompt="[specific single task with clear acceptance criteria]"
-)
-\`\`\`
+Use appropriate task delegation tool with clear, single-task prompts.
 
 ⚠️⚠️⚠️ DELEGATE. DON'T IMPLEMENT. ⚠️⚠️⚠️
 
@@ -167,7 +162,7 @@ function buildVerificationReminder(sessionId: string): string {
 
 **If ANY verification fails, use this immediately:**
 \`\`\`
-chief_task(resume="${sessionId}", prompt="fix: [describe the specific failure]")
+audit_task(resume="${sessionId}", prompt="fix: [describe the specific failure]")
 \`\`\``
 }
 
@@ -567,12 +562,12 @@ export function createChiefOrchestratorHook(
         return
       }
 
-      // Check chief_task - inject single-task directive
-      if (input.tool === "chief_task") {
+      // Check task delegation tools - inject single-task directive
+      if (input.tool === "chief_task" || input.tool === "audit_task") {
         const prompt = output.args.prompt as string | undefined
         if (prompt && !prompt.includes("[SYSTEM DIRECTIVE - SINGLE TASK ONLY]")) {
           output.args.prompt = prompt + `\n<system-reminder>${SINGLE_TASK_DIRECTIVE}</system-reminder>`
-          log(`[${HOOK_NAME}] Injected single-task directive to chief_task`, {
+          log(`[${HOOK_NAME}] Injected single-task directive to ${input.tool}`, {
             sessionID: input.sessionID,
           })
         }
@@ -606,7 +601,7 @@ export function createChiefOrchestratorHook(
         return
       }
 
-      if (input.tool !== "chief_task") {
+      if (input.tool !== "chief_task" && input.tool !== "audit_task") {
         return
       }
 

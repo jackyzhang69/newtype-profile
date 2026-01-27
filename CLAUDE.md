@@ -4,6 +4,14 @@
 
 AI-powered immigration audit system built on oh-my-opencode framework. Orchestrates specialized agents to simulate real immigration lawyer workflows.
 
+## 🎯 CORE PRINCIPLES (优先级顺序)
+
+1. **准确性 (Accuracy)** - 审计结论必须基于完整信息，不能遗漏关键细节
+2. **稳定性 (Stability)** - 系统运行可靠，不出错，结果可复现
+3. **成本 (Cost)** - 在满足准确性和稳定性前提下，优化 token 使用和性能
+
+**决策原则**：当方案冲突时，按上述顺序权衡。例如：提高准确性可以增加成本，但不能牺牲稳定性。
+
 ---
 
 ## 语言规则 (Language Rules)

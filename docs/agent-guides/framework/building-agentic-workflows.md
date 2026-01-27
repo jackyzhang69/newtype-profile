@@ -22,7 +22,7 @@ OMO follows **"Separation of Planning and Execution"**:
 │  └── Analyzes request, creates plan, delegates to specialists   │
 ├─────────────────────────────────────────────────────────────────┤
 │  Deputy (Executor)                                              │
-│  └── Executes delegated tasks via chief_task                    │
+│  └── Executes delegated tasks via audit_task                    │
 ├─────────────────────────────────────────────────────────────────┤
 │  Domain Agents (Your Custom Agents)                             │
 │  └── Specialized agents for your business domain                │

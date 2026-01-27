@@ -45,45 +45,8 @@ describe("createBuiltinAgents with model overrides", () => {
   })
 })
 
-describe("buildAgent with category and skills", () => {
+describe("buildAgent with skills", () => {
   const { buildAgent } = require("./utils")
-
-  test("agent with category inherits category settings", () => {
-    // #given
-    const source = {
-      "test-agent": () =>
-        ({
-          description: "Test agent",
-          category: "research",
-        }) as AgentConfig,
-    }
-
-    // #when
-    const agent = buildAgent(source["test-agent"])
-
-    // #then
-    expect(agent.model).toBe("google/antigravity-gemini-3-pro-high")
-    expect(agent.temperature).toBe(0.5)
-  })
-
-  test("agent with category and existing model keeps existing model", () => {
-    // #given
-    const source = {
-      "test-agent": () =>
-        ({
-          description: "Test agent",
-          category: "research",
-          model: "custom/model",
-        }) as AgentConfig,
-    }
-
-    // #when
-    const agent = buildAgent(source["test-agent"])
-
-    // #then
-    expect(agent.model).toBe("custom/model")
-    expect(agent.temperature).toBe(0.5)
-  })
 
   test("agent with skills has content prepended to prompt", () => {
     // #given
@@ -102,7 +65,6 @@ describe("buildAgent with category and skills", () => {
     // #then
     expect(agent.prompt).toContain("Role: Designer-Turned-Developer")
     expect(agent.prompt).toContain("Original prompt content")
-    expect(agent.prompt).toMatch(/Designer-Turned-Developer[\s\S]*Original prompt content/s)
   })
 
   test("agent with multiple skills has all content prepended", () => {
@@ -124,7 +86,7 @@ describe("buildAgent with category and skills", () => {
     expect(agent.prompt).toContain("Agent prompt")
   })
 
-  test("agent without category or skills works as before", () => {
+  test("agent without skills works as before", () => {
     // #given
     const source = {
       "test-agent": () =>
@@ -142,47 +104,6 @@ describe("buildAgent with category and skills", () => {
     // #then
     expect(agent.model).toBe("custom/model")
     expect(agent.temperature).toBe(0.5)
-    expect(agent.prompt).toBe("Base prompt")
-  })
-
-  test("agent with category and skills applies both", () => {
-    // #given
-    const source = {
-      "test-agent": () =>
-        ({
-          description: "Test agent",
-          category: "writing",
-          skills: ["frontend-ui-ux"],
-          prompt: "Task description",
-        }) as AgentConfig,
-    }
-
-    // #when
-    const agent = buildAgent(source["test-agent"])
-
-    // #then
-    expect(agent.model).toBe("google/antigravity-gemini-3-pro-high")
-    expect(agent.temperature).toBe(0.7)
-    expect(agent.prompt).toContain("Role: Designer-Turned-Developer")
-    expect(agent.prompt).toContain("Task description")
-  })
-
-  test("agent with non-existent category has no effect", () => {
-    // #given
-    const source = {
-      "test-agent": () =>
-        ({
-          description: "Test agent",
-          category: "non-existent",
-          prompt: "Base prompt",
-        }) as AgentConfig,
-    }
-
-    // #when
-    const agent = buildAgent(source["test-agent"])
-
-    // #then
-    expect(agent.model).toBeUndefined()
     expect(agent.prompt).toBe("Base prompt")
   })
 

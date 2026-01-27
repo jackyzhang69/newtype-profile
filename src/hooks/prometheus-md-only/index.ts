@@ -27,7 +27,7 @@ function getMessageDir(sessionID: string): string | null {
   return null
 }
 
-const TASK_TOOLS = ["chief_task", "task", "call_omo_agent"]
+const TASK_TOOLS = ["audit_task", "task", "call_omo_agent"]
 
 function getAgentFromSession(sessionID: string): string | undefined {
   const messageDir = getMessageDir(sessionID)

@@ -36,7 +36,6 @@ export class FileContentClient {
 
   private resolveBaseUrl(): string {
     this.urlPriority = getServiceUrlsWithFallback("fileContent")
-    console.log(`[FileContentClient] URL priority: ${this.urlPriority.join(" -> ")}`)
     return this.urlPriority[0]
   }
 
@@ -58,14 +57,11 @@ export class FileContentClient {
 
     for (const url of this.urlPriority) {
       try {
-        console.log(`[FileContentClient] Trying URL: ${url}`)
         const result = await fetchFn(url)
-        console.log(`[FileContentClient] ✅ Success with URL: ${url}`)
         this.baseUrl = url // 更新 baseUrl 为成功的 URL
         return result
       } catch (error) {
         lastError = error instanceof Error ? error : new Error(String(error))
-        console.warn(`[FileContentClient] ⚠️ Failed with ${url}: ${lastError.message}`)
         // 继续尝试下一个 URL
       }
     }

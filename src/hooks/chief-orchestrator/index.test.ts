@@ -398,7 +398,7 @@ describe("chief-orchestrator hook", () => {
         // #then
         expect(output.output).toContain("DELEGATION REQUIRED")
         expect(output.output).toContain("ORCHESTRATOR, not an IMPLEMENTER")
-        expect(output.output).toContain("chief_task")
+        expect(output.output).toContain("task delegation tool")
       })
 
       test("should append delegation reminder when orchestrator edits outside .chief/", async () => {
