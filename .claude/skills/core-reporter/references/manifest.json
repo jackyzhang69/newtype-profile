@@ -1,8 +1,8 @@
 {
   "name": "core-reporter",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "Cross-app Reporter rules for synthesis, constraints, and document generation",
-  "files": [
+  "references": [
     "synthesis_rules.md",
     "output_constraints.md",
     "document_generation.md",
@@ -15,10 +15,5 @@
   "depends_on": [
     "audit-report-output"
   ],
-  "inject_to": ["reporter"],
-  "templates": {
-    "initial_assessment_pro": "initial_assessment_pro_template.json",
-    "final_review_pro": "final_review_pro_template.json",
-    "refusal_analysis_pro": "refusal_analysis_pro_template.json"
-  }
+  "quickstart_paths": ["../SKILL.md"]
 }

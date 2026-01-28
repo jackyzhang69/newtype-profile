@@ -4,113 +4,70 @@
   "skills": {
     "work-audit-rules": {
       "description": "Risk patterns, eligibility rules, category-specific knowledge",
-      "inject_to": ["detective", "strategist", "gatekeeper"],
-      "priority": 1,
-      "files": [
-        "risk_badges.json",
-        "verified_risk_patterns.json",
-        "hard_eligibility.md",
-        "fraud_risk_flags.md",
-        "refusal_patterns.md",
-        "policy_updates.md",
-        "risk_evidence_mapping.json",
-        "provincial_differences.md",
-        "PGWP.md",
-        "LMIA.md",
-        "IMP.md",
-        "religious-worker-imp.md",
-        "religious-worker-r205d.md",
-        "ICT.md",
-        "open-work-permit.md",
-        "PNP-work-permit.md"
-      ]
+      "inject_to": [
+        "detective",
+        "strategist",
+        "gatekeeper"
+      ],
+      "priority": 1
     },
     "work-doc-analysis": {
       "description": "Document analysis rules and evidence standards",
-      "inject_to": ["detective", "strategist"],
-      "priority": 2,
-      "files": [
-        "document_types.md",
-        "document_requirements_base.md",
-        "category_specific_requirements.md",
-        "extraction_schema.json",
-        "validation_rules.md",
-        "evidence_standards.md",
-        "evidence_weight_matrix.json",
-        "evidence_sufficiency.md"
-      ]
+      "inject_to": [
+        "detective",
+        "strategist"
+      ],
+      "priority": 2
     },
     "work-immicore-mcp": {
       "description": "Caselaw and operation manual query patterns",
-      "inject_to": ["detective"],
-      "priority": 3,
-      "files": [
-        "caselaw_query_patterns.json",
-        "search_strategies.md",
-        "category_specific_search_strategies.md",
-        "issue_codes.md",
-        "relevant_policy_codes.md"
-      ]
+      "inject_to": [
+        "detective"
+      ],
+      "priority": 3
     },
     "work-workflow": {
       "description": "Internal workflow templates (NOT output format)",
-      "inject_to": ["strategist", "gatekeeper"],
-      "priority": 4,
-      "files": [
-        "primary_assessment.md",
-        "deep_analysis.md",
-        "final_review.md",
-        "submission_letter.md"
-      ]
+      "inject_to": [
+        "strategist",
+        "gatekeeper"
+      ],
+      "priority": 4
     },
     "work-client-guidance": {
       "description": "Client-facing guides for document preparation",
-      "inject_to": ["gatekeeper"],
-      "priority": 5,
-      "files": [
-        "document_checklist.md",
-        "document_checklist_cn.md",
-        "interview_prep_cn.md",
-        "personal_statement_cn.md",
-        "religious-worker-guidance.md",
-        "spouse-permit-guidance.md"
-      ]
+      "inject_to": [
+        "gatekeeper"
+      ],
+      "priority": 5
     },
     "learned-guardrails": {
       "description": "Semantic verification rules to catch concept confusion errors",
-      "inject_to": ["gatekeeper"],
-      "priority": 6,
-      "files": [
-        "semantic_verification_guide.md"
-      ]
+      "inject_to": [
+        "gatekeeper"
+      ],
+      "priority": 6
     },
     "audit-report-output": {
       "description": "Final report format, Poison Pill templates, tier-based output constraints",
-      "inject_to": ["reporter"],
-      "priority": 7,
-      "files": [
-        "client_report_template.md"
-      ]
+      "inject_to": [
+        "reporter"
+      ],
+      "priority": 7
     },
     "core-reporter": {
       "description": "Cross-app Reporter rules for synthesis, constraints, and document generation",
-      "inject_to": ["reporter"],
-      "priority": 8,
-      "files": [
-        "synthesis_rules.md",
-        "output_constraints.md",
-        "document_generation.md"
-      ]
+      "inject_to": [
+        "reporter"
+      ],
+      "priority": 8
     },
     "work-reporter": {
       "description": "Work permit-specific Reporter templates for executive summary, document list, submission letter",
-      "inject_to": ["reporter"],
-      "priority": 9,
-      "files": [
-        "executive_summary.md",
-        "document_list.md",
-        "submission_letter.md"
-      ]
+      "inject_to": [
+        "reporter"
+      ],
+      "priority": 9
     }
   },
   "injection_order": [
@@ -124,25 +81,41 @@
     "core-reporter",
     "work-reporter"
   ],
-
   "agent_skill_mapping": {
     "detective": {
-      "skills": ["work-immicore-mcp", "work-audit-rules", "work-doc-analysis"],
+      "skills": [
+        "work-immicore-mcp",
+        "work-audit-rules",
+        "work-doc-analysis"
+      ],
       "prompt_file": "detective_prompt.md",
       "focus": "case_law_search"
     },
     "strategist": {
-      "skills": ["work-audit-rules", "work-doc-analysis", "work-workflow"],
+      "skills": [
+        "work-audit-rules",
+        "work-doc-analysis",
+        "work-workflow"
+      ],
       "prompt_file": "strategist_prompt.md",
       "focus": "risk_assessment"
     },
     "gatekeeper": {
-      "skills": ["work-audit-rules", "work-workflow", "work-client-guidance", "learned-guardrails"],
+      "skills": [
+        "work-audit-rules",
+        "work-workflow",
+        "work-client-guidance",
+        "learned-guardrails"
+      ],
       "prompt_file": "gatekeeper_prompt.md",
       "focus": "compliance_check"
     },
     "reporter": {
-      "skills": ["work-reporter", "core-reporter", "audit-report-output"],
+      "skills": [
+        "work-reporter",
+        "core-reporter",
+        "audit-report-output"
+      ],
       "prompt_file": "reporter_prompt.md",
       "focus": "report_synthesis"
     }
@@ -163,6 +136,6 @@
     "created": "2026-01-27",
     "last_updated": "2026-01-28",
     "status": "active",
-    "version_notes": "v3.1: Removed category_files (unimplemented), merged deep files into base files, flattened file list"
+    "version_notes": "Removed unused 'files' field - actual files come from each skill's manifest.json"
   }
 }

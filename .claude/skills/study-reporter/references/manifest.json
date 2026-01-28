@@ -1,13 +1,14 @@
 {
   "name": "study-reporter",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Study permit reporter templates",
-  "files": [
+  "references": [
     "executive_summary.md",
     "document_list.md"
   ],
-  "dependencies": [
+  "depends_on": [
     "core-reporter",
     "audit-report-output"
-  ]
+  ],
+  "quickstart_paths": ["../SKILL.md"]
 }

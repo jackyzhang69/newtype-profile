@@ -26,7 +26,7 @@ interface InjectionProfileSkill {
   description: string
   inject_to: string[]
   priority: number
-  files?: string[]
+  // Note: 'files' field was removed - actual files come from each skill's manifest.json 'references' array
 }
 
 interface InjectionProfile {

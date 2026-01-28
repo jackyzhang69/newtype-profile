@@ -1,15 +1,21 @@
 {
   "name": "study-client-guidance",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Study permit client guidance templates",
-  "files": [
+  "references": [
     "study_plan_guide.md",
     "document_checklist.md",
     "interview_prep.md",
-    "common_mistakes.md"
+    "common_mistakes.md",
+    "country_specific_requirements.md",
+    "dual_intent_phrasing_guide.md",
+    "post_approval_checklist.md",
+    "sponsorship_affidavit_guide.md",
+    "transcript_upload_strategy.md"
   ],
-  "dependencies": [
+  "depends_on": [
     "study-audit-rules",
     "study-doc-analysis"
-  ]
+  ],
+  "quickstart_paths": ["../SKILL.md"]
 }

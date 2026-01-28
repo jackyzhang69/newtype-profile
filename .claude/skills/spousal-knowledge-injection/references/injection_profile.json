@@ -4,88 +4,70 @@
   "skills": {
     "spousal-audit-rules": {
       "description": "Risk patterns, eligibility rules, KG query patterns",
-      "inject_to": ["detective", "strategist", "gatekeeper"],
-      "priority": 1,
-      "files": [
-        "risk_patterns.json",
-        "eligibility_rules.md",
-        "kg_query_patterns.json"
-      ]
+      "inject_to": [
+        "detective",
+        "strategist",
+        "gatekeeper"
+      ],
+      "priority": 1
     },
     "spousal-doc-analysis": {
       "description": "Document analysis rules and evidence standards",
-      "inject_to": ["detective", "strategist"],
-      "priority": 2,
-      "files": [
-        "imm5533_checklist.md",
-        "evidence_standards.md",
-        "consistency_rules.md"
-      ]
+      "inject_to": [
+        "detective",
+        "strategist"
+      ],
+      "priority": 2
     },
     "spousal-immicore-mcp": {
       "description": "Caselaw and operation manual query patterns",
-      "inject_to": ["detective"],
-      "priority": 3,
-      "files": [
-        "caselaw_query_patterns.json"
-      ]
+      "inject_to": [
+        "detective"
+      ],
+      "priority": 3
     },
     "spousal-workflow": {
       "description": "Internal workflow templates (NOT output format)",
-      "inject_to": ["strategist", "gatekeeper"],
-      "priority": 4,
-      "files": [
-        "primary_assess_template.md",
-        "deep_analysis_template.md",
-        "final_assess_template.md",
-        "submission_letter_template.md"
-      ]
+      "inject_to": [
+        "strategist",
+        "gatekeeper"
+      ],
+      "priority": 4
     },
     "spousal-client-guidance": {
       "description": "Client-facing guides for document preparation",
-      "inject_to": ["gatekeeper"],
-      "priority": 5,
-      "files": [
-        "love_story_guide.md",
-        "interview_guide.md",
-        "document_list_guide.md"
-      ]
+      "inject_to": [
+        "gatekeeper"
+      ],
+      "priority": 5
     },
     "learned-guardrails": {
       "description": "Semantic verification rules to catch concept confusion errors",
-      "inject_to": ["gatekeeper"],
-      "priority": 6,
-      "files": [
-        "semantic_verification_guide.md"
-      ]
+      "inject_to": [
+        "gatekeeper"
+      ],
+      "priority": 6
     },
     "audit-report-output": {
       "description": "Final report format, Poison Pill templates, tier-based output constraints",
-      "inject_to": ["reporter"],
-      "priority": 7,
-      "files": [
-        "client_report_template.md"
-      ]
+      "inject_to": [
+        "reporter"
+      ],
+      "priority": 7
     },
     "core-reporter": {
       "description": "Cross-app Reporter rules for synthesis, constraints, and document generation",
-      "inject_to": ["reporter"],
-      "priority": 8,
-      "files": [
-        "synthesis_rules.md",
-        "output_constraints.md",
-        "document_generation.md"
-      ]
+      "inject_to": [
+        "reporter"
+      ],
+      "priority": 8
     },
     "spousal-reporter": {
       "description": "Spousal-specific Reporter templates for executive summary, document list, submission letter",
-      "inject_to": ["reporter"],
-      "priority": 9,
-      "files": [
-        "executive_summary.md",
-        "document_list.md",
-        "submission_letter.md"
-      ]
+      "inject_to": [
+        "reporter"
+      ],
+      "priority": 9
     }
   },
   "injection_order": [
