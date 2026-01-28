@@ -232,6 +232,14 @@ Documents that address specific risk factors:
 
 ## See Also
 
+### Core References
 - [extraction_schema.json](references/extraction_schema.json) - Document field mapping
 - [document_types.md](references/document_types.md) - Detailed document descriptions
 - [validation_rules.md](references/validation_rules.md) - Verification procedures
+- [document_requirements_base.md](references/document_requirements_base.md) - Base document requirements
+- [category_specific_requirements.md](references/category_specific_requirements.md) - Category-specific requirements
+
+### Evidence Standards (Phase 5)
+- [evidence_standards.md](references/evidence_standards.md) - A/B/C/D evidence grading system
+- [evidence_weight_matrix.json](references/evidence_weight_matrix.json) - Evidence weight by category
+- [evidence_sufficiency.md](references/evidence_sufficiency.md) - Evidence sufficiency scoring

@@ -1,15 +1,44 @@
 {
   "skill_name": "work-audit-rules",
-  "version": "2.0.0",
-  "description": "Hard eligibility rules, fraud risk flags, and policy updates for work permit applications",
+  "version": "3.0.0",
+  "description": "Hard eligibility rules, fraud risk flags, risk badges, policy updates, and category-specific deep dives for work permit applications",
   "app_type": "work",
-  "files": [
-    "hard_eligibility.md",
-    "fraud_risk_flags.md",
-    "refusal_patterns.md",
-    "risk_badges.json",
-    "policy_updates.md"
-  ],
+  "last_updated": "2026-01-28",
+  "files": {
+    "core": [
+      "hard_eligibility.md",
+      "fraud_risk_flags.md",
+      "refusal_patterns.md"
+    ],
+    "risk_system": [
+      "risk_badges.json",
+      "verified_risk_patterns.json",
+      "risk_evidence_mapping.json"
+    ],
+    "policy": [
+      "policy_updates.md",
+      "provincial_differences.md"
+    ],
+    "category_base": [
+      "LMIA.md",
+      "PGWP.md",
+      "ICT.md",
+      "IMP.md",
+      "open-work-permit.md",
+      "open-spouse.md",
+      "PNP-work-permit.md"
+    ],
+    "category_deep": [
+      "pgwp_deep.md",
+      "ict_deep.md",
+      "open_spouse_deep.md",
+      "pnp_deep.md"
+    ],
+    "specialized": [
+      "religious-worker-imp.md",
+      "religious-worker-r205d.md"
+    ]
+  },
   "key_concepts": [
     "LMIA compliance",
     "Employer fraud risk",
@@ -18,10 +47,23 @@
     "Wage compliance",
     "Admissibility",
     "Ties assessment",
-    "Policy changes tracking"
+    "Policy changes tracking",
+    "Provincial differences",
+    "Risk-to-evidence mapping"
+  ],
+  "risk_badge_count": 28,
+  "verified_patterns_count": 65,
+  "categories_covered": [
+    "LMIA",
+    "PGWP",
+    "ICT",
+    "IMP",
+    "OPEN_WORK_PERMIT",
+    "PNP"
   ],
   "_version_history": [
-    {"version": "2.0.0", "date": "2026-01-28", "changes": "Added policy_updates.md, upgraded risk_badges.json to v2.0"},
+    {"version": "3.0.0", "date": "2026-01-28", "changes": "Added Phase 5 files: risk_evidence_mapping.json, provincial_differences.md, deep.md files"},
+    {"version": "2.0.0", "date": "2026-01-28", "changes": "Added policy_updates.md, upgraded risk_badges.json to v3.0"},
     {"version": "1.0.0", "date": "2026-01-27", "changes": "Initial release"}
   ]
 }

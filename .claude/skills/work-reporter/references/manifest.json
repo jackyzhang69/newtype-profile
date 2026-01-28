@@ -1,12 +1,12 @@
 {
   "skill_name": "work-reporter",
-  "version": "1.0.0",
-  "description": "Work permit audit reporter skill for final report generation",
+  "version": "2.0.0",
+  "description": "Work permit audit reporter skill for executive summary, document list, and submission letter generation",
   "app_type": "work",
   "files": [
-    "report_structure.md",
-    "compliance_rules.md",
-    "disclaimer.md"
+    "executive_summary.md",
+    "document_list.md",
+    "submission_letter.md"
   ],
   "report_sections": [
     "disclaimer",
@@ -18,12 +18,38 @@
     "strategic_recommendations",
     "conclusion"
   ],
+  "output_templates": {
+    "executive_summary": {
+      "file": "executive_summary.md",
+      "max_words": 300,
+      "required_elements": ["defensibility_score", "key_findings", "risk_summary", "next_steps"]
+    },
+    "document_list": {
+      "file": "document_list.md",
+      "formats": ["json", "markdown"],
+      "logic_types": ["ALL_REQUIRED", "ONE_OF", "AT_LEAST_N", "CONDITIONAL"]
+    },
+    "submission_letter": {
+      "file": "submission_letter.md",
+      "max_pages": 3,
+      "required_sections": ["header", "introduction", "overview", "evidence_summary", "document_index", "conclusion"]
+    }
+  },
+  "category_variations": [
+    "lmia",
+    "pgwp",
+    "ict",
+    "imp",
+    "owp",
+    "pnp"
+  ],
   "compliance_requirements": [
     "Include disclaimer first",
     "Defensibility score 0-100",
     "All case law cited (FC only)",
     "No guaranteed outcomes",
     "Balanced strengths/weaknesses",
-    "Professional tone"
+    "Professional tone",
+    "Category-specific customization"
   ]
 }
