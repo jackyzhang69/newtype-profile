@@ -1,0 +1,354 @@
+{
+  "version": "3.0",
+  "description": "Work permit caselaw query patterns supporting ImmiCore Caselaw Search v3.0 API",
+  "api_version": "v3.0",
+  "api_endpoint": "POST /api/v1/caselaw/search",
+  "last_updated": "2026-01-28",
+
+  "_landmark_cases_policy": {
+    "description": "Landmark cases management policy",
+    "policy": "ALL landmark cases MUST be retrieved dynamically via MCP tools - NEVER use static/hardcoded cases",
+    "verification_method": "caselaw_authority(citation) - confirm is_good_law=true",
+    "update_frequency": "Every audit session via Detective agent",
+    "source": "ImmiCore MCP caselaw service ONLY - no training knowledge allowed",
+    "forbidden": "DO NOT use any case citations from LLM training data"
+  },
+
+  "work_specific_queries": {
+    "lmia_compliance_cases": {
+      "description": "LMIA compliance and validity cases",
+      "queries": [
+        {
+          "id": "lmia_requirement",
+          "label": "LMIA Requirement Interpretation",
+          "kg_search": {
+            "issue_code": "WORK_LMIA_COMPLIANCE",
+            "limit": 10
+          },
+          "keywords": ["labour market impact assessment", "LMIA", "positive assessment", "R200"],
+          "landmark_cases": "DYNAMIC_LOOKUP_REQUIRED",
+          "_dynamic_lookup": "kg_top_authorities(issue_code='WORK_LMIA_COMPLIANCE', court='FC', limit=5)",
+          "_note": "Detective MUST use MCP to retrieve actual cases - never hardcode"
+        },
+        {
+          "id": "lmia_exemption",
+          "label": "LMIA Exemption Categories",
+          "kg_search": {
+            "issue_code": "WORK_IMP_EXEMPTION",
+            "limit": 10
+          },
+          "keywords": ["LMIA exemption", "international mobility program", "significant benefit", "R205"],
+          "landmark_cases": "DYNAMIC_LOOKUP_REQUIRED",
+          "_dynamic_lookup": "immicore_caselaw_search(query='work permit LMIA exemption international mobility program', court='fc', enhance_with_kg=true)"
+        },
+        {
+          "id": "wage_compliance",
+          "label": "Wage Adequacy Assessment",
+          "kg_search": {
+            "issue_code": "WORK_WAGE_COMPLIANCE",
+            "limit": 10
+          },
+          "keywords": ["prevailing wage", "wage rate", "median wage", "exploitation"],
+          "landmark_cases": "DYNAMIC_LOOKUP_REQUIRED",
+          "_dynamic_lookup": "immicore_caselaw_search(query='work permit wage compliance prevailing rate', court='fc', enhance_with_kg=true)"
+        }
+      ]
+    },
+    "employer_legitimacy_cases": {
+      "description": "Employer legitimacy and fraud cases",
+      "queries": [
+        {
+          "id": "genuine_job_offer",
+          "label": "Genuine Job Offer Test",
+          "kg_search": {
+            "issue_code": "WORK_E_GENUINE",
+            "limit": 10
+          },
+          "keywords": ["genuine job offer", "sham employment", "legitimate employer", "actual position"],
+          "landmark_cases": "DYNAMIC_LOOKUP_REQUIRED",
+          "_dynamic_lookup": "kg_top_authorities(issue_code='WORK_E_GENUINE', court='FC', limit=5)"
+        },
+        {
+          "id": "employer_fraud",
+          "label": "Employer Fraud Patterns",
+          "kg_search": {
+            "issue_code": "WORK_E_FRAUD",
+            "limit": 10
+          },
+          "keywords": ["employer fraud", "shell company", "straw employer", "fraudulent job offer"],
+          "landmark_cases": "DYNAMIC_LOOKUP_REQUIRED",
+          "_dynamic_lookup": "immicore_caselaw_search(query='work permit employer fraud shell company', court='fc', enhance_with_kg=true)"
+        },
+        {
+          "id": "employer_compliance_history",
+          "label": "Employer Compliance Record",
+          "kg_search": {
+            "issue_code": "WORK_E_COMPLIANCE",
+            "limit": 10
+          },
+          "keywords": ["employer compliance", "ESDC violations", "previous non-compliance", "TFW program abuse"],
+          "landmark_cases": "DYNAMIC_LOOKUP_REQUIRED",
+          "_dynamic_lookup": "immicore_caselaw_search(query='work permit employer compliance ESDC violations', court='fc', enhance_with_kg=true)"
+        }
+      ]
+    },
+    "credential_assessment_cases": {
+      "description": "Applicant qualification and credential cases",
+      "queries": [
+        {
+          "id": "qualification_match",
+          "label": "Qualification Matching",
+          "kg_search": {
+            "issue_code": "WORK_CRED_MATCH",
+            "limit": 10
+          },
+          "keywords": ["qualifications", "credentials", "NOC requirements", "capability to perform"],
+          "landmark_cases": "DYNAMIC_LOOKUP_REQUIRED",
+          "_dynamic_lookup": "kg_top_authorities(issue_code='WORK_CRED_MATCH', court='FC', limit=5)"
+        },
+        {
+          "id": "credential_verification",
+          "label": "Credential Authenticity",
+          "kg_search": {
+            "issue_code": "WORK_CRED_VERIFY",
+            "limit": 10
+          },
+          "keywords": ["credential verification", "education assessment", "WES evaluation", "authentic documents"],
+          "landmark_cases": "DYNAMIC_LOOKUP_REQUIRED",
+          "_dynamic_lookup": "immicore_caselaw_search(query='work permit credential verification education assessment', court='fc', enhance_with_kg=true)"
+        },
+        {
+          "id": "professional_certification",
+          "label": "Professional Certification Requirements",
+          "kg_search": {
+            "issue_code": "WORK_CRED_CERT",
+            "limit": 10
+          },
+          "keywords": ["professional certification", "licensing requirements", "regulated profession", "provincial standards"],
+          "landmark_cases": "DYNAMIC_LOOKUP_REQUIRED",
+          "_dynamic_lookup": "immicore_caselaw_search(query='work permit professional certification licensing', court='fc', enhance_with_kg=true)"
+        }
+      ]
+    },
+    "intent_determination_cases": {
+      "description": "Temporary intent and ties assessment cases",
+      "queries": [
+        {
+          "id": "temporary_intent",
+          "label": "Temporary Intent Assessment",
+          "kg_search": {
+            "issue_code": "WORK_INTENT_TEMP",
+            "limit": 10
+          },
+          "keywords": ["temporary intent", "return home", "dual intent", "settlement indicators"],
+          "landmark_cases": "DYNAMIC_LOOKUP_REQUIRED",
+          "_dynamic_lookup": "kg_top_authorities(issue_code='WORK_INTENT_TEMP', court='FC', limit=5)"
+        },
+        {
+          "id": "ties_to_home",
+          "label": "Ties to Home Country",
+          "kg_search": {
+            "issue_code": "WORK_TIES_HOME",
+            "limit": 10
+          },
+          "keywords": ["ties to home", "return incentives", "family abroad", "property ownership"],
+          "landmark_cases": "DYNAMIC_LOOKUP_REQUIRED",
+          "_dynamic_lookup": "immicore_caselaw_search(query='work permit ties home country return incentives', court='fc', enhance_with_kg=true)"
+        }
+      ]
+    },
+    "category_specific_cases": {
+      "description": "Work permit category-specific cases",
+      "queries": [
+        {
+          "id": "ict_requirements",
+          "label": "Intra-Company Transfer Requirements",
+          "kg_search": {
+            "issue_code": "WORK_ICT",
+            "limit": 10
+          },
+          "keywords": ["intra-company transfer", "ICT", "specialized knowledge", "managerial", "executive"],
+          "landmark_cases": "DYNAMIC_LOOKUP_REQUIRED",
+          "_dynamic_lookup": "kg_top_authorities(issue_code='WORK_ICT', court='FC', limit=5)"
+        },
+        {
+          "id": "pgwp_requirements",
+          "label": "Post-Graduation Work Permit",
+          "kg_search": {
+            "issue_code": "WORK_PGWP",
+            "limit": 10
+          },
+          "keywords": ["post-graduation work permit", "PGWP", "DLI", "graduation", "full-time study"],
+          "landmark_cases": "DYNAMIC_LOOKUP_REQUIRED",
+          "_dynamic_lookup": "immicore_caselaw_search(query='post-graduation work permit PGWP DLI eligibility', court='fc', enhance_with_kg=true)"
+        },
+        {
+          "id": "open_work_permit_spouse",
+          "label": "Open Work Permit for Spouses",
+          "kg_search": {
+            "issue_code": "WORK_OPEN_SPOUSE",
+            "limit": 10
+          },
+          "keywords": ["open work permit", "spouse", "common-law partner", "principal worker"],
+          "landmark_cases": "DYNAMIC_LOOKUP_REQUIRED",
+          "_note": "Cross-reference spousal-audit-rules for relationship genuineness",
+          "_dynamic_lookup": "immicore_caselaw_search(query='open work permit spouse common-law partner', court='fc', enhance_with_kg=true)"
+        },
+        {
+          "id": "pnp_work_permit",
+          "label": "Provincial Nominee Work Permit",
+          "kg_search": {
+            "issue_code": "WORK_PNP",
+            "limit": 10
+          },
+          "keywords": ["provincial nominee", "PNP", "nomination letter", "occupation eligibility"],
+          "landmark_cases": "DYNAMIC_LOOKUP_REQUIRED",
+          "_dynamic_lookup": "immicore_caselaw_search(query='provincial nominee PNP work permit', court='fc', enhance_with_kg=true)"
+        },
+        {
+          "id": "religious_worker",
+          "label": "Religious Worker R205(d)",
+          "kg_search": {
+            "issue_code": "WORK_R205D",
+            "limit": 10
+          },
+          "keywords": ["religious worker", "R205(d)", "ordained", "religious vocation", "religious duties"],
+          "landmark_cases": "DYNAMIC_LOOKUP_REQUIRED",
+          "_dynamic_lookup": "immicore_caselaw_search(query='religious worker R205 ordained religious duties', court='fc', enhance_with_kg=true)"
+        }
+      ]
+    },
+    "procedural_cases": {
+      "description": "Procedural fairness and review standard cases - these are SCC cases verifiable via public records",
+      "queries": [
+        {
+          "id": "procedural_fairness",
+          "label": "Procedural Fairness",
+          "kg_search": {
+            "issue_code": "PF_OPPORTUNITY_RESPOND",
+            "limit": 5
+          },
+          "keywords": ["procedural fairness", "duty to disclose", "opportunity to respond", "natural justice"],
+          "landmark_cases": "DYNAMIC_LOOKUP_REQUIRED",
+          "_dynamic_lookup": "kg_top_authorities(issue_code='PF_OPPORTUNITY_RESPOND', court='SCC', limit=3)",
+          "_note": "Baker v Canada is well-known SCC case - but still verify via MCP"
+        },
+        {
+          "id": "reasonableness_standard",
+          "label": "Reasonableness Standard of Review",
+          "kg_search": {
+            "issue_code": "STD_REASONABLENESS",
+            "limit": 5
+          },
+          "keywords": ["reasonableness", "standard of review", "transparent justification"],
+          "landmark_cases": "DYNAMIC_LOOKUP_REQUIRED",
+          "_dynamic_lookup": "kg_top_authorities(issue_code='STD_REASONABLENESS', court='SCC', limit=3)",
+          "_note": "Vavilov is well-known SCC case - but still verify via MCP"
+        }
+      ]
+    }
+  },
+
+  "risk_query_matrix": {
+    "description": "Map risk badges to search queries - Detective uses these to find relevant cases",
+    "mappings": {
+      "LMIA_NOT_OBTAINED": ["lmia_requirement", "lmia_exemption"],
+      "EMPLOYER_FRAUD_RISK": ["genuine_job_offer", "employer_fraud", "employer_compliance_history"],
+      "CREDENTIALS_MISMATCH": ["qualification_match", "credential_verification", "professional_certification"],
+      "IMMIGRANT_INTENT_SIGNAL": ["temporary_intent", "ties_to_home"],
+      "WAGE_COMPLIANCE_ISSUE": ["wage_compliance"],
+      "TIES_ASSESSMENT_WEAK": ["ties_to_home", "temporary_intent"]
+    }
+  },
+
+  "mcp_integration": {
+    "tools": {
+      "immicore_caselaw_search": {
+        "description": "v3.0 unified search endpoint - RRF fusion of BM25 + Semantic search",
+        "endpoint": "POST /api/v1/caselaw/search",
+        "parameters": {
+          "query": "Search query (required)",
+          "court": "Court filter: fc/fca/irb",
+          "start_date": "Decision date start YYYY-MM-DD",
+          "end_date": "Decision date end",
+          "must_include": "Array of required keywords",
+          "must_not": "Array of excluded keywords",
+          "top_k": "Return count (default 10)",
+          "fetch_k": "Candidate pool size (default 20)",
+          "include_text": "Include full case text (default false)",
+          "enhance_with_kg": "Add KG validity/authority info (default false)",
+          "rerank_by_authority": "Rerank by authority (default false)",
+          "authority_weight": "Authority weight 0-1 (default 0.3)"
+        }
+      },
+      "kg_top_authorities": {
+        "description": "Get top authorities for issue code",
+        "usage": "kg_top_authorities(issue_code='WORK_E_GENUINE', court='FC', limit=10)"
+      },
+      "caselaw_authority": {
+        "description": "Verify single case authority",
+        "usage": "caselaw_authority(citation='YYYY FC NNN')",
+        "returns": "cited_by_count, is_good_law, top_citing_cases"
+      },
+      "kg_similar_cases": {
+        "description": "Find similar cases",
+        "usage": "kg_similar_cases(issue_codes=['WORK_LMIA'], limit=5)"
+      }
+    },
+    "search_strategy": {
+      "for_risk_assessment": {
+        "approach": "Use enhance_with_kg=true to verify case validity",
+        "example": "immicore_caselaw_search(query='work permit genuine job offer', enhance_with_kg=true)"
+      },
+      "for_defense_strategy": {
+        "approach": "Use rerank_by_authority=true to prioritize authoritative cases",
+        "example": "immicore_caselaw_search(query='work permit approved reasonableness', rerank_by_authority=true)"
+      },
+      "for_validity_check": {
+        "approach": "Use caselaw_authority to verify case is still good law",
+        "example": "caselaw_authority(citation='YYYY FC NNN')"
+      }
+    },
+    "ircc_policy_sources": {
+      "description": "For latest policy, ONLY use official IRCC sources",
+      "allowed_sources": [
+        "https://www.canada.ca/en/immigration-refugees-citizenship.html",
+        "https://www.canada.ca/en/immigration-refugees-citizenship/corporate/publications-manuals/operational-bulletins-manuals.html"
+      ],
+      "fetch_method": "WebFetch tool with IRCC domain"
+    }
+  },
+
+  "query_templates": {
+    "risk_assessment": {
+      "description": "Query template for risk assessment",
+      "v3_template": "immicore_caselaw_search(query='{risk_description}', enhance_with_kg=true)"
+    },
+    "defense_strategy": {
+      "description": "Query template for defense strategy",
+      "v3_template": "immicore_caselaw_search(query='{defense_argument}', rerank_by_authority=true, authority_weight=0.5)"
+    },
+    "validity_check": {
+      "description": "Template for case validity verification",
+      "v3_template": "caselaw_authority(citation='{case_citation}')"
+    }
+  },
+
+  "_critical_rules": {
+    "rule_1": "NEVER use case citations from LLM training knowledge",
+    "rule_2": "ALL landmark cases MUST come from MCP caselaw service",
+    "rule_3": "For policy updates, ONLY fetch from official IRCC website",
+    "rule_4": "Detective agent is the ONLY source of case law knowledge",
+    "rule_5": "Always verify case validity before citing (is_good_law=true)"
+  },
+
+  "_metadata": {
+    "version_history": [
+      {
+        "version": "3.0",
+        "date": "2026-01-28",
+        "changes": "Full v3.0 API support, dynamic-only landmark cases, no hardcoded citations"
+      }
+    ]
+  }
+}

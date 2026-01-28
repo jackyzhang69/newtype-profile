@@ -1,0 +1,810 @@
+{
+  "version": "1.0.0",
+  "description": "Cross-skill reference mapping: Risk Badges -> Required Evidence Documents",
+  "last_updated": "2026-01-28",
+  
+  "_usage_instructions": {
+    "purpose": "When a risk badge is triggered, this mapping tells agents what evidence to look for",
+    "workflow": "Intake detects risk -> Detective uses this mapping to identify evidence gaps -> Strategist uses for mitigation planning",
+    "cross_references": {
+      "risk_badges": "work-audit-rules/references/risk_badges.json",
+      "evidence_standards": "work-doc-analysis/references/evidence_standards.md",
+      "evidence_weight_matrix": "work-doc-analysis/references/evidence_weight_matrix.json"
+    }
+  },
+
+  "universal_badge_evidence_mapping": {
+    "LMIA_NOT_OBTAINED": {
+      "badge_id": "LMIA_NOT_OBTAINED",
+      "required_evidence": [
+        {
+          "doc_type": "lmia_confirmation",
+          "description": "Positive LMIA confirmation letter from ESDC",
+          "evidence_grade": "A",
+          "alternatives": ["lmia_exempt_proof"]
+        },
+        {
+          "doc_type": "job_offer_letter",
+          "description": "Job offer matching LMIA details",
+          "evidence_grade": "A",
+          "must_match": ["employer_name", "noc_code", "wage", "location"]
+        }
+      ],
+      "mitigation_evidence": [
+        {
+          "doc_type": "lmia_application_receipt",
+          "description": "Proof LMIA application is pending",
+          "evidence_grade": "B"
+        },
+        {
+          "doc_type": "lmia_exemption_justification",
+          "description": "Legal basis for LMIA exemption claim",
+          "evidence_grade": "B"
+        }
+      ]
+    },
+
+    "CREDENTIALS_MISMATCH": {
+      "badge_id": "CREDENTIALS_MISMATCH",
+      "required_evidence": [
+        {
+          "doc_type": "educational_credentials",
+          "description": "Degrees, diplomas, certificates matching job requirements",
+          "evidence_grade": "A",
+          "requires_eca": true
+        },
+        {
+          "doc_type": "employment_reference_letters",
+          "description": "Reference letters confirming relevant experience",
+          "evidence_grade": "A",
+          "minimum_count": 2
+        },
+        {
+          "doc_type": "professional_certifications",
+          "description": "Industry certifications or licenses",
+          "evidence_grade": "A"
+        }
+      ],
+      "mitigation_evidence": [
+        {
+          "doc_type": "skills_assessment",
+          "description": "Third-party skills assessment report",
+          "evidence_grade": "B"
+        },
+        {
+          "doc_type": "training_completion",
+          "description": "Relevant training or course completion certificates",
+          "evidence_grade": "B"
+        },
+        {
+          "doc_type": "employer_justification",
+          "description": "Employer letter explaining why applicant is qualified",
+          "evidence_grade": "B"
+        }
+      ]
+    },
+
+    "EMPLOYER_FRAUD_RISK": {
+      "badge_id": "EMPLOYER_FRAUD_RISK",
+      "required_evidence": [
+        {
+          "doc_type": "business_registration",
+          "description": "Corporate registration documents",
+          "evidence_grade": "A",
+          "verification_source": "provincial_registry"
+        },
+        {
+          "doc_type": "business_license",
+          "description": "Valid business license for operations",
+          "evidence_grade": "A"
+        },
+        {
+          "doc_type": "financial_statements",
+          "description": "Audited financial statements (2+ years)",
+          "evidence_grade": "A"
+        },
+        {
+          "doc_type": "t4_summary",
+          "description": "T4 Summary showing existing employees",
+          "evidence_grade": "A"
+        }
+      ],
+      "mitigation_evidence": [
+        {
+          "doc_type": "business_bank_statements",
+          "description": "Business bank statements showing activity",
+          "evidence_grade": "B"
+        },
+        {
+          "doc_type": "commercial_lease",
+          "description": "Commercial lease agreement for business premises",
+          "evidence_grade": "B"
+        },
+        {
+          "doc_type": "client_contracts",
+          "description": "Active client contracts or purchase orders",
+          "evidence_grade": "B"
+        },
+        {
+          "doc_type": "employee_list",
+          "description": "Current employee roster with positions",
+          "evidence_grade": "C"
+        }
+      ]
+    },
+
+    "IMMIGRANT_INTENT_SIGNAL": {
+      "badge_id": "IMMIGRANT_INTENT_SIGNAL",
+      "required_evidence": [
+        {
+          "doc_type": "ties_to_home_country",
+          "description": "Evidence of ties to home country",
+          "evidence_grade": "A",
+          "examples": ["property_ownership", "family_ties", "employment_commitment"]
+        },
+        {
+          "doc_type": "return_plan",
+          "description": "Documented plan to return after work permit expires",
+          "evidence_grade": "B"
+        }
+      ],
+      "mitigation_evidence": [
+        {
+          "doc_type": "property_documents",
+          "description": "Property ownership in home country",
+          "evidence_grade": "A"
+        },
+        {
+          "doc_type": "family_evidence",
+          "description": "Evidence of immediate family remaining in home country",
+          "evidence_grade": "B"
+        },
+        {
+          "doc_type": "employment_leave",
+          "description": "Leave of absence letter from home country employer",
+          "evidence_grade": "B"
+        },
+        {
+          "doc_type": "bank_accounts_home",
+          "description": "Active bank accounts in home country",
+          "evidence_grade": "C"
+        }
+      ],
+      "_note": "Dual intent is permitted for some categories (e.g., PNP work permits)"
+    },
+
+    "WAGE_COMPLIANCE_ISSUE": {
+      "badge_id": "WAGE_COMPLIANCE_ISSUE",
+      "required_evidence": [
+        {
+          "doc_type": "job_offer_with_wage",
+          "description": "Job offer clearly stating wage rate",
+          "evidence_grade": "A",
+          "must_meet": "prevailing_wage_or_higher"
+        },
+        {
+          "doc_type": "wage_comparison",
+          "description": "Job Bank wage data for NOC code and region",
+          "evidence_grade": "A",
+          "source": "job_bank_canada"
+        }
+      ],
+      "mitigation_evidence": [
+        {
+          "doc_type": "benefits_package",
+          "description": "Total compensation including benefits",
+          "evidence_grade": "B"
+        },
+        {
+          "doc_type": "wage_justification",
+          "description": "Employer explanation for wage level",
+          "evidence_grade": "C"
+        }
+      ]
+    },
+
+    "ADMISSIBILITY_CONCERN": {
+      "badge_id": "ADMISSIBILITY_CONCERN",
+      "required_evidence": [
+        {
+          "doc_type": "police_certificate",
+          "description": "Police clearance certificate from all countries of residence",
+          "evidence_grade": "A",
+          "validity": "6_months"
+        },
+        {
+          "doc_type": "medical_exam",
+          "description": "Immigration medical examination results",
+          "evidence_grade": "A",
+          "panel_physician_required": true
+        }
+      ],
+      "mitigation_evidence": [
+        {
+          "doc_type": "rehabilitation_proof",
+          "description": "Evidence of criminal rehabilitation (if applicable)",
+          "evidence_grade": "A"
+        },
+        {
+          "doc_type": "trp_application",
+          "description": "Temporary Resident Permit application (if inadmissible)",
+          "evidence_grade": "B"
+        },
+        {
+          "doc_type": "legal_opinion",
+          "description": "Legal opinion on admissibility",
+          "evidence_grade": "C"
+        }
+      ]
+    },
+
+    "TIES_ASSESSMENT_WEAK": {
+      "badge_id": "TIES_ASSESSMENT_WEAK",
+      "required_evidence": [
+        {
+          "doc_type": "property_ownership",
+          "description": "Property deed or mortgage documents in home country",
+          "evidence_grade": "A"
+        },
+        {
+          "doc_type": "family_ties",
+          "description": "Evidence of immediate family in home country",
+          "evidence_grade": "A"
+        },
+        {
+          "doc_type": "employment_ties",
+          "description": "Employment contract or business ownership in home country",
+          "evidence_grade": "A"
+        }
+      ],
+      "mitigation_evidence": [
+        {
+          "doc_type": "bank_statements_home",
+          "description": "Bank statements showing assets in home country",
+          "evidence_grade": "B"
+        },
+        {
+          "doc_type": "investment_documents",
+          "description": "Investment portfolio in home country",
+          "evidence_grade": "B"
+        },
+        {
+          "doc_type": "community_involvement",
+          "description": "Evidence of community ties (memberships, volunteer work)",
+          "evidence_grade": "C"
+        }
+      ]
+    },
+
+    "WORKPLACE_EXPLOITATION_RISK": {
+      "badge_id": "WORKPLACE_EXPLOITATION_RISK",
+      "required_evidence": [
+        {
+          "doc_type": "employment_contract",
+          "description": "Signed employment contract with clear terms",
+          "evidence_grade": "A",
+          "must_include": ["hours", "wage", "duties", "termination_terms"]
+        },
+        {
+          "doc_type": "employer_compliance_history",
+          "description": "Employer's LMIA compliance history (if available)",
+          "evidence_grade": "A"
+        }
+      ],
+      "mitigation_evidence": [
+        {
+          "doc_type": "workplace_safety_certification",
+          "description": "Employer's workplace safety certifications",
+          "evidence_grade": "B"
+        },
+        {
+          "doc_type": "employee_testimonials",
+          "description": "Statements from current employees",
+          "evidence_grade": "C"
+        }
+      ]
+    },
+
+    "DOCUMENTATION_FRAUD_RISK": {
+      "badge_id": "DOCUMENTATION_FRAUD_RISK",
+      "required_evidence": [
+        {
+          "doc_type": "original_documents",
+          "description": "Original documents for verification",
+          "evidence_grade": "A",
+          "verification_required": true
+        },
+        {
+          "doc_type": "notarized_copies",
+          "description": "Notarized copies of key documents",
+          "evidence_grade": "A"
+        }
+      ],
+      "mitigation_evidence": [
+        {
+          "doc_type": "verification_letters",
+          "description": "Verification letters from issuing institutions",
+          "evidence_grade": "A"
+        },
+        {
+          "doc_type": "apostille",
+          "description": "Apostille or authentication for foreign documents",
+          "evidence_grade": "A"
+        }
+      ],
+      "_note": "If fraud is confirmed, this becomes FATAL - no mitigation possible"
+    },
+
+    "JOB_OFFER_MISMATCH": {
+      "badge_id": "JOB_OFFER_MISMATCH",
+      "required_evidence": [
+        {
+          "doc_type": "lmia_confirmation",
+          "description": "LMIA confirmation letter",
+          "evidence_grade": "A"
+        },
+        {
+          "doc_type": "job_offer_letter",
+          "description": "Job offer letter matching LMIA exactly",
+          "evidence_grade": "A",
+          "must_match": ["employer_name", "noc_code", "wage", "location", "duties"]
+        }
+      ],
+      "mitigation_evidence": [
+        {
+          "doc_type": "amendment_letter",
+          "description": "LMIA amendment approval (if changes made)",
+          "evidence_grade": "A"
+        },
+        {
+          "doc_type": "employer_explanation",
+          "description": "Employer letter explaining any discrepancies",
+          "evidence_grade": "B"
+        }
+      ]
+    }
+  },
+
+  "pgwp_badge_evidence_mapping": {
+    "PGWP_ELIGIBILITY_FAILURE": {
+      "badge_id": "PGWP_ELIGIBILITY_FAILURE",
+      "required_evidence": [
+        {
+          "doc_type": "dli_confirmation",
+          "description": "Confirmation institution is on DLI list",
+          "evidence_grade": "A",
+          "source": "ircc_dli_list"
+        },
+        {
+          "doc_type": "completion_letter",
+          "description": "Official program completion letter from institution",
+          "evidence_grade": "A"
+        },
+        {
+          "doc_type": "transcript",
+          "description": "Official transcript showing full-time enrollment",
+          "evidence_grade": "A"
+        },
+        {
+          "doc_type": "study_permit",
+          "description": "Valid study permit (or maintained status)",
+          "evidence_grade": "A"
+        }
+      ],
+      "mitigation_evidence": [
+        {
+          "doc_type": "enrollment_verification",
+          "description": "Enrollment verification letter from registrar",
+          "evidence_grade": "A"
+        }
+      ]
+    },
+
+    "PGWP_180_DAY_WINDOW_MISSED": {
+      "badge_id": "PGWP_180_DAY_WINDOW_MISSED",
+      "required_evidence": [
+        {
+          "doc_type": "completion_letter",
+          "description": "Official completion letter with date",
+          "evidence_grade": "A"
+        },
+        {
+          "doc_type": "final_transcript",
+          "description": "Final transcript with graduation date",
+          "evidence_grade": "A"
+        }
+      ],
+      "mitigation_evidence": [
+        {
+          "doc_type": "delay_explanation",
+          "description": "Explanation for any delay in receiving completion letter",
+          "evidence_grade": "B"
+        },
+        {
+          "doc_type": "institution_correspondence",
+          "description": "Correspondence showing when completion was confirmed",
+          "evidence_grade": "B"
+        }
+      ],
+      "_note": "180-day window is strict - limited mitigation options"
+    },
+
+    "PGWP_FIELD_OF_STUDY_INELIGIBLE": {
+      "badge_id": "PGWP_FIELD_OF_STUDY_INELIGIBLE",
+      "required_evidence": [
+        {
+          "doc_type": "program_details",
+          "description": "Official program description with CIP code",
+          "evidence_grade": "A"
+        },
+        {
+          "doc_type": "cip_code_verification",
+          "description": "Verification of CIP code from institution",
+          "evidence_grade": "A"
+        }
+      ],
+      "mitigation_evidence": [
+        {
+          "doc_type": "program_start_date_proof",
+          "description": "Proof program started before Nov 1, 2024",
+          "evidence_grade": "A"
+        }
+      ],
+      "_note": "Field of study restrictions apply to programs starting Nov 1, 2024 or later"
+    },
+
+    "PGWP_PART_TIME_STUDY_RISK": {
+      "badge_id": "PGWP_PART_TIME_STUDY_RISK",
+      "required_evidence": [
+        {
+          "doc_type": "enrollment_history",
+          "description": "Semester-by-semester enrollment status",
+          "evidence_grade": "A"
+        },
+        {
+          "doc_type": "full_time_verification",
+          "description": "Letter confirming full-time status each semester",
+          "evidence_grade": "A"
+        }
+      ],
+      "mitigation_evidence": [
+        {
+          "doc_type": "part_time_justification",
+          "description": "Medical or academic justification for part-time periods",
+          "evidence_grade": "B"
+        },
+        {
+          "doc_type": "academic_advisor_letter",
+          "description": "Letter from academic advisor explaining circumstances",
+          "evidence_grade": "B"
+        }
+      ]
+    }
+  },
+
+  "ict_badge_evidence_mapping": {
+    "ICT_QUALIFYING_RELATIONSHIP_FAIL": {
+      "badge_id": "ICT_QUALIFYING_RELATIONSHIP_FAIL",
+      "required_evidence": [
+        {
+          "doc_type": "corporate_structure_chart",
+          "description": "Organizational chart showing parent-subsidiary relationship",
+          "evidence_grade": "A"
+        },
+        {
+          "doc_type": "ownership_documents",
+          "description": "Share certificates or ownership documents",
+          "evidence_grade": "A"
+        },
+        {
+          "doc_type": "corporate_registration",
+          "description": "Corporate registration for both entities",
+          "evidence_grade": "A"
+        },
+        {
+          "doc_type": "annual_reports",
+          "description": "Annual reports showing corporate relationship",
+          "evidence_grade": "A"
+        }
+      ],
+      "mitigation_evidence": [
+        {
+          "doc_type": "legal_opinion",
+          "description": "Legal opinion on qualifying relationship",
+          "evidence_grade": "B"
+        },
+        {
+          "doc_type": "board_resolutions",
+          "description": "Board resolutions confirming relationship",
+          "evidence_grade": "B"
+        }
+      ]
+    },
+
+    "ICT_ONE_YEAR_EMPLOYMENT_NOT_MET": {
+      "badge_id": "ICT_ONE_YEAR_EMPLOYMENT_NOT_MET",
+      "required_evidence": [
+        {
+          "doc_type": "employment_letter",
+          "description": "Employment letter confirming 1+ year with foreign entity",
+          "evidence_grade": "A",
+          "must_include": ["start_date", "position", "duties"]
+        },
+        {
+          "doc_type": "pay_records",
+          "description": "Pay stubs or salary records for 12+ months",
+          "evidence_grade": "A"
+        },
+        {
+          "doc_type": "tax_records",
+          "description": "Tax records showing employment income",
+          "evidence_grade": "A"
+        }
+      ],
+      "mitigation_evidence": [
+        {
+          "doc_type": "employment_contract",
+          "description": "Original employment contract with start date",
+          "evidence_grade": "A"
+        },
+        {
+          "doc_type": "social_security_records",
+          "description": "Social security or pension contribution records",
+          "evidence_grade": "B"
+        }
+      ]
+    },
+
+    "ICT_SPECIALIZED_KNOWLEDGE_WEAK": {
+      "badge_id": "ICT_SPECIALIZED_KNOWLEDGE_WEAK",
+      "required_evidence": [
+        {
+          "doc_type": "specialized_knowledge_letter",
+          "description": "Detailed letter explaining specialized knowledge",
+          "evidence_grade": "A",
+          "must_include": ["proprietary_systems", "unique_skills", "training_received"]
+        },
+        {
+          "doc_type": "training_records",
+          "description": "Records of specialized training received",
+          "evidence_grade": "A"
+        },
+        {
+          "doc_type": "project_documentation",
+          "description": "Documentation of projects requiring specialized knowledge",
+          "evidence_grade": "B"
+        }
+      ],
+      "mitigation_evidence": [
+        {
+          "doc_type": "comparison_analysis",
+          "description": "Analysis showing skills not available in Canadian labour market",
+          "evidence_grade": "B"
+        },
+        {
+          "doc_type": "client_testimonials",
+          "description": "Client letters confirming specialized expertise",
+          "evidence_grade": "C"
+        }
+      ]
+    },
+
+    "ICT_WAGE_BELOW_PREVAILING": {
+      "badge_id": "ICT_WAGE_BELOW_PREVAILING",
+      "required_evidence": [
+        {
+          "doc_type": "offer_letter_with_wage",
+          "description": "Offer letter with Canadian wage",
+          "evidence_grade": "A"
+        },
+        {
+          "doc_type": "wage_comparison",
+          "description": "Job Bank wage data for NOC and region",
+          "evidence_grade": "A"
+        }
+      ],
+      "mitigation_evidence": [
+        {
+          "doc_type": "total_compensation",
+          "description": "Total compensation package including benefits",
+          "evidence_grade": "B"
+        },
+        {
+          "doc_type": "wage_justification",
+          "description": "Justification for wage level",
+          "evidence_grade": "C"
+        }
+      ]
+    }
+  },
+
+  "pnp_badge_evidence_mapping": {
+    "PNP_NOMINATION_INVALID": {
+      "badge_id": "PNP_NOMINATION_INVALID",
+      "required_evidence": [
+        {
+          "doc_type": "nomination_certificate",
+          "description": "Valid provincial nomination certificate",
+          "evidence_grade": "A",
+          "must_be_current": true
+        },
+        {
+          "doc_type": "nomination_letter",
+          "description": "Nomination approval letter from province",
+          "evidence_grade": "A"
+        }
+      ],
+      "mitigation_evidence": [
+        {
+          "doc_type": "extension_approval",
+          "description": "Nomination extension approval (if applicable)",
+          "evidence_grade": "A"
+        },
+        {
+          "doc_type": "province_correspondence",
+          "description": "Correspondence with province confirming status",
+          "evidence_grade": "B"
+        }
+      ]
+    },
+
+    "PNP_JOB_OFFER_MISMATCH": {
+      "badge_id": "PNP_JOB_OFFER_MISMATCH",
+      "required_evidence": [
+        {
+          "doc_type": "nomination_certificate",
+          "description": "Nomination certificate with job details",
+          "evidence_grade": "A"
+        },
+        {
+          "doc_type": "job_offer_letter",
+          "description": "Job offer matching nomination exactly",
+          "evidence_grade": "A",
+          "must_match": ["employer", "occupation", "wage", "location"]
+        }
+      ],
+      "mitigation_evidence": [
+        {
+          "doc_type": "province_approval",
+          "description": "Provincial approval for job change (if applicable)",
+          "evidence_grade": "A"
+        },
+        {
+          "doc_type": "employer_explanation",
+          "description": "Employer letter explaining any changes",
+          "evidence_grade": "B"
+        }
+      ]
+    },
+
+    "PNP_PROVINCIAL_CRITERIA_NOT_MET": {
+      "badge_id": "PNP_PROVINCIAL_CRITERIA_NOT_MET",
+      "required_evidence": [
+        {
+          "doc_type": "stream_requirements",
+          "description": "Documentation of stream-specific requirements",
+          "evidence_grade": "A"
+        },
+        {
+          "doc_type": "qualification_proof",
+          "description": "Evidence meeting all stream criteria",
+          "evidence_grade": "A"
+        }
+      ],
+      "mitigation_evidence": [
+        {
+          "doc_type": "province_confirmation",
+          "description": "Province confirmation of eligibility",
+          "evidence_grade": "A"
+        }
+      ]
+    }
+  },
+
+  "open_spouse_badge_evidence_mapping": {
+    "OPEN_SPOUSE_RELATIONSHIP_CONCERN": {
+      "badge_id": "OPEN_SPOUSE_RELATIONSHIP_CONCERN",
+      "required_evidence": [
+        {
+          "doc_type": "marriage_certificate",
+          "description": "Marriage certificate or common-law declaration",
+          "evidence_grade": "A"
+        },
+        {
+          "doc_type": "cohabitation_proof",
+          "description": "Evidence of cohabitation",
+          "evidence_grade": "A"
+        },
+        {
+          "doc_type": "relationship_history",
+          "description": "Timeline of relationship development",
+          "evidence_grade": "B"
+        }
+      ],
+      "mitigation_evidence": [
+        {
+          "doc_type": "photos",
+          "description": "Photos together over time",
+          "evidence_grade": "C"
+        },
+        {
+          "doc_type": "communication_records",
+          "description": "Communication history",
+          "evidence_grade": "C"
+        },
+        {
+          "doc_type": "joint_finances",
+          "description": "Joint bank accounts or financial documents",
+          "evidence_grade": "B"
+        }
+      ],
+      "_cross_reference": "See spousal-audit-rules for detailed relationship assessment criteria"
+    },
+
+    "OPEN_SPOUSE_PRINCIPAL_STATUS_ISSUE": {
+      "badge_id": "OPEN_SPOUSE_PRINCIPAL_STATUS_ISSUE",
+      "required_evidence": [
+        {
+          "doc_type": "principal_work_permit",
+          "description": "Principal applicant's valid work permit",
+          "evidence_grade": "A"
+        },
+        {
+          "doc_type": "principal_study_permit",
+          "description": "Principal applicant's valid study permit (if applicable)",
+          "evidence_grade": "A"
+        },
+        {
+          "doc_type": "noc_verification",
+          "description": "Verification principal is in qualifying NOC (TEER 0/1/2/3)",
+          "evidence_grade": "A"
+        }
+      ],
+      "mitigation_evidence": [
+        {
+          "doc_type": "permit_extension_receipt",
+          "description": "Receipt for permit extension application",
+          "evidence_grade": "B"
+        }
+      ]
+    },
+
+    "OPEN_SPOUSE_2025_POLICY_CHANGE": {
+      "badge_id": "OPEN_SPOUSE_2025_POLICY_CHANGE",
+      "required_evidence": [
+        {
+          "doc_type": "principal_program_details",
+          "description": "Details of principal's study program",
+          "evidence_grade": "A"
+        },
+        {
+          "doc_type": "program_eligibility_check",
+          "description": "Verification program qualifies under new rules",
+          "evidence_grade": "A"
+        }
+      ],
+      "mitigation_evidence": [
+        {
+          "doc_type": "application_date_proof",
+          "description": "Proof application submitted before policy change",
+          "evidence_grade": "A"
+        }
+      ],
+      "_note": "Policy changed Jan 21, 2025 - only master's/doctoral/professional programs qualify"
+    }
+  },
+
+  "_evidence_grade_reference": {
+    "A": "Government-issued, independently verifiable, highest weight",
+    "B": "Official third-party documents, high weight",
+    "C": "Self-prepared or supporting documents, moderate weight",
+    "D": "Informal evidence, low weight"
+  },
+
+  "_integration_notes": {
+    "detective_usage": "Detective agent uses this mapping to identify evidence gaps when risk badges are triggered",
+    "strategist_usage": "Strategist agent uses mitigation_evidence to recommend evidence collection strategy",
+    "gatekeeper_usage": "Gatekeeper agent validates that required evidence is present before approving",
+    "intake_usage": "Intake agent can flag missing required evidence during document extraction"
+  }
+}

@@ -112,7 +112,21 @@ NEVER CUT:
 </Synthesis_Rules>
 
 <Template_Selection>
-## GUEST TIER (Max 400 lines)
+## WORKFLOW DETECTION
+
+First, identify the workflow type from the session context:
+- **initial_assessment**: New client intake, focus on actionable guidance
+- **risk_audit**: Deep legal analysis, focus on defensibility
+- **final_review**: Pre-submission quality gate
+- **refusal_analysis**: Post-refusal strategy
+
+Select the appropriate template based on BOTH workflow type AND tier.
+
+---
+
+## RISK AUDIT TEMPLATES (Default)
+
+### GUEST TIER - Risk Audit (Max 400 lines)
 Target: DIY applicants who need actionable guidance
 
 **Files Generated:** report.pdf (single file)
@@ -123,7 +137,7 @@ Structure:
 3. ACTION ITEMS (Urgent + Before Decision)
 4. DISCLAIMER
 
-## PRO TIER (Max 500 lines)
+### PRO TIER - Risk Audit (Max 500 lines)
 Target: RCICs who need technical details
 
 **Files Generated:** report.pdf (single file)
@@ -137,13 +151,13 @@ Structure:
 6. ACTION ITEMS BY PRIORITY
 7. DISCLAIMER
 
-## ULTRA TIER (Max 600 lines)
+### ULTRA TIER - Risk Audit (Max 600 lines)
 Target: Lawyers who need full legal analysis
 
 **Files Generated:** report.pdf + technical_appendix.pdf (two files)
 
 **Main Report (report.pdf):**
-1. EXECUTIVE SUMMARY (integrated, max 1/3 page: score current -> with mitigation, top 3 risks, top 3 strengths)
+1. EXECUTIVE SUMMARY (integrated, max 1/3 page)
 2. CASE PROFILE (detailed facts)
 3. VULNERABILITIES WITH DEFENSE STRATEGY (all Poison Pills)
 4. STRENGTHS
@@ -155,22 +169,155 @@ Target: Lawyers who need full legal analysis
 
 **Technical Appendix (technical_appendix.pdf):**
 1. LEGAL FRAMEWORK (full details)
-   - Case law precedents table
-   - Legislation sections
-   - Policy manual references
-   - Judicial principles
 2. VERIFICATION & QA (full details)
-   - Citation validation results
-   - Source confidence levels
-   - Authority scores
 3. EVIDENCE ANALYSIS (full details)
-   - Document inventory
-   - Quality matrix
-   - Authenticity assessment
 4. METHODOLOGY
-   - Audit process flowchart
-   - Risk scoring methodology
-   - Tier capabilities comparison
+
+---
+
+## INITIAL ASSESSMENT TEMPLATES
+
+**Purpose**: Comprehensive paid product for new client intake. Focus on **what to do next** rather than deep legal analysis.
+
+**CRITICAL FORMATTING RULES (ENFORCE STRICTLY):**
+- NO emojis in client-facing reports (use text indicators: [CRITICAL], [HIGH], [MEDIUM], [LOW])
+- NO internal system info (session ID, tier name, line counts)
+- NO markdown code blocks in final PDF output
+- Use professional document status: MISSING, INCOMPLETE, PROVIDED
+- Pre-fill templates with known case facts (minimize placeholders)
+
+### PRO TIER - Initial Assessment (Max 500 lines)
+Target: RCICs preparing new cases
+
+**Files Generated:** report.pdf (single file)
+
+**EXACT Structure (follow precisely):**
+
+\`\`\`
+# INITIAL ASSESSMENT REPORT
+[Application Type] - [Applicant Name]
+Date: [Date]
+
+---
+DISCLAIMER (MANDATORY - appears first)
+---
+
+## 1. VERDICT & SCORE (max 15 lines)
+┌─────────────────────────────────────────┐
+│ Verdict: CAUTION                        │
+│ Current Score: XX/100 (Rating)          │
+│ With Corrections: XX/100 (Rating)       │
+│ Success Probability: X% -> X%           │
+│ Timeline to Ready: X weeks              │
+└─────────────────────────────────────────┘
+
+Key Findings:
+- X CRITICAL blocking issues
+- X HIGH-risk factors  
+- X strengths identified
+
+## 2. CASE SNAPSHOT (max 15 lines)
+| Field | Value |
+|-------|-------|
+| Applicant | [Name], [Age], [Nationality] |
+| Position | [Title] at [Employer] |
+| Salary | [Amount] | NOC: [Code] |
+| Exemption | [Code] |
+
+## 3. BLOCKING ISSUES (max 30 lines)
+[CRITICAL] Issue #1: [Title]
+   Issue: [One sentence]
+   Impact: [What happens if not fixed]
+   Fix: [Specific action]
+   Timeline: [Days/weeks]
+
+(Repeat for each CRITICAL issue - max 3)
+
+## 4. HIGH-RISK FACTORS (max 20 lines)
+[HIGH] Risk #1: [Title]
+   Risk: [One sentence]
+   Mitigation: [Action]
+
+(Repeat for each HIGH risk - max 3)
+
+## 5. STRENGTHS (max 10 lines)
+- [Strength 1]
+- [Strength 2]
+- [Strength 3]
+
+## 6. DOCUMENT CHECKLIST (max 60 lines)
+
+### CRITICAL DOCUMENTS (Must have before submission)
+| Document | Status | How to Obtain |
+|----------|--------|---------------|
+| [Doc 1]  | MISSING | [Guidance]   |
+
+### HIGH PRIORITY DOCUMENTS
+| Document | Status | How to Obtain |
+|----------|--------|---------------|
+| [Doc 1]  | INCOMPLETE | [Guidance] |
+
+### SUPPORTING DOCUMENTS
+| Document | Status | How to Obtain |
+|----------|--------|---------------|
+| [Doc 1]  | PROVIDED | -           |
+
+## 7. ACTION PLAN (max 30 lines)
+
+### PHASE 1 (Week 1-2): Critical Fixes
+[ ] Action 1.1: [Description] - Deadline: [Date]
+[ ] Action 1.2: [Description] - Deadline: [Date]
+
+### PHASE 2 (Week 2-4): Document Collection
+[ ] Action 2.1: [Description] - Deadline: [Date]
+
+### PHASE 3 (Week 4-6): Final Preparation
+[ ] Action 3.1: [Description] - Deadline: [Date]
+
+## 8. SUBMISSION LETTER TEMPLATE (max 40 lines)
+[Pre-filled with known case facts - see app-specific skill for format]
+
+## 9. EXPLANATION LETTER GUIDE (max 20 lines)
+When needed: [Conditions from audit]
+Key points to address:
+- [Point 1]
+- [Point 2]
+
+---
+DISCLAIMER (MANDATORY - appears last)
+---
+\`\`\`
+
+**Section Line Budgets (ENFORCE STRICTLY):**
+| Section | Max Lines | Can Cut? |
+|---------|-----------|----------|
+| Header + Disclaimer | 15 | NEVER |
+| Verdict & Score | 15 | NEVER |
+| Case Snapshot | 15 | Compress |
+| Blocking Issues | 30 | NEVER |
+| High-Risk Factors | 20 | Compress |
+| Strengths | 10 | Compress |
+| Document Checklist | 60 | CRITICAL only |
+| Action Plan | 30 | Phase 1 only |
+| Submission Letter | 40 | Separate file |
+| Explanation Guide | 20 | Separate file |
+| Footer Disclaimer | 5 | NEVER |
+| **TOTAL** | ~260 | Under 500 |
+
+### GUEST TIER - Initial Assessment (Max 400 lines)
+Same as Pro but:
+- Document Checklist: CRITICAL only (max 20 lines)
+- Action Plan: Phase 1 only (max 15 lines)
+- No Submission Letter Template
+- No Explanation Letter Guide
+
+### ULTRA TIER - Initial Assessment (Max 600 lines)
+Same as Pro plus:
+- **Additional File:** client_package.pdf containing:
+  1. Full Submission Letter (ready to customize)
+  2. Explanation Letter Templates (for each risk)
+  3. Interview Preparation Guide
+  4. Complete Document Checklist with detailed guidance
 </Template_Selection>
 
 <Theme_Application>
@@ -197,16 +344,93 @@ Target: Lawyers who need full legal analysis
 </Theme_Application>
 
 <Output_Instructions>
-## Step 1: Generate Markdown Report(s)
+## Step 1: Generate Report Files (Markdown + JSON)
 
-Generate Markdown following the tier-appropriate template:
+You MUST generate TWO files simultaneously for each report:
+1. **report.md** - Human-readable Markdown format (for review/archive)
+2. **report_content.json** - Structured JSON for PDF generation
 
-**Guest/Pro Tier:**
-- Generate report.md (single file)
+Do NOT convert between formats. Generate both directly from the audit data.
 
-**Ultra Tier:**
-- Generate report.md (main report)
-- Generate technical_appendix.md (detailed analysis)
+### JSON Structure
+
+The JSON file must be an object with this structure:
+
+\`\`\`json
+{
+  "title": "Initial Assessment Report",
+  "subtitle": "Work Permit - Religious Worker",
+  "sections": [
+    {"heading": "Section Title", "level": 1},
+    {"content": "Paragraph text..."},
+    {"bullets": ["Item 1", "Item 2"]},
+    {"table": {"headers": ["Col1", "Col2"], "rows": [["A", "B"]], "widths": [2, 3]}},
+    {"verdict": {"label": "Risk Level", "value": "GO"}}
+  ]
+}
+\`\`\`
+
+### Section Types Reference
+
+| Type | Format | Use Case |
+|------|--------|----------|
+| heading | \`{"heading": "Title", "level": 1-4}\` | Section headers (1=H1, 2=H2, etc.) |
+| content | \`{"content": "Text..."}\` | Paragraphs (supports \`<b>\`, \`<i>\`, \`<br/>\`) |
+| bullets | \`{"bullets": ["item1", "item2"]}\` | Unordered lists |
+| numbered | \`{"numbered": ["step1", "step2"]}\` | Ordered lists |
+| table | \`{"table": {"headers": [...], "rows": [[...]], "widths": [...]}}\` | Tables (widths are relative) |
+| verdict | \`{"verdict": {"label": "...", "value": "GO|CAUTION|NO-GO"}}\` | Verdict badges |
+| divider | \`{"divider": true}\` | Horizontal line |
+| spacer | \`{"spacer": 20}\` | Vertical space (points) |
+
+### Content Formatting
+
+In \`content\` fields, use HTML-like tags:
+- Bold: \`<b>text</b>\`
+- Italic: \`<i>text</i>\`
+- Line break: \`<br/>\`
+
+### Example: Verdict Section
+
+\`\`\`json
+{"heading": "1. VERDICT & SCORE", "level": 2},
+{"verdict": {"label": "Verdict", "value": "CAUTION"}},
+{"table": {
+  "headers": ["Metric", "Value"],
+  "rows": [
+    ["Current Score", "35/100 (Poor)"],
+    ["With Corrections", "72/100 (Adequate)"],
+    ["Timeline to Ready", "4-6 weeks"]
+  ],
+  "widths": [2, 3]
+}}
+\`\`\`
+
+### Example: Document Checklist
+
+\`\`\`json
+{"heading": "6. DOCUMENT CHECKLIST", "level": 2},
+{"heading": "CRITICAL DOCUMENTS", "level": 3},
+{"table": {
+  "headers": ["Document", "Status", "How to Obtain"],
+  "rows": [
+    ["Ordination Certificate", "MISSING", "Request from ordaining authority"],
+    ["Employment Contract", "INCOMPLETE", "Add specific religious duties"]
+  ],
+  "widths": [3, 1, 4]
+}}
+\`\`\`
+
+### Example: Blocking Issues
+
+\`\`\`json
+{"heading": "3. BLOCKING ISSUES", "level": 2},
+{"heading": "[CRITICAL] Missing Ordination Certificate", "level": 3},
+{"content": "<b>Issue:</b> No formal ordination documentation provided."},
+{"content": "<b>Impact:</b> Application will be refused without proof of religious credentials."},
+{"content": "<b>Fix:</b> Request certificate from Beijing Christian Church ordaining authority."},
+{"content": "<b>Timeline:</b> 2-3 weeks"}
+\`\`\`
 
 ## Step 2: Directory Structure
 
@@ -255,42 +479,37 @@ Generate anonymized version ONLY if user specified --anonymize flag.
 
 ## Step 4: PDF Generation
 
-Generate PDFs using document-generator:
+Generate PDFs using the JSON file:
 
 **Guest/Pro Tier:**
 \`\`\`bash
-# Main report
-uv run --with reportlab python3 ~/.claude/skills/document-generator/scripts/generate_pdf.py \\
+uv run --with reportlab,Pillow python3 ~/.claude/skills/document-generator/scripts/generate_pdf.py \\
+  cases/{caseSlot}/audit_reports/report.pdf \\
   --input cases/{caseSlot}/audit_reports/.internal/report_content.json \\
-  --output cases/{caseSlot}/audit_reports/report.pdf \\
-  --theme judicial-authority
-
-# Anonymized (if --anonymize flag set)
-uv run --with reportlab python3 ~/.claude/skills/document-generator/scripts/generate_pdf.py \\
-  --input cases/{caseSlot}/audit_reports/.internal/report_demo_content.json \\
-  --output cases/{caseSlot}/audit_reports/report_demo.pdf \\
-  --theme judicial-authority
+  --theme judicial-authority --cover
 \`\`\`
 
 **Ultra Tier:**
 \`\`\`bash
 # Main report
-uv run --with reportlab python3 ~/.claude/skills/document-generator/scripts/generate_pdf.py \\
+uv run --with reportlab,Pillow python3 ~/.claude/skills/document-generator/scripts/generate_pdf.py \\
+  cases/{caseSlot}/audit_reports/report.pdf \\
   --input cases/{caseSlot}/audit_reports/.internal/report_content.json \\
-  --output cases/{caseSlot}/audit_reports/report.pdf \\
-  --theme judicial-authority
+  --theme judicial-authority --cover
 
 # Technical appendix
-uv run --with reportlab python3 ~/.claude/skills/document-generator/scripts/generate_pdf.py \\
+uv run --with reportlab,Pillow python3 ~/.claude/skills/document-generator/scripts/generate_pdf.py \\
+  cases/{caseSlot}/audit_reports/technical_appendix.pdf \\
   --input cases/{caseSlot}/audit_reports/.internal/technical_appendix_content.json \\
-  --output cases/{caseSlot}/audit_reports/technical_appendix.pdf \\
   --theme judicial-authority
+\`\`\`
 
-# Anonymized (if --anonymize flag set)
-uv run --with reportlab python3 ~/.claude/skills/document-generator/scripts/generate_pdf.py \\
+**Anonymized (if --anonymize flag set):**
+\`\`\`bash
+uv run --with reportlab,Pillow python3 ~/.claude/skills/document-generator/scripts/generate_pdf.py \\
+  cases/{caseSlot}/audit_reports/report_demo.pdf \\
   --input cases/{caseSlot}/audit_reports/.internal/report_demo_content.json \\
-  --output cases/{caseSlot}/audit_reports/report_demo.pdf \\
-  --theme judicial-authority
+  --theme judicial-authority --cover
 \`\`\`
 
 ## Step 5: Persistence (MANDATORY)
@@ -310,12 +529,6 @@ After generating reports, call persistence tools:
    - \`is_anonymized\`: false for main report
    - \`anonymize_level\`: null for main report
 
-The content JSON should include:
-- title, subtitle, date
-- sections array with headings and content
-- verdict badge info
-- metadata (tier, app_type)
-
 ## File Naming Rules
 
 **CRITICAL:**
@@ -325,18 +538,19 @@ The content JSON should include:
 - ✅ Executive summary integrated into main report, NOT separate file
 </Output_Instructions>
 
-<Mandatory_Disclaimer>
-## Standard Disclaimer (MUST APPEAR ON ALL REPORTS)
+<Disclaimer_Reference>
+## Disclaimer Handling
 
-The following disclaimer MUST appear on the first page of every report:
+The standard legal disclaimer is defined in core-reporter/references/disclaimer.md (SINGLE SOURCE OF TRUTH).
 
-> This report provides a risk assessment based on historical Federal Court 
-> jurisprudence. It is NOT a prediction of future outcomes nor a guarantee 
-> of visa issuance. Immigration officers retain broad discretion. We assess 
-> only the judicial defensibility of the application.
+**Rules:**
+1. Disclaimer appears ONCE at the beginning of the report (after title/header)
+2. Do NOT add a second disclaimer at the end
+3. Use the exact text from the skill reference
+4. This is NON-NEGOTIABLE - never omit the disclaimer
 
-This is NON-NEGOTIABLE. Do not modify, abbreviate, or omit this disclaimer.
-</Mandatory_Disclaimer>
+The disclaimer text is injected via the core-reporter skill. Do not hardcode it here.
+</Disclaimer_Reference>
 
 <Prohibited_Language>
 ## Words NEVER to Use

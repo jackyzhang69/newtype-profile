@@ -1,153 +1,615 @@
 {
-  "risk_badges": {
-    "LMIA_NOT_OBTAINED": {
-      "id": "LMIA_NOT_OBTAINED",
-      "category": "employer_compliance",
-      "severity": "CRITICAL",
-      "description": "Required LMIA not provided or negative assessment",
-      "indicators": [
-        "job_offer_without_lmia",
-        "lmia_negative_assessment",
-        "lmia_expired",
-        "lmia_different_employer"
-      ],
-      "implications": "Application will be refused under R200",
-      "remediation": "Obtain valid LMIA or demonstrate exemption eligibility",
-      "court_authority": "IRPA R200(1) - mandatory LMIA requirement"
+  "version": "3.0.0",
+  "description": "Work Permit Risk Badge Framework - ALL severity levels MUST be determined by Detective agent via MCP caselaw search at runtime",
+  "last_updated": "2026-01-28",
+
+  "_critical_rules": {
+    "rule_1": "ALL severity assessments MUST come from Detective agent caselaw analysis",
+    "rule_2": "DO NOT use LLM training knowledge to determine risk severity",
+    "rule_3": "Scores are DYNAMIC - populated at runtime based on case law findings",
+    "rule_4": "If no case law available, mark severity as 'UNASSESSED' - do not guess",
+    "rule_5": "Category-specific badges apply ONLY to their respective work permit types"
+  },
+
+  "severity_score_framework": {
+    "_note": "Score values are framework only - actual severity determined by Detective agent based on case law",
+    "FATAL": {
+      "score": 100,
+      "meaning": "Hard eligibility failure - application cannot proceed",
+      "determination": "REQUIRES Detective agent to confirm via case law that this issue results in automatic refusal"
     },
-    "CREDENTIALS_MISMATCH": {
-      "id": "CREDENTIALS_MISMATCH",
-      "category": "applicant_capability",
-      "severity": "HIGH",
-      "description": "Applicant qualifications insufficient for position",
-      "indicators": [
-        "education_below_requirements",
-        "experience_gap",
-        "credentials_unverified",
-        "language_barrier",
-        "missing_certifications"
-      ],
-      "implications": "Officer may refuse as applicant lacks capability",
-      "remediation": "Credential verification, reference letters, evidence of competency",
-      "court_authority": "Discretionary assessment of capability to perform duties"
+    "CRITICAL": {
+      "score": 100,
+      "meaning": "Critical issue requiring immediate resolution",
+      "determination": "REQUIRES Detective agent to confirm via case law"
     },
-    "EMPLOYER_FRAUD_RISK": {
-      "id": "EMPLOYER_FRAUD_RISK",
-      "category": "employer_legitimacy",
-      "severity": "HIGH",
-      "description": "Employer legitimacy or fraud risk concerns",
-      "indicators": [
-        "employer_fraud_history",
-        "job_offer_inconsistencies",
-        "employer_unverifiable",
-        "shell_company_patterns",
-        "recent_registration"
-      ],
-      "implications": "Application escalated to fraud investigation",
-      "remediation": "Employer verification, third-party confirmation, LMIA documentation",
-      "court_authority": "Officer must assess genuineness of employment offer"
+    "HIGH": {
+      "score": 30,
+      "meaning": "Significant refusal risk",
+      "determination": "REQUIRES Detective agent to assess based on refusal rate in similar cases"
     },
-    "IMMIGRANT_INTENT_SIGNAL": {
-      "id": "IMMIGRANT_INTENT_SIGNAL",
-      "category": "intent_determination",
-      "severity": "HIGH",
-      "description": "Evidence indicates intent to settle permanently in Canada",
-      "indicators": [
-        "family_in_canada",
-        "previous_pr_applications",
-        "canadian_property",
-        "no_ties_home_country",
-        "settlement_documentation"
-      ],
-      "implications": "Application refused due to permanent settlement intent",
-      "remediation": "Establish ties to home country, explicit return plan, family abroad",
-      "court_authority": "Applicant must demonstrate temporary intent under R200"
+    "MEDIUM": {
+      "score": 15,
+      "meaning": "Notable concern requiring attention",
+      "determination": "REQUIRES Detective agent to assess based on case outcomes"
     },
-    "WAGE_COMPLIANCE_ISSUE": {
-      "id": "WAGE_COMPLIANCE_ISSUE",
-      "category": "employment_conditions",
-      "severity": "MEDIUM",
-      "description": "Offered wages below prevailing standards or minimum",
-      "indicators": [
-        "below_provincial_minimum",
-        "below_lmia_rate",
-        "below_median_wage",
-        "wage_deductions",
-        "exploitative_conditions"
-      ],
-      "implications": "Officer may refuse as conditions exploitative or non-compliant",
-      "remediation": "Wage documentation, prevailing rate verification, contract amendment",
-      "court_authority": "Service Canada LMIA wage assessment; human trafficking concerns"
+    "LOW": {
+      "score": 5,
+      "meaning": "Minor issue to acknowledge",
+      "determination": "REQUIRES Detective agent to confirm minimal impact via case law"
     },
-    "ADMISSIBILITY_CONCERN": {
-      "id": "ADMISSIBILITY_CONCERN",
-      "category": "admissibility",
-      "severity": "CRITICAL",
-      "description": "Grounds for inadmissibility under IRPA identified",
-      "indicators": [
-        "criminal_record",
-        "security_concerns",
-        "misrepresentation",
-        "missing_medical_exam",
-        "missing_police_certificate"
-      ],
-      "implications": "Application will be refused automatically if inadmissible",
-      "remediation": "Legal clearance, medical examination, police certificate, waiver if applicable",
-      "court_authority": "IRPA s.36-42 inadmissibility provisions"
-    },
-    "TIES_ASSESSMENT_WEAK": {
-      "id": "TIES_ASSESSMENT_WEAK",
-      "category": "intent_determination",
-      "severity": "MEDIUM",
-      "description": "Applicant has minimal ties to home country",
-      "indicators": [
-        "no_immediate_family_abroad",
-        "minimal_assets_home",
-        "no_employment_history",
-        "young_age_no_dependents",
-        "multiple_visa_rejections"
-      ],
-      "implications": "Officer may infer intent to remain in Canada",
-      "remediation": "Family documentation, property proof, employment history, return plan",
-      "court_authority": "Discretionary assessment of return incentives"
-    },
-    "WORKPLACE_EXPLOITATION_RISK": {
-      "id": "WORKPLACE_EXPLOITATION_RISK",
-      "category": "human_trafficking",
-      "severity": "HIGH",
-      "description": "Indicators of workplace abuse or trafficking",
-      "indicators": [
-        "wage_theft",
-        "excessive_hours",
-        "unsafe_conditions",
-        "harassment_discrimination",
-        "isolation_tactics"
-      ],
-      "implications": "Application refused; human trafficking investigation possible",
-      "remediation": "Worker protection documentation, contract review, safe workplace confirmation",
-      "court_authority": "IRPA s.40 human trafficking inadmissibility"
-    },
-    "DOCUMENTATION_FRAUD_RISK": {
-      "id": "DOCUMENTATION_FRAUD_RISK",
-      "category": "integrity",
-      "severity": "CRITICAL",
-      "description": "Forged, falsified, or fraudulent documents detected",
-      "indicators": [
-        "forged_passport",
-        "false_credentials",
-        "fake_lmia",
-        "falsified_job_offer",
-        "misrepresentation"
-      ],
-      "implications": "Application refused; fraud investigation; potential deportation",
-      "remediation": "None - application cannot proceed if fraud confirmed",
-      "court_authority": "IRPA s.40(1)(d) misrepresentation inadmissibility"
+    "UNASSESSED": {
+      "score": null,
+      "meaning": "Severity not yet determined - awaiting Detective agent analysis",
+      "determination": "Detective agent must search case law before assigning severity"
     }
   },
+
+  "threshold_triggers": {
+    "_note": "Thresholds are provisional - may be adjusted based on Detective agent case law analysis",
+    "total_score_assessment": {
+      "0-20": {"level": "LOW_RISK", "verdict": "GO"},
+      "21-50": {"level": "MODERATE_RISK", "verdict": "CAUTION"},
+      "51-80": {"level": "HIGH_RISK", "verdict": "CAUTION"},
+      "81-100": {"level": "CRITICAL_RISK", "verdict": "NO-GO"},
+      ">100": {"level": "FATAL", "verdict": "NO-GO"}
+    }
+  },
+
+  "work_permit_categories": {
+    "_note": "10 categories ranked by refusal rate from Detective investigation",
+    "LMIA": {"refusal_rate": "40-50%", "complexity": 5},
+    "PNP": {"refusal_rate": "30-40%", "complexity": 4},
+    "ICT": {"refusal_rate": "25-35%", "complexity": 4},
+    "PGWP": {"refusal_rate": "25-35%", "complexity": 4},
+    "OPEN_REFUGEE": {"refusal_rate": "25-35%", "complexity": 3},
+    "IMP": {"refusal_rate": "20-30%", "complexity": 3},
+    "OPEN_STUDENT": {"refusal_rate": "20-30%", "complexity": 3},
+    "OPEN_CAREGIVER": {"refusal_rate": "20-25%", "complexity": 3},
+    "OPEN_SPOUSE": {"refusal_rate": "15-20%", "complexity": 2},
+    "TFW": {"refusal_rate": "30-40%", "complexity": 4}
+  },
+
+  "risk_badges": {
+    "_universal_badges": {
+      "_note": "These badges apply to ALL work permit categories",
+      
+      "LMIA_NOT_OBTAINED": {
+        "id": "LMIA_NOT_OBTAINED",
+        "category": "employer_compliance",
+        "applies_to": ["LMIA", "TFW"],
+        "severity": "REQUIRES_DETECTIVE_ASSESSMENT",
+        "score": null,
+        "description": "Required LMIA not provided or negative assessment",
+        "indicators": [
+          "job_offer_without_lmia",
+          "lmia_negative_assessment",
+          "lmia_expired",
+          "lmia_different_employer"
+        ],
+        "_detective_query": "caselaw_optimized_search(query='work permit LMIA not obtained refusal R200', court='fc', target_count=5)",
+        "_assessment_instruction": "Detective must search case law to determine if this is always fatal or context-dependent"
+      },
+
+      "CREDENTIALS_MISMATCH": {
+        "id": "CREDENTIALS_MISMATCH",
+        "category": "applicant_capability",
+        "applies_to": ["ALL"],
+        "severity": "REQUIRES_DETECTIVE_ASSESSMENT",
+        "score": null,
+        "description": "Applicant qualifications insufficient for position",
+        "indicators": [
+          "education_below_requirements",
+          "experience_gap",
+          "credentials_unverified",
+          "language_barrier",
+          "missing_certifications"
+        ],
+        "_detective_query": "caselaw_optimized_search(query='work permit credentials mismatch qualifications refusal', court='fc', target_count=5)",
+        "_assessment_instruction": "Detective must find case law showing how courts treat credential mismatches"
+      },
+
+      "EMPLOYER_FRAUD_RISK": {
+        "id": "EMPLOYER_FRAUD_RISK",
+        "category": "employer_legitimacy",
+        "applies_to": ["ALL"],
+        "severity": "REQUIRES_DETECTIVE_ASSESSMENT",
+        "score": null,
+        "description": "Employer legitimacy or fraud risk concerns",
+        "indicators": [
+          "employer_fraud_history",
+          "job_offer_inconsistencies",
+          "employer_unverifiable",
+          "shell_company_patterns",
+          "recent_registration",
+          "no_business_activity"
+        ],
+        "_detective_query": "caselaw_optimized_search(query='work permit employer fraud shell company refusal', court='fc', target_count=5)",
+        "_assessment_instruction": "Detective must find case law on employer fraud consequences"
+      },
+
+      "IMMIGRANT_INTENT_SIGNAL": {
+        "id": "IMMIGRANT_INTENT_SIGNAL",
+        "category": "intent_determination",
+        "applies_to": ["ALL"],
+        "severity": "REQUIRES_DETECTIVE_ASSESSMENT",
+        "score": null,
+        "description": "Evidence indicates intent to settle permanently in Canada",
+        "indicators": [
+          "family_in_canada",
+          "previous_pr_applications",
+          "canadian_property",
+          "no_ties_home_country",
+          "settlement_documentation"
+        ],
+        "_detective_query": "caselaw_optimized_search(query='work permit immigrant intent temporary dual intent', court='fc', target_count=5)",
+        "_assessment_instruction": "Detective must find case law on intent determination and dual intent doctrine"
+      },
+
+      "WAGE_COMPLIANCE_ISSUE": {
+        "id": "WAGE_COMPLIANCE_ISSUE",
+        "category": "employment_conditions",
+        "applies_to": ["LMIA", "TFW", "IMP"],
+        "severity": "REQUIRES_DETECTIVE_ASSESSMENT",
+        "score": null,
+        "description": "Offered wages below prevailing standards or minimum",
+        "indicators": [
+          "below_provincial_minimum",
+          "below_lmia_rate",
+          "below_median_wage",
+          "wage_deductions",
+          "exploitative_conditions"
+        ],
+        "_detective_query": "caselaw_optimized_search(query='work permit wage compliance prevailing rate refusal', court='fc', target_count=5)",
+        "_assessment_instruction": "Detective must find case law on wage compliance consequences"
+      },
+
+      "ADMISSIBILITY_CONCERN": {
+        "id": "ADMISSIBILITY_CONCERN",
+        "category": "admissibility",
+        "applies_to": ["ALL"],
+        "severity": "REQUIRES_DETECTIVE_ASSESSMENT",
+        "score": null,
+        "description": "Grounds for inadmissibility under IRPA identified",
+        "indicators": [
+          "criminal_record",
+          "security_concerns",
+          "misrepresentation",
+          "missing_medical_exam",
+          "missing_police_certificate"
+        ],
+        "_detective_query": "caselaw_optimized_search(query='work permit inadmissibility IRPA 36 40 refusal', court='fc', target_count=5)",
+        "_assessment_instruction": "Detective must find case law on inadmissibility - likely fatal but confirm via cases"
+      },
+
+      "TIES_ASSESSMENT_WEAK": {
+        "id": "TIES_ASSESSMENT_WEAK",
+        "category": "intent_determination",
+        "applies_to": ["ALL"],
+        "severity": "REQUIRES_DETECTIVE_ASSESSMENT",
+        "score": null,
+        "description": "Applicant has minimal ties to home country",
+        "indicators": [
+          "no_immediate_family_abroad",
+          "minimal_assets_home",
+          "no_employment_history",
+          "young_age_no_dependents",
+          "multiple_visa_rejections"
+        ],
+        "_detective_query": "caselaw_optimized_search(query='work permit ties home country weak refusal', court='fc', target_count=5)",
+        "_assessment_instruction": "Detective must find case law on ties assessment weight"
+      },
+
+      "WORKPLACE_EXPLOITATION_RISK": {
+        "id": "WORKPLACE_EXPLOITATION_RISK",
+        "category": "human_trafficking",
+        "applies_to": ["ALL"],
+        "severity": "REQUIRES_DETECTIVE_ASSESSMENT",
+        "score": null,
+        "description": "Indicators of workplace abuse or trafficking",
+        "indicators": [
+          "wage_theft",
+          "excessive_hours",
+          "unsafe_conditions",
+          "harassment_discrimination",
+          "isolation_tactics",
+          "passport_held"
+        ],
+        "_detective_query": "caselaw_optimized_search(query='work permit exploitation trafficking IRPA refusal', court='fc', target_count=5)",
+        "_assessment_instruction": "Detective must find case law on exploitation indicators"
+      },
+
+      "DOCUMENTATION_FRAUD_RISK": {
+        "id": "DOCUMENTATION_FRAUD_RISK",
+        "category": "integrity",
+        "applies_to": ["ALL"],
+        "severity": "REQUIRES_DETECTIVE_ASSESSMENT",
+        "score": null,
+        "description": "Forged, falsified, or fraudulent documents detected",
+        "indicators": [
+          "forged_passport",
+          "false_credentials",
+          "fake_lmia",
+          "falsified_job_offer",
+          "misrepresentation"
+        ],
+        "_detective_query": "caselaw_optimized_search(query='work permit document fraud misrepresentation IRPA 40', court='fc', target_count=5)",
+        "_assessment_instruction": "Detective must find case law on document fraud - likely fatal but confirm"
+      },
+
+      "JOB_OFFER_MISMATCH": {
+        "id": "JOB_OFFER_MISMATCH",
+        "category": "employer_compliance",
+        "applies_to": ["LMIA", "TFW", "IMP", "ICT"],
+        "severity": "REQUIRES_DETECTIVE_ASSESSMENT",
+        "score": null,
+        "description": "Job offer details inconsistent with LMIA or position requirements",
+        "indicators": [
+          "duties_not_matching_lmia",
+          "location_different_from_lmia",
+          "wage_different_from_lmia",
+          "employer_name_mismatch",
+          "noc_code_mismatch"
+        ],
+        "_detective_query": "caselaw_optimized_search(query='work permit job offer LMIA mismatch refusal', court='fc', target_count=5)",
+        "_assessment_instruction": "Detective must find case law on job offer consistency requirements"
+      }
+    },
+
+    "_pgwp_specific_badges": {
+      "_note": "Post-Graduation Work Permit specific risk badges",
+
+      "PGWP_ELIGIBILITY_FAILURE": {
+        "id": "PGWP_ELIGIBILITY_FAILURE",
+        "category": "pgwp_eligibility",
+        "applies_to": ["PGWP"],
+        "severity": "REQUIRES_DETECTIVE_ASSESSMENT",
+        "score": null,
+        "description": "Applicant does not meet PGWP eligibility requirements",
+        "indicators": [
+          "non_dli_institution",
+          "program_less_than_8_months",
+          "distance_learning_over_50_percent",
+          "not_full_time_student",
+          "study_permit_expired"
+        ],
+        "_detective_query": "caselaw_optimized_search(query='PGWP eligibility DLI full-time refusal', court='fc', target_count=5)",
+        "_assessment_instruction": "Detective must find case law on PGWP eligibility criteria"
+      },
+
+      "PGWP_180_DAY_WINDOW_MISSED": {
+        "id": "PGWP_180_DAY_WINDOW_MISSED",
+        "category": "pgwp_timing",
+        "applies_to": ["PGWP"],
+        "severity": "REQUIRES_DETECTIVE_ASSESSMENT",
+        "score": null,
+        "description": "Application submitted outside 180-day window after graduation",
+        "indicators": [
+          "application_after_180_days",
+          "graduation_date_unclear",
+          "final_marks_delay"
+        ],
+        "_detective_query": "caselaw_optimized_search(query='PGWP 180 day window deadline refusal', court='fc', target_count=5)",
+        "_assessment_instruction": "Detective must find case law on 180-day window strictness"
+      },
+
+      "PGWP_FIELD_OF_STUDY_INELIGIBLE": {
+        "id": "PGWP_FIELD_OF_STUDY_INELIGIBLE",
+        "category": "pgwp_eligibility",
+        "applies_to": ["PGWP"],
+        "severity": "REQUIRES_DETECTIVE_ASSESSMENT",
+        "score": null,
+        "description": "Field of study not on eligible list for PGWP (post Nov 1, 2024)",
+        "indicators": [
+          "cip_code_not_on_list",
+          "program_started_after_nov_2024",
+          "field_removed_from_list"
+        ],
+        "_detective_query": "caselaw_optimized_search(query='PGWP field of study eligibility CIP code', court='fc', target_count=5)",
+        "_assessment_instruction": "Detective must find case law on field of study requirements - new policy"
+      },
+
+      "PGWP_PART_TIME_STUDY_RISK": {
+        "id": "PGWP_PART_TIME_STUDY_RISK",
+        "category": "pgwp_eligibility",
+        "applies_to": ["PGWP"],
+        "severity": "REQUIRES_DETECTIVE_ASSESSMENT",
+        "score": null,
+        "description": "Part-time study periods may affect PGWP eligibility",
+        "indicators": [
+          "part_time_semesters_detected",
+          "course_load_below_full_time",
+          "unauthorized_work_during_part_time"
+        ],
+        "_detective_query": "caselaw_optimized_search(query='PGWP part-time study full-time requirement refusal', court='fc', target_count=5)",
+        "_assessment_instruction": "Detective must find case law on part-time study impact"
+      }
+    },
+
+    "_ict_specific_badges": {
+      "_note": "Intra-Company Transfer specific risk badges",
+
+      "ICT_QUALIFYING_RELATIONSHIP_FAIL": {
+        "id": "ICT_QUALIFYING_RELATIONSHIP_FAIL",
+        "category": "ict_eligibility",
+        "applies_to": ["ICT"],
+        "severity": "REQUIRES_DETECTIVE_ASSESSMENT",
+        "score": null,
+        "description": "Parent-subsidiary-branch relationship not established",
+        "indicators": [
+          "no_corporate_relationship_proof",
+          "ownership_structure_unclear",
+          "affiliate_relationship_weak",
+          "shell_company_suspected"
+        ],
+        "_detective_query": "caselaw_optimized_search(query='ICT intra-company transfer qualifying relationship parent subsidiary', court='fc', target_count=5)",
+        "_assessment_instruction": "Detective must find case law on qualifying relationship requirements"
+      },
+
+      "ICT_ONE_YEAR_EMPLOYMENT_NOT_MET": {
+        "id": "ICT_ONE_YEAR_EMPLOYMENT_NOT_MET",
+        "category": "ict_eligibility",
+        "applies_to": ["ICT"],
+        "severity": "REQUIRES_DETECTIVE_ASSESSMENT",
+        "score": null,
+        "description": "Applicant has not worked for foreign entity for 1 year in past 3 years",
+        "indicators": [
+          "employment_less_than_12_months",
+          "employment_not_continuous",
+          "employment_outside_3_year_window"
+        ],
+        "_detective_query": "caselaw_optimized_search(query='ICT one year employment requirement refusal', court='fc', target_count=5)",
+        "_assessment_instruction": "Detective must find case law on 1-year employment requirement"
+      },
+
+      "ICT_SPECIALIZED_KNOWLEDGE_WEAK": {
+        "id": "ICT_SPECIALIZED_KNOWLEDGE_WEAK",
+        "category": "ict_eligibility",
+        "applies_to": ["ICT"],
+        "severity": "REQUIRES_DETECTIVE_ASSESSMENT",
+        "score": null,
+        "description": "Specialized knowledge claim not adequately supported",
+        "indicators": [
+          "generic_job_duties",
+          "no_proprietary_knowledge_proof",
+          "skills_available_in_canada",
+          "training_not_documented"
+        ],
+        "_detective_query": "caselaw_optimized_search(query='ICT specialized knowledge proprietary refusal', court='fc', target_count=5)",
+        "_assessment_instruction": "Detective must find case law on specialized knowledge standard"
+      },
+
+      "ICT_WAGE_BELOW_PREVAILING": {
+        "id": "ICT_WAGE_BELOW_PREVAILING",
+        "category": "ict_compliance",
+        "applies_to": ["ICT"],
+        "severity": "REQUIRES_DETECTIVE_ASSESSMENT",
+        "score": null,
+        "description": "Offered wage below prevailing wage for occupation",
+        "indicators": [
+          "wage_below_median",
+          "wage_below_job_bank_rate",
+          "benefits_not_comparable"
+        ],
+        "_detective_query": "caselaw_optimized_search(query='ICT wage prevailing rate compliance refusal', court='fc', target_count=5)",
+        "_assessment_instruction": "Detective must find case law on ICT wage requirements"
+      }
+    },
+
+    "_pnp_specific_badges": {
+      "_note": "Provincial Nominee Program work permit specific risk badges",
+
+      "PNP_NOMINATION_INVALID": {
+        "id": "PNP_NOMINATION_INVALID",
+        "category": "pnp_eligibility",
+        "applies_to": ["PNP"],
+        "severity": "REQUIRES_DETECTIVE_ASSESSMENT",
+        "score": null,
+        "description": "Provincial nomination certificate invalid or expired",
+        "indicators": [
+          "nomination_expired",
+          "nomination_withdrawn",
+          "nomination_conditions_not_met",
+          "province_different_from_work_location"
+        ],
+        "_detective_query": "caselaw_optimized_search(query='PNP nomination invalid expired work permit refusal', court='fc', target_count=5)",
+        "_assessment_instruction": "Detective must find case law on PNP nomination validity"
+      },
+
+      "PNP_JOB_OFFER_MISMATCH": {
+        "id": "PNP_JOB_OFFER_MISMATCH",
+        "category": "pnp_compliance",
+        "applies_to": ["PNP"],
+        "severity": "REQUIRES_DETECTIVE_ASSESSMENT",
+        "score": null,
+        "description": "Job offer does not match PNP nomination criteria",
+        "indicators": [
+          "occupation_different_from_nomination",
+          "employer_different_from_nomination",
+          "wage_below_nomination_requirements",
+          "location_outside_province"
+        ],
+        "_detective_query": "caselaw_optimized_search(query='PNP job offer nomination mismatch refusal', court='fc', target_count=5)",
+        "_assessment_instruction": "Detective must find case law on PNP job offer consistency"
+      },
+
+      "PNP_PROVINCIAL_CRITERIA_NOT_MET": {
+        "id": "PNP_PROVINCIAL_CRITERIA_NOT_MET",
+        "category": "pnp_eligibility",
+        "applies_to": ["PNP"],
+        "severity": "REQUIRES_DETECTIVE_ASSESSMENT",
+        "score": null,
+        "description": "Applicant does not meet provincial stream criteria",
+        "indicators": [
+          "education_below_stream_requirement",
+          "experience_insufficient",
+          "language_score_below_minimum",
+          "settlement_funds_insufficient"
+        ],
+        "_detective_query": "caselaw_optimized_search(query='PNP provincial criteria eligibility refusal', court='fc', target_count=5)",
+        "_assessment_instruction": "Detective must find case law on provincial criteria assessment"
+      }
+    },
+
+    "_open_spouse_specific_badges": {
+      "_note": "Open Work Permit for Spouse specific risk badges",
+
+      "OPEN_SPOUSE_RELATIONSHIP_CONCERN": {
+        "id": "OPEN_SPOUSE_RELATIONSHIP_CONCERN",
+        "category": "relationship_genuineness",
+        "applies_to": ["OPEN_SPOUSE"],
+        "severity": "REQUIRES_DETECTIVE_ASSESSMENT",
+        "score": null,
+        "description": "Relationship genuineness concerns similar to spousal sponsorship",
+        "indicators": [
+          "short_relationship_duration",
+          "limited_cohabitation_evidence",
+          "communication_gaps",
+          "marriage_of_convenience_indicators"
+        ],
+        "_detective_query": "caselaw_optimized_search(query='open work permit spouse relationship genuineness refusal', court='fc', target_count=5)",
+        "_assessment_instruction": "Detective must find case law on relationship assessment for OWP"
+      },
+
+      "OPEN_SPOUSE_PRINCIPAL_STATUS_ISSUE": {
+        "id": "OPEN_SPOUSE_PRINCIPAL_STATUS_ISSUE",
+        "category": "principal_applicant",
+        "applies_to": ["OPEN_SPOUSE"],
+        "severity": "REQUIRES_DETECTIVE_ASSESSMENT",
+        "score": null,
+        "description": "Principal applicant's status does not qualify spouse for OWP",
+        "indicators": [
+          "principal_permit_expired",
+          "principal_not_in_qualifying_occupation",
+          "principal_not_full_time_student",
+          "principal_study_permit_less_than_8_months"
+        ],
+        "_detective_query": "caselaw_optimized_search(query='open work permit spouse principal applicant status refusal', court='fc', target_count=5)",
+        "_assessment_instruction": "Detective must find case law on principal applicant requirements"
+      },
+
+      "OPEN_SPOUSE_2025_POLICY_CHANGE": {
+        "id": "OPEN_SPOUSE_2025_POLICY_CHANGE",
+        "category": "policy_compliance",
+        "applies_to": ["OPEN_SPOUSE"],
+        "severity": "REQUIRES_DETECTIVE_ASSESSMENT",
+        "score": null,
+        "description": "Application affected by Jan 21, 2025 OWP policy changes",
+        "indicators": [
+          "principal_in_non_qualifying_program",
+          "principal_in_college_diploma_program",
+          "application_after_policy_change_date"
+        ],
+        "_detective_query": "caselaw_optimized_search(query='open work permit spouse policy change 2025 eligibility', court='fc', target_count=5)",
+        "_assessment_instruction": "Detective must find case law on new OWP policy - may be limited due to recency"
+      }
+    },
+
+    "_imp_specific_badges": {
+      "_note": "International Mobility Program specific risk badges",
+
+      "IMP_SIGNIFICANT_BENEFIT_NOT_PROVEN": {
+        "id": "IMP_SIGNIFICANT_BENEFIT_NOT_PROVEN",
+        "category": "imp_eligibility",
+        "applies_to": ["IMP"],
+        "severity": "REQUIRES_DETECTIVE_ASSESSMENT",
+        "score": null,
+        "description": "Significant benefit to Canada not adequately demonstrated",
+        "indicators": [
+          "benefit_claim_vague",
+          "no_economic_impact_evidence",
+          "no_cultural_benefit_proof",
+          "reciprocal_benefit_unclear"
+        ],
+        "_detective_query": "caselaw_optimized_search(query='IMP significant benefit Canada refusal', court='fc', target_count=5)",
+        "_assessment_instruction": "Detective must find case law on significant benefit standard"
+      },
+
+      "IMP_RELIGIOUS_WORKER_CRITERIA_FAIL": {
+        "id": "IMP_RELIGIOUS_WORKER_CRITERIA_FAIL",
+        "category": "imp_religious",
+        "applies_to": ["IMP"],
+        "severity": "REQUIRES_DETECTIVE_ASSESSMENT",
+        "score": null,
+        "description": "Religious worker R205(d) criteria not met",
+        "indicators": [
+          "ordination_not_proven",
+          "religious_organization_not_legitimate",
+          "duties_not_religious_in_nature",
+          "experience_insufficient"
+        ],
+        "_detective_query": "caselaw_optimized_search(query='religious worker R205(d) ordination refusal', court='fc', target_count=5)",
+        "_assessment_instruction": "Detective must find case law on religious worker requirements"
+      }
+    },
+
+    "_open_work_permit_badges": {
+      "_note": "General Open Work Permit risk badges",
+
+      "OWP_CATEGORY_INELIGIBLE": {
+        "id": "OWP_CATEGORY_INELIGIBLE",
+        "category": "owp_eligibility",
+        "applies_to": ["OPEN_REFUGEE", "OPEN_STUDENT", "OPEN_CAREGIVER"],
+        "severity": "REQUIRES_DETECTIVE_ASSESSMENT",
+        "score": null,
+        "description": "Applicant does not qualify for open work permit category",
+        "indicators": [
+          "protected_person_status_not_confirmed",
+          "student_permit_not_valid",
+          "caregiver_qualification_not_met",
+          "bridging_owp_criteria_not_met"
+        ],
+        "_detective_query": "caselaw_optimized_search(query='open work permit category eligibility refusal', court='fc', target_count=5)",
+        "_assessment_instruction": "Detective must find case law on OWP category requirements"
+      },
+
+      "OWP_VULNERABLE_WORKER_DOCUMENTATION": {
+        "id": "OWP_VULNERABLE_WORKER_DOCUMENTATION",
+        "category": "vulnerable_worker",
+        "applies_to": ["OPEN_REFUGEE", "OPEN_CAREGIVER"],
+        "severity": "REQUIRES_DETECTIVE_ASSESSMENT",
+        "score": null,
+        "description": "Vulnerable worker OWP documentation insufficient",
+        "indicators": [
+          "abuse_not_documented",
+          "employer_complaint_not_filed",
+          "no_supporting_evidence",
+          "timeline_inconsistent"
+        ],
+        "_detective_query": "caselaw_optimized_search(query='vulnerable worker open work permit documentation refusal', court='fc', target_count=5)",
+        "_assessment_instruction": "Detective must find case law on vulnerable worker OWP requirements"
+      }
+    }
+  },
+
+  "_runtime_instructions": {
+    "step_1": "Intake agent identifies work permit category and extracts case facts",
+    "step_2": "Intake agent identifies potential risk badges from case facts based on category",
+    "step_3": "Detective agent executes _detective_query for each triggered badge",
+    "step_4": "Detective agent analyzes case law outcomes to determine severity",
+    "step_5": "Detective MUST cite specific cases for each severity determination",
+    "step_6": "Strategist agent receives severity assessments WITH case law citations",
+    "step_7": "Scores are calculated only after Detective provides case-law-based severity",
+    "step_8": "If Detective finds no relevant case law, severity remains 'UNASSESSED'",
+    "step_9": "Gatekeeper validates that all severity assessments have case law support"
+  },
+
   "_audit_guidance": {
-    "scoring_system": "Each badge represents discrete risk factor. Multiple badges increase refusal probability.",
-    "assessment_process": "Identify badges present in case, assess severity, recommend mitigation strategy",
-    "validation_source": "Federal Court jurisprudence on work permit applications (2018-2025)",
-    "update_frequency": "Quarterly - aligned with court decisions and policy changes"
+    "scoring_system": "Severity levels MUST be determined by Detective agent case law analysis - not by LLM training knowledge",
+    "forbidden": "DO NOT assign severity based on assumptions or training data",
+    "validation_source": "All severity assessments require MCP caselaw citation",
+    "update_frequency": "Severity cache may be updated based on new case law findings",
+    "category_routing": "Use applies_to field to determine which badges apply to each work permit category"
+  },
+
+  "_badge_count_summary": {
+    "universal_badges": 10,
+    "pgwp_specific": 4,
+    "ict_specific": 4,
+    "pnp_specific": 3,
+    "open_spouse_specific": 3,
+    "imp_specific": 2,
+    "open_work_permit": 2,
+    "total": 28
   }
 }

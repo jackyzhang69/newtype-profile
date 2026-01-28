@@ -8,6 +8,7 @@ import { createGatekeeperAgent, GATEKEEPER_PROMPT_METADATA } from "../audit-core
 import { createVerifierAgent, VERIFIER_PROMPT_METADATA } from "../audit-core/agents/verifier"
 import { createJudgeAgent, JUDGE_PROMPT_METADATA } from "../audit-core/agents/judge"
 import { createReporterAgent, REPORTER_PROMPT_METADATA } from "../audit-core/agents/reporter"
+import { createIntakeAgent, INTAKE_PROMPT_METADATA } from "../audit-core/agents/intake"
 import { deepMerge } from "../shared"
 import { resolveMultipleSkills } from "../features/opencode-skill-loader/skill-content"
 
@@ -16,6 +17,7 @@ type ConditionalAgentSource = () => AgentConfig | null
 
 const agentSources: Record<string, AgentSource> = {
   "audit-manager": createAuditManagerAgent,
+  intake: createIntakeAgent,
   detective: createDetectiveAgent,
   strategist: createStrategistAgent,
   gatekeeper: createGatekeeperAgent,
@@ -29,6 +31,7 @@ const conditionalAgentSources: Record<string, ConditionalAgentSource> = {
 
 const agentMetadata: Partial<Record<BuiltinAgentName, AgentPromptMetadata>> = {
   "audit-manager": AUDIT_MANAGER_PROMPT_METADATA,
+  intake: INTAKE_PROMPT_METADATA,
   detective: DETECTIVE_PROMPT_METADATA,
   strategist: STRATEGIST_PROMPT_METADATA,
   gatekeeper: GATEKEEPER_PROMPT_METADATA,

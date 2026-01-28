@@ -6,6 +6,8 @@ description: |
 
 # Study Permit Reporter
 
+> **Note**: Disclaimer, prohibited language checks, and output length limits are handled by `core-reporter`. This skill only provides study permit-specific content templates.
+
 ## Scope
 - Executive summary templates
 - Document list generation

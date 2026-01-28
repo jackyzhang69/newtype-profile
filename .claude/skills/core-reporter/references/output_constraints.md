@@ -185,6 +185,207 @@ These sections must always be included regardless of length:
 - Paragraphs: actual line count when wrapped at 80 chars
 - Code blocks: actual lines + 2 (delimiters)
 
+---
+
+## WORKFLOW-SPECIFIC TEMPLATES
+
+Different workflows produce different outputs. The templates above are for **Risk Audit** workflow. Below are templates for other workflows.
+
+---
+
+## Initial Assessment Templates
+
+**Purpose**: Comprehensive paid product for new client intake. Provides actionable guidance with complete material requirements.
+
+**Key Difference from Risk Audit**: Initial Assessment focuses on **what to do next** rather than deep legal analysis. It's a practical roadmap for case preparation.
+
+### INITIAL ASSESSMENT - GUEST TIER (Max 400 lines)
+
+**File:** `report.pdf`
+
+**IMPORTANT - Professional Formatting Rules:**
+- NO emojis in client-facing reports (use text indicators instead)
+- NO internal system info (session ID, tier name, line counts)
+- Use professional status indicators: [CRITICAL], [HIGH], [MEDIUM], [LOW]
+- Use professional document status: [MISSING], [INCOMPLETE], [PROVIDED]
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│ INITIAL ASSESSMENT REPORT                                       │
+│ [Application Type] - [Applicant Name]                           │
+│ Date: [Date]                                                    │
+├─────────────────────────────────────────────────────────────────┤
+│ DISCLAIMER (MANDATORY - 3 lines)                                │
+├─────────────────────────────────────────────────────────────────┤
+│ 1. VERDICT & SCORE (max 10 lines)                               │
+│    ┌─────────────────────────────────────────┐                  │
+│    │ Verdict: CAUTION                        │                  │
+│    │ Score: 35/100 -> 72/100 (with fixes)    │                  │
+│    │ Success: 5-10% -> 70-75%                │                  │
+│    └─────────────────────────────────────────┘                  │
+├─────────────────────────────────────────────────────────────────┤
+│ 2. BLOCKING ISSUES (max 15 lines)                               │
+│    [CRITICAL] Issue 1: [Description] -> [Fix]                   │
+│    [CRITICAL] Issue 2: [Description] -> [Fix]                   │
+│    [CRITICAL] Issue 3: [Description] -> [Fix]                   │
+├─────────────────────────────────────────────────────────────────┤
+│ 3. DOCUMENT CHECKLIST - CRITICAL ONLY (max 20 lines)            │
+│    | Document | Status | How to Get |                           │
+│    |----------|--------|------------|                           │
+│    | Doc 1    | MISSING | [Guide]   |                           │
+│    | Doc 2    | INCOMPLETE | [Guide]|                           │
+├─────────────────────────────────────────────────────────────────┤
+│ 4. NEXT STEPS (max 10 lines)                                    │
+│    Week 1: [Actions]                                            │
+│    Week 2-4: [Actions]                                          │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+**Total: ~60 lines core content + tables**
+
+### INITIAL ASSESSMENT - PRO TIER (Max 500 lines)
+
+**File:** `report.pdf`
+
+**IMPORTANT - Professional Formatting Rules:**
+- NO emojis in client-facing reports (use text indicators instead)
+- NO internal system info (session ID, tier name, line counts)
+- NO markdown code blocks in final output
+- Use professional status indicators: [CRITICAL], [HIGH], [MEDIUM], [LOW]
+- Use professional document status: [MISSING], [INCOMPLETE], [PROVIDED]
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│ INITIAL ASSESSMENT REPORT                                       │
+│ [Application Type] - [Applicant Name]                           │
+│ Date: [Date]                                                    │
+├─────────────────────────────────────────────────────────────────┤
+│ DISCLAIMER (MANDATORY)                                          │
+├─────────────────────────────────────────────────────────────────┤
+│ 1. VERDICT & SCORE (max 15 lines)                               │
+│    ┌─────────────────────────────────────────┐                  │
+│    │ Verdict: CAUTION                        │                  │
+│    │ Current Score: 35/100 (Poor)            │                  │
+│    │ With Corrections: 72/100 (Adequate)     │                  │
+│    │ Success Probability: 5-10% -> 70-75%    │                  │
+│    │ Timeline to Ready: 4-6 weeks            │                  │
+│    └─────────────────────────────────────────┘                  │
+│    Key Findings:                                                │
+│    - 3 CRITICAL blocking issues                                 │
+│    - 2 HIGH-risk factors                                        │
+│    - 4 strengths identified                                     │
+├─────────────────────────────────────────────────────────────────┤
+│ 2. CASE SNAPSHOT (max 15 lines)                                 │
+│    | Field | Value |                                            │
+│    |-------|-------|                                            │
+│    | Applicant | [Name], [Age], [Nationality] |                 │
+│    | Position | [Title] at [Employer] |                         │
+│    | Salary | [Amount] | NOC | [Code] |                         │
+│    | Exemption | [Code] |                                       │
+├─────────────────────────────────────────────────────────────────┤
+│ 3. BLOCKING ISSUES (max 30 lines)                               │
+│    [CRITICAL] Issue #1: [Title]                                 │
+│       Issue: [Description]                                      │
+│       Impact: [What happens if not fixed]                       │
+│       Fix: [Specific action]                                    │
+│       Timeline: [Days/weeks]                                    │
+│    (Repeat for each CRITICAL issue)                             │
+├─────────────────────────────────────────────────────────────────┤
+│ 4. HIGH-RISK FACTORS (max 20 lines)                             │
+│    [HIGH] Risk #1: [Title]                                      │
+│       Risk: [Description]                                       │
+│       Mitigation: [Action]                                      │
+│    (Repeat for each HIGH risk)                                  │
+├─────────────────────────────────────────────────────────────────┤
+│ 5. STRENGTHS (max 10 lines)                                     │
+│    - [Strength 1]                                               │
+│    - [Strength 2]                                               │
+│    - [Strength 3]                                               │
+├─────────────────────────────────────────────────────────────────┤
+│ 6. DOCUMENT CHECKLIST (max 60 lines)                            │
+│    CRITICAL DOCUMENTS:                                          │
+│    | Document | Status | Priority | How to Obtain |             │
+│    |----------|--------|----------|---------------|             │
+│    | [Doc 1]  | MISSING | CRITICAL | [Guidance]   |             │
+│                                                                 │
+│    HIGH PRIORITY DOCUMENTS:                                     │
+│    | Document | Status | Priority | How to Obtain |             │
+│    |----------|--------|----------|---------------|             │
+│    | [Doc 1]  | INCOMPLETE | HIGH | [Guidance]    |             │
+│                                                                 │
+│    SUPPORTING DOCUMENTS:                                        │
+│    | Document | Status | Priority | How to Obtain |             │
+│    |----------|--------|----------|---------------|             │
+│    | [Doc 1]  | PROVIDED | LOW | -              |               │
+├─────────────────────────────────────────────────────────────────┤
+│ 7. ACTION PLAN (max 30 lines)                                   │
+│    PHASE 1 (Week 1-2): Critical Fixes                           │
+│    [ ] Action 1.1: [Description] - Deadline: [Date]             │
+│    [ ] Action 1.2: [Description] - Deadline: [Date]             │
+│                                                                 │
+│    PHASE 2 (Week 2-4): Document Collection                      │
+│    [ ] Action 2.1: [Description] - Deadline: [Date]             │
+│                                                                 │
+│    PHASE 3 (Week 4-6): Final Preparation                        │
+│    [ ] Action 3.1: [Description] - Deadline: [Date]             │
+├─────────────────────────────────────────────────────────────────┤
+│ 8. SUBMISSION LETTER TEMPLATE (max 40 lines)                    │
+│    [Pre-filled with known case facts, minimal placeholders]     │
+├─────────────────────────────────────────────────────────────────┤
+│ 9. EXPLANATION LETTER GUIDE (max 20 lines)                      │
+│    When needed: [Conditions]                                    │
+│    Key points to address: [List]                                │
+│    Template structure: [Outline]                                │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+**Section Line Budgets (Pro Tier - 500 lines max):**
+
+| Section | Max Lines | Priority |
+|---------|-----------|----------|
+| Header + Disclaimer | 15 | NEVER CUT |
+| Verdict & Score | 15 | NEVER CUT |
+| Case Snapshot | 15 | Can compress |
+| Blocking Issues | 30 | NEVER CUT |
+| High-Risk Factors | 20 | Can compress |
+| Strengths | 10 | Can compress |
+| Document Checklist | 60 | Can compress to CRITICAL only |
+| Action Plan | 30 | Can compress to Phase 1 only |
+| Submission Letter | 40 | Can move to separate file |
+| Explanation Guide | 20 | Can move to separate file |
+| Footer Disclaimer | 5 | NEVER CUT |
+| **Buffer** | 40 | For tables/formatting |
+| **TOTAL** | 300 | Well under 500 limit |
+
+### INITIAL ASSESSMENT - ULTRA TIER (Max 600 lines)
+
+**Main File:** `report.pdf` (same as Pro, with expanded sections)
+
+**Additional File:** `client_package.pdf`
+
+Contains:
+1. Full Submission Letter (ready to customize and send)
+2. Explanation Letter Templates (for each identified risk)
+3. Interview Preparation Guide (if applicable)
+4. Complete Document Checklist with detailed acquisition guidance
+
+---
+
+## Initial Assessment vs Risk Audit Comparison
+
+| Aspect | Initial Assessment | Risk Audit |
+|--------|-------------------|------------|
+| **Purpose** | New client intake, case viability | Deep legal analysis |
+| **Focus** | What to do next | Legal defensibility |
+| **Verdict** | GO/CAUTION/NO-GO | GO/CAUTION/NO-GO |
+| **Key Output** | Document checklist + Action plan | Risk analysis + Defense strategy |
+| **Submission Letter** | ✅ Included | ❌ Not included |
+| **Explanation Guide** | ✅ Included | ❌ Not included |
+| **Case Law Depth** | Summary only | Full analysis |
+| **Target User** | RCIC preparing case | Lawyer reviewing case |
+
+---
+
 ## Anonymization Rules
 
 When `--anonymize` flag is specified:

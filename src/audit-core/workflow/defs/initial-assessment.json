@@ -1,5 +1,6 @@
 {
   "workflow_id": "initial_assessment",
+  "description": "Comprehensive initial assessment for new client cases - a paid product with full analysis depth",
   "stages": [
     {
       "id": "intake",
@@ -10,30 +11,30 @@
       "retry_limit": 2
     },
     {
-      "id": "quick_detective",
+      "id": "detective",
       "agent": "detective",
-      "description": "Quick scan for deal-breaker precedents (admissibility, eligibility red flags only)",
+      "description": "Research applicable regulations, LMIA exemptions, operation manual policies, and relevant case law for this application type",
       "required": true,
       "depends_on": ["intake"],
-      "retry_limit": 1,
+      "retry_limit": 2,
       "tier_skip": {
         "guest": true
       }
     },
     {
-      "id": "quick_strategist",
+      "id": "strategist",
       "agent": "strategist",
-      "description": "Rapid viability assessment focusing on critical vulnerabilities only",
+      "description": "Full risk assessment with document gap analysis, complete material checklist, and mitigation strategies",
       "required": true,
-      "depends_on": ["quick_detective"],
-      "retry_limit": 1
+      "depends_on": ["detective"],
+      "retry_limit": 2
     },
     {
       "id": "gatekeeper",
       "agent": "gatekeeper",
-      "description": "Check for obvious missing documents and deal-breaker compliance issues",
+      "description": "Validate compliance against all regulatory requirements, identify missing documents with acquisition guidance",
       "required": true,
-      "depends_on": ["quick_strategist"],
+      "depends_on": ["strategist"],
       "retry_limit": 1
     },
     {
@@ -42,7 +43,7 @@
       "description": "Verify citation accuracy and evidence quality",
       "required": true,
       "depends_on": ["gatekeeper"],
-      "retry_limit": 1,
+      "retry_limit": 2,
       "tier_skip": {
         "guest": true
       }
@@ -50,7 +51,7 @@
     {
       "id": "judge",
       "agent": "judge",
-      "description": "Make GO/CAUTION/NO-GO verdict based on quick assessment",
+      "description": "Make GO/CAUTION/NO-GO verdict based on comprehensive assessment",
       "required": true,
       "depends_on": ["verifier"],
       "retry_limit": 1
@@ -58,7 +59,7 @@
     {
       "id": "reporter",
       "agent": "reporter",
-      "description": "Generate initial assessment report with verdict summary",
+      "description": "Generate complete initial assessment report with material checklist, submission letter template, and explanation letter guidance",
       "required": true,
       "depends_on": ["judge"],
       "retry_limit": 1

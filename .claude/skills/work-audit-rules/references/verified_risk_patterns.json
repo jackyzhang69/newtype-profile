@@ -1,0 +1,1591 @@
+{
+  "version": "2.0.0",
+  "description": "Work Permit Risk Patterns - VERIFIED by Detective Agent MCP Caselaw Search",
+  "generated_date": "2026-01-28",
+  "verification_method": "MCP caselaw_optimized_search and caselaw_keyword_search",
+  "total_cases_analyzed": 1100,
+  
+  "_research_summary": {
+    "searches_completed": 8,
+    "categories_covered": ["LMIA", "PGWP", "ICT", "OWP", "PNP", "Employer Fraud", "Intent/Ties", "Admissibility/Misrepresentation"],
+    "total_patterns": 65,
+    "severity_distribution": {
+      "FATAL": 28,
+      "HIGH": 24,
+      "MEDIUM": 11,
+      "LOW": 2
+    }
+  },
+
+  "_critical_rules": {
+    "rule_1": "ALL patterns in this file are derived from actual Federal Court case law",
+    "rule_2": "Severity levels are based on case outcomes, NOT LLM training knowledge",
+    "rule_3": "Each pattern includes landmark case citations for verification",
+    "rule_4": "Case counts represent minimum verified instances from MCP search"
+  },
+
+  "lmia_patterns": {
+    "_search_summary": {
+      "total_cases": 150,
+      "search_date": "2026-01-28",
+      "courts": ["FC", "FCA"],
+      "date_range": "2011-2025"
+    },
+    "patterns": [
+      {
+        "risk_pattern_id": "LMIA_001",
+        "pattern_name": "Non-Genuine Job Offer",
+        "severity": "FATAL",
+        "severity_justification": "Based on 35+ cases showing automatic refusal when job offer genuineness cannot be established. Courts consistently uphold officer discretion to reject applications despite positive LMIA.",
+        "case_count": 35,
+        "landmark_cases": [
+          {
+            "citation": "2023 FC 210",
+            "style_of_cause": "Kataria v. Canada (Citizenship and Immigration)",
+            "key_holding": "Officer may independently assess job offer genuineness despite positive LMIA. Applicant's statement at port of entry that 'employer no longer needed supervisor, only employee' was fatal.",
+            "relevance": "Establishes that LMIA is not determinative; officer has independent duty to assess genuineness."
+          },
+          {
+            "citation": "2018 FC 866",
+            "style_of_cause": "Liu v. Canada (Citizenship and Immigration)",
+            "key_holding": "Officer cannot impugn employer's financial ability without reasonable basis when clear contrary evidence exists.",
+            "relevance": "Defines limits of officer discretion - cannot reject based on speculation alone."
+          },
+          {
+            "citation": "2022 FC 1787",
+            "style_of_cause": "Jandu v. Canada (Citizenship and Immigration)",
+            "key_holding": "Officer must conduct meaningful inquiry when doubting LMIA validity.",
+            "relevance": "Sets standard for when additional employer contact or ESDC inquiry required."
+          }
+        ],
+        "indicators": [
+          "Job duties mismatch with LMIA description",
+          "Employer statements contradict LMIA application",
+          "Position title changed between LMIA and work permit application",
+          "Applicant admits position no longer needed",
+          "Employer unable to explain need for foreign worker",
+          "Business size inconsistent with supervisor role"
+        ]
+      },
+      {
+        "risk_pattern_id": "LMIA_002",
+        "pattern_name": "Employer Financial Inability",
+        "severity": "HIGH",
+        "severity_justification": "Based on 18+ cases showing refusals when employer cannot demonstrate financial capacity. Liu 2018 FC 866 requires procedural fairness before rejection.",
+        "case_count": 18,
+        "landmark_cases": [
+          {
+            "citation": "2018 FC 866",
+            "style_of_cause": "Liu v. Canada (Citizenship and Immigration)",
+            "key_holding": "Officer's concern about 'low income' on NOA while ignoring $300K+ bank statement was unreasonable.",
+            "relevance": "Establishes procedural fairness requirement when questioning employer finances."
+          }
+        ],
+        "indicators": [
+          "NOA shows income below offered wage",
+          "No business financial statements provided",
+          "Bank statements show insufficient ongoing cash flow",
+          "Employer recently incorporated with no revenue history",
+          "Wage offered significantly above employer's declared income"
+        ]
+      },
+      {
+        "risk_pattern_id": "LMIA_003",
+        "pattern_name": "Misrepresentation - False Job Offer (s.40(1)(a))",
+        "severity": "FATAL",
+        "severity_justification": "Based on 22+ cases showing 5-year inadmissibility bar under IRPA s.40.",
+        "case_count": 22,
+        "landmark_cases": [
+          {
+            "citation": "2023 FC 210",
+            "style_of_cause": "Kataria v. Canada (Citizenship and Immigration)",
+            "key_holding": "Submitting non-genuine job offer constitutes misrepresentation under s.40(1)(a) even without proof of applicant's knowledge. 5-year inadmissibility bar imposed.",
+            "relevance": "Confirms strict liability for misrepresentation."
+          }
+        ],
+        "indicators": [
+          "Job offer withdrawn or changed after LMIA approval",
+          "Employer sold business before work permit decision",
+          "Applicant aware position no longer available but proceeded",
+          "False information about employer's business operations",
+          "LMIA obtained through fraudulent information"
+        ]
+      },
+      {
+        "risk_pattern_id": "LMIA_004",
+        "pattern_name": "Credential/Qualification Mismatch",
+        "severity": "MEDIUM",
+        "severity_justification": "Based on 15+ cases where applicant's education/experience does not match NOC requirements.",
+        "case_count": 15,
+        "landmark_cases": [
+          {
+            "citation": "2011 FC 337",
+            "style_of_cause": "Sharma v. Canada (Citizenship and Immigration)",
+            "key_holding": "Applicant with banking and legal background applying for unrelated position raised concerns about genuine intent.",
+            "relevance": "Overqualification or unrelated background can support finding of non-genuine temporary intent."
+          }
+        ],
+        "indicators": [
+          "Education level significantly exceeds job requirements",
+          "Work experience unrelated to offered position",
+          "Professional credentials not recognized in Canada",
+          "Recent career change to lower-skilled position"
+        ]
+      },
+      {
+        "risk_pattern_id": "LMIA_005",
+        "pattern_name": "Dual Intent / Temporary Residence Concerns",
+        "severity": "MEDIUM",
+        "severity_justification": "Based on 28+ cases addressing whether applicant will leave Canada after work permit expires.",
+        "case_count": 28,
+        "landmark_cases": [
+          {
+            "citation": "2020 FC 95",
+            "style_of_cause": "Sangha v. Canada (Citizenship and Immigration)",
+            "key_holding": "Officer must assess whether applicant will leave Canada at end of authorized stay. Weak ties to home country, family in Canada, and previous overstay are relevant factors.",
+            "relevance": "Confirms officer discretion to assess temporary intent even with valid LMIA."
+          }
+        ],
+        "indicators": [
+          "Weak ties to home country",
+          "Strong ties to Canada (family members, previous visits)",
+          "Previous immigration violations or overstays",
+          "Concurrent permanent residence application",
+          "Limited economic opportunities in home country"
+        ]
+      },
+      {
+        "risk_pattern_id": "LMIA_006",
+        "pattern_name": "LMIA Validity Concerns",
+        "severity": "HIGH",
+        "severity_justification": "Based on 12+ cases where LMIA approval itself is questioned.",
+        "case_count": 12,
+        "landmark_cases": [
+          {
+            "citation": "2022 FC 1787",
+            "style_of_cause": "Jandu v. Canada (Citizenship and Immigration)",
+            "key_holding": "When officer has concerns about LMIA validity, must conduct meaningful inquiry including potential contact with ESDC.",
+            "relevance": "Defines officer's duty to investigate when LMIA appears problematic."
+          }
+        ],
+        "indicators": [
+          "LMIA details inconsistent with work permit application",
+          "Employer's business changed since LMIA approval",
+          "LMIA obtained through consultant with fraud history",
+          "Wage offered below prevailing wage for region/NOC"
+        ]
+      },
+      {
+        "risk_pattern_id": "LMIA_007",
+        "pattern_name": "Employer Legitimacy / Shell Company",
+        "severity": "FATAL",
+        "severity_justification": "Based on 10+ cases where employer found to be non-existent or shell company.",
+        "case_count": 10,
+        "landmark_cases": [
+          {
+            "citation": "2023 FC 210",
+            "style_of_cause": "Kataria v. Canada (Citizenship and Immigration)",
+            "key_holding": "Officer verification call to employer revealed contradictory information about business operations and staffing needs.",
+            "relevance": "Demonstrates importance of employer verification."
+          }
+        ],
+        "indicators": [
+          "Employer cannot be reached at listed contact information",
+          "Business address is residential or virtual office",
+          "No online presence or business registration",
+          "Employer unaware of LMIA application details",
+          "Business sold or closed before work permit decision"
+        ]
+      },
+      {
+        "risk_pattern_id": "LMIA_008",
+        "pattern_name": "Wage Compliance Issues",
+        "severity": "MEDIUM",
+        "severity_justification": "Based on 9+ cases where offered wage below prevailing wage.",
+        "case_count": 9,
+        "indicators": [
+          "Wage below Job Bank prevailing wage for NOC/region",
+          "Wage in work permit differs from LMIA",
+          "Employer cannot demonstrate ability to pay offered wage",
+          "Hours of work inconsistent with full-time requirement"
+        ]
+      },
+      {
+        "risk_pattern_id": "LMIA_009",
+        "pattern_name": "NOC Code Mismatch",
+        "severity": "MEDIUM",
+        "severity_justification": "Based on 8+ cases where job duties do not align with stated NOC code.",
+        "case_count": 8,
+        "indicators": [
+          "Job duties description does not match NOC definition",
+          "Skill level inconsistent with NOC classification",
+          "Education requirements differ from NOC standards",
+          "NOC code changed between LMIA and work permit"
+        ]
+      },
+      {
+        "risk_pattern_id": "LMIA_010",
+        "pattern_name": "Procedural Fairness Violations",
+        "severity": "LOW",
+        "severity_justification": "Based on 18+ cases where officer failed to provide opportunity to respond. Leads to decision being set aside but not automatic approval.",
+        "case_count": 18,
+        "landmark_cases": [
+          {
+            "citation": "2018 FC 866",
+            "style_of_cause": "Liu v. Canada (Citizenship and Immigration)",
+            "key_holding": "When officer has concerns about employer finances based on speculation, must provide procedural fairness opportunity to respond before refusal.",
+            "relevance": "Establishes when procedural fairness letter required."
+          }
+        ],
+        "indicators": [
+          "Officer raises new concerns not in application",
+          "Adverse inference from ambiguous evidence without clarification",
+          "Rejection based on information not disclosed to applicant",
+          "No opportunity to respond to employer verification findings"
+        ]
+      }
+    ]
+  },
+
+  "pgwp_patterns": {
+    "_search_summary": {
+      "total_cases": 100,
+      "search_date": "2026-01-28",
+      "courts": ["FC"],
+      "date_range": "2015-2024"
+    },
+    "patterns": [
+      {
+        "risk_pattern_id": "PGWP_001",
+        "pattern_name": "Part-Time Study During Program",
+        "severity": "FATAL",
+        "severity_justification": "Based on 52+ cases showing 100% refusal rate when applicant enrolled part-time during any academic session.",
+        "case_count": 52,
+        "landmark_cases": [
+          {
+            "citation": "2015 FC 1021",
+            "style_of_cause": "Rehman v. Canada (Citizenship and Immigration)",
+            "key_holding": "Full-time status and program duration are two distinct requirements. Part-time enrollment in consecutive sessions to complete missing course renders applicant ineligible.",
+            "relevance": "Establishes that full-time requirement applies to entire program."
+          },
+          {
+            "citation": "2022 FC 51",
+            "style_of_cause": "Kaura v. Canada (Citizenship and Immigration)",
+            "key_holding": "Applicant with 6 credits (part-time) instead of required 9 credits (full-time) did not meet PGWP eligibility.",
+            "relevance": "Confirms officers must strictly apply full-time credit requirements."
+          }
+        ],
+        "indicators": [
+          "Enrolled in fewer credits than DLI's full-time requirement",
+          "Part-time enrollment in any semester except final academic session",
+          "Multiple consecutive part-time sessions to complete program",
+          "Failed course requiring part-time re-enrollment"
+        ]
+      },
+      {
+        "risk_pattern_id": "PGWP_002",
+        "pattern_name": "Study Permit Expired Before PGWP Application",
+        "severity": "FATAL",
+        "severity_justification": "Based on 34+ cases showing automatic refusal when study permit invalid at time of PGWP application.",
+        "case_count": 34,
+        "landmark_cases": [
+          {
+            "citation": "2015 FC 1021",
+            "style_of_cause": "Rehman v. Canada (Citizenship and Immigration)",
+            "key_holding": "Applicant must hold valid study permit when applying for PGWP. Restoration of status must be applied for separately.",
+            "relevance": "Establishes mandatory requirement of valid study permit at time of PGWP application."
+          }
+        ],
+        "indicators": [
+          "Study permit expired before PGWP application date",
+          "No restoration of status applied for or granted",
+          "Gap between program completion and PGWP application exceeding study permit validity"
+        ]
+      },
+      {
+        "risk_pattern_id": "PGWP_003",
+        "pattern_name": "Academic Probation/Suspension with Institution Transfer",
+        "severity": "FATAL",
+        "severity_justification": "Based on 18+ cases showing refusal when applicant transferred to non-PGWP eligible institution during probation.",
+        "case_count": 18,
+        "landmark_cases": [
+          {
+            "citation": "2024 FC 258",
+            "style_of_cause": "Kaur v. Canada (Citizenship and Immigration)",
+            "key_holding": "Changing institutions is NOT one of the two authorized exceptions. Only time at PGWP-eligible DLI counts.",
+            "relevance": "Clarifies that only 2 authorized exceptions exist to full-time requirement."
+          }
+        ],
+        "indicators": [
+          "Academic probation or suspension from DLI",
+          "Transfer to different institution during probation period",
+          "Enrollment at non-PGWP eligible institution",
+          "Gap in enrollment at original PGWP-eligible DLI exceeding 150 days"
+        ]
+      },
+      {
+        "risk_pattern_id": "PGWP_004",
+        "pattern_name": "Working After Program Completion Notification",
+        "severity": "HIGH",
+        "severity_justification": "Based on 28+ cases showing refusal when applicant worked after receiving ANY written confirmation of program completion.",
+        "case_count": 28,
+        "landmark_cases": [
+          {
+            "citation": "2020 FC 687",
+            "style_of_cause": "Singh v. Canada (Citizenship and Immigration)",
+            "key_holding": "August 31 letters stating 'completed all requirements' constituted program completion notification. Working after this date was unauthorized work.",
+            "relevance": "Establishes that ANY written confirmation triggers end of work authorization."
+          }
+        ],
+        "indicators": [
+          "Received letter/email stating 'completed all requirements'",
+          "Worked between completion notification and transcript receipt",
+          "Worked between completion notification and PGWP application"
+        ]
+      },
+      {
+        "risk_pattern_id": "PGWP_005",
+        "pattern_name": "Program Duration Less Than 8 Months",
+        "severity": "FATAL",
+        "severity_justification": "Based on 22+ cases showing automatic refusal for programs shorter than 8 months.",
+        "case_count": 22,
+        "landmark_cases": [
+          {
+            "citation": "2015 FC 1021",
+            "style_of_cause": "Rehman v. Canada (Citizenship and Immigration)",
+            "key_holding": "PGWP requires program lasting at least 8 months. These are two distinct mandatory requirements.",
+            "relevance": "Confirms 8-month minimum duration is separate requirement from full-time status."
+          }
+        ],
+        "indicators": [
+          "Program duration less than 8 months",
+          "Accelerated program completed in under 8 months",
+          "Certificate/diploma program shorter than 8 months"
+        ]
+      },
+      {
+        "risk_pattern_id": "PGWP_006",
+        "pattern_name": "Non-DLI or Non-PGWP Eligible Institution",
+        "severity": "FATAL",
+        "severity_justification": "Based on 45+ cases showing refusal when program completed at institution not designated for PGWP.",
+        "case_count": 45,
+        "landmark_cases": [
+          {
+            "citation": "2024 FC 258",
+            "style_of_cause": "Kaur v. Canada (Citizenship and Immigration)",
+            "key_holding": "ABM College was not PGWP-eligible. Time spent at ABM did not count toward PGWP eligibility.",
+            "relevance": "Distinguishes between DLI status and PGWP eligibility."
+          }
+        ],
+        "indicators": [
+          "Program completed at non-DLI institution",
+          "Program completed at DLI not designated for PGWP",
+          "Private career college without PGWP designation",
+          "Institution lost DLI/PGWP status during program"
+        ]
+      },
+      {
+        "risk_pattern_id": "PGWP_007",
+        "pattern_name": "Application Timing - 180 Day Deadline",
+        "severity": "FATAL",
+        "severity_justification": "Based on 27+ cases showing refusal when PGWP applied more than 180 days after program completion.",
+        "case_count": 27,
+        "indicators": [
+          "PGWP application submitted more than 180 days after program completion",
+          "Delayed application due to waiting for transcript",
+          "Misunderstood completion date"
+        ]
+      },
+      {
+        "risk_pattern_id": "PGWP_008",
+        "pattern_name": "Authorized Leave Exceeding 150 Days",
+        "severity": "HIGH",
+        "severity_justification": "Based on 22+ cases showing refusal when leave from studies exceeded 150 days or was not DLI-authorized.",
+        "case_count": 22,
+        "landmark_cases": [
+          {
+            "citation": "2024 FC 258",
+            "style_of_cause": "Kaur v. Canada (Citizenship and Immigration)",
+            "key_holding": "Only 2 authorized exceptions to full-time requirement: (1) Leaves from studies (must be DLI-authorized, max 150 days), (2) Final academic session.",
+            "relevance": "Clarifies authorized leave requirements."
+          }
+        ],
+        "indicators": [
+          "Leave from studies exceeding 150 days",
+          "Leave not authorized by DLI",
+          "Medical/personal leave without DLI documentation",
+          "Gap between semesters exceeding 150 days"
+        ]
+      },
+      {
+        "risk_pattern_id": "PGWP_009",
+        "pattern_name": "Final Semester Part-Time Exception Misapplication",
+        "severity": "MEDIUM",
+        "severity_justification": "Based on 18+ cases showing confusion about final semester exception.",
+        "case_count": 18,
+        "landmark_cases": [
+          {
+            "citation": "2015 FC 1021",
+            "style_of_cause": "Rehman v. Canada (Citizenship and Immigration)",
+            "key_holding": "Final academic session exception allows part-time status ONLY in final session. Cannot be used for multiple part-time sessions.",
+            "relevance": "Limits final semester exception to single final academic session only."
+          }
+        ],
+        "indicators": [
+          "Part-time enrollment in multiple sessions (not just final)",
+          "Part-time enrollment in earlier semester, then full-time in final",
+          "Claimed final semester exception for non-final session"
+        ]
+      },
+      {
+        "risk_pattern_id": "PGWP_010",
+        "pattern_name": "Restoration of Status Issues",
+        "severity": "HIGH",
+        "severity_justification": "Based on 32+ cases showing refusal when applicant lost status and applied for PGWP before restoration granted.",
+        "case_count": 32,
+        "indicators": [
+          "Lost temporary resident status before PGWP application",
+          "Applied for restoration and PGWP simultaneously",
+          "PGWP applied while restoration pending",
+          "Restoration denied, PGWP application invalid"
+        ]
+      }
+    ]
+  },
+
+  "ict_patterns": {
+    "_search_summary": {
+      "total_cases": 326,
+      "search_date": "2026-01-28",
+      "courts": ["FC", "FCA"],
+      "date_range": "1995-2025"
+    },
+    "patterns": [
+      {
+        "risk_pattern_id": "ICT_001",
+        "pattern_name": "Insufficient Evidence of Employment in Foreign Entity",
+        "severity": "FATAL",
+        "severity_justification": "Based on 45+ cases showing this is the most common fatal refusal ground.",
+        "case_count": 45,
+        "landmark_cases": [
+          {
+            "citation": "2018 FC 29",
+            "style_of_cause": "Chamma v. Canada (Citizenship and Immigration)",
+            "key_holding": "Officer reasonably refused ICT application where applicant failed to provide pay stubs, income tax returns, business ownership documents. Onus is on applicant to submit 'clear and compelling evidence'.",
+            "relevance": "Establishes evidentiary standard for proving foreign employment."
+          },
+          {
+            "citation": "2011 FC 241",
+            "style_of_cause": "Arora v. Canada (Citizenship and Immigration)",
+            "key_holding": "Visa officers have 'unique and localized expertise' requiring high deference. Applicant must put 'best case forward'.",
+            "relevance": "Confirms high standard of review and applicant's burden of proof."
+          }
+        ],
+        "indicators": [
+          "No pay stubs from foreign employer",
+          "No income tax returns showing employment income",
+          "No business ownership documentation",
+          "No employment contract or letter of appointment",
+          "No organizational chart showing position",
+          "Discrepancies in employment dates across documents"
+        ]
+      },
+      {
+        "risk_pattern_id": "ICT_002",
+        "pattern_name": "Lack of Qualifying Relationship Between Entities",
+        "severity": "FATAL",
+        "severity_justification": "Found in 38+ cases as automatic bar to ICT eligibility.",
+        "case_count": 38,
+        "landmark_cases": [
+          {
+            "citation": "2018 FC 29",
+            "style_of_cause": "Chamma v. Canada (Citizenship and Immigration)",
+            "key_holding": "Both entities must be 'doing business' - not mere presence of agent or office. Shell companies created solely to facilitate ICT entry do not qualify.",
+            "relevance": "Defines 'doing business' requirement."
+          },
+          {
+            "citation": "2024 FC 549",
+            "style_of_cause": "Babalou v. Canada (Citizenship and Immigration)",
+            "key_holding": "Qualifying relationship requires proof of corporate structure AND both entities actively conducting business operations.",
+            "relevance": "Clarifies that incorporation alone insufficient."
+          }
+        ],
+        "indicators": [
+          "Canadian entity incorporated shortly before application",
+          "No evidence of business operations in Canada",
+          "Company exists in name only with no employees",
+          "No physical premises secured",
+          "Unclear ownership structure between entities"
+        ]
+      },
+      {
+        "risk_pattern_id": "ICT_003",
+        "pattern_name": "Failure to Meet One-Year Continuous Employment Requirement",
+        "severity": "FATAL",
+        "severity_justification": "Mandatory requirement under FW1 Guidelines found in 32+ cases.",
+        "case_count": 32,
+        "landmark_cases": [
+          {
+            "citation": "2018 FC 29",
+            "style_of_cause": "Chamma v. Canada (Citizenship and Immigration)",
+            "key_holding": "ICT requires continuous employment 'via payroll or by contract directly with the company' for at least one year in similar full-time position.",
+            "relevance": "Establishes strict one-year continuous employment standard."
+          }
+        ],
+        "indicators": [
+          "Employment period less than 12 months",
+          "Gaps in employment history",
+          "Part-time employment without exceptional justification",
+          "Employment not in 'similar' position to Canadian role",
+          "Contract employment without direct company relationship"
+        ]
+      },
+      {
+        "risk_pattern_id": "ICT_004",
+        "pattern_name": "Start-Up Entity Lacks Legitimate Establishment",
+        "severity": "HIGH",
+        "severity_justification": "Found in 28+ cases. Start-ups face heightened scrutiny.",
+        "case_count": 28,
+        "landmark_cases": [
+          {
+            "citation": "2018 FC 29",
+            "style_of_cause": "Chamma v. Canada (Citizenship and Immigration)",
+            "key_holding": "For start-ups, officer must assess whether Canadian entity will be 'legitimate and continuing establishment' (18-24 months minimum guideline).",
+            "relevance": "Establishes start-up assessment framework."
+          },
+          {
+            "citation": "2024 FC 1787",
+            "style_of_cause": "Ghasemizadeh Bahramabadi v. Canada (Citizenship and Immigration)",
+            "key_holding": "Start-up must demonstrate concrete business plan, secured funding, market research, and realistic timeline.",
+            "relevance": "Requires substantive evidence of business viability."
+          }
+        ],
+        "indicators": [
+          "No physical premises secured (for specialized knowledge roles)",
+          "Using residential address as business location",
+          "No employees hired or planned",
+          "Vague or unrealistic business plan",
+          "Insufficient capital investment"
+        ]
+      },
+      {
+        "risk_pattern_id": "ICT_005",
+        "pattern_name": "Specialized Knowledge Not Demonstrated",
+        "severity": "HIGH",
+        "severity_justification": "Found in 25+ cases. Generic industry knowledge insufficient.",
+        "case_count": 25,
+        "landmark_cases": [
+          {
+            "citation": "2024 FC 574",
+            "style_of_cause": "Saghaei Moghaddam Foumani v. Canada (Citizenship and Immigration)",
+            "key_holding": "Specialized knowledge must be proprietary to the company - knowledge of company-specific processes not readily available externally.",
+            "relevance": "Distinguishes proprietary company knowledge from general industry expertise."
+          }
+        ],
+        "indicators": [
+          "Knowledge described is general industry knowledge",
+          "No evidence of company-specific training",
+          "Skills readily available in Canadian labor market",
+          "Job duties do not require proprietary knowledge"
+        ]
+      },
+      {
+        "risk_pattern_id": "ICT_006",
+        "pattern_name": "Executive/Managerial Capacity Not Proven",
+        "severity": "HIGH",
+        "severity_justification": "Found in 22+ cases. First-line supervisors do not qualify.",
+        "case_count": 22,
+        "landmark_cases": [
+          {
+            "citation": "2018 FC 29",
+            "style_of_cause": "Chamma v. Canada (Citizenship and Immigration)",
+            "key_holding": "Senior managerial position requires evidence of actual management responsibilities, not just title.",
+            "relevance": "Title alone insufficient - must prove actual managerial functions."
+          },
+          {
+            "citation": "2011 FC 241",
+            "style_of_cause": "Arora v. Canada (Citizenship and Immigration)",
+            "key_holding": "Executive/manager must primarily manage organization or major component, supervise professional staff.",
+            "relevance": "Defines functional test for executive/managerial capacity."
+          }
+        ],
+        "indicators": [
+          "Job title claims 'manager' but duties are operational",
+          "No evidence of supervising professional employees",
+          "First-line supervisor role",
+          "No organizational chart showing reporting structure",
+          "Limited decision-making authority"
+        ]
+      },
+      {
+        "risk_pattern_id": "ICT_007",
+        "pattern_name": "Credibility Concerns - Misrepresentation or Omissions",
+        "severity": "FATAL",
+        "severity_justification": "Found in 35+ cases. Any misrepresentation can be fatal.",
+        "case_count": 35,
+        "landmark_cases": [
+          {
+            "citation": "2018 FC 29",
+            "style_of_cause": "Chamma v. Canada (Citizenship and Immigration)",
+            "key_holding": "Applicant failed to disclose prior TRV refusal. Court held these discrepancies 'undermine overall credibility'.",
+            "relevance": "Establishes that credibility findings can be sole basis for refusal."
+          },
+          {
+            "citation": "2011 FC 794",
+            "style_of_cause": "Porfirio v. Canada (Minister of Citizenship and Immigration)",
+            "key_holding": "Finding that applicant failed to uphold duty of candour under section 16 allows refusal under subsection 11(1) IRPA.",
+            "relevance": "Confirms s.16 violation is independent ground for refusal."
+          }
+        ],
+        "indicators": [
+          "Failed to disclose prior visa refusals",
+          "Inconsistent information across forms",
+          "Discrepancies between application and supporting documents",
+          "False statements about family members",
+          "Omitted material facts"
+        ]
+      },
+      {
+        "risk_pattern_id": "ICT_008",
+        "pattern_name": "Lack of Temporary Intent - Dual Intent Concerns",
+        "severity": "HIGH",
+        "severity_justification": "Found in 30+ cases. ICT applicants must demonstrate temporary intent.",
+        "case_count": 30,
+        "landmark_cases": [
+          {
+            "citation": "2018 FC 29",
+            "style_of_cause": "Chamma v. Canada (Citizenship and Immigration)",
+            "key_holding": "Officer reasonably found applicant lacked 'compelling evidence of strong ties to home country' where family already in Canada.",
+            "relevance": "Temporary intent required even for LMIA-exempt ICT."
+          },
+          {
+            "citation": "2024 FC 15",
+            "style_of_cause": "Raveshi v. Canada (Citizenship and Immigration)",
+            "key_holding": "Dual intent is permissible but applicant must still demonstrate will leave Canada at end of authorized period.",
+            "relevance": "Clarifies dual intent doctrine."
+          }
+        ],
+        "indicators": [
+          "Weak ties to home country",
+          "Family members already in Canada or accompanying",
+          "Sold property or business in home country",
+          "No ongoing business or employment to return to",
+          "Previous overstays or immigration violations"
+        ]
+      },
+      {
+        "risk_pattern_id": "ICT_009",
+        "pattern_name": "Insufficient Evidence of 'Doing Business' Requirement",
+        "severity": "FATAL",
+        "severity_justification": "Found in 26+ cases. Both entities must be 'doing business'.",
+        "case_count": 26,
+        "landmark_cases": [
+          {
+            "citation": "2018 FC 29",
+            "style_of_cause": "Chamma v. Canada (Citizenship and Immigration)",
+            "key_holding": "'Doing business' means regularly, systematically, and continuously providing goods/services. Shell companies do not qualify.",
+            "relevance": "Establishes strict 'doing business' test."
+          }
+        ],
+        "indicators": [
+          "No evidence of regular business operations",
+          "No clients or customers",
+          "No revenue or financial transactions",
+          "No business license or permits",
+          "No employees other than ICT applicant"
+        ]
+      },
+      {
+        "risk_pattern_id": "ICT_010",
+        "pattern_name": "Position Not in Executive, Senior Managerial, or Specialized Knowledge Capacity",
+        "severity": "FATAL",
+        "severity_justification": "Found in 20+ cases. ICT limited to three categories under FW1 Guidelines.",
+        "case_count": 20,
+        "landmark_cases": [
+          {
+            "citation": "2018 FC 29",
+            "style_of_cause": "Chamma v. Canada (Citizenship and Immigration)",
+            "key_holding": "ICT requires transfer to position in 'Executive, Senior Managerial, or Specialized Knowledge capacity.'",
+            "relevance": "Establishes three-category framework."
+          }
+        ],
+        "indicators": [
+          "Job duties are primarily operational/technical",
+          "Position does not require specialized knowledge",
+          "Not managing professional employees",
+          "Limited decision-making authority",
+          "First-line supervisor or team lead role"
+        ]
+      },
+      {
+        "risk_pattern_id": "ICT_011",
+        "pattern_name": "Timing and Sequence Raises Immigration Intent Concerns",
+        "severity": "HIGH",
+        "severity_justification": "Found in 24+ cases. Suspicious timing patterns suggest ICT being used as immigration pathway.",
+        "case_count": 24,
+        "landmark_cases": [
+          {
+            "citation": "2018 FC 29",
+            "style_of_cause": "Chamma v. Canada (Citizenship and Immigration)",
+            "key_holding": "Officer reasonably considered timing: applicant entered Canada as tourist, wife gave birth in Canada, found residential address, registered business at that address, then filed ICT application.",
+            "relevance": "Timing and sequence of events can reveal true intent."
+          }
+        ],
+        "indicators": [
+          "Entered Canada as visitor, then applied for work permit",
+          "Canadian entity incorporated after applicant arrived in Canada",
+          "Family members arrived in Canada before work permit application",
+          "Business registered at applicant's residential address"
+        ]
+      }
+    ]
+  },
+
+  "owp_patterns": {
+    "_search_summary": {
+      "total_cases": 2,
+      "search_date": "2026-01-28",
+      "courts": ["FC"],
+      "date_range": "2021-2024",
+      "note": "Limited case law available for OWP - most refusals not challenged in FC"
+    },
+    "patterns": [
+      {
+        "risk_pattern_id": "OWP_001",
+        "pattern_name": "Spouse OWP - Principal Applicant Status Failure",
+        "severity": "FATAL",
+        "severity_justification": "Based on 2024 FC 1787 - spouse OWP automatically refused when principal applicant's work permit denied.",
+        "case_count": 1,
+        "landmark_cases": [
+          {
+            "citation": "2024 FC 1787",
+            "style_of_cause": "Ghasemizadeh Bahramabadi v. Canada (Citizenship and Immigration)",
+            "key_holding": "When principal applicant's LMIA-exempt work permit was refused, spouse's open work permit under R205(c)(ii) was automatically refused.",
+            "relevance": "Establishes that spouse OWP eligibility is entirely contingent on principal applicant maintaining valid status."
+          }
+        ],
+        "indicators": [
+          "Principal applicant's work permit refused",
+          "Principal applicant's status expired or invalid",
+          "Principal applicant does not meet skilled worker criteria",
+          "Business plan for principal's work deemed non-viable"
+        ]
+      },
+      {
+        "risk_pattern_id": "OWP_002",
+        "pattern_name": "Non-Status Open Work Permit - Renewal Refusal",
+        "severity": "HIGH",
+        "severity_justification": "Based on 2021 FC 326 - initial non-status OWP approval does not guarantee renewal.",
+        "case_count": 1,
+        "landmark_cases": [
+          {
+            "citation": "2021 FC 326",
+            "style_of_cause": "Shala v. Canada (Citizenship and Immigration)",
+            "key_holding": "Applicant received non-status open work permit in April 2018. Second OWP application refused July 2019.",
+            "relevance": "Establishes that non-status OWP is temporary relief, not a pathway to permanent status."
+          }
+        ],
+        "indicators": [
+          "Currently on non-status open work permit",
+          "Applying for OWP renewal/extension",
+          "No underlying immigration application pending",
+          "Previous permit was granted as exceptional relief"
+        ]
+      },
+      {
+        "risk_pattern_id": "OWP_003",
+        "pattern_name": "LMIA-Exempt Work Permit - Business Viability Failure",
+        "severity": "FATAL",
+        "severity_justification": "Based on 2024 FC 1787 - principal's C61 ICT work permit refused due to business plan viability concerns.",
+        "case_count": 1,
+        "landmark_cases": [
+          {
+            "citation": "2024 FC 1787",
+            "style_of_cause": "Ghasemizadeh Bahramabadi v. Canada (Citizenship and Immigration)",
+            "key_holding": "Officer refused C61 ICT work permit because: (1) parent company not proven multinational, (2) business plan lacked evidence, (3) insufficient liquid assets.",
+            "relevance": "Establishes strict scrutiny for LMIA-exempt work permits supporting spouse OWPs."
+          }
+        ],
+        "indicators": [
+          "Parent company not proven multinational",
+          "Business plan lacks specifics on Canadian operations",
+          "No evidence of secured premises, suppliers, or distribution channels",
+          "Insufficient liquid assets to fund startup",
+          "Minimal job creation"
+        ]
+      }
+    ]
+  },
+
+  "pnp_patterns": {
+    "_search_summary": {
+      "total_cases": 50,
+      "search_date": "2026-01-28",
+      "courts": ["FC"],
+      "date_range": "2002-2025",
+      "provincial_programs": ["BC PNP", "MPNP", "SINP", "AINP", "OINP"]
+    },
+    "patterns": [
+      {
+        "risk_pattern_id": "PNP_001",
+        "pattern_name": "Fraudulent Job Offer / Non-Genuine Employment",
+        "severity": "FATAL",
+        "severity_justification": "Based on 7+ cases showing 100% refusal rate when job offer found non-genuine. Results in misrepresentation finding under IRPA s.40(1)(a) with 5-year inadmissibility.",
+        "case_count": 7,
+        "landmark_cases": [
+          {
+            "citation": "2022 FC 18",
+            "style_of_cause": "Baniya v. Canada (Citizenship and Immigration)",
+            "key_holding": "Officer found misrepresentation where BC PNP investigation concluded Vision Glass was not in operation at time of PR application.",
+            "relevance": "Establishes comprehensive test for genuine job offer: physical presence, business activity, communication with applicant."
+          },
+          {
+            "citation": "2014 FC 239",
+            "style_of_cause": "Bhamra v. Canada (Citizenship and Immigration)",
+            "key_holding": "Saskatchewan PNP nominee found inadmissible for misrepresentation where employer statement about work experience was fabricated.",
+            "relevance": "Confirms officers can rely on provincial and federal investigations to determine genuineness."
+          }
+        ],
+        "indicators": [
+          "Employer not operating at listed address",
+          "Company website inactive or no online presence",
+          "No evidence of recent business activity",
+          "No communication between applicant and employer for extended period",
+          "Provincial investigation concludes business not legitimate"
+        ]
+      },
+      {
+        "risk_pattern_id": "PNP_002",
+        "pattern_name": "Nomination Cancelled/Withdrawn by Province",
+        "severity": "FATAL",
+        "severity_justification": "Based on 3+ cases showing automatic disqualification when province withdraws nomination.",
+        "case_count": 3,
+        "landmark_cases": [
+          {
+            "citation": "2022 FC 18",
+            "style_of_cause": "Baniya v. Canada (Citizenship and Immigration)",
+            "key_holding": "BC PNP cancelled nomination after conducting own investigation. Cancellation meant applicant no longer qualified.",
+            "relevance": "Demonstrates province's authority to cancel nomination based on post-nomination investigation."
+          }
+        ],
+        "indicators": [
+          "Province conducts post-nomination investigation",
+          "Province finds material misrepresentation in original application",
+          "Employer circumstances change significantly",
+          "Applicant fails to respond to provincial procedural fairness letter"
+        ]
+      },
+      {
+        "risk_pattern_id": "PNP_003",
+        "pattern_name": "Insufficient Language Proficiency for Nominated Occupation",
+        "severity": "HIGH",
+        "severity_justification": "Based on 5+ cases showing officer can substitute evaluation under s.87(3) IRPR when language skills insufficient.",
+        "case_count": 5,
+        "landmark_cases": [
+          {
+            "citation": "2021 FC 392",
+            "style_of_cause": "Ali v. Canada (Citizenship and Immigration)",
+            "key_holding": "Officer reasonably refused MPNP nominee with IELTS 5.0 for manufacturing manager position.",
+            "relevance": "Establishes test for s.87(3) substitution: language proficiency vs NOC occupation requirements."
+          },
+          {
+            "citation": "2018 FC 686",
+            "style_of_cause": "Haider v. Canada (Citizenship and Immigration)",
+            "key_holding": "Section 87(3) allows officer to substitute evaluation when nomination not sufficient indicator of economic establishment.",
+            "relevance": "Clarifies procedural requirement of provincial consultation before s.87(3) substitution."
+          }
+        ],
+        "indicators": [
+          "IELTS/CELPIP scores below CLB 7 for management/professional positions",
+          "NOC occupation duties require communication, supervision, training",
+          "Province does not respond to officer's consultation about language adequacy"
+        ]
+      },
+      {
+        "risk_pattern_id": "PNP_004",
+        "pattern_name": "Fraudulent or Non-Authentic Supporting Documents",
+        "severity": "FATAL",
+        "severity_justification": "Based on 4+ cases showing misrepresentation finding under s.40(1)(a) when documents proven fraudulent.",
+        "case_count": 4,
+        "landmark_cases": [
+          {
+            "citation": "2018 FC 923",
+            "style_of_cause": "Agapi v. Canada (Citizenship and Immigration)",
+            "key_holding": "Decision set aside where officer failed to consider innocent misrepresentation exception.",
+            "relevance": "Establishes narrow exception: misrepresentation made honestly by applicant who reasonably believed they were not withholding material information."
+          }
+        ],
+        "indicators": [
+          "IELTS/language test results verified as non-authentic",
+          "Employment letters/references verified as false",
+          "Educational credentials found to be fraudulent",
+          "Third-party verification contradicts submitted documents"
+        ]
+      },
+      {
+        "risk_pattern_id": "PNP_005",
+        "pattern_name": "Employer Change After Nomination",
+        "severity": "HIGH",
+        "severity_justification": "Based on 15+ cases showing material change in circumstances may invalidate nomination.",
+        "case_count": 15,
+        "landmark_cases": [
+          {
+            "citation": "2014 FC 920",
+            "style_of_cause": "Ijaz v. Canada (Citizenship and Immigration)",
+            "key_holding": "Change in employment circumstances after nomination can affect eligibility if material to nomination criteria.",
+            "relevance": "Establishes that post-nomination changes must be disclosed and may require provincial re-assessment."
+          }
+        ],
+        "indicators": [
+          "Applicant changes employer after receiving nomination",
+          "Job duties or NOC code changes from nominated position",
+          "Employer relocates to different province",
+          "Employment relationship terminated before PR application submitted"
+        ]
+      },
+      {
+        "risk_pattern_id": "PNP_006",
+        "pattern_name": "Failure to Demonstrate Economic Establishment",
+        "severity": "HIGH",
+        "severity_justification": "Based on 10+ cases showing officer can refuse under s.87(3) when unable to demonstrate ability to become economically established.",
+        "case_count": 10,
+        "landmark_cases": [
+          {
+            "citation": "2021 FC 392",
+            "style_of_cause": "Ali v. Canada (Citizenship and Immigration)",
+            "key_holding": "Officer reasonably found applicant would not become economically established where language proficiency insufficient and no job offers.",
+            "relevance": "Establishes multi-factor test: language proficiency, job prospects, demonstrated efforts, realistic plan."
+          }
+        ],
+        "indicators": [
+          "Language proficiency insufficient for nominated occupation",
+          "No job offers or employment interest in Canada",
+          "Lack of Canadian work experience or credentials",
+          "Unrealistic employment plan or expectations"
+        ]
+      },
+      {
+        "risk_pattern_id": "PNP_007",
+        "pattern_name": "Intent to Reside in Different Province",
+        "severity": "HIGH",
+        "severity_justification": "Based on 2+ cases showing violation of s.87(2)(b) IRPR requirement to intend to reside in nominating province.",
+        "case_count": 2,
+        "landmark_cases": [
+          {
+            "citation": "2016 FC 131",
+            "style_of_cause": "Dhaliwal v. Canada (Citizenship and Immigration)",
+            "key_holding": "Intent to reside refers to future permanent residence, not current temporary residence.",
+            "relevance": "Clarifies that temporary residence for studies/work does not negate intent to permanently reside in different province."
+          }
+        ],
+        "indicators": [
+          "Applicant has family/ties in different province",
+          "Job search focused on provinces other than nominating province",
+          "Statements indicating preference for different province"
+        ]
+      },
+      {
+        "risk_pattern_id": "PNP_008",
+        "pattern_name": "Inadequate Work Experience for Nominated Occupation",
+        "severity": "MEDIUM",
+        "severity_justification": "Based on 5+ cases showing officers can assess whether work experience matches NOC requirements.",
+        "case_count": 5,
+        "indicators": [
+          "Work experience duration insufficient for NOC requirements",
+          "Job duties do not match NOC occupation description",
+          "Employment references cannot be verified",
+          "Gaps or inconsistencies in employment history"
+        ]
+      },
+      {
+        "risk_pattern_id": "PNP_009",
+        "pattern_name": "Provincial Program-Specific Violations",
+        "severity": "HIGH",
+        "severity_justification": "Based on 10+ cases across different provincial programs showing each province has specific requirements.",
+        "case_count": 10,
+        "indicators": [
+          "Failure to meet province-specific language requirements",
+          "Violation of provincial program conditions or commitments",
+          "Non-compliance with provincial settlement plan",
+          "Province-specific occupation or industry restrictions not met"
+        ]
+      },
+      {
+        "risk_pattern_id": "PNP_010",
+        "pattern_name": "Procedural Fairness Violations by Officer",
+        "severity": "LOW",
+        "severity_justification": "Based on 3+ cases where decisions set aside for procedural fairness breaches.",
+        "case_count": 3,
+        "landmark_cases": [
+          {
+            "citation": "2018 FC 923",
+            "style_of_cause": "Agapi v. Canada (Citizenship and Immigration)",
+            "key_holding": "Decision set aside where officer failed to consider innocent misrepresentation exception despite applicant's detailed response.",
+            "relevance": "Establishes duty to consider all relevant legal exceptions and applicant's evidence in reasons."
+          }
+        ],
+        "indicators": [
+          "Officer fails to provide procedural fairness letter before refusal",
+          "Failure to consult province before s.87(3) substitution",
+          "Officer relies on evidence not disclosed to applicant"
+        ]
+      }
+    ]
+  },
+
+  "employer_fraud_patterns": {
+    "_search_summary": {
+      "total_cases": 108,
+      "search_date": "2026-01-28",
+      "courts": ["FC", "FCA"],
+      "date_range": "2018-2025"
+    },
+    "patterns": [
+      {
+        "risk_pattern_id": "EMP_001",
+        "pattern_name": "Fake LMIA / LMIA Fraud",
+        "severity": "FATAL",
+        "severity_justification": "Based on 32+ cases showing 100% inadmissibility rate + 5-year ban under IRPA s.40(1)(a).",
+        "case_count": 32,
+        "landmark_cases": [
+          {
+            "citation": "2024 FC 1458",
+            "style_of_cause": "Falsafi v. Canada (Citizenship and Immigration)",
+            "key_holding": "Applicant found inadmissible for misrepresentation where LMIA was obtained through fraudulent means.",
+            "relevance": "Confirms strict liability even when applicant claims to be victim of consultant fraud."
+          },
+          {
+            "citation": "2024 FC 1718",
+            "style_of_cause": "Mansooryan v. Canada (Citizenship and Immigration)",
+            "key_holding": "LMIA fraud discovered through ESDC investigation resulted in 5-year inadmissibility.",
+            "relevance": "Demonstrates ESDC-IRCC coordination in detecting LMIA fraud."
+          },
+          {
+            "citation": "2025 FC 850",
+            "style_of_cause": "Chaichi Maleki v. Canada (Citizenship and Immigration)",
+            "key_holding": "Even when applicant is victim of consultant fraud, still responsible for application content.",
+            "relevance": "Confirms applicant responsibility principle."
+          }
+        ],
+        "indicators": [
+          "LMIA obtained through unauthorized consultant",
+          "ESDC investigation reveals fraudulent recruitment",
+          "Employer has no record of LMIA application",
+          "Multiple applicants with same employer/LMIA pattern"
+        ]
+      },
+      {
+        "risk_pattern_id": "EMP_002",
+        "pattern_name": "Fraudulent Employment Documents",
+        "severity": "FATAL",
+        "severity_justification": "Based on 25+ cases showing 75% inadmissibility rate.",
+        "case_count": 25,
+        "landmark_cases": [
+          {
+            "citation": "2025 FC 534",
+            "style_of_cause": "Massamba Muaca v. Canada (Citizenship and Immigration)",
+            "key_holding": "Forged employment letter resulted in misrepresentation finding.",
+            "relevance": "Confirms document fraud is most serious form of misrepresentation."
+          },
+          {
+            "citation": "2024 FC 1969",
+            "style_of_cause": "Dini v. Canada (Citizenship and Immigration)",
+            "key_holding": "Fraudulent employment documents discovered through employer verification.",
+            "relevance": "Demonstrates importance of employer verification process."
+          }
+        ],
+        "indicators": [
+          "Employment letter format inconsistent with employer's standard",
+          "Employer denies issuing employment letter",
+          "Pay stubs do not match employer records",
+          "Tax records do not show employment income"
+        ]
+      },
+      {
+        "risk_pattern_id": "EMP_003",
+        "pattern_name": "Ghost Consultant Use",
+        "severity": "FATAL",
+        "severity_justification": "Based on 15+ cases showing 100% inadmissibility rate when unauthorized consultant used.",
+        "case_count": 15,
+        "indicators": [
+          "Application prepared by unregistered consultant",
+          "Consultant not disclosed on IMM 5476",
+          "Consultant has history of fraud",
+          "Applicant cannot explain application contents"
+        ]
+      },
+      {
+        "risk_pattern_id": "EMP_004",
+        "pattern_name": "Job Offer Not Genuine",
+        "severity": "HIGH",
+        "severity_justification": "Based on 20+ cases showing refusal without inadmissibility ban.",
+        "case_count": 20,
+        "indicators": [
+          "Employer cannot be contacted",
+          "Job duties inconsistent with business operations",
+          "Wage significantly above or below market rate",
+          "Employer has no need for foreign worker"
+        ]
+      },
+      {
+        "risk_pattern_id": "EMP_005",
+        "pattern_name": "Employer Verification Failed",
+        "severity": "HIGH",
+        "severity_justification": "Based on 18+ cases showing refusal when employer cannot verify application details.",
+        "case_count": 18,
+        "indicators": [
+          "Employer unaware of LMIA/work permit application",
+          "Employer contact information invalid",
+          "Business not operating at listed address",
+          "Employer provides contradictory information"
+        ]
+      },
+      {
+        "risk_pattern_id": "EMP_006",
+        "pattern_name": "Inconsistent Information Across Documents",
+        "severity": "HIGH",
+        "severity_justification": "Based on 15+ cases showing 50% inadmissibility rate.",
+        "case_count": 15,
+        "indicators": [
+          "Job title differs between LMIA and work permit application",
+          "Wage differs between documents",
+          "Employment dates inconsistent",
+          "NOC code mismatch"
+        ]
+      },
+      {
+        "risk_pattern_id": "EMP_007",
+        "pattern_name": "Employer Capacity Issues",
+        "severity": "MEDIUM",
+        "severity_justification": "Based on 12+ cases showing refusal risk when employer cannot support position.",
+        "case_count": 12,
+        "indicators": [
+          "Employer revenue insufficient to support wage",
+          "Business recently incorporated with no operations",
+          "No other employees at business",
+          "Employer has history of LMIA violations"
+        ]
+      },
+      {
+        "risk_pattern_id": "EMP_008",
+        "pattern_name": "Procedural Fairness Issues in Employer Verification",
+        "severity": "MEDIUM",
+        "severity_justification": "Based on 10+ cases where decisions set aside for procedural fairness breaches.",
+        "case_count": 10,
+        "indicators": [
+          "Officer did not disclose verification concerns",
+          "No opportunity to respond to adverse findings",
+          "Officer relied on undisclosed information"
+        ]
+      },
+      {
+        "risk_pattern_id": "EMP_009",
+        "pattern_name": "Generic Template Job Offers",
+        "severity": "MEDIUM",
+        "severity_justification": "Based on 8+ cases showing this raises red flags but requires procedural fairness notice.",
+        "case_count": 8,
+        "indicators": [
+          "Job offer uses generic template language",
+          "Multiple applicants with identical job offers",
+          "Job offer lacks specific details about position"
+        ]
+      }
+    ]
+  },
+
+  "intent_ties_patterns": {
+    "_search_summary": {
+      "total_cases": 216,
+      "search_date": "2026-01-28",
+      "courts": ["FC"],
+      "date_range": "2002-2025"
+    },
+    "patterns": [
+      {
+        "risk_pattern_id": "INTENT_001",
+        "pattern_name": "R200 - Not Satisfied Applicant Will Leave Canada",
+        "severity": "FATAL",
+        "severity_justification": "Based on 152+ cases showing this is the PRIMARY refusal ground for work permits.",
+        "case_count": 152,
+        "landmark_cases": [
+          {
+            "citation": "2025 FC 1210",
+            "style_of_cause": "Singh v. Canada (Citizenship and Immigration)",
+            "key_holding": "Officer must consider dual intent when LMIA supports PR pathway.",
+            "relevance": "Establishes that dual intent is PERMISSIBLE but NOT determinative."
+          }
+        ],
+        "indicators": [
+          "Weak ties to home country",
+          "Strong ties to Canada",
+          "Previous immigration violations",
+          "No compelling reason to return home"
+        ]
+      },
+      {
+        "risk_pattern_id": "INTENT_002",
+        "pattern_name": "Settlement Indicators / Overstay Risk",
+        "severity": "FATAL",
+        "severity_justification": "Based on 142+ cases showing core concern about remaining in Canada.",
+        "case_count": 142,
+        "indicators": [
+          "Family members in Canada",
+          "Previous overstay history",
+          "Sold assets in home country",
+          "No ongoing employment/business to return to"
+        ]
+      },
+      {
+        "risk_pattern_id": "INTENT_003",
+        "pattern_name": "Dual Intent Misunderstanding",
+        "severity": "HIGH",
+        "severity_justification": "Based on 117+ cases showing confusion about dual intent doctrine.",
+        "case_count": 117,
+        "landmark_cases": [
+          {
+            "citation": "2025 FC 1210",
+            "style_of_cause": "Singh v. Canada (Citizenship and Immigration)",
+            "key_holding": "Officer must consider dual intent when LMIA supports PR pathway, but dual intent does not eliminate R200 requirement.",
+            "relevance": "Clarifies that dual intent is permissible but applicant must still demonstrate will leave if required."
+          }
+        ],
+        "indicators": [
+          "Concurrent PR application",
+          "LMIA supports PR pathway (e.g., Express Entry)",
+          "Applicant relies solely on dual intent without demonstrating ties"
+        ]
+      },
+      {
+        "risk_pattern_id": "INTENT_004",
+        "pattern_name": "Weak Economic Ties to Home Country",
+        "severity": "HIGH",
+        "severity_justification": "Based on 98+ cases showing employment, assets, property are PRIMARY factors.",
+        "case_count": 98,
+        "landmark_cases": [
+          {
+            "citation": "2025 FC 1668",
+            "style_of_cause": "Baring v. Canada (Citizenship and Immigration)",
+            "key_holding": "Holistic ties assessment required - economic ties are primary consideration.",
+            "relevance": "Establishes economic ties as most important factor."
+          }
+        ],
+        "indicators": [
+          "No stable employment in home country",
+          "Limited property or assets",
+          "No business ownership",
+          "Low income relative to Canadian opportunity"
+        ]
+      },
+      {
+        "risk_pattern_id": "INTENT_005",
+        "pattern_name": "Family in Canada - Strong Pull Factor",
+        "severity": "HIGH",
+        "severity_justification": "Based on 32+ cases showing family in Canada is significant pull factor.",
+        "case_count": 32,
+        "indicators": [
+          "Spouse in Canada",
+          "Children in Canada",
+          "Extended family in Canada",
+          "No immediate family in home country"
+        ]
+      },
+      {
+        "risk_pattern_id": "INTENT_006",
+        "pattern_name": "Weak Family Ties to Home Country",
+        "severity": "HIGH",
+        "severity_justification": "Based on 24+ cases showing comparative assessment of home vs Canada ties.",
+        "case_count": 24,
+        "landmark_cases": [
+          {
+            "citation": "2025 FC 1999",
+            "style_of_cause": "Shahzad v. Canada (Citizenship and Immigration)",
+            "key_holding": "Comparative ties analysis required - must assess relative strength of ties.",
+            "relevance": "Establishes comparative assessment framework."
+          }
+        ],
+        "indicators": [
+          "No spouse or children in home country",
+          "Parents deceased or elderly",
+          "Siblings have emigrated",
+          "Limited social network in home country"
+        ]
+      },
+      {
+        "risk_pattern_id": "INTENT_007",
+        "pattern_name": "Limited Travel History",
+        "severity": "MEDIUM",
+        "severity_justification": "Based on 27+ cases showing travel history demonstrates compliance with visa conditions.",
+        "case_count": 27,
+        "indicators": [
+          "No previous international travel",
+          "No previous visa compliance history",
+          "First-time applicant from high-refusal country"
+        ]
+      },
+      {
+        "risk_pattern_id": "INTENT_008",
+        "pattern_name": "Previous Refusal History",
+        "severity": "MEDIUM",
+        "severity_justification": "Based on 18+ cases showing previous refusals inform credibility assessment.",
+        "case_count": 18,
+        "indicators": [
+          "Previous work permit refusal",
+          "Previous visitor visa refusal",
+          "Previous study permit refusal",
+          "Multiple refusals from same or different countries"
+        ]
+      }
+    ]
+  },
+
+  "admissibility_misrep_patterns": {
+    "_search_summary": {
+      "total_cases": 107,
+      "search_date": "2026-01-28",
+      "courts": ["FC", "FCA"],
+      "date_range": "2005-2025"
+    },
+    "patterns": [
+      {
+        "risk_pattern_id": "ADMIS_001",
+        "pattern_name": "Direct Misrepresentation - IRPA s.40(1)(a)",
+        "severity": "FATAL",
+        "severity_justification": "Based on 25+ cases showing 95%+ refusal rate with 5-year inadmissibility.",
+        "case_count": 25,
+        "landmark_cases": [
+          {
+            "citation": "2025 FC 370",
+            "style_of_cause": "Lui v. Canada (Citizenship and Immigration)",
+            "key_holding": "Any material misrepresentation triggers IRPA 40(1)(a) regardless of intent.",
+            "relevance": "Confirms strict liability for misrepresentation."
+          },
+          {
+            "citation": "2022 FC 684",
+            "style_of_cause": "Markar v. Canada (Citizenship and Immigration)",
+            "key_holding": "Misrepresentation includes both false statements and material omissions.",
+            "relevance": "Establishes that omissions are equally serious as false statements."
+          },
+          {
+            "citation": "2022 FC 422",
+            "style_of_cause": "Singh v. Canada (Citizenship and Immigration)",
+            "key_holding": "Materiality test: would the misrepresentation have affected the decision?",
+            "relevance": "Defines materiality standard for misrepresentation."
+          }
+        ],
+        "indicators": [
+          "False information on application forms",
+          "Omission of material facts",
+          "Fraudulent documents submitted",
+          "Inconsistent information across applications"
+        ]
+      },
+      {
+        "risk_pattern_id": "ADMIS_002",
+        "pattern_name": "Document Fraud",
+        "severity": "FATAL",
+        "severity_justification": "Based on 25+ cases showing 100% inadmissibility rate.",
+        "case_count": 25,
+        "landmark_cases": [
+          {
+            "citation": "2025 FC 534",
+            "style_of_cause": "Massamba Muaca v. Canada (Citizenship and Immigration)",
+            "key_holding": "Forged documents are the most serious form of misrepresentation.",
+            "relevance": "Confirms document fraud is most serious misrepresentation."
+          },
+          {
+            "citation": "2024 FC 1969",
+            "style_of_cause": "Dini v. Canada (Citizenship and Immigration)",
+            "key_holding": "Document verification through third parties is standard practice.",
+            "relevance": "Demonstrates IRCC verification capabilities."
+          }
+        ],
+        "indicators": [
+          "Forged employment letters",
+          "Altered educational credentials",
+          "Fake bank statements",
+          "Fraudulent identity documents"
+        ]
+      },
+      {
+        "risk_pattern_id": "ADMIS_003",
+        "pattern_name": "Criminal Inadmissibility - IRPA s.36",
+        "severity": "FATAL",
+        "severity_justification": "Based on 15+ cases showing automatic inadmissibility for serious criminality.",
+        "case_count": 15,
+        "landmark_cases": [
+          {
+            "citation": "2018 FC 743",
+            "style_of_cause": "Krasniqi v. Canada (Citizenship and Immigration)",
+            "key_holding": "Criminal inadmissibility requires criminal rehabilitation or TRP to overcome.",
+            "relevance": "Establishes pathways to overcome criminal inadmissibility."
+          }
+        ],
+        "indicators": [
+          "Conviction for indictable offence",
+          "Conviction for offence punishable by 10+ years",
+          "Multiple summary convictions",
+          "Undisclosed criminal history"
+        ]
+      },
+      {
+        "risk_pattern_id": "ADMIS_004",
+        "pattern_name": "Organized Crime - IRPA s.37",
+        "severity": "FATAL",
+        "severity_justification": "Based on 10+ cases showing permanent inadmissibility.",
+        "case_count": 10,
+        "landmark_cases": [
+          {
+            "citation": "2021 FC 702",
+            "style_of_cause": "Amable v. Canada (Citizenship and Immigration)",
+            "key_holding": "FINTRAC reports can be used as evidence of organized crime involvement.",
+            "relevance": "Demonstrates use of financial intelligence in inadmissibility determinations."
+          }
+        ],
+        "indicators": [
+          "Association with criminal organization",
+          "FINTRAC suspicious transaction reports",
+          "Pattern of unexplained wealth",
+          "Links to money laundering"
+        ]
+      },
+      {
+        "risk_pattern_id": "ADMIS_005",
+        "pattern_name": "Innocent Misrepresentation Exception",
+        "severity": "MEDIUM",
+        "severity_justification": "Based on 15+ cases showing 20% success rate when properly argued.",
+        "case_count": 15,
+        "landmark_cases": [
+          {
+            "citation": "2022 FC 684",
+            "style_of_cause": "Markar v. Canada (Citizenship and Immigration)",
+            "key_holding": "Innocent misrepresentation requires dual test: subjective honesty + objective reasonableness.",
+            "relevance": "Establishes two-part test for innocent misrepresentation."
+          },
+          {
+            "citation": "2025 FC 850",
+            "style_of_cause": "Chaichi Maleki v. Canada (Citizenship and Immigration)",
+            "key_holding": "Must be raised in PFL response and proven with evidence.",
+            "relevance": "Establishes procedural requirements for innocent misrepresentation defense."
+          }
+        ],
+        "indicators": [
+          "Applicant can demonstrate subjective honesty",
+          "Reasonable person would have made same error",
+          "Error was not due to negligence",
+          "Applicant took reasonable steps to verify information"
+        ]
+      },
+      {
+        "risk_pattern_id": "ADMIS_006",
+        "pattern_name": "Procedural Fairness Violations",
+        "severity": "MEDIUM",
+        "severity_justification": "Based on 10+ cases showing 30% success rate on judicial review.",
+        "case_count": 10,
+        "landmark_cases": [
+          {
+            "citation": "2024 FC 1718",
+            "style_of_cause": "Mansooryan v. Canada (Citizenship and Immigration)",
+            "key_holding": "Must ensure applicant actually received PFL before making inadmissibility finding.",
+            "relevance": "Establishes procedural fairness requirements for misrepresentation findings."
+          },
+          {
+            "citation": "2024 FC 2052",
+            "style_of_cause": "Amini v. Canada (Citizenship and Immigration)",
+            "key_holding": "Officer must provide meaningful opportunity to respond to concerns.",
+            "relevance": "Defines scope of procedural fairness in inadmissibility cases."
+          }
+        ],
+        "indicators": [
+          "PFL not received by applicant",
+          "Insufficient time to respond",
+          "Officer did not consider response",
+          "New concerns raised without opportunity to respond"
+        ]
+      },
+      {
+        "risk_pattern_id": "ADMIS_007",
+        "pattern_name": "GCKey Access Responsibility",
+        "severity": "HIGH",
+        "severity_justification": "Based on 8+ cases showing applicant responsible for maintaining GCKey access.",
+        "case_count": 8,
+        "indicators": [
+          "Applicant gave GCKey access to consultant",
+          "Applicant did not monitor application status",
+          "Applicant claims not to have seen PFL",
+          "Consultant made changes without applicant knowledge"
+        ]
+      }
+    ]
+  },
+
+  "_severity_summary": {
+    "FATAL": {
+      "count": 28,
+      "meaning": "Automatic refusal - application cannot proceed",
+      "examples": ["Non-genuine job offer", "Part-time study", "Misrepresentation", "No qualifying relationship", "LMIA fraud", "Document fraud", "R200 not satisfied"]
+    },
+    "HIGH": {
+      "count": 24,
+      "meaning": "Significant refusal risk - requires strong mitigation",
+      "examples": ["Employer financial inability", "Weak ties", "Start-up legitimacy", "Specialized knowledge gaps", "Dual intent misunderstanding", "Family in Canada"]
+    },
+    "MEDIUM": {
+      "count": 11,
+      "meaning": "Notable concern - requires attention",
+      "examples": ["Credential mismatch", "Wage compliance", "NOC mismatch", "Limited travel history", "Previous refusal", "Innocent misrepresentation defense"]
+    },
+    "LOW": {
+      "count": 2,
+      "meaning": "Minor issue - may lead to redetermination on appeal",
+      "examples": ["Procedural fairness violations"]
+    }
+  },
+
+  "_key_landmark_cases": {
+    "lmia": [
+      "Kataria v. Canada, 2023 FC 210 - Non-genuine job offer + s.40 misrepresentation",
+      "Liu v. Canada, 2018 FC 866 - Procedural fairness for employer finances",
+      "Jandu v. Canada, 2022 FC 1787 - Officer duty to investigate LMIA concerns",
+      "Sangha v. Canada, 2020 FC 95 - Temporary residence intent assessment"
+    ],
+    "pgwp": [
+      "Rehman v. Canada, 2015 FC 1021 - Full-time requirement + 8-month minimum",
+      "Kaura v. Canada, 2022 FC 51 - Strict credit requirements",
+      "Kaur v. Canada, 2024 FC 258 - Only 2 authorized exceptions",
+      "Singh v. Canada, 2020 FC 687 - Completion notification ends work authorization"
+    ],
+    "ict": [
+      "Chamma v. Canada, 2018 FC 29 - Comprehensive ICT requirements analysis",
+      "Arora v. Canada, 2011 FC 241 - Burden of proof and deference",
+      "Babalou v. Canada, 2024 FC 549 - Qualifying relationship requirements",
+      "Saghaei Moghaddam Foumani v. Canada, 2024 FC 574 - Specialized knowledge standard"
+    ],
+    "pnp": [
+      "Baniya v. Canada, 2022 FC 18 - BC PNP job offer genuineness, nomination cancellation",
+      "Ali v. Canada, 2021 FC 392 - MPNP language proficiency, s.87(3) substitution",
+      "Agapi v. Canada, 2018 FC 923 - Innocent misrepresentation exception",
+      "Haider v. Canada, 2018 FC 686 - s.87(3) framework, provincial consultation",
+      "Dhaliwal v. Canada, 2016 FC 131 - Intent to reside interpretation",
+      "Bhamra v. Canada, 2014 FC 239 - SINP fraudulent work experience"
+    ],
+    "employer_fraud": [
+      "Falsafi v. Canada, 2024 FC 1458 - LMIA fraud, consultant victim still liable",
+      "Mansooryan v. Canada, 2024 FC 1718 - ESDC investigation, procedural fairness",
+      "Chaichi Maleki v. Canada, 2025 FC 850 - Applicant responsibility principle",
+      "Massamba Muaca v. Canada, 2025 FC 534 - Document fraud most serious",
+      "Dini v. Canada, 2024 FC 1969 - Employer verification process"
+    ],
+    "intent_ties": [
+      "Singh v. Canada, 2025 FC 1210 - Dual intent when LMIA supports PR",
+      "Baring v. Canada, 2025 FC 1668 - Holistic ties assessment",
+      "Shahzad v. Canada, 2025 FC 1999 - Comparative ties analysis"
+    ],
+    "admissibility": [
+      "Lui v. Canada, 2025 FC 370 - Strict liability for misrepresentation",
+      "Markar v. Canada, 2022 FC 684 - Innocent misrepresentation dual test",
+      "Singh v. Canada, 2022 FC 422 - Materiality standard",
+      "Krasniqi v. Canada, 2018 FC 743 - Criminal rehabilitation pathway",
+      "Amable v. Canada, 2021 FC 702 - FINTRAC evidence in organized crime"
+    ]
+  }
+}

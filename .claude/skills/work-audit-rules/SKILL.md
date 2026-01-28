@@ -123,4 +123,14 @@ Common Federal Court reasoning in work permit refusals:
 - [fraud_risk_flags.md](references/fraud_risk_flags.md) - Detailed fraud indicators
 - [refusal_patterns.md](references/refusal_patterns.md) - Historical refusal reasons
 - [hard_eligibility.md](references/hard_eligibility.md) - Strict requirements
-- [risk_badges.json](references/risk_badges.json) - Risk classification system
+- [risk_badges.json](references/risk_badges.json) - Risk classification system (v3.0.0)
+- [verified_risk_patterns.json](references/verified_risk_patterns.json) - MCP-verified risk patterns (v2.0.0)
+- [policy_updates.md](references/policy_updates.md) - Recent policy changes tracking
+- [risk_evidence_mapping.json](references/risk_evidence_mapping.json) - Risk badge to evidence mapping
+- [provincial_differences.md](references/provincial_differences.md) - Provincial LMIA/PNP differences
+
+### Category-Specific Deep Dives
+- [pgwp_deep.md](references/pgwp_deep.md) - Post-Graduation Work Permit details
+- [ict_deep.md](references/ict_deep.md) - Intra-Company Transfer details
+- [open_spouse_deep.md](references/open_spouse_deep.md) - Spousal Open Work Permit details
+- [pnp_deep.md](references/pnp_deep.md) - Provincial Nominee Program details

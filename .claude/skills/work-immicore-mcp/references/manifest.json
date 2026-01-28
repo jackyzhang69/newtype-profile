@@ -1,8 +1,9 @@
 {
   "skill_name": "work-immicore-mcp",
-  "version": "1.0.0",
-  "description": "MCP access policy for work permit audits (caselaw, operation manual, help centre)",
+  "version": "2.0.0",
+  "description": "MCP access policy for work permit audits (caselaw, operation manual, help centre) with v3.0 API support",
   "app_type": "work",
+  "api_version": "v3.0",
   "mcp_services": [
     "caselaw",
     "operation_manual",
@@ -11,12 +12,17 @@
     "immi_tools"
   ],
   "files": [
+    "caselaw_query_patterns.json",
     "search_strategies.md",
     "relevant_policy_codes.md",
-    "issue_codes.md"
+    "issue_codes.md",
+    "category_specific_search_strategies.md"
   ],
-  "landmark_cases": [],
-  "_authority_verified": {},
-  "_dynamic_lookup": "kg_top_authorities(issue_code='LMIA_REQ', court='FC', limit=5)",
-  "_last_verified": "2026-01-27"
+  "landmark_cases_policy": "See caselaw_query_patterns.json for verified landmark cases",
+  "_dynamic_lookup": "kg_top_authorities(issue_code='WORK_*', court='FC', limit=5)",
+  "_last_verified": "2026-01-28",
+  "_version_history": [
+    {"version": "2.0.0", "date": "2026-01-28", "changes": "Added v3.0 API caselaw_query_patterns.json with landmark cases"},
+    {"version": "1.0.0", "date": "2026-01-27", "changes": "Initial release"}
+  ]
 }

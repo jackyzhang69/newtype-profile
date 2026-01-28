@@ -3,7 +3,7 @@ name: work-client-guidance
 description: Client guidance templates for work permit applications
 category: audit
 app_type: work
-version: 1.0.0
+version: 1.1.0
 ---
 
 # Work Permit Client Guidance
@@ -14,27 +14,31 @@ Templates and guidance for applicants preparing work permit applications.
 
 Provide applicants with actionable guidance to strengthen their work permit applications and understand the immigration process.
 
-## Client-Facing Sections
+## Client-Facing Materials (Chinese)
 
-### 1. Document Checklist
-Comprehensive list of required and recommended documents
+### 1. Personal Statement Templates
+- LMIA work permit statements
+- PGWP statements
+- ICT intra-company transfer statements
+- Spousal open work permit statements
 
-### 2. Application Preparation Guide
-Step-by-step guidance for preparing a strong application
+### 2. Interview Preparation Guide
+- POE (Port of Entry) interview preparation
+- Work permit extension interviews
+- Common questions and answer strategies
+- Special situation handling
 
-### 3. Common Mistakes to Avoid
-Lessons from refusal patterns to help applicants avoid pitfalls
-
-### 4. Interview Preparation
-Guidance if invited for an interview
-
-### 5. Strengthening Your Ties
-Recommendations for demonstrating ties to home country
+### 3. Document Checklists
+- LMIA work permit documents
+- PGWP documents
+- ICT documents
+- Spousal OWP documents
+- PNP work permit documents
 
 ## Key Topics
 
 ### Understanding LMIA
-- What is a Labour Market Opinion?
+- What is a Labour Market Impact Assessment?
 - Who needs one?
 - Timeline and process
 - Costs and requirements
@@ -63,9 +67,28 @@ Recommendations for demonstrating ties to home country
 - Criminal record considerations
 - Security and background
 
-## See Also
+## References
 
+### Chinese Language Materials
+- [personal_statement_cn.md](references/personal_statement_cn.md) - Personal statement templates (Chinese)
+- [interview_prep_cn.md](references/interview_prep_cn.md) - Interview preparation guide (Chinese)
+- [document_checklist_cn.md](references/document_checklist_cn.md) - Document checklists (Chinese)
+
+### English Language Materials (Legacy)
 - [document_checklist.md](references/document_checklist.md) - Required documents
 - [statement_template.md](references/statement_template.md) - Personal statement
 - [interview_prep.md](references/interview_prep.md) - Interview guidance
 - [common_mistakes.md](references/common_mistakes.md) - Pitfalls to avoid
+
+## Integration
+
+This skill complements:
+- `work-audit-rules` - Risk patterns and eligibility rules
+- `work-doc-analysis` - Document extraction and analysis
+- `spousal-client-guidance` - For spousal OWP relationship evidence guidance
+
+## Sources
+
+- IRCC Help Centre
+- Federal Court case law (Singh 2022 FC 855, Chamma 2018 FC 29, Babalou 2024 FC 549, Baniya 2022 FC 18)
+- Cross-reference: spousal-audit-rules, work-audit-rules

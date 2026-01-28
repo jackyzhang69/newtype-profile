@@ -31,69 +31,54 @@ describe("Reporter Agent", () => {
     test("should define Guest tier template (400 lines max)", () => {
       const agent = createReporterAgent()
       
-      expect(agent.prompt).toContain("GUEST TIER (Max 400 lines)")
-      expect(agent.prompt).toContain("DIY applicants")
-      expect(agent.prompt).toContain("report.pdf (single file)")
+      // Templates now include workflow type (Risk Audit / Initial Assessment)
+      expect(agent.prompt).toContain("GUEST TIER - Risk Audit (Max 400 lines)")
+      expect(agent.prompt).toContain("GUEST TIER - Initial Assessment (Max 400 lines)")
     })
 
     test("should define Pro tier template (500 lines max)", () => {
       const agent = createReporterAgent()
       
-      expect(agent.prompt).toContain("PRO TIER (Max 500 lines)")
-      expect(agent.prompt).toContain("RCICs")
-      expect(agent.prompt).toContain("report.pdf (single file)")
+      expect(agent.prompt).toContain("PRO TIER - Risk Audit (Max 500 lines)")
+      expect(agent.prompt).toContain("PRO TIER - Initial Assessment (Max 500 lines)")
     })
 
     test("should define Ultra tier template (600 lines max)", () => {
       const agent = createReporterAgent()
       
-      expect(agent.prompt).toContain("ULTRA TIER (Max 600 lines)")
-      expect(agent.prompt).toContain("Lawyers")
-      expect(agent.prompt).toContain("report.pdf + technical_appendix.pdf")
+      expect(agent.prompt).toContain("ULTRA TIER - Risk Audit (Max 600 lines)")
+      expect(agent.prompt).toContain("ULTRA TIER - Initial Assessment (Max 600 lines)")
     })
   })
 
   describe("Executive Summary Integration", () => {
-    test("should specify integrated executive summary for Guest tier", () => {
+    test("should specify integrated executive summary in templates", () => {
       const agent = createReporterAgent()
       
       expect(agent.prompt).toContain("EXECUTIVE SUMMARY (integrated, max 1/3 page")
+    })
+
+    test("should define executive summary content", () => {
+      const agent = createReporterAgent()
+      
       expect(agent.prompt).toContain("score, top 3 risks, top 3 strengths")
-    })
-
-    test("should specify integrated executive summary for Pro tier", () => {
-      const agent = createReporterAgent()
-      
-      const proSection = agent.prompt?.match(/PRO TIER[\s\S]*?(?=##)/)?.[0]
-      expect(proSection).toContain("EXECUTIVE SUMMARY (integrated")
-    })
-
-    test("should specify integrated executive summary for Ultra tier", () => {
-      const agent = createReporterAgent()
-      
-      const ultraSection = agent.prompt?.match(/ULTRA TIER[\s\S]*?(?=<\/Template_Selection>)/)?.[0]
-      expect(ultraSection).toContain("EXECUTIVE SUMMARY (integrated")
     })
   })
 
   describe("Technical Appendix (Ultra Only)", () => {
-    test("should define technical appendix structure", () => {
+    test("should define technical appendix for Ultra tier", () => {
       const agent = createReporterAgent()
       
       expect(agent.prompt).toContain("Technical Appendix (technical_appendix.pdf)")
-      expect(agent.prompt).toContain("LEGAL FRAMEWORK (full details)")
-      expect(agent.prompt).toContain("VERIFICATION & QA (full details)")
-      expect(agent.prompt).toContain("EVIDENCE ANALYSIS (full details)")
-      expect(agent.prompt).toContain("METHODOLOGY")
     })
 
     test("should specify appendix content sections", () => {
       const agent = createReporterAgent()
       
-      expect(agent.prompt).toContain("Case law precedents table")
-      expect(agent.prompt).toContain("Citation validation results")
-      expect(agent.prompt).toContain("Document inventory")
-      expect(agent.prompt).toContain("Audit process flowchart")
+      expect(agent.prompt).toContain("LEGAL FRAMEWORK (full details)")
+      expect(agent.prompt).toContain("VERIFICATION & QA (full details)")
+      expect(agent.prompt).toContain("EVIDENCE ANALYSIS (full details)")
+      expect(agent.prompt).toContain("METHODOLOGY")
     })
   })
 
@@ -112,7 +97,7 @@ describe("Reporter Agent", () => {
       expect(agent.prompt).toContain("No Markdown/JSON for users")
     })
 
-    test("should specify no separate executive summary file", () => {
+    test("should specify executive summary is integrated", () => {
       const agent = createReporterAgent()
       
       expect(agent.prompt).toContain("Executive summary integrated into main report, NOT separate file")
@@ -156,20 +141,26 @@ describe("Reporter Agent", () => {
     })
   })
 
-  describe("Mandatory Disclaimer", () => {
-    test("should include mandatory disclaimer text", () => {
+  describe("Disclaimer Reference", () => {
+    test("should reference disclaimer from core-reporter skill", () => {
       const agent = createReporterAgent()
       
-      expect(agent.prompt).toContain("This report provides a risk assessment")
-      expect(agent.prompt).toContain("NOT a prediction of future outcomes")
-      expect(agent.prompt).toContain("Immigration officers retain broad discretion")
+      expect(agent.prompt).toContain("core-reporter/references/disclaimer.md")
+      expect(agent.prompt).toContain("SINGLE SOURCE OF TRUTH")
     })
 
     test("should mark disclaimer as non-negotiable", () => {
       const agent = createReporterAgent()
       
       expect(agent.prompt).toContain("NON-NEGOTIABLE")
-      expect(agent.prompt).toContain("Do not modify, abbreviate, or omit")
+      expect(agent.prompt).toContain("never omit the disclaimer")
+    })
+
+    test("should specify disclaimer appears once at beginning", () => {
+      const agent = createReporterAgent()
+      
+      expect(agent.prompt).toContain("Disclaimer appears ONCE at the beginning")
+      expect(agent.prompt).toContain("Do NOT add a second disclaimer at the end")
     })
   })
 
@@ -214,7 +205,6 @@ describe("Reporter Agent", () => {
       
       expect(agent.prompt).toContain("From Gatekeeper")
       expect(agent.prompt).toContain("PASS/FAIL status")
-      expect(agent.prompt).toContain("Required fixes")
     })
 
     test("should define what to extract from Verifier", () => {
@@ -222,7 +212,6 @@ describe("Reporter Agent", () => {
       
       expect(agent.prompt).toContain("From Verifier")
       expect(agent.prompt).toContain("Summary counts")
-      expect(agent.prompt).toContain("corrections applied")
     })
   })
 
@@ -289,7 +278,6 @@ describe("Reporter Agent", () => {
       expect(agent.prompt).toContain("Persistence (MANDATORY)")
       expect(agent.prompt).toContain("Save PII to database")
       expect(agent.prompt).toContain("Save to Knowledge Base")
-      expect(agent.prompt).toContain("Save Report Metadata")
     })
 
     test("should specify report path fields", () => {
@@ -298,7 +286,6 @@ describe("Reporter Agent", () => {
       expect(agent.prompt).toContain("pdf_path")
       expect(agent.prompt).toContain("technical_appendix_path")
       expect(agent.prompt).toContain("is_anonymized")
-      expect(agent.prompt).toContain("anonymize_level")
     })
   })
 })

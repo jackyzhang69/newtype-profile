@@ -58,6 +58,7 @@ export function isGptModel(model: string): boolean {
 
 export type BuiltinAgentName =
   | "audit-manager"
+  | "intake"
   | "detective"
   | "strategist"
   | "gatekeeper"

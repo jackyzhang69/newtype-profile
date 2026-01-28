@@ -1,0 +1,659 @@
+{
+  "version": "1.0.0",
+  "description": "Work permit evidence weight matrix by category",
+  "last_updated": "2026-01-28",
+  "grade_definitions": {
+    "A": {
+      "label": "最高",
+      "description": "政府签发、难以伪造、直接证明资格",
+      "weight_multiplier": 1.0
+    },
+    "B": {
+      "label": "高",
+      "description": "官方机构签发、有日期戳、可验证",
+      "weight_multiplier": 0.8
+    },
+    "C": {
+      "label": "中",
+      "description": "第三方文件、有日期、可追溯",
+      "weight_multiplier": 0.5
+    },
+    "D": {
+      "label": "低",
+      "description": "自制文件、难以验证",
+      "weight_multiplier": 0.3
+    }
+  },
+  "categories": {
+    "lmia": {
+      "name": "LMIA Work Permit",
+      "code": "LMIA",
+      "evidence_requirements": {
+        "core": {
+          "description": "核心证据 (必需)",
+          "minimum_score": 100,
+          "items": [
+            {
+              "id": "lmia_approval",
+              "name": "LMIA Approval Letter",
+              "name_zh": "LMIA批准信",
+              "grade": "A",
+              "weight": 100,
+              "required": true,
+              "verification": "LMIA number verification"
+            },
+            {
+              "id": "employer_offer",
+              "name": "Employer Offer Letter",
+              "name_zh": "雇主Offer Letter",
+              "grade": "B",
+              "weight": 90,
+              "required": true,
+              "must_include": ["position", "salary", "location", "start_date"]
+            },
+            {
+              "id": "passport",
+              "name": "Valid Passport",
+              "name_zh": "有效护照",
+              "grade": "A",
+              "weight": 100,
+              "required": true
+            }
+          ]
+        },
+        "qualification": {
+          "description": "资格证明",
+          "minimum_score": 70,
+          "items": [
+            {
+              "id": "education_certificate",
+              "name": "Education Certificate",
+              "name_zh": "学历证明",
+              "grade": "A",
+              "weight": 80,
+              "required": true
+            },
+            {
+              "id": "education_assessment",
+              "name": "Education Credential Assessment",
+              "name_zh": "学历认证",
+              "grade": "B",
+              "weight": 70,
+              "required": false,
+              "recommended": true
+            },
+            {
+              "id": "professional_license",
+              "name": "Professional License/Certificate",
+              "name_zh": "专业执照/证书",
+              "grade": "B",
+              "weight": 60,
+              "required": "if_applicable"
+            }
+          ]
+        },
+        "experience": {
+          "description": "工作经验证明",
+          "minimum_score": 60,
+          "items": [
+            {
+              "id": "reference_letter",
+              "name": "Employment Reference Letter",
+              "name_zh": "雇主推荐信",
+              "grade": "C",
+              "weight": 70,
+              "required": true,
+              "must_include": ["company_letterhead", "dates", "position", "duties", "salary", "signature"]
+            },
+            {
+              "id": "pay_stubs",
+              "name": "Pay Stubs",
+              "name_zh": "工资单",
+              "grade": "B",
+              "weight": 60,
+              "required": false,
+              "recommended": true,
+              "minimum_months": 12
+            },
+            {
+              "id": "tax_returns",
+              "name": "Tax Returns",
+              "name_zh": "税单",
+              "grade": "B",
+              "weight": 60,
+              "required": false,
+              "recommended": true
+            }
+          ]
+        }
+      }
+    },
+    "pgwp": {
+      "name": "Post-Graduation Work Permit",
+      "code": "PGWP",
+      "evidence_requirements": {
+        "core": {
+          "description": "核心证据 (必需)",
+          "minimum_score": 100,
+          "items": [
+            {
+              "id": "completion_letter",
+              "name": "School Completion Letter",
+              "name_zh": "学校完成信",
+              "grade": "A",
+              "weight": 100,
+              "required": true,
+              "must_include": ["dli_number", "program_name", "completion_date", "program_length", "full_time_confirmation"]
+            },
+            {
+              "id": "study_permit",
+              "name": "Study Permit",
+              "name_zh": "学习许可",
+              "grade": "A",
+              "weight": 100,
+              "required": true,
+              "validation": "must_be_valid_during_180_day_window"
+            },
+            {
+              "id": "passport",
+              "name": "Valid Passport",
+              "name_zh": "有效护照",
+              "grade": "A",
+              "weight": 100,
+              "required": true
+            }
+          ]
+        },
+        "academic": {
+          "description": "学业证明",
+          "minimum_score": 80,
+          "items": [
+            {
+              "id": "transcript",
+              "name": "Official Transcript",
+              "name_zh": "正式成绩单",
+              "grade": "B",
+              "weight": 90,
+              "required": true
+            },
+            {
+              "id": "graduation_certificate",
+              "name": "Graduation Certificate",
+              "name_zh": "毕业证书",
+              "grade": "A",
+              "weight": 80,
+              "required": false,
+              "recommended": true
+            }
+          ]
+        },
+        "special_circumstances": {
+          "description": "特殊情况证明",
+          "items": [
+            {
+              "id": "medical_certificate",
+              "name": "Medical Certificate",
+              "name_zh": "医疗证明",
+              "grade": "C",
+              "weight": 70,
+              "required": "if_study_interrupted"
+            },
+            {
+              "id": "school_confirmation",
+              "name": "School Confirmation Letter",
+              "name_zh": "学校确认信",
+              "grade": "B",
+              "weight": 80,
+              "required": "if_program_changed"
+            },
+            {
+              "id": "restoration_receipt",
+              "name": "Status Restoration Receipt",
+              "name_zh": "身份恢复收据",
+              "grade": "A",
+              "weight": 100,
+              "required": "if_study_permit_expired",
+              "amount": 350
+            }
+          ]
+        }
+      },
+      "timeline_validation": {
+        "180_day_window": {
+          "start": "final_marks_issued_date",
+          "end": "180_days_after_start",
+          "study_permit_requirement": "must_be_valid_at_some_point_during_window"
+        }
+      }
+    },
+    "ict": {
+      "name": "Intra-Company Transfer",
+      "code": "ICT/C12",
+      "evidence_requirements": {
+        "company_relationship": {
+          "description": "公司关系证明",
+          "minimum_score": 100,
+          "items": [
+            {
+              "id": "parent_company_registration",
+              "name": "Parent Company Registration",
+              "name_zh": "母公司注册文件",
+              "grade": "A",
+              "weight": 100,
+              "required": true
+            },
+            {
+              "id": "canadian_company_registration",
+              "name": "Canadian Company Registration",
+              "name_zh": "加拿大公司注册文件",
+              "grade": "A",
+              "weight": 100,
+              "required": true
+            },
+            {
+              "id": "ownership_proof",
+              "name": "Ownership/Shareholding Proof",
+              "name_zh": "股权结构证明",
+              "grade": "A",
+              "weight": 100,
+              "required": true
+            },
+            {
+              "id": "relationship_letter",
+              "name": "Company Relationship Letter",
+              "name_zh": "公司关系说明信",
+              "grade": "C",
+              "weight": 70,
+              "required": true
+            }
+          ]
+        },
+        "employment": {
+          "description": "雇佣证明",
+          "minimum_score": 90,
+          "items": [
+            {
+              "id": "employment_letter",
+              "name": "Employment Letter from Foreign Company",
+              "name_zh": "母公司雇佣证明信",
+              "grade": "B",
+              "weight": 90,
+              "required": true,
+              "must_include": ["position", "start_date", "duties", "salary"]
+            },
+            {
+              "id": "pay_stubs",
+              "name": "Pay Stubs (12+ months)",
+              "name_zh": "工资单（12个月以上）",
+              "grade": "B",
+              "weight": 80,
+              "required": true,
+              "minimum_months": 12
+            },
+            {
+              "id": "tax_returns",
+              "name": "Income Tax Returns",
+              "name_zh": "税单",
+              "grade": "B",
+              "weight": 70,
+              "required": true
+            },
+            {
+              "id": "org_chart",
+              "name": "Organizational Chart",
+              "name_zh": "组织架构图",
+              "grade": "C",
+              "weight": 60,
+              "required": true
+            }
+          ]
+        },
+        "position_specific": {
+          "executive_manager": {
+            "description": "高管/经理类别额外证据",
+            "items": [
+              {
+                "id": "meeting_minutes",
+                "name": "Meeting Minutes",
+                "name_zh": "会议记录",
+                "grade": "C",
+                "weight": 50
+              },
+              {
+                "id": "signing_authority",
+                "name": "Signing Authority Proof",
+                "name_zh": "签字权限证明",
+                "grade": "B",
+                "weight": 60
+              },
+              {
+                "id": "direct_reports",
+                "name": "List of Direct Reports",
+                "name_zh": "下属员工名单",
+                "grade": "C",
+                "weight": 50
+              }
+            ]
+          },
+          "specialized_knowledge": {
+            "description": "专业知识类别额外证据",
+            "items": [
+              {
+                "id": "training_records",
+                "name": "Training Records",
+                "name_zh": "培训记录",
+                "grade": "C",
+                "weight": 60
+              },
+              {
+                "id": "project_documentation",
+                "name": "Project Documentation",
+                "name_zh": "项目文档",
+                "grade": "C",
+                "weight": 50
+              },
+              {
+                "id": "patents",
+                "name": "Patents/IP Documentation",
+                "name_zh": "专利/知识产权",
+                "grade": "B",
+                "weight": 70
+              }
+            ]
+          }
+        },
+        "startup": {
+          "description": "新公司额外证据",
+          "required_if": "canadian_company_is_startup",
+          "items": [
+            {
+              "id": "business_plan",
+              "name": "Business Plan",
+              "name_zh": "商业计划书",
+              "grade": "D",
+              "weight": 80,
+              "required": true,
+              "quality_requirements": ["realistic", "detailed", "evidence_based"]
+            },
+            {
+              "id": "financial_projections",
+              "name": "Financial Projections",
+              "name_zh": "财务预测",
+              "grade": "D",
+              "weight": 70,
+              "required": true
+            },
+            {
+              "id": "client_contracts",
+              "name": "Client Contracts/LOIs",
+              "name_zh": "客户合同/意向书",
+              "grade": "B",
+              "weight": 90,
+              "required": false,
+              "strongly_recommended": true
+            },
+            {
+              "id": "premises_proof",
+              "name": "Office Premises Proof",
+              "name_zh": "办公场所证明",
+              "grade": "B",
+              "weight": 60,
+              "required": true
+            },
+            {
+              "id": "hiring_plan",
+              "name": "Local Hiring Plan",
+              "name_zh": "本地招聘计划",
+              "grade": "D",
+              "weight": 50,
+              "required": true
+            }
+          ]
+        }
+      },
+      "case_law_references": [
+        "Chamma v. Canada, 2018 FC 29",
+        "Babalou v. Canada, 2024 FC 549",
+        "Saghaei Moghaddam Foumani v. Canada, 2024 FC 574"
+      ]
+    },
+    "spousal_owp": {
+      "name": "Spousal Open Work Permit",
+      "code": "C41/C42/C46",
+      "evidence_requirements": {
+        "relationship": {
+          "description": "关系证明",
+          "minimum_score": 90,
+          "items": [
+            {
+              "id": "marriage_certificate",
+              "name": "Marriage Certificate",
+              "name_zh": "结婚证",
+              "grade": "A",
+              "weight": 100,
+              "required": "if_married"
+            },
+            {
+              "id": "common_law_declaration",
+              "name": "Common-Law Declaration (IMM 5409)",
+              "name_zh": "同居声明",
+              "grade": "B",
+              "weight": 90,
+              "required": "if_common_law"
+            },
+            {
+              "id": "cohabitation_proof",
+              "name": "Cohabitation Proof",
+              "name_zh": "共同居住证明",
+              "grade": "B",
+              "weight": 80,
+              "required": true,
+              "minimum_types": 2
+            },
+            {
+              "id": "financial_interdependence",
+              "name": "Financial Interdependence Proof",
+              "name_zh": "财务捆绑证明",
+              "grade": "B",
+              "weight": 70,
+              "required": true,
+              "minimum_types": 1
+            }
+          ]
+        },
+        "principal_applicant": {
+          "description": "主申请人证明",
+          "minimum_score": 100,
+          "items": [
+            {
+              "id": "principal_permit",
+              "name": "Principal's Work/Study Permit",
+              "name_zh": "主申请人许可证",
+              "grade": "A",
+              "weight": 100,
+              "required": true
+            },
+            {
+              "id": "employment_proof",
+              "name": "Principal's Employment Proof",
+              "name_zh": "主申请人雇佣证明",
+              "grade": "B",
+              "weight": 80,
+              "required": "for_C41",
+              "must_include": ["noc_code", "teer_level"]
+            },
+            {
+              "id": "enrollment_proof",
+              "name": "Principal's Enrollment Proof",
+              "name_zh": "主申请人注册证明",
+              "grade": "B",
+              "weight": 80,
+              "required": "for_C42",
+              "must_include": ["full_time_status", "program_type"]
+            }
+          ]
+        },
+        "genuineness": {
+          "description": "关系真实性证据",
+          "items": [
+            {
+              "id": "communication_records",
+              "name": "Communication Records",
+              "name_zh": "沟通记录",
+              "grade": "C",
+              "weight": 50,
+              "max_pages": 10
+            },
+            {
+              "id": "photos",
+              "name": "Photos",
+              "name_zh": "照片",
+              "grade": "D",
+              "weight": 40,
+              "max_count": 20,
+              "requirements": ["different_times", "different_places", "with_family_friends"]
+            },
+            {
+              "id": "third_party_letters",
+              "name": "Third Party Declaration Letters",
+              "name_zh": "第三方证明信",
+              "grade": "D",
+              "weight": 30,
+              "recommended_count": "2-3"
+            }
+          ]
+        }
+      },
+      "cross_reference": "spousal-audit-rules/risk_patterns.json"
+    },
+    "pnp": {
+      "name": "PNP Work Permit",
+      "code": "PNP",
+      "evidence_requirements": {
+        "nomination": {
+          "description": "省提名证明",
+          "minimum_score": 100,
+          "items": [
+            {
+              "id": "nomination_certificate",
+              "name": "Provincial Nomination Certificate",
+              "name_zh": "省提名证书",
+              "grade": "A",
+              "weight": 100,
+              "required": true
+            },
+            {
+              "id": "nomination_confirmation",
+              "name": "Nomination Confirmation Letter",
+              "name_zh": "提名确认信",
+              "grade": "A",
+              "weight": 90,
+              "required": true
+            },
+            {
+              "id": "federal_application_confirmation",
+              "name": "Federal Application Confirmation",
+              "name_zh": "联邦申请确认",
+              "grade": "A",
+              "weight": 100,
+              "required": true
+            }
+          ]
+        },
+        "job_offer": {
+          "description": "工作offer证明",
+          "minimum_score": 90,
+          "items": [
+            {
+              "id": "offer_letter",
+              "name": "Employer Offer Letter",
+              "name_zh": "雇主Offer Letter",
+              "grade": "B",
+              "weight": 90,
+              "required": true
+            },
+            {
+              "id": "employment_contract",
+              "name": "Employment Contract",
+              "name_zh": "雇佣合同",
+              "grade": "B",
+              "weight": 80,
+              "required": false,
+              "recommended": true
+            },
+            {
+              "id": "employer_confirmation",
+              "name": "Recent Employer Confirmation",
+              "name_zh": "雇主确认信（近期）",
+              "grade": "B",
+              "weight": 85,
+              "required": true,
+              "recency": "within_3_months"
+            }
+          ]
+        },
+        "employer_legitimacy": {
+          "description": "雇主合法性证明",
+          "minimum_score": 70,
+          "items": [
+            {
+              "id": "company_registration",
+              "name": "Company Registration Documents",
+              "name_zh": "公司注册文件",
+              "grade": "A",
+              "weight": 80,
+              "required": true
+            },
+            {
+              "id": "business_license",
+              "name": "Business License",
+              "name_zh": "营业执照",
+              "grade": "A",
+              "weight": 70,
+              "required": true
+            },
+            {
+              "id": "website_screenshot",
+              "name": "Company Website Screenshot",
+              "name_zh": "公司网站截图",
+              "grade": "D",
+              "weight": 40,
+              "required": false,
+              "recommended": true
+            },
+            {
+              "id": "premises_photos",
+              "name": "Office Premises Photos",
+              "name_zh": "办公场所照片",
+              "grade": "D",
+              "weight": 40,
+              "required": false,
+              "recommended": true
+            },
+            {
+              "id": "recent_communication",
+              "name": "Recent Communication Records",
+              "name_zh": "最近通讯记录",
+              "grade": "C",
+              "weight": 60,
+              "required": true
+            }
+          ]
+        }
+      },
+      "case_law_references": [
+        "Baniya v. Canada, 2022 FC 18",
+        "Asanova v. Canada, 2020 FC 1173"
+      ]
+    }
+  },
+  "scoring": {
+    "sufficiency_thresholds": {
+      "excellent": 90,
+      "good": 75,
+      "acceptable": 60,
+      "insufficient": "below_60"
+    },
+    "calculation_method": "weighted_average_by_category"
+  }
+}
