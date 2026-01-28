@@ -27,7 +27,7 @@ Validates Immigration Audit App completeness against the building blocks archite
 
 ## What Gets Checked
 
-### 1. Agent Layer (7 blocks)
+### 1. Agent Layer (8 blocks)
 
 Every audit app requires these agents to be properly configured:
 
@@ -39,6 +39,7 @@ Every audit app requires these agents to be properly configured:
 | strategist | Yes | `src/audit-core/agents/strategist.ts` |
 | gatekeeper | Yes | `src/audit-core/agents/gatekeeper.ts` |
 | verifier | Yes | `src/audit-core/agents/verifier.ts` |
+| judge | Yes | `src/audit-core/agents/judge.ts` |
 | reporter | Yes | `src/audit-core/agents/reporter.ts` |
 
 ### 2. Skill Layer (Required per App)
@@ -120,9 +121,10 @@ caselaw_authority(citation='YYYY FC XXXX')
 - Score: {completed}/{total} ({percentage}%)
 - Critical Issues: {count}
 
-### Agent Layer (7/7)
+### Agent Layer (8/8)
 - [x] intake
 - [x] audit-manager
+- [x] judge
 ...
 
 ### Skill Layer ({n}/{m})

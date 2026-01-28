@@ -2,7 +2,7 @@
 
 Complete validation checklist for Immigration Audit Apps.
 
-## Layer 1: Agent Blocks (7 Required)
+## Layer 1: Agent Blocks (8 Required)
 
 ### Agent Existence Check
 
@@ -14,7 +14,8 @@ Complete validation checklist for Immigration Audit Apps.
 | A4 | strategist | `src/audit-core/agents/strategist.ts` | File exists, exports `createStrategistAgent` |
 | A5 | gatekeeper | `src/audit-core/agents/gatekeeper.ts` | File exists, exports `createGatekeeperAgent` |
 | A6 | verifier | `src/audit-core/agents/verifier.ts` | File exists, exports `createVerifierAgent` |
-| A7 | reporter | `src/audit-core/agents/reporter.ts` | File exists, exports `createReporterAgent` |
+| A7 | judge | `src/audit-core/agents/judge.ts` | File exists, exports `createJudgeAgent` |
+| A8 | reporter | `src/audit-core/agents/reporter.ts` | File exists, exports `createReporterAgent` |
 
 ### Agent Registration Check
 
@@ -84,7 +85,7 @@ File: `src/audit-core/tiers/config.ts`
 ### Model Assignment Check
 
 Each tier must define models for all agents:
-- intake, auditManager, detective, strategist, gatekeeper, verifier, reporter
+- intake, auditManager, detective, strategist, gatekeeper, verifier, judge, reporter
 
 ## Layer 5: Injection Profile
 
@@ -96,26 +97,45 @@ File: `.claude/skills/{app}-knowledge-injection/references/injection_profile.jso
 {
   "version": "{app}-v{n}",           // Required
   "description": "...",              // Required
-  "skills": {                        // Required
+  "skills": {                        // Required - 9 skills (7 app + 3 shared)
     "{app}-audit-rules": {
+      "description": "...",          // Required
       "inject_to": ["agent1", ...],  // Must be valid agent names
-      "priority": 1,                 // 1-10
-      "files": ["file1.md", ...]     // Must exist in skill
-    }
+      "priority": 1                  // 1-10
+    },
+    // ... 6 more app skills ...
+    "learned-guardrails": { ... },   // Shared skill
+    "audit-report-output": { ... },  // Shared skill
+    "core-reporter": { ... }         // Shared skill
   },
-  "injection_order": [...]           // Must list all skills
+  "injection_order": [...],          // Must list all 9 skills
+  "agent_skill_mapping": {           // Required - clear agent-to-skill mapping
+    "detective": {
+      "skills": [...],
+      "prompt_file": "detective_prompt.md",
+      "focus": "case_law_search"
+    },
+    "strategist": { ... },
+    "gatekeeper": { ... },
+    "reporter": { ... }
+  }
 }
 ```
+
+> **CRITICAL**: Do NOT use `files` field in injection_profile.json!
+> The loader.ts does NOT read files from injection_profile. Actual files are determined by each skill's manifest.json `references` array.
 
 ### Injection Rules
 
 | Rule | Validation |
 |------|------------|
-| I1 | All `{app}-*` skills must be in `skills` object |
-| I2 | All skills must be in `injection_order` |
-| I3 | `inject_to` must use valid agent names |
-| I4 | Referenced `files` must exist in skill's `references/` |
+| I1 | All 7 `{app}-*` skills must be in `skills` object |
+| I2 | All 3 shared skills must be in `skills` object (learned-guardrails, audit-report-output, core-reporter) |
+| I3 | All 9 skills must be in `injection_order` |
+| I4 | `inject_to` must use valid agent names (detective, strategist, gatekeeper, reporter) |
 | I5 | `priority` must be unique integers 1-10 |
+| I6 | `agent_skill_mapping` must include all 4 agents that receive skills |
+| I7 | Do NOT include `files` field (not read by loader)
 
 ## Severity Levels
 

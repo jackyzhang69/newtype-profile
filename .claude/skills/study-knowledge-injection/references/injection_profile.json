@@ -81,6 +81,45 @@
     "core-reporter",
     "study-reporter"
   ],
+  "agent_skill_mapping": {
+    "detective": {
+      "skills": [
+        "study-immicore-mcp",
+        "study-audit-rules",
+        "study-doc-analysis"
+      ],
+      "prompt_file": "detective_prompt.md",
+      "focus": "case_law_search"
+    },
+    "strategist": {
+      "skills": [
+        "study-audit-rules",
+        "study-doc-analysis",
+        "study-workflow"
+      ],
+      "prompt_file": "strategist_prompt.md",
+      "focus": "risk_assessment"
+    },
+    "gatekeeper": {
+      "skills": [
+        "study-audit-rules",
+        "study-workflow",
+        "study-client-guidance",
+        "learned-guardrails"
+      ],
+      "prompt_file": "gatekeeper_prompt.md",
+      "focus": "compliance_check"
+    },
+    "reporter": {
+      "skills": [
+        "study-reporter",
+        "core-reporter",
+        "audit-report-output"
+      ],
+      "prompt_file": "reporter_prompt.md",
+      "focus": "report_synthesis"
+    }
+  },
   "tags": {
     "skill": "Skill_References",
     "risk": "Risk_Patterns",
@@ -92,5 +131,11 @@
   "stability": {
     "allow_rename": false,
     "preserve_manifest": true
+  },
+  "_metadata": {
+    "created": "2026-01-15",
+    "last_updated": "2026-01-28",
+    "status": "active",
+    "version_notes": "Added agent_skill_mapping for clear agent-to-skill mapping"
   }
 }

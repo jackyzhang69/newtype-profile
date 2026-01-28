@@ -1,7 +1,7 @@
 {
   "name": "os-doclist-generator",
-  "version": "1.0.0",
-  "description": "IRCC document checklist generator with conditional logic",
+  "version": "2.0.0",
+  "description": "IRCC document checklist generator with smart source selection and auto-extraction",
   "categories": {
     "schema": {
       "name": "Output Schema",
@@ -10,7 +10,7 @@
           "path": "checklist_schema.json",
           "title": "Checklist JSON Schema",
           "description": "Complete JSON schema for generated document lists",
-          "topics": ["forms", "supporting_documents", "logic_types"]
+          "topics": ["forms", "supporting_documents", "logic_types", "country_specific"]
         }
       ]
     },
@@ -41,7 +41,64 @@
           "topics": ["ONE_OF", "ALL_REQUIRED", "AT_LEAST_N", "CONDITIONAL"]
         }
       ]
+    },
+    "extraction": {
+      "name": "IRCC Extraction",
+      "files": [
+        {
+          "path": "ircc_extraction_guide.md",
+          "title": "IRCC Extraction Guide",
+          "description": "Automated extraction of checklists from IRCC website using Playwright",
+          "topics": ["Playwright", "web scraping", "PDF download", "caching"]
+        },
+        {
+          "path": "pdf_parsing_rules.md",
+          "title": "PDF Parsing Rules",
+          "description": "Rules for extracting structured data from IRCC PDF checklists",
+          "topics": ["XFA forms", "section parsing", "variable extraction"]
+        },
+        {
+          "path": "country_specific_requirements.md",
+          "title": "Country-Specific Requirements",
+          "description": "Additional documents required based on applicant nationality",
+          "topics": ["China", "India", "Philippines", "Pakistan", "country codes"]
+        }
+      ]
     }
   },
-  "last_updated": "2026-01-25"
+  "features": {
+    "smart_source_selection": {
+      "description": "Automatically determines checklist source based on user input",
+      "priority": 1
+    },
+    "ircc_auto_extraction": {
+      "description": "Fetches and parses IRCC checklists when no user content provided",
+      "priority": 2
+    },
+    "conditional_logic": {
+      "description": "Applies client profile to customize document requirements",
+      "priority": 3
+    },
+    "country_specific": {
+      "description": "Adds country-specific documents based on nationality",
+      "priority": 4
+    }
+  },
+  "commands": {
+    "primary": "/os-generate-doclist <app> [options]",
+    "discovery": "/os-discover-ircc-forms <keyword>",
+    "extraction": "/os-extract-ircc-checklist <form_number>"
+  },
+  "dependencies": {
+    "mcp": ["playwright", "file_content_extract"],
+    "skills": []
+  },
+  "app_type_mapping": {
+    "spousal": "IMM 5533",
+    "study": "IMM 5483",
+    "work": "varies",
+    "parents": "IMM 5771",
+    "visitor": "IMM 5257"
+  },
+  "last_updated": "2026-01-28"
 }
