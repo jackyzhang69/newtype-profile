@@ -1,0 +1,219 @@
+{
+  "_comment": "MANDATORY TEMPLATE - Reporter MUST follow this EXACT structure for Pro tier Refusal Analysis",
+  "_version": "1.0",
+  "_last_updated": "2026-01-28",
+  
+  "title": "REFUSAL ANALYSIS REPORT",
+  "subtitle": "[Application Type] - [Applicant Name]",
+  
+  "sections": [
+    {"_section": "DISCLAIMER", "_required": true, "_position": 1},
+    {"heading": "DISCLAIMER", "level": 2},
+    {"content": "<b>This report provides a risk assessment based on historical Federal Court jurisprudence. It does NOT predict outcomes or guarantee visa issuance. Immigration officers retain broad discretion. We assess only the judicial defensibility of the application.</b>"},
+    {"content": "This assessment is based on information available as of [DATE]. Immigration law and policy are subject to change. This report is not legal advice and should not be relied upon as a substitute for professional legal counsel."},
+    {"divider": true},
+
+    {"_section": "1. VERDICT & RECOMMENDATION", "_required": true, "_position": 2, "_max_lines": 20},
+    {"heading": "1. VERDICT & RECOMMENDATION", "level": 2},
+    {"verdict": {"label": "Verdict", "value": "REAPPLY"}},
+    {"table": {
+      "headers": ["Metric", "Value"],
+      "rows": [
+        ["Appeal Viability", "25/100 (Low)"],
+        ["Reapplication Viability", "75/100 (Good)"],
+        ["Recommended Path", "REAPPLY with corrections"],
+        ["Timeline to Ready", "6-8 weeks"]
+      ],
+      "widths": [2, 3]
+    }},
+    {"content": "<b>Verdict Options:</b>"},
+    {"bullets": [
+      "APPEAL - Judicial review recommended (strong procedural/legal grounds)",
+      "REAPPLY - New application recommended (addressable deficiencies)",
+      "ABANDON - Neither path viable (fundamental eligibility issues)"
+    ]},
+    {"divider": true},
+
+    {"_section": "2. CASE SNAPSHOT", "_required": true, "_position": 3, "_max_lines": 15, "_note": "ONE table only, max 8 rows"},
+    {"heading": "2. CASE SNAPSHOT", "level": 2},
+    {"table": {
+      "headers": ["Field", "Value"],
+      "rows": [
+        ["Applicant", "[Name], [Age], [Nationality]"],
+        ["Application Type", "[Type]"],
+        ["Refusal Date", "[Date]"],
+        ["Processing Office", "[Office]"],
+        ["Previous Applications", "[Count]"],
+        ["Appeal Deadline", "[Date or N/A]"]
+      ],
+      "widths": [2, 3]
+    }},
+    {"divider": true},
+
+    {"_section": "3. REFUSAL REASONS ANALYSIS", "_required": true, "_position": 4, "_max_lines": 50},
+    {"heading": "3. REFUSAL REASONS ANALYSIS", "level": 2},
+    {"content": "<b>Officer's stated reasons for refusal:</b>"},
+
+    {"heading": "Reason #1: [Primary Refusal Ground]", "level": 3},
+    {"content": "<b>Officer's Statement:</b> [Exact quote from refusal letter]"},
+    {"content": "<b>Legal Basis:</b> [IRPA/IRPR section cited]"},
+    {"content": "<b>Analysis:</b> [Assessment of whether this ground is valid/challengeable]"},
+    {"content": "<b>Evidence Gap:</b> [What was missing or insufficient]"},
+
+    {"heading": "Reason #2: [Secondary Refusal Ground]", "level": 3},
+    {"content": "<b>Officer's Statement:</b> [Exact quote from refusal letter]"},
+    {"content": "<b>Legal Basis:</b> [IRPA/IRPR section cited]"},
+    {"content": "<b>Analysis:</b> [Assessment of whether this ground is valid/challengeable]"},
+    {"content": "<b>Evidence Gap:</b> [What was missing or insufficient]"},
+
+    {"heading": "Reason #3: [Additional Ground if applicable]", "level": 3},
+    {"content": "<b>Officer's Statement:</b> [Exact quote or N/A]"},
+    {"content": "<b>Legal Basis:</b> [IRPA/IRPR section cited or N/A]"},
+    {"content": "<b>Analysis:</b> [Assessment or N/A]"},
+    {"content": "<b>Evidence Gap:</b> [What was missing or N/A]"},
+    {"divider": true},
+
+    {"_section": "4. GAP ANALYSIS", "_required": true, "_position": 5, "_max_lines": 40},
+    {"heading": "4. GAP ANALYSIS", "level": 2},
+    {"content": "<b>Comparison: What was submitted vs. what officer expected</b>"},
+
+    {"table": {
+      "headers": ["Requirement", "Submitted", "Expected", "Gap"],
+      "rows": [
+        ["[Requirement 1]", "[What was provided]", "[What officer wanted]", "[Deficiency]"],
+        ["[Requirement 2]", "[What was provided]", "[What officer wanted]", "[Deficiency]"],
+        ["[Requirement 3]", "[What was provided]", "[What officer wanted]", "[Deficiency]"],
+        ["[Requirement 4]", "[What was provided]", "[What officer wanted]", "[Deficiency]"]
+      ],
+      "widths": [2, 2, 2, 2]
+    }},
+
+    {"heading": "Critical Gaps (Must Address)", "level": 3},
+    {"bullets": [
+      "[Gap 1]: [Description and impact]",
+      "[Gap 2]: [Description and impact]"
+    ]},
+
+    {"heading": "Secondary Gaps (Should Address)", "level": 3},
+    {"bullets": [
+      "[Gap 3]: [Description and impact]",
+      "[Gap 4]: [Description and impact]"
+    ]},
+    {"divider": true},
+
+    {"_section": "5. OVERTURN PRECEDENTS", "_required": true, "_position": 6, "_max_lines": 35},
+    {"heading": "5. OVERTURN PRECEDENTS", "level": 2},
+    {"content": "<b>Similar cases where refusals were overturned:</b>"},
+
+    {"heading": "Relevant Case Law", "level": 3},
+    {"table": {
+      "headers": ["Case", "Issue", "Outcome", "Relevance"],
+      "rows": [
+        ["[Citation 1]", "[Similar issue]", "[Allowed/Remitted]", "[How it applies]"],
+        ["[Citation 2]", "[Similar issue]", "[Allowed/Remitted]", "[How it applies]"],
+        ["[Citation 3]", "[Similar issue]", "[Allowed/Remitted]", "[How it applies]"]
+      ],
+      "widths": [2, 2, 1, 3]
+    }},
+
+    {"heading": "Key Legal Principles", "level": 3},
+    {"bullets": [
+      "[Principle 1 from case law that supports appeal/reapplication]",
+      "[Principle 2 from case law that supports appeal/reapplication]",
+      "[Principle 3 from case law that supports appeal/reapplication]"
+    ]},
+
+    {"heading": "Distinguishing Factors", "level": 3},
+    {"content": "<b>Factors that may distinguish this case from precedents:</b>"},
+    {"bullets": [
+      "[Factor 1]: [How it differs and impact]",
+      "[Factor 2]: [How it differs and impact]"
+    ]},
+    {"divider": true},
+
+    {"_section": "6. REVISED STRATEGY", "_required": true, "_position": 7, "_max_lines": 45},
+    {"heading": "6. REVISED STRATEGY", "level": 2},
+    {"content": "<b>Addressing each refusal ground:</b>"},
+
+    {"heading": "For Refusal Ground #1: [Title]", "level": 3},
+    {"content": "<b>Strategy:</b> [How to address this ground]"},
+    {"content": "<b>New Evidence Required:</b>"},
+    {"bullets": [
+      "[Document/evidence 1]",
+      "[Document/evidence 2]"
+    ]},
+    {"content": "<b>Argument:</b> [Key argument to make]"},
+
+    {"heading": "For Refusal Ground #2: [Title]", "level": 3},
+    {"content": "<b>Strategy:</b> [How to address this ground]"},
+    {"content": "<b>New Evidence Required:</b>"},
+    {"bullets": [
+      "[Document/evidence 1]",
+      "[Document/evidence 2]"
+    ]},
+    {"content": "<b>Argument:</b> [Key argument to make]"},
+
+    {"heading": "Overall Strengthening", "level": 3},
+    {"content": "<b>Additional improvements beyond addressing refusal grounds:</b>"},
+    {"bullets": [
+      "[Improvement 1]: [Description]",
+      "[Improvement 2]: [Description]",
+      "[Improvement 3]: [Description]"
+    ]},
+    {"divider": true},
+
+    {"_section": "7. ACTION PLAN", "_required": true, "_position": 8, "_max_lines": 40},
+    {"heading": "7. ACTION PLAN", "level": 2},
+
+    {"heading": "IF APPEAL (Judicial Review)", "level": 3},
+    {"content": "<b>Timeline and steps for Federal Court application:</b>"},
+    {"numbered": [
+      "<b>File Leave Application:</b> Within 15 days of refusal - Deadline: [DATE]",
+      "<b>Prepare Affidavit:</b> Applicant's sworn statement - Deadline: [DATE]",
+      "<b>Compile Record:</b> All documents from original application - Deadline: [DATE]",
+      "<b>Written Submissions:</b> Legal arguments - Deadline: [DATE]",
+      "<b>Hearing (if leave granted):</b> Estimated [DATE range]"
+    ]},
+    {"content": "<b>Estimated Cost:</b> $[X] - $[Y] (legal fees + filing fees)"},
+    {"content": "<b>Success Probability:</b> [X]% based on similar cases"},
+
+    {"heading": "IF REAPPLY (New Application)", "level": 3},
+    {"content": "<b>Timeline and steps for new application:</b>"},
+
+    {"heading": "Phase 1: Evidence Collection (Week 1-4)", "level": 4},
+    {"numbered": [
+      "<b>[Document 1]:</b> [How to obtain] - Deadline: [DATE]",
+      "<b>[Document 2]:</b> [How to obtain] - Deadline: [DATE]",
+      "<b>[Document 3]:</b> [How to obtain] - Deadline: [DATE]"
+    ]},
+
+    {"heading": "Phase 2: Application Preparation (Week 4-6)", "level": 4},
+    {"numbered": [
+      "<b>Complete Forms:</b> [List of forms] - Deadline: [DATE]",
+      "<b>Draft Explanation Letter:</b> Address previous refusal - Deadline: [DATE]",
+      "<b>Organize Package:</b> Index and compile - Deadline: [DATE]"
+    ]},
+
+    {"heading": "Phase 3: Submission (Week 6-8)", "level": 4},
+    {"numbered": [
+      "<b>Final Review:</b> Quality check all documents - Deadline: [DATE]",
+      "<b>Submit Application:</b> To IRCC - Deadline: [DATE]"
+    ]},
+    {"content": "<b>Estimated Cost:</b> $[X] (application fees + document costs)"},
+    {"content": "<b>Success Probability:</b> [X]% with recommended improvements"},
+    {"divider": true},
+
+    {"_section": "8. REPORT INFO", "_required": true, "_position": 9},
+    {"heading": "Report Information", "level": 2},
+    {"table": {
+      "headers": ["Field", "Value"],
+      "rows": [
+        ["Report Date", "[DATE]"],
+        ["Assessment Tier", "Pro"],
+        ["Workflow", "Refusal Analysis"],
+        ["Recommended Path", "[APPEAL/REAPPLY/ABANDON]"]
+      ],
+      "widths": [2, 3]
+    }}
+  ]
+}

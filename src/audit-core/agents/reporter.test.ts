@@ -31,23 +31,29 @@ describe("Reporter Agent", () => {
     test("should define Guest tier template (400 lines max)", () => {
       const agent = createReporterAgent()
       
-      // Templates now include workflow type (Risk Audit / Initial Assessment)
+      // Risk Audit templates by tier
       expect(agent.prompt).toContain("GUEST TIER - Risk Audit (Max 400 lines)")
-      expect(agent.prompt).toContain("GUEST TIER - Initial Assessment (Max 400 lines)")
     })
 
     test("should define Pro tier template (500 lines max)", () => {
       const agent = createReporterAgent()
       
       expect(agent.prompt).toContain("PRO TIER - Risk Audit (Max 500 lines)")
-      expect(agent.prompt).toContain("PRO TIER - Initial Assessment (Max 500 lines)")
     })
 
     test("should define Ultra tier template (600 lines max)", () => {
       const agent = createReporterAgent()
       
       expect(agent.prompt).toContain("ULTRA TIER - Risk Audit (Max 600 lines)")
-      expect(agent.prompt).toContain("ULTRA TIER - Initial Assessment (Max 600 lines)")
+    })
+
+    test("should define Initial Assessment templates with tier variations", () => {
+      const agent = createReporterAgent()
+      
+      // Initial Assessment uses JSON template with tier variations
+      expect(agent.prompt).toContain("INITIAL ASSESSMENT TEMPLATES")
+      expect(agent.prompt).toContain("GUEST (Max 400 lines)")
+      expect(agent.prompt).toContain("PRO (Max 500 lines)")
     })
   })
 

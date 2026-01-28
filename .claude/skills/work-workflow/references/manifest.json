@@ -1,20 +1,36 @@
 {
-  "skill_name": "work-workflow",
+  "name": "work-workflow",
   "version": "1.0.0",
-  "description": "Workflow templates and report formats for work permit audits",
-  "app_type": "work",
-  "files": [
+  "description": "Output templates and report formats for work permit audit workflow stages.",
+  "categories": ["audit", "workflow", "templates", "work"],
+  "quality_level": "L4",
+  "quickstart_paths": ["../SKILL.md"],
+  "references": [
     "primary_assessment.md",
     "deep_analysis.md",
     "final_review.md",
     "submission_letter.md"
   ],
   "workflow_stages": [
-    "intake",
-    "detective",
-    "strategist",
-    "gatekeeper",
-    "verifier",
-    "reporter"
+    {
+      "stage": "primary",
+      "template": "primary_assessment.md",
+      "description": "Initial risk identification and feasibility analysis"
+    },
+    {
+      "stage": "deep",
+      "template": "deep_analysis.md",
+      "description": "Detailed legal and evidence analysis"
+    },
+    {
+      "stage": "final",
+      "template": "final_review.md",
+      "description": "Pre-submission compliance and consistency check"
+    },
+    {
+      "stage": "submission",
+      "template": "submission_letter.md",
+      "description": "Professional cover letter for IRCC submission"
+    }
   ]
 }

@@ -1,55 +1,20 @@
 {
-  "skill_name": "work-doc-analysis",
+  "name": "work-doc-analysis",
   "version": "2.0.0",
-  "description": "Document extraction, validation, and evidence standards for work permit applications. Includes base requirements, category-specific requirements, and evidence grading system.",
-  "app_type": "work",
-  "last_updated": "2026-01-28",
-  "files": {
-    "core": [
-      "document_requirements_base.md",
-      "category_specific_requirements.md",
-      "extraction_schema.json",
-      "document_types.md",
-      "validation_rules.md"
-    ],
-    "evidence_standards": [
-      "evidence_standards.md",
-      "evidence_weight_matrix.json",
-      "evidence_sufficiency.md"
-    ],
-    "category_specific": [
-      "religious-worker-requirements.md",
-      "spouse-permit-requirements.md"
-    ]
-  },
-  "document_structure": {
-    "base_requirements": "Common documents for all work permits (passport, medical, police cert, CV, statement, etc.)",
-    "category_specific": "Additional documents required by permit category: PGWP, LMIA, IMP, ICT, Open Work Permit, PNP",
-    "evidence_grading": "A/B/C/D evidence classification with weight matrix and sufficiency scoring"
-  },
-  "key_documents": [
-    "passport",
-    "medical_examination",
-    "police_certificate",
-    "curriculum_vitae",
-    "personal_statement",
-    "job_offer_letter",
-    "lmia_document",
-    "educational_credentials",
-    "employment_contract"
-  ],
-  "evidence_grades": {
-    "A": "Government-issued, independently verifiable, highest weight",
-    "B": "Official third-party documents, high weight",
-    "C": "Self-prepared or supporting documents, moderate weight",
-    "D": "Informal evidence, low weight"
-  },
-  "categories_covered": [
-    "LMIA",
-    "PGWP",
-    "ICT",
-    "IMP",
-    "OPEN_WORK_PERMIT",
-    "PNP"
+  "description": "Document extraction, validation, and evidence standards for work permit audit.",
+  "categories": ["audit", "documents", "work"],
+  "quality_level": "L4",
+  "quickstart_paths": ["../SKILL.md"],
+  "references": [
+    "document_requirements_base.md",
+    "category_specific_requirements.md",
+    "document_types.md",
+    "extraction_schema.json",
+    "validation_rules.md",
+    "evidence_standards.md",
+    "evidence_weight_matrix.json",
+    "evidence_sufficiency.md",
+    "religious-worker-requirements.md",
+    "spouse-permit-requirements.md"
   ]
 }

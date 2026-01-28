@@ -247,115 +247,37 @@ Different workflows produce different outputs. The templates above are for **Ris
 
 **File:** `report.pdf`
 
-**IMPORTANT - Professional Formatting Rules:**
-- NO emojis in client-facing reports (use text indicators instead)
-- NO internal system info (session ID, tier name, line counts)
-- NO markdown code blocks in final output
-- Use professional status indicators: [CRITICAL], [HIGH], [MEDIUM], [LOW]
-- Use professional document status: [MISSING], [INCOMPLETE], [PROVIDED]
+**MANDATORY: Use JSON Template File**
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│ INITIAL ASSESSMENT REPORT                                       │
-│ [Application Type] - [Applicant Name]                           │
-│ Date: [Date]                                                    │
-├─────────────────────────────────────────────────────────────────┤
-│ DISCLAIMER (MANDATORY)                                          │
-├─────────────────────────────────────────────────────────────────┤
-│ 1. VERDICT & SCORE (max 15 lines)                               │
-│    ┌─────────────────────────────────────────┐                  │
-│    │ Verdict: CAUTION                        │                  │
-│    │ Current Score: 35/100 (Poor)            │                  │
-│    │ With Corrections: 72/100 (Adequate)     │                  │
-│    │ Success Probability: 5-10% -> 70-75%    │                  │
-│    │ Timeline to Ready: 4-6 weeks            │                  │
-│    └─────────────────────────────────────────┘                  │
-│    Key Findings:                                                │
-│    - 3 CRITICAL blocking issues                                 │
-│    - 2 HIGH-risk factors                                        │
-│    - 4 strengths identified                                     │
-├─────────────────────────────────────────────────────────────────┤
-│ 2. CASE SNAPSHOT (max 15 lines)                                 │
-│    | Field | Value |                                            │
-│    |-------|-------|                                            │
-│    | Applicant | [Name], [Age], [Nationality] |                 │
-│    | Position | [Title] at [Employer] |                         │
-│    | Salary | [Amount] | NOC | [Code] |                         │
-│    | Exemption | [Code] |                                       │
-├─────────────────────────────────────────────────────────────────┤
-│ 3. BLOCKING ISSUES (max 30 lines)                               │
-│    [CRITICAL] Issue #1: [Title]                                 │
-│       Issue: [Description]                                      │
-│       Impact: [What happens if not fixed]                       │
-│       Fix: [Specific action]                                    │
-│       Timeline: [Days/weeks]                                    │
-│    (Repeat for each CRITICAL issue)                             │
-├─────────────────────────────────────────────────────────────────┤
-│ 4. HIGH-RISK FACTORS (max 20 lines)                             │
-│    [HIGH] Risk #1: [Title]                                      │
-│       Risk: [Description]                                       │
-│       Mitigation: [Action]                                      │
-│    (Repeat for each HIGH risk)                                  │
-├─────────────────────────────────────────────────────────────────┤
-│ 5. STRENGTHS (max 10 lines)                                     │
-│    - [Strength 1]                                               │
-│    - [Strength 2]                                               │
-│    - [Strength 3]                                               │
-├─────────────────────────────────────────────────────────────────┤
-│ 6. DOCUMENT CHECKLIST (max 60 lines)                            │
-│    CRITICAL DOCUMENTS:                                          │
-│    | Document | Status | Priority | How to Obtain |             │
-│    |----------|--------|----------|---------------|             │
-│    | [Doc 1]  | MISSING | CRITICAL | [Guidance]   |             │
-│                                                                 │
-│    HIGH PRIORITY DOCUMENTS:                                     │
-│    | Document | Status | Priority | How to Obtain |             │
-│    |----------|--------|----------|---------------|             │
-│    | [Doc 1]  | INCOMPLETE | HIGH | [Guidance]    |             │
-│                                                                 │
-│    SUPPORTING DOCUMENTS:                                        │
-│    | Document | Status | Priority | How to Obtain |             │
-│    |----------|--------|----------|---------------|             │
-│    | [Doc 1]  | PROVIDED | LOW | -              |               │
-├─────────────────────────────────────────────────────────────────┤
-│ 7. ACTION PLAN (max 30 lines)                                   │
-│    PHASE 1 (Week 1-2): Critical Fixes                           │
-│    [ ] Action 1.1: [Description] - Deadline: [Date]             │
-│    [ ] Action 1.2: [Description] - Deadline: [Date]             │
-│                                                                 │
-│    PHASE 2 (Week 2-4): Document Collection                      │
-│    [ ] Action 2.1: [Description] - Deadline: [Date]             │
-│                                                                 │
-│    PHASE 3 (Week 4-6): Final Preparation                        │
-│    [ ] Action 3.1: [Description] - Deadline: [Date]             │
-├─────────────────────────────────────────────────────────────────┤
-│ 8. SUBMISSION LETTER TEMPLATE (max 40 lines)                    │
-│    [Pre-filled with known case facts, minimal placeholders]     │
-├─────────────────────────────────────────────────────────────────┤
-│ 9. EXPLANATION LETTER GUIDE (max 20 lines)                      │
-│    When needed: [Conditions]                                    │
-│    Key points to address: [List]                                │
-│    Template structure: [Outline]                                │
-└─────────────────────────────────────────────────────────────────┘
-```
+For stable, consistent output, Reporter MUST:
+1. Read template: `.claude/skills/core-reporter/references/initial_assessment_pro_template.json`
+2. Follow the EXACT section order in the template
+3. Replace placeholder values with actual case data
+4. Do NOT add sections not in the template
+5. Do NOT duplicate sections
 
-**Section Line Budgets (Pro Tier - 500 lines max):**
+**CRITICAL RULES:**
+- Disclaimer appears ONCE at the beginning only (NOT at the end)
+- Case info appears ONCE as "CASE SNAPSHOT" (NOT as separate "Case Information")
+- NO emojis - use [CRITICAL], [HIGH], [MEDIUM], [LOW]
+- NO internal system info (session ID, tier name)
+- Status values: MISSING, INCOMPLETE, PROVIDED
 
-| Section | Max Lines | Priority |
-|---------|-----------|----------|
-| Header + Disclaimer | 15 | NEVER CUT |
-| Verdict & Score | 15 | NEVER CUT |
-| Case Snapshot | 15 | Can compress |
-| Blocking Issues | 30 | NEVER CUT |
-| High-Risk Factors | 20 | Can compress |
-| Strengths | 10 | Can compress |
-| Document Checklist | 60 | Can compress to CRITICAL only |
-| Action Plan | 30 | Can compress to Phase 1 only |
-| Submission Letter | 40 | Can move to separate file |
-| Explanation Guide | 20 | Can move to separate file |
-| Footer Disclaimer | 5 | NEVER CUT |
-| **Buffer** | 40 | For tables/formatting |
-| **TOTAL** | 300 | Well under 500 limit |
+**Section Order (from template file):**
+
+| # | Section | Required | Max Lines |
+|---|---------|----------|-----------|
+| 1 | DISCLAIMER | YES | 5 |
+| 2 | VERDICT & SCORE | YES | 15 |
+| 3 | CASE SNAPSHOT | YES | 15 |
+| 4 | BLOCKING ISSUES | YES | 30 |
+| 5 | HIGH-RISK FACTORS | YES | 20 |
+| 6 | STRENGTHS | YES | 10 |
+| 7 | DOCUMENT CHECKLIST | YES | 60 |
+| 8 | ACTION PLAN | YES | 30 |
+| 9 | REPORT INFO | YES | 10 |
+
+**Total: ~195 lines (well under 500 limit)**
 
 ### INITIAL ASSESSMENT - ULTRA TIER (Max 600 lines)
 

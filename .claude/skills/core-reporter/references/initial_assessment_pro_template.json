@@ -1,0 +1,171 @@
+{
+  "_comment": "MANDATORY TEMPLATE - Reporter MUST follow this EXACT structure for Pro tier Initial Assessment",
+  "_version": "1.0",
+  "_last_updated": "2026-01-28",
+  
+  "title": "INITIAL ASSESSMENT REPORT",
+  "subtitle": "Work Permit - Religious Worker (R205(d), Code C50)",
+  
+  "sections": [
+    {"_section": "DISCLAIMER", "_required": true, "_position": 1},
+    {"heading": "DISCLAIMER", "level": 2},
+    {"content": "<b>This report provides a risk assessment based on historical Federal Court jurisprudence. It does NOT predict outcomes or guarantee visa issuance. Immigration officers retain broad discretion. We assess only the judicial defensibility of the application.</b>"},
+    {"content": "This assessment is based on information available as of [DATE]. Immigration law and policy are subject to change. This report is not legal advice and should not be relied upon as a substitute for professional legal counsel."},
+    {"divider": true},
+
+    {"_section": "1. VERDICT & SCORE", "_required": true, "_position": 2, "_max_lines": 15},
+    {"heading": "1. VERDICT & SCORE", "level": 2},
+    {"verdict": {"label": "Verdict", "value": "CAUTION"}},
+    {"table": {
+      "headers": ["Metric", "Value"],
+      "rows": [
+        ["Current Score", "35/100 (Poor)"],
+        ["With Corrections", "72/100 (Adequate)"],
+        ["Success Probability", "5-10% -> 70-75%"],
+        ["Timeline to Ready", "4-6 weeks"]
+      ],
+      "widths": [2, 3]
+    }},
+    {"content": "<b>Key Findings:</b>"},
+    {"bullets": [
+      "3 CRITICAL blocking issues",
+      "2 HIGH-risk factors",
+      "4 strengths identified"
+    ]},
+    {"divider": true},
+
+    {"_section": "2. CASE SNAPSHOT", "_required": true, "_position": 3, "_max_lines": 15, "_note": "ONE table only, max 8 rows"},
+    {"heading": "2. CASE SNAPSHOT", "level": 2},
+    {"table": {
+      "headers": ["Field", "Value"],
+      "rows": [
+        ["Applicant", "Li Xianghu, 53, Chinese"],
+        ["Position", "Full-Time Pastor at Victoria Zion Church"],
+        ["Salary", "$41,600/year"],
+        ["NOC Code", "41301 (Religious Leaders)"],
+        ["Exemption", "R205(d), Code C50"],
+        ["Current Form", "IMM 5257 (WRONG - needs IMM 1295)"]
+      ],
+      "widths": [2, 3]
+    }},
+    {"divider": true},
+
+    {"_section": "3. BLOCKING ISSUES", "_required": true, "_position": 4, "_max_lines": 30},
+    {"heading": "3. BLOCKING ISSUES", "level": 2},
+    
+    {"heading": "[CRITICAL] Wrong Application Form", "level": 3},
+    {"content": "<b>Issue:</b> Using IMM 5257 instead of required IMM 1295"},
+    {"content": "<b>Impact:</b> Application will be rejected - cannot process with wrong form"},
+    {"content": "<b>Fix:</b> Obtain and complete IMM 1295 (International Mobility Program form)"},
+    {"content": "<b>Timeline:</b> 1 week"},
+
+    {"heading": "[CRITICAL] Missing Ordination Certificate", "level": 3},
+    {"content": "<b>Issue:</b> No formal ordination documentation provided"},
+    {"content": "<b>Impact:</b> Cannot establish genuine ministerial status - application will be refused"},
+    {"content": "<b>Fix:</b> Request certificate from ordaining religious authority"},
+    {"content": "<b>Timeline:</b> 2-4 weeks"},
+
+    {"heading": "[CRITICAL] Wrong Exemption Code", "level": 3},
+    {"content": "<b>Issue:</b> Referencing R186(l) instead of R205(d)"},
+    {"content": "<b>Impact:</b> Demonstrates fundamental misunderstanding of exemption category"},
+    {"content": "<b>Fix:</b> Correct to R205(d) in all documents"},
+    {"content": "<b>Timeline:</b> 1 week"},
+    {"divider": true},
+
+    {"_section": "4. HIGH-RISK FACTORS", "_required": true, "_position": 5, "_max_lines": 20},
+    {"heading": "4. HIGH-RISK FACTORS", "level": 2},
+
+    {"heading": "[HIGH] Missing Religious Work Experience", "level": 3},
+    {"content": "<b>Risk:</b> No letters from previous religious positions provided"},
+    {"content": "<b>Mitigation:</b> Obtain reference letters from previous religious supervisors"},
+
+    {"heading": "[HIGH] Missing Employer Financials", "level": 3},
+    {"content": "<b>Risk:</b> Church financial statements not provided"},
+    {"content": "<b>Mitigation:</b> Obtain 2023-2024 financial statements from Victoria Zion Church"},
+    {"divider": true},
+
+    {"_section": "5. STRENGTHS", "_required": true, "_position": 6, "_max_lines": 10},
+    {"heading": "5. STRENGTHS", "level": 2},
+    {"bullets": [
+      "Legitimate CRA-registered charitable employer",
+      "Clear pastoral position with defined duties",
+      "Reasonable salary ($41,600/year) aligned with market rates",
+      "Established employer (operating since 2018)"
+    ]},
+    {"divider": true},
+
+    {"_section": "6. DOCUMENT CHECKLIST", "_required": true, "_position": 7, "_max_lines": 60},
+    {"heading": "6. DOCUMENT CHECKLIST", "level": 2},
+
+    {"heading": "CRITICAL DOCUMENTS", "level": 3},
+    {"table": {
+      "headers": ["Document", "Status", "How to Obtain"],
+      "rows": [
+        ["IMM 1295 (correct form)", "MISSING", "Download from IRCC website"],
+        ["Ordination Certificate", "MISSING", "Request from ordaining authority"],
+        ["Theological Credentials", "MISSING", "Request from seminary/school"],
+        ["Church Financial Statements", "MISSING", "Request from church treasurer"]
+      ],
+      "widths": [3, 1, 4]
+    }},
+
+    {"heading": "HIGH PRIORITY DOCUMENTS", "level": 3},
+    {"table": {
+      "headers": ["Document", "Status", "How to Obtain"],
+      "rows": [
+        ["Religious Authority Letter", "MISSING", "Request from bishop/denomination leader"],
+        ["Previous Employer References", "MISSING", "Contact previous churches"],
+        ["Detailed Job Description", "MISSING", "Prepare with Victoria Zion Church"]
+      ],
+      "widths": [3, 1, 4]
+    }},
+
+    {"heading": "PROVIDED DOCUMENTS", "level": 3},
+    {"table": {
+      "headers": ["Document", "Status", "Notes"],
+      "rows": [
+        ["Valid Passport", "PROVIDED", "E99526857"],
+        ["CRA Charity Registration", "PROVIDED", "Victoria Zion Church confirmed"]
+      ],
+      "widths": [3, 1, 4]
+    }},
+    {"divider": true},
+
+    {"_section": "7. ACTION PLAN", "_required": true, "_position": 8, "_max_lines": 30},
+    {"heading": "7. ACTION PLAN", "level": 2},
+
+    {"heading": "PHASE 1: Critical Fixes (Week 1-2)", "level": 3},
+    {"numbered": [
+      "<b>Correct Application Form:</b> Obtain IMM 1295 - Deadline: [DATE+7]",
+      "<b>Correct Exemption Code:</b> Update all documents to R205(d) - Deadline: [DATE+7]",
+      "<b>Request Ordination Certificate:</b> Contact ordaining authority - Deadline: [DATE+14]"
+    ]},
+
+    {"heading": "PHASE 2: Document Collection (Week 2-4)", "level": 3},
+    {"numbered": [
+      "<b>Theological Credentials:</b> Request from seminary - Deadline: [DATE+28]",
+      "<b>Church Financials:</b> Request 2023-2024 statements - Deadline: [DATE+14]",
+      "<b>Religious Authority Letter:</b> Request from denomination - Deadline: [DATE+14]"
+    ]},
+
+    {"heading": "PHASE 3: Final Preparation (Week 4-6)", "level": 3},
+    {"numbered": [
+      "<b>Compile Package:</b> Organize all documents - Deadline: [DATE+35]",
+      "<b>Final Review:</b> Verify all corrections - Deadline: [DATE+42]",
+      "<b>Submit Application:</b> Submit to IRCC - Deadline: [DATE+45]"
+    ]},
+    {"divider": true},
+
+    {"_section": "8. REPORT INFO", "_required": true, "_position": 9},
+    {"heading": "Report Information", "level": 2},
+    {"table": {
+      "headers": ["Field", "Value"],
+      "rows": [
+        ["Report Date", "[DATE]"],
+        ["Assessment Tier", "Pro"],
+        ["Application Status", "NOT READY FOR SUBMISSION"]
+      ],
+      "widths": [2, 3]
+    }}
+  ]
+}

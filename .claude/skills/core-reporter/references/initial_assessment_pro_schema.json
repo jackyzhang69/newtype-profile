@@ -1,0 +1,109 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Initial Assessment Report - Pro Tier",
+  "description": "Mandatory JSON structure for Pro tier Initial Assessment reports. Reporter MUST follow this exact structure.",
+  "type": "object",
+  "required": ["title", "subtitle", "sections"],
+  "properties": {
+    "title": {
+      "type": "string",
+      "const": "INITIAL ASSESSMENT REPORT"
+    },
+    "subtitle": {
+      "type": "string",
+      "description": "[Application Type] - [Applicant Name]"
+    },
+    "sections": {
+      "type": "array",
+      "description": "Ordered list of sections. MUST follow exact sequence.",
+      "items": {
+        "oneOf": [
+          {"$ref": "#/definitions/heading"},
+          {"$ref": "#/definitions/content"},
+          {"$ref": "#/definitions/verdict"},
+          {"$ref": "#/definitions/table"},
+          {"$ref": "#/definitions/bullets"},
+          {"$ref": "#/definitions/numbered"},
+          {"$ref": "#/definitions/divider"}
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "heading": {
+      "type": "object",
+      "required": ["heading", "level"],
+      "properties": {
+        "heading": {"type": "string"},
+        "level": {"type": "integer", "minimum": 1, "maximum": 4}
+      },
+      "additionalProperties": false
+    },
+    "content": {
+      "type": "object",
+      "required": ["content"],
+      "properties": {
+        "content": {
+          "type": "string",
+          "description": "Paragraph text. Supports <b>, <i>, <br/> tags."
+        }
+      },
+      "additionalProperties": false
+    },
+    "verdict": {
+      "type": "object",
+      "required": ["verdict"],
+      "properties": {
+        "verdict": {
+          "type": "object",
+          "required": ["label", "value"],
+          "properties": {
+            "label": {"type": "string"},
+            "value": {"type": "string", "enum": ["GO", "CAUTION", "NO-GO"]}
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "table": {
+      "type": "object",
+      "required": ["table"],
+      "properties": {
+        "table": {
+          "type": "object",
+          "required": ["headers", "rows"],
+          "properties": {
+            "headers": {"type": "array", "items": {"type": "string"}},
+            "rows": {"type": "array", "items": {"type": "array", "items": {"type": "string"}}},
+            "widths": {"type": "array", "items": {"type": "integer"}}
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "bullets": {
+      "type": "object",
+      "required": ["bullets"],
+      "properties": {
+        "bullets": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": false
+    },
+    "numbered": {
+      "type": "object",
+      "required": ["numbered"],
+      "properties": {
+        "numbered": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": false
+    },
+    "divider": {
+      "type": "object",
+      "required": ["divider"],
+      "properties": {
+        "divider": {"type": "boolean", "const": true}
+      },
+      "additionalProperties": false
+    }
+  }
+}

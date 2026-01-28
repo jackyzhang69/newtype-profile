@@ -1,0 +1,150 @@
+{
+  "_comment": "MANDATORY TEMPLATE - Reporter MUST follow this EXACT structure for Pro tier Final Review",
+  "_version": "1.0",
+  "_last_updated": "2026-01-28",
+  
+  "title": "FINAL REVIEW REPORT",
+  "subtitle": "[Application Type] - [Applicant Name]",
+  
+  "sections": [
+    {"_section": "DISCLAIMER", "_required": true, "_position": 1},
+    {"heading": "DISCLAIMER", "level": 2},
+    {"content": "<b>This report provides a risk assessment based on historical Federal Court jurisprudence. It does NOT predict outcomes or guarantee visa issuance. Immigration officers retain broad discretion. We assess only the judicial defensibility of the application.</b>"},
+    {"content": "This assessment is based on information available as of [DATE]. Immigration law and policy are subject to change. This report is not legal advice and should not be relied upon as a substitute for professional legal counsel."},
+    {"divider": true},
+
+    {"_section": "1. VERDICT & SCORE", "_required": true, "_position": 2, "_max_lines": 15},
+    {"heading": "1. VERDICT & SCORE", "level": 2},
+    {"verdict": {"label": "Verdict", "value": "APPROVE"}},
+    {"table": {
+      "headers": ["Metric", "Value"],
+      "rows": [
+        ["Submission Readiness", "85/100 (Ready)"],
+        ["Remaining Issues", "2 minor items"],
+        ["Recommendation", "APPROVE with minor revisions"]
+      ],
+      "widths": [2, 3]
+    }},
+    {"content": "<b>Quality Gate Status:</b>"},
+    {"bullets": [
+      "Document completeness: PASS",
+      "Consistency check: PASS",
+      "Compliance review: PASS with notes"
+    ]},
+    {"divider": true},
+
+    {"_section": "2. CASE SNAPSHOT", "_required": true, "_position": 3, "_max_lines": 15, "_note": "ONE table only, max 8 rows"},
+    {"heading": "2. CASE SNAPSHOT", "level": 2},
+    {"table": {
+      "headers": ["Field", "Value"],
+      "rows": [
+        ["Applicant", "[Name], [Age], [Nationality]"],
+        ["Application Type", "[Type]"],
+        ["Submission Target", "[Date]"],
+        ["Processing Office", "[Office]"],
+        ["Previous Submissions", "[Count or N/A]"]
+      ],
+      "widths": [2, 3]
+    }},
+    {"divider": true},
+
+    {"_section": "3. QUALITY CHECK RESULTS", "_required": true, "_position": 4, "_max_lines": 40},
+    {"heading": "3. QUALITY CHECK RESULTS", "level": 2},
+
+    {"heading": "Document Completeness", "level": 3},
+    {"table": {
+      "headers": ["Category", "Status", "Notes"],
+      "rows": [
+        ["Identity Documents", "COMPLETE", "All verified"],
+        ["Supporting Evidence", "COMPLETE", "12 items provided"],
+        ["Forms", "COMPLETE", "All signed and dated"]
+      ],
+      "widths": [2, 1, 3]
+    }},
+
+    {"heading": "Consistency Check", "level": 3},
+    {"table": {
+      "headers": ["Check", "Status", "Details"],
+      "rows": [
+        ["Timeline consistency", "PASS", "All dates align"],
+        ["Name/DOB consistency", "PASS", "Matches across documents"],
+        ["Address consistency", "PASS", "Current address verified"]
+      ],
+      "widths": [2, 1, 3]
+    }},
+
+    {"heading": "Compliance Review", "level": 3},
+    {"table": {
+      "headers": ["Requirement", "Status", "Notes"],
+      "rows": [
+        ["Eligibility criteria", "MET", "All requirements satisfied"],
+        ["Documentation standards", "MET", "Proper format and certification"],
+        ["Regulatory compliance", "MET", "No violations identified"]
+      ],
+      "widths": [2, 1, 3]
+    }},
+    {"divider": true},
+
+    {"_section": "4. REMAINING ISSUES", "_required": true, "_position": 5, "_max_lines": 25},
+    {"heading": "4. REMAINING ISSUES", "level": 2},
+
+    {"heading": "[MINOR] Issue #1: [Title]", "level": 3},
+    {"content": "<b>Issue:</b> [Description]"},
+    {"content": "<b>Impact:</b> Low - will not cause refusal but may delay processing"},
+    {"content": "<b>Recommended Fix:</b> [Action]"},
+    {"content": "<b>Priority:</b> Before submission if time permits"},
+
+    {"heading": "[MINOR] Issue #2: [Title]", "level": 3},
+    {"content": "<b>Issue:</b> [Description]"},
+    {"content": "<b>Impact:</b> Low - cosmetic improvement"},
+    {"content": "<b>Recommended Fix:</b> [Action]"},
+    {"content": "<b>Priority:</b> Optional"},
+    {"divider": true},
+
+    {"_section": "5. STRENGTHS CONFIRMED", "_required": true, "_position": 6, "_max_lines": 15},
+    {"heading": "5. STRENGTHS CONFIRMED", "level": 2},
+    {"bullets": [
+      "[Strength 1 verified during review]",
+      "[Strength 2 verified during review]",
+      "[Strength 3 verified during review]",
+      "[Strength 4 verified during review]"
+    ]},
+    {"divider": true},
+
+    {"_section": "6. SUBMISSION CHECKLIST", "_required": true, "_position": 7, "_max_lines": 30},
+    {"heading": "6. SUBMISSION CHECKLIST", "level": 2},
+    {"content": "<b>Final verification before submission:</b>"},
+    {"numbered": [
+      "All forms signed and dated: [YES/NO]",
+      "All supporting documents included: [YES/NO]",
+      "Fees calculated and payment ready: [YES/NO]",
+      "Cover letter prepared: [YES/NO]",
+      "Document index created: [YES/NO]",
+      "Copies made for records: [YES/NO]"
+    ]},
+    {"divider": true},
+
+    {"_section": "7. IMPROVEMENT RECOMMENDATIONS", "_required": true, "_position": 8, "_max_lines": 25},
+    {"heading": "7. IMPROVEMENT RECOMMENDATIONS", "level": 2},
+    {"content": "<b>Optional enhancements to strengthen application:</b>"},
+    {"numbered": [
+      "<b>[Recommendation 1]:</b> [Description and benefit]",
+      "<b>[Recommendation 2]:</b> [Description and benefit]",
+      "<b>[Recommendation 3]:</b> [Description and benefit]"
+    ]},
+    {"divider": true},
+
+    {"_section": "8. REPORT INFO", "_required": true, "_position": 9},
+    {"heading": "Report Information", "level": 2},
+    {"table": {
+      "headers": ["Field", "Value"],
+      "rows": [
+        ["Report Date", "[DATE]"],
+        ["Assessment Tier", "Pro"],
+        ["Workflow", "Final Review"],
+        ["Application Status", "READY FOR SUBMISSION"]
+      ],
+      "widths": [2, 3]
+    }}
+  ]
+}

@@ -1,20 +1,45 @@
 {
-  "skill_name": "work-client-guidance",
+  "name": "work-client-guidance",
   "version": "1.0.0",
-  "description": "Client guidance templates for work permit application preparation",
-  "app_type": "work",
-  "files": [
+  "description": "Client guidance templates for work permit applications.",
+  "categories": ["audit", "guidance", "templates", "work", "client"],
+  "quality_level": "L4",
+  "quickstart_paths": ["../SKILL.md"],
+  "references": [
     "document_checklist.md",
-    "statement_template.md",
-    "interview_prep.md",
-    "common_mistakes.md"
+    "document_checklist_cn.md",
+    "interview_prep_cn.md",
+    "personal_statement_cn.md",
+    "religious-worker-guidance.md",
+    "spouse-permit-guidance.md"
   ],
-  "target_audience": "Work permit applicants",
-  "key_topics": [
-    "Document requirements",
-    "LMIA process",
-    "Demonstrating ties",
-    "Interview preparation",
-    "Common refusal reasons"
+  "depends_on": [
+    "work-doc-analysis"
+  ],
+  "guide_types": [
+    {
+      "type": "document_checklist",
+      "template": "document_checklist.md",
+      "description": "Work permit document checklist",
+      "language": "en"
+    },
+    {
+      "type": "document_checklist_cn",
+      "template": "document_checklist_cn.md",
+      "description": "Work permit document checklist (Chinese)",
+      "language": "zh-CN"
+    },
+    {
+      "type": "interview_preparation",
+      "template": "interview_prep_cn.md",
+      "description": "Interview preparation guide (Chinese)",
+      "language": "zh-CN"
+    },
+    {
+      "type": "personal_statement",
+      "template": "personal_statement_cn.md",
+      "description": "Personal statement writing guide (Chinese)",
+      "language": "zh-CN"
+    }
   ]
 }

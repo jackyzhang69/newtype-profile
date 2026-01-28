@@ -1,26 +1,23 @@
 {
-  "skill_name": "work-knowledge-injection",
+  "name": "work-knowledge-injection",
   "version": "1.0.0",
-  "description": "Knowledge injection system for work permit audit agents",
-  "app_type": "work",
-  "files": [
+  "description": "Runtime injection of work permit audit knowledge into agent prompts. Coordinates 6 specialized skills for comprehensive audit coverage including semantic verification.",
+  "categories": ["audit", "knowledge", "orchestration", "work"],
+  "quality_level": "L4",
+  "quickstart_paths": ["../SKILL.md"],
+  "references": [
     "injection_profile.json",
     "detective_prompt.md",
     "strategist_prompt.md",
     "gatekeeper_prompt.md",
     "reporter_prompt.md"
   ],
-  "agent_targets": [
-    "detective",
-    "strategist",
-    "gatekeeper",
-    "reporter"
-  ],
-  "key_injections": [
-    "work-immicore-mcp for detective",
-    "work-audit-rules for all agents",
-    "work-doc-analysis for strategist",
-    "work-workflow for reporter",
-    "work-client-guidance for reporter"
+  "depends_on": [
+    "work-audit-rules",
+    "work-doc-analysis",
+    "work-immicore-mcp",
+    "work-workflow",
+    "work-client-guidance",
+    "learned-guardrails"
   ]
 }
