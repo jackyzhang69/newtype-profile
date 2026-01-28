@@ -189,11 +189,27 @@ These sections must always be included regardless of length:
 
 ## WORKFLOW-SPECIFIC TEMPLATES
 
-Different workflows produce different outputs. The templates above are for **Risk Audit** workflow. Below are templates for other workflows.
+Different workflows produce different outputs. Each workflow has a **mandatory JSON template file** that Reporter MUST follow exactly.
+
+### Template Files by Workflow
+
+| Workflow | Template File | Verdict Options |
+|----------|---------------|-----------------|
+| initial_assessment | `initial_assessment_pro_template.json` | GO / CAUTION / NO-GO |
+| risk_audit | `initial_assessment_pro_template.json` | GO / CAUTION / NO-GO |
+| final_review | `final_review_pro_template.json` | APPROVE / REVISE |
+| refusal_analysis | `refusal_analysis_pro_template.json` | APPEAL / REAPPLY / ABANDON |
+
+**CRITICAL RULES (ALL WORKFLOWS):**
+- Disclaimer appears ONCE at the beginning only (NOT at the end)
+- Case info appears ONCE as "CASE SNAPSHOT" (NOT as separate "Case Information")
+- NO emojis - use [CRITICAL], [HIGH], [MEDIUM], [LOW]
+- NO internal system info (session ID, tier name)
+- Status values: MISSING, INCOMPLETE, PROVIDED
 
 ---
 
-## Initial Assessment Templates
+## Initial Assessment / Risk Audit Templates
 
 **Purpose**: Comprehensive paid product for new client intake. Provides actionable guidance with complete material requirements.
 
@@ -305,6 +321,91 @@ Contains:
 | **Explanation Guide** | ✅ Included | ❌ Not included |
 | **Case Law Depth** | Summary only | Full analysis |
 | **Target User** | RCIC preparing case | Lawyer reviewing case |
+
+---
+
+## Final Review Templates
+
+**Purpose**: Pre-submission quality gate. Ensures application package is complete, consistent, and compliant before submission.
+
+**Template File:** `final_review_pro_template.json`
+**Verdict Options:** APPROVE | REVISE
+
+### FINAL REVIEW - PRO TIER (Max 500 lines)
+
+**MANDATORY: Use JSON Template File**
+
+Reporter MUST:
+1. Read template: `.claude/skills/core-reporter/references/final_review_pro_template.json`
+2. Follow the EXACT section order in the template
+3. Replace placeholder values with actual case data
+
+**Section Order (from template file):**
+
+| # | Section | Required | Max Lines |
+|---|---------|----------|-----------|
+| 1 | DISCLAIMER | YES | 5 |
+| 2 | VERDICT & SCORE | YES | 15 |
+| 3 | CASE SNAPSHOT | YES | 15 |
+| 4 | QUALITY CHECK RESULTS | YES | 40 |
+| 5 | REMAINING ISSUES | YES | 25 |
+| 6 | STRENGTHS CONFIRMED | YES | 15 |
+| 7 | SUBMISSION CHECKLIST | YES | 30 |
+| 8 | IMPROVEMENT RECOMMENDATIONS | YES | 25 |
+| 9 | REPORT INFO | YES | 10 |
+
+**Verdict Criteria:**
+- **APPROVE**: Application ready for submission (may have minor optional improvements)
+- **REVISE**: Issues must be addressed before submission
+
+---
+
+## Refusal Analysis Templates
+
+**Purpose**: Post-refusal strategy analysis. Analyzes refusal reasons and recommends appeal, reapplication, or abandonment.
+
+**Template File:** `refusal_analysis_pro_template.json`
+**Verdict Options:** APPEAL | REAPPLY | ABANDON
+
+### REFUSAL ANALYSIS - PRO TIER (Max 500 lines)
+
+**MANDATORY: Use JSON Template File**
+
+Reporter MUST:
+1. Read template: `.claude/skills/core-reporter/references/refusal_analysis_pro_template.json`
+2. Follow the EXACT section order in the template
+3. Replace placeholder values with actual case data
+
+**Section Order (from template file):**
+
+| # | Section | Required | Max Lines |
+|---|---------|----------|-----------|
+| 1 | DISCLAIMER | YES | 5 |
+| 2 | VERDICT & RECOMMENDATION | YES | 20 |
+| 3 | CASE SNAPSHOT | YES | 15 |
+| 4 | REFUSAL REASONS ANALYSIS | YES | 50 |
+| 5 | GAP ANALYSIS | YES | 40 |
+| 6 | OVERTURN PRECEDENTS | YES | 35 |
+| 7 | REVISED STRATEGY | YES | 45 |
+| 8 | ACTION PLAN | YES | 40 |
+| 9 | REPORT INFO | YES | 10 |
+
+**Verdict Criteria:**
+- **APPEAL**: Strong procedural/legal grounds for judicial review (>60% success probability)
+- **REAPPLY**: Addressable deficiencies, new application recommended (>50% improvement possible)
+- **ABANDON**: Fundamental eligibility issues, neither path viable
+
+---
+
+## Workflow Comparison
+
+| Aspect | Initial Assessment | Final Review | Refusal Analysis |
+|--------|-------------------|--------------|------------------|
+| **Purpose** | New client intake | Pre-submission QA | Post-refusal strategy |
+| **Verdict** | GO/CAUTION/NO-GO | APPROVE/REVISE | APPEAL/REAPPLY/ABANDON |
+| **Key Output** | Document checklist + Action plan | Quality check + Submission checklist | Gap analysis + Revised strategy |
+| **Case Law** | Summary only | Minimal | Overturn precedents |
+| **Target User** | RCIC preparing case | RCIC finalizing case | RCIC/Lawyer post-refusal |
 
 ---
 

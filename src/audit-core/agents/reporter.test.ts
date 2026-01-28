@@ -28,46 +28,62 @@ describe("Reporter Agent", () => {
   })
 
   describe("Tier-Based Templates", () => {
-    test("should define Guest tier template (400 lines max)", () => {
+    test("should define tier variations for templates", () => {
       const agent = createReporterAgent()
       
-      // Risk Audit templates by tier
-      expect(agent.prompt).toContain("GUEST TIER - Risk Audit (Max 400 lines)")
-    })
-
-    test("should define Pro tier template (500 lines max)", () => {
-      const agent = createReporterAgent()
-      
-      expect(agent.prompt).toContain("PRO TIER - Risk Audit (Max 500 lines)")
-    })
-
-    test("should define Ultra tier template (600 lines max)", () => {
-      const agent = createReporterAgent()
-      
-      expect(agent.prompt).toContain("ULTRA TIER - Risk Audit (Max 600 lines)")
-    })
-
-    test("should define Initial Assessment templates with tier variations", () => {
-      const agent = createReporterAgent()
-      
-      // Initial Assessment uses JSON template with tier variations
-      expect(agent.prompt).toContain("INITIAL ASSESSMENT TEMPLATES")
+      // Tier variations are defined in template selection
       expect(agent.prompt).toContain("GUEST (Max 400 lines)")
       expect(agent.prompt).toContain("PRO (Max 500 lines)")
+      expect(agent.prompt).toContain("ULTRA (Max 600 lines)")
+    })
+
+    test("should define Initial Assessment / Risk Audit templates", () => {
+      const agent = createReporterAgent()
+      
+      // Initial Assessment uses JSON template
+      expect(agent.prompt).toContain("INITIAL ASSESSMENT / RISK AUDIT TEMPLATES")
+      expect(agent.prompt).toContain("initial_assessment_pro_template.json")
+    })
+
+    test("should define Final Review templates", () => {
+      const agent = createReporterAgent()
+      
+      expect(agent.prompt).toContain("FINAL REVIEW TEMPLATES")
+      expect(agent.prompt).toContain("final_review_pro_template.json")
+      expect(agent.prompt).toContain("APPROVE | REVISE")
+    })
+
+    test("should define Refusal Analysis templates", () => {
+      const agent = createReporterAgent()
+      
+      expect(agent.prompt).toContain("REFUSAL ANALYSIS TEMPLATES")
+      expect(agent.prompt).toContain("refusal_analysis_pro_template.json")
+      expect(agent.prompt).toContain("APPEAL | REAPPLY | ABANDON")
     })
   })
 
-  describe("Executive Summary Integration", () => {
-    test("should specify integrated executive summary in templates", () => {
+  describe("Mandatory JSON Templates", () => {
+    test("should require JSON template files for all workflows", () => {
       const agent = createReporterAgent()
       
-      expect(agent.prompt).toContain("EXECUTIVE SUMMARY (integrated, max 1/3 page")
+      expect(agent.prompt).toContain("MANDATORY: Use JSON Template Files")
+      expect(agent.prompt).toContain("Follow the EXACT section order defined in the template")
     })
 
-    test("should define executive summary content", () => {
+    test("should list template files by workflow", () => {
       const agent = createReporterAgent()
       
-      expect(agent.prompt).toContain("score, top 3 risks, top 3 strengths")
+      expect(agent.prompt).toContain("initial_assessment_pro_template.json")
+      expect(agent.prompt).toContain("final_review_pro_template.json")
+      expect(agent.prompt).toContain("refusal_analysis_pro_template.json")
+    })
+
+    test("should define critical rules for all workflows", () => {
+      const agent = createReporterAgent()
+      
+      expect(agent.prompt).toContain("Disclaimer appears ONCE at the beginning only")
+      expect(agent.prompt).toContain("Case info appears ONCE as \"CASE SNAPSHOT\"")
+      expect(agent.prompt).toContain("NO emojis - use [CRITICAL], [HIGH], [MEDIUM], [LOW]")
     })
   })
 
@@ -75,16 +91,7 @@ describe("Reporter Agent", () => {
     test("should define technical appendix for Ultra tier", () => {
       const agent = createReporterAgent()
       
-      expect(agent.prompt).toContain("Technical Appendix (technical_appendix.pdf)")
-    })
-
-    test("should specify appendix content sections", () => {
-      const agent = createReporterAgent()
-      
-      expect(agent.prompt).toContain("LEGAL FRAMEWORK (full details)")
-      expect(agent.prompt).toContain("VERIFICATION & QA (full details)")
-      expect(agent.prompt).toContain("EVIDENCE ANALYSIS (full details)")
-      expect(agent.prompt).toContain("METHODOLOGY")
+      expect(agent.prompt).toContain("technical_appendix.pdf")
     })
   })
 

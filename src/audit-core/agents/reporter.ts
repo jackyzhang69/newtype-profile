@@ -124,78 +124,39 @@ Select the appropriate template based on BOTH workflow type AND tier.
 
 ---
 
-## RISK AUDIT TEMPLATES (Default)
+## MANDATORY: Use JSON Template Files
 
-### GUEST TIER - Risk Audit (Max 400 lines)
-Target: DIY applicants who need actionable guidance
-
-**Files Generated:** report.pdf (single file)
-
-Structure:
-1. EXECUTIVE SUMMARY (integrated, max 1/3 page: score, top 3 risks, top 3 strengths)
-2. TOP RISKS (max 3, with Poison Pills for CRITICAL only)
-3. ACTION ITEMS (Urgent + Before Decision)
-4. DISCLAIMER
-
-### PRO TIER - Risk Audit (Max 500 lines)
-Target: RCICs who need technical details
-
-**Files Generated:** report.pdf (single file)
-
-Structure:
-1. EXECUTIVE SUMMARY (integrated, max 1/3 page: score, top 3 risks, top 3 strengths)
-2. CASE SNAPSHOT (key facts table, max 8 rows)
-3. VULNERABILITIES (with Poison Pills for CRITICAL + HIGH)
-4. STRENGTHS (max 6 bullets)
-5. COMPLIANCE STATUS (from Gatekeeper)
-6. ACTION ITEMS BY PRIORITY
-7. DISCLAIMER
-
-### ULTRA TIER - Risk Audit (Max 600 lines)
-Target: Lawyers who need full legal analysis
-
-**Files Generated:** report.pdf + technical_appendix.pdf (two files)
-
-**Main Report (report.pdf):**
-1. EXECUTIVE SUMMARY (integrated, max 1/3 page)
-2. CASE PROFILE (detailed facts)
-3. VULNERABILITIES WITH DEFENSE STRATEGY (all Poison Pills)
-4. STRENGTHS
-5. LEGAL FRAMEWORK (summary only, full details in appendix)
-6. VERIFICATION STATUS (summary only, full details in appendix)
-7. COMPLIANCE REVIEW (from Gatekeeper)
-8. RECOMMENDATIONS
-9. DISCLAIMER
-
-**Technical Appendix (technical_appendix.pdf):**
-1. LEGAL FRAMEWORK (full details)
-2. VERIFICATION & QA (full details)
-3. EVIDENCE ANALYSIS (full details)
-4. METHODOLOGY
-
----
-
-## INITIAL ASSESSMENT TEMPLATES
-
-**Purpose**: Comprehensive paid product for new client intake. Focus on **what to do next** rather than deep legal analysis.
-
-### MANDATORY: Use JSON Template File
-
-For Initial Assessment reports, you MUST:
-1. Read the template file: \`.claude/skills/core-reporter/references/initial_assessment_pro_template.json\`
+For ALL workflow types, you MUST:
+1. Read the appropriate template file from \`.claude/skills/core-reporter/references/\`
 2. Follow the EXACT section order defined in the template
 3. Replace placeholder values with actual case data
 4. Do NOT add sections not in the template
 5. Do NOT duplicate sections (e.g., no "Case Information" AND "Case Snapshot")
 
-**CRITICAL RULES:**
+**Template Files by Workflow:**
+| Workflow | Template File |
+|----------|---------------|
+| initial_assessment | \`initial_assessment_pro_template.json\` |
+| final_review | \`final_review_pro_template.json\` |
+| refusal_analysis | \`refusal_analysis_pro_template.json\` |
+| risk_audit | Use Initial Assessment template (same structure) |
+
+**CRITICAL RULES (ALL WORKFLOWS):**
 - Disclaimer appears ONCE at the beginning only (NOT at the end)
 - Case info appears ONCE as "CASE SNAPSHOT" (NOT as separate "Case Information")
 - NO emojis - use [CRITICAL], [HIGH], [MEDIUM], [LOW]
 - NO internal system info (session ID, tier name)
 - Status values: MISSING, INCOMPLETE, PROVIDED
 
-### Section Order (MANDATORY - from template file)
+---
+
+## INITIAL ASSESSMENT / RISK AUDIT TEMPLATES
+
+**Template File:** \`initial_assessment_pro_template.json\`
+**Verdict Options:** GO | CAUTION | NO-GO
+**Purpose:** New client intake or comprehensive risk analysis
+
+### Section Order (MANDATORY)
 
 | # | Section | Required | Max Lines |
 |---|---------|----------|-----------|
@@ -209,17 +170,61 @@ For Initial Assessment reports, you MUST:
 | 8 | ACTION PLAN | YES | 30 |
 | 9 | REPORT INFO | YES | 10 |
 
-**Total: ~195 lines (well under 500 limit)**
-
 ### Tier Variations
 
-**GUEST (Max 400 lines):** Same structure, but:
-- Document Checklist: CRITICAL only
-- Action Plan: Phase 1 only
-
+**GUEST (Max 400 lines):** Document Checklist: CRITICAL only, Action Plan: Phase 1 only
 **PRO (Max 500 lines):** Full template as defined
+**ULTRA (Max 600 lines):** Full template plus separate technical_appendix.pdf
 
-**ULTRA (Max 600 lines):** Full template plus separate client_package.pdf
+---
+
+## FINAL REVIEW TEMPLATES
+
+**Template File:** \`final_review_pro_template.json\`
+**Verdict Options:** APPROVE | REVISE
+**Purpose:** Pre-submission quality gate
+
+### Section Order (MANDATORY)
+
+| # | Section | Required | Max Lines |
+|---|---------|----------|-----------|
+| 1 | DISCLAIMER | YES | 5 |
+| 2 | VERDICT & SCORE | YES | 15 |
+| 3 | CASE SNAPSHOT | YES | 15 |
+| 4 | QUALITY CHECK RESULTS | YES | 40 |
+| 5 | REMAINING ISSUES | YES | 25 |
+| 6 | STRENGTHS CONFIRMED | YES | 15 |
+| 7 | SUBMISSION CHECKLIST | YES | 30 |
+| 8 | IMPROVEMENT RECOMMENDATIONS | YES | 25 |
+| 9 | REPORT INFO | YES | 10 |
+
+---
+
+## REFUSAL ANALYSIS TEMPLATES
+
+**Template File:** \`refusal_analysis_pro_template.json\`
+**Verdict Options:** APPEAL | REAPPLY | ABANDON
+**Purpose:** Post-refusal strategy analysis
+
+### Section Order (MANDATORY)
+
+| # | Section | Required | Max Lines |
+|---|---------|----------|-----------|
+| 1 | DISCLAIMER | YES | 5 |
+| 2 | VERDICT & RECOMMENDATION | YES | 20 |
+| 3 | CASE SNAPSHOT | YES | 15 |
+| 4 | REFUSAL REASONS ANALYSIS | YES | 50 |
+| 5 | GAP ANALYSIS | YES | 40 |
+| 6 | OVERTURN PRECEDENTS | YES | 35 |
+| 7 | REVISED STRATEGY | YES | 45 |
+| 8 | ACTION PLAN | YES | 40 |
+| 9 | REPORT INFO | YES | 10 |
+
+### Verdict Criteria
+
+- **APPEAL**: Strong procedural/legal grounds for judicial review (>60% success probability)
+- **REAPPLY**: Addressable deficiencies, new application recommended (>50% improvement possible)
+- **ABANDON**: Fundamental eligibility issues, neither path viable
 </Template_Selection>
 
 <Theme_Application>
