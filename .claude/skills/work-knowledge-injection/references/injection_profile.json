@@ -3,7 +3,7 @@
   "description": "Work permit knowledge injection profile with output constraints and category-specific routing",
   "skills": {
     "work-audit-rules": {
-      "description": "Risk patterns, eligibility rules, category-specific deep dives",
+      "description": "Risk patterns, eligibility rules, category-specific knowledge",
       "inject_to": ["detective", "strategist", "gatekeeper"],
       "priority": 1,
       "files": [
@@ -14,16 +14,16 @@
         "refusal_patterns.md",
         "policy_updates.md",
         "risk_evidence_mapping.json",
-        "provincial_differences.md"
-      ],
-      "category_files": {
-        "PGWP": ["PGWP.md", "pgwp_deep.md"],
-        "LMIA": ["LMIA.md"],
-        "IMP": ["IMP.md", "religious-worker-imp.md", "religious-worker-r205d.md"],
-        "ICT": ["ICT.md", "ict_deep.md"],
-        "OPEN_WORK_PERMIT": ["open-work-permit.md", "open-spouse.md", "open_spouse_deep.md"],
-        "PNP": ["PNP-work-permit.md", "pnp_deep.md"]
-      }
+        "provincial_differences.md",
+        "PGWP.md",
+        "LMIA.md",
+        "IMP.md",
+        "religious-worker-imp.md",
+        "religious-worker-r205d.md",
+        "ICT.md",
+        "open-work-permit.md",
+        "PNP-work-permit.md"
+      ]
     },
     "work-doc-analysis": {
       "description": "Document analysis rules and evidence standards",
@@ -124,18 +124,7 @@
     "core-reporter",
     "work-reporter"
   ],
-  "category_detection": {
-    "enabled": true,
-    "detection_rules": {
-      "PGWP": "Has study permit + graduation certificate + DLI institution",
-      "LMIA": "Has Labour Market Opinion (LMIA) document from ESDC",
-      "IMP": "Has IMP authorization letter (not LMIA, not provincial)",
-      "ICT": "Has intra-company transfer documentation + corporate structure",
-      "OPEN_WORK_PERMIT": "Has spouse/refugee/caregiver qualification",
-      "PNP": "Has provincial nomination letter from authorized PNP program"
-    },
-    "detection_priority": ["PNP", "PGWP", "ICT", "IMP", "LMIA", "OPEN_WORK_PERMIT"]
-  },
+
   "agent_skill_mapping": {
     "detective": {
       "skills": ["work-immicore-mcp", "work-audit-rules", "work-doc-analysis"],
@@ -174,6 +163,6 @@
     "created": "2026-01-27",
     "last_updated": "2026-01-28",
     "status": "active",
-    "version_notes": "v3.0: Aligned with spousal injection profile format, added all new Phase 5 files"
+    "version_notes": "v3.1: Removed category_files (unimplemented), merged deep files into base files, flattened file list"
   }
 }
