@@ -1,7 +1,7 @@
 {
   "name": "work-audit-rules",
-  "version": "3.0.0",
-  "description": "Hard eligibility checks, risk patterns, fraud risk badges, and category-specific rules for work permit audit.",
+  "version": "3.1.0",
+  "description": "Hard eligibility checks, risk patterns, fraud risk badges, and category-specific rules for work permit audit. Consolidated references with deep dive content merged.",
   "categories": ["audit", "risk", "rules", "work"],
   "quality_level": "L4",
   "quickstart_paths": ["../SKILL.md"],
@@ -19,12 +19,7 @@
     "ICT.md",
     "IMP.md",
     "open-work-permit.md",
-    "open-spouse.md",
     "PNP-work-permit.md",
-    "pgwp_deep.md",
-    "ict_deep.md",
-    "open_spouse_deep.md",
-    "pnp_deep.md",
     "religious-worker-imp.md",
     "religious-worker-r205d.md"
   ]
