@@ -1,0 +1,18 @@
+{
+  "name": "os-app-builder-spec",
+  "version": "1.0.0",
+  "description": "Complete specification for building Immigration Audit Apps",
+  "categories": ["os", "builder", "specification"],
+  "quality_level": "L4",
+  "quickstart_paths": ["../SKILL.md"],
+  "references": [
+    "architecture.md",
+    "skill-structure.md",
+    "injection-profile.md",
+    "workflow-phases.md",
+    "validation-rules.md",
+    "registration-steps.md",
+    "anti-patterns.md",
+    "best-practices.md"
+  ]
+}

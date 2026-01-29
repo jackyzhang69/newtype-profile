@@ -1,0 +1,205 @@
+{
+  "version": "1.0.0",
+  "app_type": "refugee",
+  "last_updated": "2026-01-28",
+  "source": "MCP Bootstrap + IRCC Website + Federal Court Jurisprudence",
+
+  "risk_patterns": {
+    "CREDIBILITY_CONCERN": {
+      "severity": "HIGH",
+      "weight": 0.9,
+      "description": "Testimony inconsistencies that undermine claim credibility",
+      "indicators": [
+        "Inconsistent testimony vs. BOC narrative",
+        "Timeline discrepancies between documents and testimony",
+        "Implausible explanations for key events",
+        "Documentary evidence contradicts oral testimony",
+        "Failure to mention significant events in BOC",
+        "Vague or evasive answers to direct questions",
+        "Embellishment of persecution claims over time"
+      ],
+      "mitigation_strategies": [
+        "Prepare consistent, detailed narrative",
+        "Gather corroborating documentary evidence",
+        "Address any discrepancies proactively with explanations",
+        "Obtain witness statements where possible"
+      ],
+      "fc_references": ["Magonza v. Canada, 2019 FC 14 (cited_by: 76)"]
+    },
+
+    "INSUFFICIENT_PERSECUTION": {
+      "severity": "HIGH",
+      "weight": 0.85,
+      "description": "Claimed harm does not meet persecution threshold",
+      "indicators": [
+        "Discrimination without escalation to persecution",
+        "Isolated incidents without pattern",
+        "General country conditions without personal nexus",
+        "Harm not linked to Convention ground",
+        "Economic hardship cited as persecution",
+        "Family disputes framed as persecution"
+      ],
+      "mitigation_strategies": [
+        "Document severity and frequency of harm",
+        "Show cumulative effect of discriminatory acts",
+        "Establish clear nexus to Convention ground",
+        "Provide expert country conditions evidence"
+      ],
+      "fc_references": []
+    },
+
+    "IFA_AVAILABLE": {
+      "severity": "HIGH",
+      "weight": 0.85,
+      "description": "Viable Internal Flight Alternative exists in country of origin",
+      "indicators": [
+        "Non-state agent of persecution with limited geographic reach",
+        "Claimant previously lived safely in other regions",
+        "Large country with diverse regions",
+        "Urban center available where agents unlikely to locate claimant",
+        "No evidence state cannot protect in IFA region"
+      ],
+      "mitigation_strategies": [
+        "Document agent's reach across country",
+        "Show unreasonableness of IFA (hardship, discrimination)",
+        "Evidence of past attempts to relocate that failed",
+        "Personal circumstances making IFA unreasonable"
+      ],
+      "fc_references": []
+    },
+
+    "STATE_PROTECTION_AVAILABLE": {
+      "severity": "MEDIUM-HIGH",
+      "weight": 0.75,
+      "description": "Failed to rebut presumption of state protection",
+      "indicators": [
+        "Did not seek police protection",
+        "Adequate state protection mechanisms documented",
+        "Democratic state with functioning judiciary",
+        "Previous protection obtained was effective",
+        "No evidence of systemic state failure"
+      ],
+      "mitigation_strategies": [
+        "Document attempts to seek protection",
+        "Evidence of police corruption or unwillingness",
+        "Country conditions showing systemic failure",
+        "Explain why seeking protection would be futile"
+      ],
+      "fc_references": []
+    },
+
+    "STCA_BAR": {
+      "severity": "CRITICAL",
+      "weight": 1.0,
+      "description": "Safe Third Country Agreement bars the claim",
+      "indicators": [
+        "Entry from U.S. at official land border",
+        "Entry along border within 14 days of claim",
+        "No documented exception applies"
+      ],
+      "mitigation_strategies": [
+        "Document applicable exception (family in Canada, minor, etc.)",
+        "Evidence of ineligibility to make claim in U.S.",
+        "If entered more than 14 days ago, document timeline"
+      ],
+      "fc_references": []
+    },
+
+    "EXCLUSION_GROUND": {
+      "severity": "CRITICAL",
+      "weight": 1.0,
+      "description": "Article 1F exclusion applies - person excluded from protection",
+      "indicators": [
+        "Military service in conflict zone during atrocities",
+        "Senior government official in persecuting regime",
+        "Membership in designated terrorist organization",
+        "Prior conviction for serious crime abroad",
+        "Evidence of complicity in crimes against humanity"
+      ],
+      "mitigation_strategies": [
+        "Complex legal arguments required",
+        "Challenge characterization of crimes as political",
+        "Evidence of duress or coercion",
+        "Distinguish personal involvement from organizational membership"
+      ],
+      "fc_references": []
+    },
+
+    "IDENTITY_UNESTABLISHED": {
+      "severity": "CRITICAL",
+      "weight": 1.0,
+      "description": "Cannot establish identity on balance of probabilities",
+      "indicators": [
+        "No passport or travel documents",
+        "Documents appear fraudulent or altered",
+        "Inconsistent identity information across documents",
+        "Country of origin cannot be confirmed",
+        "Use of multiple identities"
+      ],
+      "mitigation_strategies": [
+        "Obtain certified copies of birth certificates",
+        "Witness statements from family/community",
+        "Education records or employment documents",
+        "Explain circumstances of document loss"
+      ],
+      "fc_references": []
+    },
+
+    "CESSATION_RISK": {
+      "severity": "HIGH",
+      "weight": 0.85,
+      "description": "Grounds for cessation of protection status exist",
+      "indicators": [
+        "Traveled to country of persecution",
+        "Applied for passport from country of persecution",
+        "Voluntarily re-acquired nationality",
+        "Country conditions have fundamentally changed",
+        "Re-established in country of origin"
+      ],
+      "mitigation_strategies": [
+        "Explain compelling reasons for any travel",
+        "Document ongoing risk despite changes",
+        "Show compelling reasons from previous persecution (A108(4))",
+        "Evidence travel was not voluntary re-availing"
+      ],
+      "fc_references": []
+    },
+
+    "SUR_PLACE_WEAK": {
+      "severity": "MEDIUM",
+      "weight": 0.6,
+      "description": "Sur place claim lacks sufficient basis",
+      "indicators": [
+        "Political activity in Canada appears manufactured",
+        "No evidence country of origin aware of activities",
+        "Activities inconsistent with claimed beliefs",
+        "Timing of activities coincides with refugee claim"
+      ],
+      "mitigation_strategies": [
+        "Document genuine belief and commitment",
+        "Evidence of country monitoring activities abroad",
+        "Show activities are continuation of prior convictions",
+        "Expert evidence on country's surveillance capabilities"
+      ],
+      "fc_references": []
+    },
+
+    "DELAY_CONCERN": {
+      "severity": "MEDIUM",
+      "weight": 0.5,
+      "description": "Significant delay in making refugee claim",
+      "indicators": [
+        "Long period in Canada before claiming",
+        "Multiple visa applications before claiming",
+        "Claimed only after removal order",
+        "No credible explanation for delay"
+      ],
+      "mitigation_strategies": [
+        "Document reasons for delay (trauma, lack of knowledge)",
+        "Show circumstances changed triggering claim",
+        "Evidence claim was always intended"
+      ],
+      "fc_references": []
+    }
+  }
+}

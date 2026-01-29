@@ -8,7 +8,7 @@
 export type TaskType = "RISK_AUDIT" | "DOCUMENT_LIST" | "INTERVIEW_PREP" | "LOVE_STORY" | "CUSTOM"
 export type AuditTier = "guest" | "pro" | "ultra"
 export type UrgencyLevel = "low" | "medium" | "high"
-export type ApplicationType = "spousal" | "study" | "work" | "family" | "other"
+export type ApplicationType = "spousal" | "study" | "work" | "refugee" | "family" | "other"
 export type ImmigrationStatus = "citizen" | "permanent_resident" | "indian_status"
 export type CurrentStatus = "visitor" | "worker" | "student" | "none"
 export type RelationshipType = "marriage" | "common_law" | "conjugal"
@@ -18,6 +18,37 @@ export type DocumentNature = "narrative" | "structured" | "simple"
 export type RedFlagCategory = "relationship" | "documentation" | "immigration" | "financial" | "background" | "procedural"
 export type Severity = "low" | "medium" | "high" | "critical"
 export type CommunicationFrequency = "daily" | "weekly" | "monthly" | "rarely"
+
+/**
+ * Document Purpose Classification
+ * 
+ * Distinguishes between documents intended for current submission vs historical reference.
+ * This prevents misinterpretation of old forms (e.g., IMM 5257 in a work permit case).
+ * 
+ * @since 2026-01-28 - Document purpose disambiguation feature
+ */
+export type DocumentPurpose = 
+  | "current_submission"    // Document to be submitted with current application
+  | "historical_reference"  // Previous application, for information extraction only
+  | "supporting_evidence"   // Evidence supporting the application (not a form)
+  | "unknown"               // Requires user clarification
+
+export interface DocumentPurposeInfo {
+  /** Classified purpose of this document */
+  purpose: DocumentPurpose
+  
+  /** Why this purpose was assigned (for audit trail) */
+  reason: string
+  
+  /** If true, system detected ambiguity and needs user confirmation */
+  requires_confirmation: boolean
+  
+  /** User's confirmed purpose (set after confirmation) */
+  confirmed_purpose?: DocumentPurpose
+  
+  /** User's explanation (if provided during confirmation) */
+  user_note?: string
+}
 
 export interface Intent {
   task_type: TaskType
@@ -32,6 +63,7 @@ export interface Form {
   path: string
   xfa_fields?: Record<string, unknown>
   page_count?: number
+  purpose_info?: DocumentPurposeInfo
 }
 
 export interface Evidence {
@@ -42,10 +74,19 @@ export interface Evidence {
   document_nature?: DocumentNature
   summary?: string
   full_text_ref?: string
+  purpose_info?: DocumentPurposeInfo
 }
 
 export interface DocumentStorage {
   extracted_docs_path: string
+}
+
+export interface DocumentConfirmationRequest {
+  filename: string
+  form_type?: string
+  detected_purpose: DocumentPurpose
+  reason: string
+  suggested_options: DocumentPurpose[]
 }
 
 export interface Documents {
@@ -55,6 +96,7 @@ export interface Documents {
   forms: Form[]
   evidence: Evidence[]
   storage?: DocumentStorage
+  pending_confirmations?: DocumentConfirmationRequest[]
 }
 
 export interface Address {

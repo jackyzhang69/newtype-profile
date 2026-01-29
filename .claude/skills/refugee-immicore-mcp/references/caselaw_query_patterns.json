@@ -1,0 +1,172 @@
+{
+  "version": "1.0.0",
+  "app_type": "refugee",
+  "last_verified": "2026-01-28",
+  
+  "_landmark_cases_policy": {
+    "policy": "Only list KG-verified FC/FCA authoritative cases",
+    "verification_method": "caselaw_authority(citation)",
+    "refresh_frequency": "On each build or audit session"
+  },
+
+  "refugee_specific_queries": {
+    "credibility": {
+      "issue_code": "SUB_REFUGEE_CREDIBILITY",
+      "queries": [
+        {
+          "id": "credibility_general",
+          "label": "General credibility assessment",
+          "query": "refugee credibility assessment inconsistency",
+          "court": "fc",
+          "landmark_cases": ["Magonza v. Canada, 2019 FC 14"],
+          "_authority_verified": {
+            "2019 FC 14": {"cited_by": 76, "is_good_law": true}
+          },
+          "_dynamic_lookup": "kg_top_authorities(issue_code='SUB_REFUGEE_CREDIBILITY', court='FC')"
+        },
+        {
+          "id": "credibility_boc",
+          "label": "BOC vs testimony inconsistencies",
+          "query": "basis of claim inconsistent testimony hearing",
+          "court": "fc"
+        }
+      ]
+    },
+
+    "persecution": {
+      "issue_code": "SUB_REFUGEE_PERSECUTION",
+      "queries": [
+        {
+          "id": "persecution_threshold",
+          "label": "Persecution vs discrimination threshold",
+          "query": "persecution threshold discrimination harassment",
+          "court": "fc",
+          "_dynamic_lookup": "kg_top_authorities(issue_code='SUB_REFUGEE_PERSECUTION', court='FC')"
+        },
+        {
+          "id": "cumulative_persecution",
+          "label": "Cumulative acts as persecution",
+          "query": "cumulative acts persecution threshold",
+          "court": "fc"
+        }
+      ]
+    },
+
+    "ifa": {
+      "issue_code": "SUB_REFUGEE_IFA",
+      "queries": [
+        {
+          "id": "ifa_reasonableness",
+          "label": "IFA reasonableness test",
+          "query": "internal flight alternative reasonable prong",
+          "court": "fc",
+          "_dynamic_lookup": "kg_top_authorities(issue_code='SUB_REFUGEE_IFA', court='FC')"
+        },
+        {
+          "id": "ifa_non_state",
+          "label": "IFA with non-state agent",
+          "query": "internal flight alternative non-state actor reach",
+          "court": "fc"
+        }
+      ]
+    },
+
+    "state_protection": {
+      "issue_code": "SUB_REFUGEE_STATE_PROTECTION",
+      "queries": [
+        {
+          "id": "state_protection_presumption",
+          "label": "Rebutting presumption of state protection",
+          "query": "state protection presumption democratic country rebut",
+          "court": "fc",
+          "landmark_cases": ["Magonza v. Canada, 2019 FC 14"],
+          "_authority_verified": {
+            "2019 FC 14": {"cited_by": 76, "is_good_law": true}
+          },
+          "_dynamic_lookup": "kg_top_authorities(issue_code='SUB_REFUGEE_STATE_PROTECTION', court='FC')"
+        },
+        {
+          "id": "state_protection_efforts",
+          "label": "Efforts to seek protection",
+          "query": "state protection efforts police complaint",
+          "court": "fc"
+        }
+      ]
+    },
+
+    "exclusion": {
+      "issue_code": "SUB_REFUGEE_EXCLUSION",
+      "queries": [
+        {
+          "id": "exclusion_1fa",
+          "label": "Article 1F(a) - Crimes against humanity",
+          "query": "article 1F exclusion crimes against humanity complicity",
+          "court": "fc",
+          "_dynamic_lookup": "kg_top_authorities(issue_code='SUB_REFUGEE_EXCLUSION', court='FC')"
+        },
+        {
+          "id": "exclusion_1fb",
+          "label": "Article 1F(b) - Serious non-political crime",
+          "query": "article 1F serious non-political crime extradition",
+          "court": "fc"
+        }
+      ]
+    },
+
+    "identity": {
+      "issue_code": "SUB_REFUGEE_IDENTITY",
+      "queries": [
+        {
+          "id": "identity_establishment",
+          "label": "Establishing identity without documents",
+          "query": "refugee identity establish balance probabilities",
+          "court": "fc",
+          "_dynamic_lookup": "kg_top_authorities(issue_code='SUB_REFUGEE_IDENTITY', court='FC')"
+        }
+      ]
+    },
+
+    "cessation": {
+      "issue_code": "SUB_REFUGEE_CESSATION",
+      "queries": [
+        {
+          "id": "cessation_reavailing",
+          "label": "Re-availing of country protection",
+          "query": "cessation reavailing protection travel passport",
+          "court": "fc",
+          "_dynamic_lookup": "kg_top_authorities(issue_code='SUB_REFUGEE_CESSATION', court='FC')"
+        },
+        {
+          "id": "cessation_compelling_reasons",
+          "label": "Compelling reasons exception",
+          "query": "cessation compelling reasons previous persecution A108",
+          "court": "fc"
+        }
+      ]
+    },
+
+    "sur_place": {
+      "issue_code": "SUB_REFUGEE_SUR_PLACE",
+      "queries": [
+        {
+          "id": "sur_place_genuine",
+          "label": "Genuine vs manufactured sur place claim",
+          "query": "sur place genuine activities political canada",
+          "court": "fc",
+          "_dynamic_lookup": "kg_top_authorities(issue_code='SUB_REFUGEE_SUR_PLACE', court='FC')"
+        }
+      ]
+    }
+  },
+
+  "country_specific_patterns": {
+    "description": "Use with country name inserted",
+    "examples": [
+      "refugee [COUNTRY] political persecution",
+      "refugee [COUNTRY] gender-based violence",
+      "refugee [COUNTRY] religious minority",
+      "refugee [COUNTRY] LGBTQ persecution",
+      "[COUNTRY] state protection police"
+    ]
+  }
+}

@@ -1,0 +1,141 @@
+{
+  "version": "1.0.0",
+  "app_type": "refugee",
+  "last_updated": "2026-01-28",
+
+  "risk_badges": {
+    "CREDIBILITY_CONCERN": {
+      "severity": "HIGH",
+      "color": "red",
+      "icon": "warning",
+      "description": "Testimony inconsistencies detected",
+      "impact": "Detailed questioning at IRB hearing likely",
+      "remediation": "Prepare consistent narrative with corroborating evidence",
+      "defensibility_impact": -25
+    },
+
+    "INSUFFICIENT_PERSECUTION": {
+      "severity": "HIGH",
+      "color": "red",
+      "icon": "alert",
+      "description": "Claimed harm may not meet persecution threshold",
+      "impact": "Claim likely to be dismissed on merits",
+      "remediation": "Document severity and cumulative effect of harm",
+      "defensibility_impact": -30
+    },
+
+    "IFA_AVAILABLE": {
+      "severity": "HIGH",
+      "color": "orange",
+      "icon": "location",
+      "description": "Internal Flight Alternative may exist",
+      "impact": "Must rebut reasonableness of IFA",
+      "remediation": "Evidence showing IFA not reasonable in circumstances",
+      "defensibility_impact": -20
+    },
+
+    "STATE_PROTECTION_AVAILABLE": {
+      "severity": "MEDIUM-HIGH",
+      "color": "orange",
+      "icon": "shield",
+      "description": "Failed to rebut presumption of state protection",
+      "impact": "Must demonstrate state protection inadequate",
+      "remediation": "Document efforts to seek protection and failures",
+      "defensibility_impact": -15
+    },
+
+    "STCA_BAR": {
+      "severity": "CRITICAL",
+      "color": "black",
+      "icon": "block",
+      "description": "Safe Third Country Agreement bars claim",
+      "impact": "Claim ineligible unless exception documented",
+      "remediation": "Document applicable exception to STCA",
+      "defensibility_impact": -50
+    },
+
+    "EXCLUSION_GROUND": {
+      "severity": "CRITICAL",
+      "color": "black",
+      "icon": "ban",
+      "description": "Article 1F exclusion may apply",
+      "impact": "If excluded, no protection regardless of risk",
+      "remediation": "Complex legal arguments to rebut exclusion",
+      "defensibility_impact": -50
+    },
+
+    "IDENTITY_UNESTABLISHED": {
+      "severity": "CRITICAL",
+      "color": "black",
+      "icon": "question",
+      "description": "Unable to establish identity",
+      "impact": "Claim may be dismissed on identity grounds",
+      "remediation": "Alternative identity evidence required",
+      "defensibility_impact": -40
+    },
+
+    "CESSATION_RISK": {
+      "severity": "HIGH",
+      "color": "orange",
+      "icon": "refresh",
+      "description": "Grounds for cessation may exist",
+      "impact": "Status vulnerable to cessation application",
+      "remediation": "Document compelling reasons exception if applicable",
+      "defensibility_impact": -20
+    },
+
+    "SUR_PLACE_WEAK": {
+      "severity": "MEDIUM",
+      "color": "yellow",
+      "icon": "flag",
+      "description": "Sur place claim basis appears weak",
+      "impact": "Activities may be seen as manufactured",
+      "remediation": "Evidence of genuine belief and country monitoring",
+      "defensibility_impact": -10
+    },
+
+    "DELAY_CONCERN": {
+      "severity": "MEDIUM",
+      "color": "yellow",
+      "icon": "clock",
+      "description": "Significant delay in making claim",
+      "impact": "May negatively affect credibility",
+      "remediation": "Document reasons for delay",
+      "defensibility_impact": -10
+    },
+
+    "DOCUMENTATION_GAP": {
+      "severity": "MEDIUM",
+      "color": "yellow",
+      "icon": "file",
+      "description": "Key supporting documents missing",
+      "impact": "Harder to corroborate claims",
+      "remediation": "Obtain alternative evidence or explain unavailability",
+      "defensibility_impact": -10
+    },
+
+    "PROCEDURAL_COMPLIANCE": {
+      "severity": "LOW",
+      "color": "green",
+      "icon": "check",
+      "description": "All procedural requirements met",
+      "impact": "Positive - no procedural issues",
+      "remediation": "Maintain compliance throughout process",
+      "defensibility_impact": 0
+    }
+  },
+
+  "severity_weights": {
+    "CRITICAL": 1.0,
+    "HIGH": 0.8,
+    "MEDIUM-HIGH": 0.6,
+    "MEDIUM": 0.4,
+    "LOW": 0.2
+  },
+
+  "defensibility_calculation": {
+    "baseline": 70,
+    "max_reduction": 50,
+    "critical_badge_cap": "If any CRITICAL badge present, max score is 40"
+  }
+}

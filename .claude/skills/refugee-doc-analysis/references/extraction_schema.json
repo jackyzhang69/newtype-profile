@@ -1,0 +1,122 @@
+{
+  "version": "1.0.0",
+  "app_type": "refugee",
+
+  "forms": {
+    "BOC": {
+      "form_number": "RPD.02.01",
+      "issuer": "Immigration and Refugee Board",
+      "extraction_fields": {
+        "personal_information": {
+          "full_name": {"type": "string", "required": true},
+          "aliases": {"type": "array", "required": false},
+          "date_of_birth": {"type": "date", "required": true},
+          "nationality": {"type": "string", "required": true},
+          "country_of_birth": {"type": "string", "required": true},
+          "citizenship": {"type": "array", "required": true},
+          "marital_status": {"type": "string", "required": true},
+          "language": {"type": "string", "required": true}
+        },
+        "travel_history": {
+          "departure_date": {"type": "date", "required": true},
+          "departure_country": {"type": "string", "required": true},
+          "countries_transited": {"type": "array", "required": false},
+          "arrival_in_canada": {"type": "date", "required": true},
+          "manner_of_entry": {"type": "string", "required": true}
+        },
+        "claim_details": {
+          "convention_ground": {"type": "string", "required": true, "enum": ["race", "religion", "nationality", "political_opinion", "particular_social_group"]},
+          "person_in_need_grounds": {"type": "array", "required": false, "enum": ["torture", "risk_to_life", "cruel_treatment"]},
+          "agents_of_persecution": {"type": "array", "required": true},
+          "state_or_non_state": {"type": "string", "required": true},
+          "narrative": {"type": "text", "required": true, "max_length": 10000}
+        },
+        "state_protection": {
+          "sought_protection": {"type": "boolean", "required": true},
+          "protection_details": {"type": "text", "required": false},
+          "why_not_sought": {"type": "text", "required": false}
+        },
+        "supporting_documents": {
+          "documents_listed": {"type": "array", "required": false},
+          "documents_attached": {"type": "array", "required": false}
+        }
+      }
+    },
+
+    "IMM_5476": {
+      "form_number": "IMM 5476",
+      "issuer": "IRCC",
+      "extraction_fields": {
+        "representative_name": {"type": "string", "required": true},
+        "representative_type": {"type": "string", "required": true},
+        "organization": {"type": "string", "required": false},
+        "contact_info": {"type": "object", "required": true},
+        "authorization_scope": {"type": "string", "required": true}
+      }
+    }
+  },
+
+  "evidence_categories": {
+    "identity": {
+      "weight": "CRITICAL",
+      "document_types": [
+        {"type": "passport", "fields": ["name", "dob", "nationality", "issue_date", "expiry", "stamps"]},
+        {"type": "national_id", "fields": ["name", "dob", "id_number", "photo_present"]},
+        {"type": "birth_certificate", "fields": ["name", "dob", "parents", "registration_date"]},
+        {"type": "drivers_license", "fields": ["name", "dob", "address", "photo_present"]}
+      ]
+    },
+
+    "persecution_evidence": {
+      "weight": "CRITICAL",
+      "document_types": [
+        {"type": "police_report", "fields": ["incident_date", "description", "response", "charges"]},
+        {"type": "medical_report", "fields": ["date", "injuries", "treatment", "causation_stated"]},
+        {"type": "arrest_warrant", "fields": ["date", "charges", "authority", "claimant_named"]},
+        {"type": "threat_documentation", "fields": ["date", "source", "content", "credibility_indicators"]},
+        {"type": "injury_photos", "fields": ["date_taken", "injuries_visible", "authentication"]}
+      ]
+    },
+
+    "country_conditions": {
+      "weight": "HIGH",
+      "document_types": [
+        {"type": "unhcr_report", "fields": ["date", "country", "relevant_sections"]},
+        {"type": "human_rights_report", "fields": ["organization", "date", "key_findings"]},
+        {"type": "expert_affidavit", "fields": ["expert_credentials", "opinion", "basis"]},
+        {"type": "news_article", "fields": ["source", "date", "relevance"]}
+      ]
+    },
+
+    "membership_affiliation": {
+      "weight": "HIGH",
+      "document_types": [
+        {"type": "membership_card", "fields": ["organization", "member_name", "dates"]},
+        {"type": "organization_letter", "fields": ["organization", "claimant_role", "activities"]},
+        {"type": "event_photos", "fields": ["event", "date", "claimant_visible"]}
+      ]
+    }
+  },
+
+  "narrative_analysis_schema": {
+    "timeline_events": [
+      {
+        "date": "YYYY-MM-DD or approximate",
+        "event_type": "persecution | threat | arrest | injury | flight | other",
+        "description": "Brief description",
+        "agents_involved": ["list of persecutors"],
+        "corroborating_evidence": ["list of document references"]
+      }
+    ],
+    "persecution_pattern": {
+      "type": "single_incident | escalating | ongoing",
+      "frequency": "isolated | periodic | continuous",
+      "severity": "harassment | discrimination | violence | torture"
+    },
+    "nexus_analysis": {
+      "convention_ground": "primary ground",
+      "nexus_strength": "weak | moderate | strong",
+      "mixed_motives": "If harm has multiple causes, explain"
+    }
+  }
+}

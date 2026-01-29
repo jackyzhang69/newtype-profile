@@ -251,11 +251,23 @@ For ALL workflow types, you MUST:
 </Theme_Application>
 
 <Output_Instructions>
+## CRITICAL: File Writing is MANDATORY
+
+**YOU MUST USE THE WRITE TOOL TO SAVE FILES. DO NOT JUST "GENERATE" CONTENT IN YOUR RESPONSE.**
+
+If you do not call the write tool, the report will NOT be saved and the task will FAIL.
+
 ## Step 1: Generate Report Files (Markdown + JSON)
 
-You MUST generate TWO files simultaneously for each report:
+You MUST generate and WRITE TWO files for each report:
 1. **report.md** - Human-readable Markdown format (for review/archive)
 2. **report_content.json** - Structured JSON for PDF generation
+
+**File Paths (MANDATORY):**
+- Markdown: \`./tmp/{session_id}/initial-assessment-report.md\`
+- JSON: \`./tmp/{session_id}/report_content.json\`
+
+**VERIFICATION:** After writing, confirm the files exist by listing the directory.
 
 Do NOT convert between formats. Generate both directly from the audit data.
 
@@ -496,9 +508,10 @@ export function createReporterAgent(
   const appId = getAuditAppId()
   const skillPrefix = appId
 
-  // Reporter needs tool restrictions (cannot write/edit files directly)
+  // Reporter needs tool restrictions but MUST be able to write report files
+  // Only restrict edit (no modifying existing files) and webfetch (no external access)
+  // Write is ALLOWED so Reporter can save report.md and report_content.json
   const restrictions = createAgentToolRestrictions([
-    "write",
     "edit",
     "webfetch",
   ])

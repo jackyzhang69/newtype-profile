@@ -1,0 +1,15 @@
+{
+  "name": "refugee-audit-rules",
+  "version": "1.0.0",
+  "description": "Hard eligibility checks, risk patterns, and fraud risk badges for refugee protection claims. Based on IRPA A95-A98, Refugee Convention Article 1F exclusions, and Federal Court jurisprudence.",
+  "categories": ["audit", "risk", "rules", "refugee"],
+  "quality_level": "L4",
+  "quickstart_paths": ["../SKILL.md"],
+  "references": [
+    "eligibility_rules.md",
+    "risk_patterns.json",
+    "fraud_risk_flags.md",
+    "refusal_patterns.md",
+    "risk_badges.json"
+  ]
+}

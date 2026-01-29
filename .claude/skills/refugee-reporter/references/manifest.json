@@ -1,0 +1,13 @@
+{
+  "name": "refugee-reporter",
+  "version": "1.0.0",
+  "description": "Refugee-specific Reporter templates for executive summary, evidence list, and report formatting. Used by Reporter agent to generate professional audit reports.",
+  "categories": ["audit", "reporter", "templates", "refugee"],
+  "quality_level": "L4",
+  "quickstart_paths": ["../SKILL.md"],
+  "references": [
+    "executive_summary.md",
+    "evidence_list.md",
+    "report_sections.md"
+  ]
+}

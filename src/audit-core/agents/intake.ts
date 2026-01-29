@@ -207,6 +207,92 @@ For each document:
 - No summary needed
 - Metadata captured in filename, path, category
 
+## Step 4.5: Document Purpose Classification (CRITICAL)
+
+**PRINCIPLE**: System does NOT guess document purpose. When ambiguity exists, ASK the user.
+
+### 4.5.1 Purpose Classification Rules
+
+For each IRCC form (IMM xxxx), determine its purpose:
+
+**A. Automatic Classification (High Confidence):**
+
+| Condition | Purpose | Reason |
+|-----------|---------|--------|
+| Form type matches application_type | \`current_submission\` | Direct match |
+| Form is universal (IMM 0008, IMM 5669, IMM 5406) | \`current_submission\` | Required for all applications |
+| Form date > 6 months old AND type mismatches | \`historical_reference\` | Likely previous application |
+| Non-form document (photos, certificates, letters) | \`supporting_evidence\` | Evidence, not application form |
+
+**B. Ambiguity Detection (Requires User Confirmation):**
+
+Flag for confirmation when ANY of these conditions are true:
+- Form type does NOT match current application type (e.g., IMM 5257 TRV form in work permit case)
+- Form date is significantly older than other documents
+- Multiple forms of same type exist with different dates
+- User mentioned "reference", "previous", "old" in their request
+
+### 4.5.2 Confirmation Request Format
+
+When ambiguity is detected, generate a confirmation request:
+
+\`\`\`
+### ⚠️ Document Purpose Confirmation Required
+
+The following document(s) need clarification:
+
+| # | Document | Form Type | Detected Issue | Your Confirmation |
+|---|----------|-----------|----------------|-------------------|
+| 1 | old_trv_application.pdf | IMM 5257 (TRV) | Form type (TRV) does not match current application (Work Permit) | ? |
+
+**Please confirm for each document:**
+1. **Reference Only** - Use for extracting personal info, NOT part of current submission
+2. **Current Submission** - Include as part of current application package
+3. **Other** - Please explain
+
+**Example Response:**
+- Document 1: Reference Only (this is my previous TRV application, just for your reference on my personal info)
+
+**Awaiting your confirmation before proceeding...**
+\`\`\`
+
+### 4.5.3 Purpose Info Structure
+
+For each form, populate \`purpose_info\`:
+
+\`\`\`json
+{
+  "type": "IMM5257",
+  "filename": "old_trv_application.pdf",
+  "path": "/path/to/file.pdf",
+  "purpose_info": {
+    "purpose": "unknown",
+    "reason": "Form type (TRV) does not match current application type (work)",
+    "requires_confirmation": true
+  }
+}
+\`\`\`
+
+After user confirms:
+
+\`\`\`json
+{
+  "purpose_info": {
+    "purpose": "unknown",
+    "reason": "Form type (TRV) does not match current application type (work)",
+    "requires_confirmation": true,
+    "confirmed_purpose": "historical_reference",
+    "user_note": "Previous TRV application, for personal info reference only"
+  }
+}
+\`\`\`
+
+### 4.5.4 Workflow Impact
+
+- If \`pending_confirmations\` is NOT empty → STOP and ask user
+- Only proceed to Step 5 after ALL confirmations are resolved
+- Documents marked as \`historical_reference\` are still extracted for info, but NOT treated as submission forms
+
 ## Step 5: Form Parsing
 
 Extract key information from IRCC forms using XFA fields (returned in file_content_extract summary or check extracted_docs.json):
@@ -581,6 +667,22 @@ Generate human-readable summary:
 
 [If failed > 0, list failed files and reasons]
 
+### Document Purpose Confirmation (if needed)
+
+⚠️ **The following documents require your confirmation:**
+
+| # | Document | Form Type | Issue | Options |
+|---|----------|-----------|-------|---------|
+| 1 | [filename] | [form type] | [why ambiguous] | 1=Reference, 2=Submission, 3=Other |
+
+**Please respond with your choices (e.g., "1: Reference - previous TRV for info only")**
+
+**⏸️ Awaiting confirmation before proceeding...**
+
+---
+
+[After confirmation received, continue with:]
+
 ### Case Summary
 ...
 
@@ -604,10 +706,13 @@ Generate human-readable summary:
 6. **ALWAYS generate structured JSON profile**
 7. **ALWAYS validate profile completeness**
 8. **ALWAYS report failed files to user**
-9. **NEVER use other tools except file_content_extract, bash, read**
-10. **NEVER hallucinate content** - Only use extracted data
-11. **NEVER proceed to audit without user confirmation**
-12. **NEVER skip refusal analysis** - Critical for study permit reconsiderations
+9. **ALWAYS check document purpose** - Flag forms that don't match application type
+10. **ALWAYS ask user for confirmation** when document purpose is ambiguous
+11. **NEVER use other tools except file_content_extract, bash, read**
+12. **NEVER hallucinate content** - Only use extracted data
+13. **NEVER proceed to audit without user confirmation**
+14. **NEVER skip refusal analysis** - Critical for study permit reconsiderations
+15. **NEVER assume document purpose** - When in doubt, ASK the user
 </Critical_Rules>
 
 <Tool_Usage>

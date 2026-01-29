@@ -1,0 +1,122 @@
+{
+  "version": "1.0.0",
+  "app_type": "refugee",
+  "last_updated": "2026-01-28",
+
+  "services": {
+    "caselaw": {
+      "port": 3105,
+      "primary_use": "Federal Court refugee jurisprudence",
+      "tools": {
+        "caselaw_optimized_search": {
+          "use_when": "General legal research, finding relevant precedent",
+          "parameters": {
+            "query": "Natural language query about refugee law issue",
+            "court": "fc (preferred) | fca | irb",
+            "target_count": 20,
+            "issue_code": "Optional - use for targeted search"
+          }
+        },
+        "caselaw_keyword_search": {
+          "use_when": "Specific term search, precise legal phrases",
+          "parameters": {
+            "query": "Keywords to search",
+            "court": "fc | fca | irb",
+            "must_include": ["Required terms"],
+            "must_not": ["Exclusion terms"],
+            "top_k": 20
+          }
+        },
+        "caselaw_authority": {
+          "use_when": "Verify case is good law, check citation count",
+          "parameters": {
+            "citation": "YYYY FC XXXX format"
+          }
+        },
+        "caselaw_validity": {
+          "use_when": "Check if case has been overruled",
+          "parameters": {
+            "citation": "YYYY FC XXXX format"
+          }
+        }
+      }
+    },
+
+    "operation-manual": {
+      "port": 3106,
+      "primary_use": "IRCC policy guidance for refugee claims",
+      "key_policies": [
+        {"code": "enf24-eng", "title": "ENF 24 - Ministerial Interventions", "topics": ["Exclusion", "Cessation", "Vacation"]},
+        {"code": "enf10-eng", "title": "ENF 10 - Removals", "topics": ["PRRA", "Removal orders"]},
+        {"code": "enf-3-eng", "title": "ENF 3 - Admissibility", "topics": ["Refugee claim during hearing"]},
+        {"code": "enf28-eng", "title": "ENF 28 - Danger Opinions", "topics": ["Non-refoulement exception"]}
+      ],
+      "tools": {
+        "operation_manual_semantic_search": {
+          "use_when": "Finding policy guidance on refugee topics",
+          "parameters": {
+            "query": "Topic description",
+            "policy_code": "Optional - restrict to specific policy",
+            "size": 10
+          }
+        }
+      }
+    },
+
+    "help-centre": {
+      "port": 3107,
+      "primary_use": "Client-facing IRCC information",
+      "tools": {
+        "help_centre_search": {
+          "use_when": "Finding procedural information for claimants",
+          "parameters": {
+            "query": "Search terms",
+            "lang": "en | zh",
+            "top_k": 10
+          }
+        }
+      }
+    },
+
+    "kg": {
+      "primary_use": "Knowledge graph for authoritative cases",
+      "tools": {
+        "kg_top_authorities": {
+          "use_when": "Finding most cited/authoritative cases on issue",
+          "parameters": {
+            "issue_code": "SUB_REFUGEE_* code",
+            "court": "FC | FCA",
+            "limit": 10
+          }
+        },
+        "kg_metadata": {
+          "use_when": "Discovering available issue codes",
+          "parameters": {}
+        }
+      }
+    }
+  },
+
+  "search_strategy": {
+    "order": [
+      "1. kg_top_authorities for landmark cases on issue",
+      "2. caselaw_optimized_search for broader coverage",
+      "3. caselaw_keyword_search for specific terms",
+      "4. operation_manual for policy guidance",
+      "5. help_centre for procedural information"
+    ],
+    "verification": {
+      "always_verify": "All cases cited as authority must be verified with caselaw_authority()",
+      "criteria": {
+        "is_good_law": true,
+        "preferred_cited_by": "> 5 for landmark status"
+      }
+    }
+  },
+
+  "court_hierarchy": {
+    "binding": ["FCA - Federal Court of Appeal"],
+    "persuasive": ["FC - Federal Court"],
+    "factual_only": ["IRB - Immigration and Refugee Board"]
+  }
+}

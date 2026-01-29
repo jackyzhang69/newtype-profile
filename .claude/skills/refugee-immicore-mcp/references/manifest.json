@@ -1,0 +1,12 @@
+{
+  "name": "refugee-immicore-mcp",
+  "version": "1.0.0",
+  "description": "MCP access policy for ImmiCore services used in refugee audits. Includes caselaw query patterns, operation manual search, and authority verification procedures.",
+  "categories": ["audit", "mcp", "caselaw", "refugee"],
+  "quality_level": "L4",
+  "quickstart_paths": ["../SKILL.md"],
+  "references": [
+    "mcp_usage.json",
+    "caselaw_query_patterns.json"
+  ]
+}

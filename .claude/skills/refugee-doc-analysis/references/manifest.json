@@ -1,0 +1,13 @@
+{
+  "name": "refugee-doc-analysis",
+  "version": "1.0.0",
+  "description": "Document extraction and summarization for refugee protection claim evidence. Covers BOC form analysis, identity verification, persecution evidence, and country conditions documentation.",
+  "categories": ["audit", "document", "analysis", "refugee"],
+  "quality_level": "L4",
+  "quickstart_paths": ["../SKILL.md"],
+  "references": [
+    "extraction_schema.json",
+    "document_classification.md",
+    "evidence_standards.md"
+  ]
+}

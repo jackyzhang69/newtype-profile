@@ -1,0 +1,15 @@
+{
+  "name": "refugee-knowledge-injection",
+  "version": "1.0.0",
+  "description": "Inject refugee audit knowledge and agent prompts into audit workflows. Defines skill-to-agent mapping and injection order.",
+  "categories": ["audit", "injection", "configuration", "refugee"],
+  "quality_level": "L4",
+  "quickstart_paths": ["../SKILL.md"],
+  "references": [
+    "injection_profile.json",
+    "detective_prompt.md",
+    "strategist_prompt.md",
+    "gatekeeper_prompt.md",
+    "reporter_prompt.md"
+  ]
+}

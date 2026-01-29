@@ -1,0 +1,13 @@
+{
+  "name": "refugee-workflow",
+  "version": "1.0.0",
+  "description": "Output templates and report formats for refugee audit workflow stages. Includes eligibility checklist, protection analysis, and risk assessment templates.",
+  "categories": ["audit", "workflow", "templates", "refugee"],
+  "quality_level": "L4",
+  "quickstart_paths": ["../SKILL.md"],
+  "references": [
+    "primary_assess_template.md",
+    "deep_analysis_template.md",
+    "final_review_template.md"
+  ]
+}

@@ -1,0 +1,102 @@
+{
+  "version": "refugee-v1",
+  "description": "Refugee protection knowledge injection profile with output constraints",
+  "skills": {
+    "refugee-audit-rules": {
+      "description": "Risk patterns, eligibility rules for refugee claims",
+      "inject_to": ["detective", "strategist", "gatekeeper"],
+      "priority": 1
+    },
+    "refugee-doc-analysis": {
+      "description": "Document analysis rules and evidence standards",
+      "inject_to": ["detective", "strategist"],
+      "priority": 2
+    },
+    "refugee-immicore-mcp": {
+      "description": "Caselaw and operation manual query patterns",
+      "inject_to": ["detective"],
+      "priority": 3
+    },
+    "refugee-workflow": {
+      "description": "Internal workflow templates",
+      "inject_to": ["strategist", "gatekeeper"],
+      "priority": 4
+    },
+    "refugee-client-guidance": {
+      "description": "Client-facing guides for hearing preparation",
+      "inject_to": ["gatekeeper"],
+      "priority": 5
+    },
+    "learned-guardrails": {
+      "description": "Semantic verification rules to catch concept confusion errors",
+      "inject_to": ["gatekeeper"],
+      "priority": 6
+    },
+    "audit-report-output": {
+      "description": "Final report format, Poison Pill templates, tier-based output constraints",
+      "inject_to": ["reporter"],
+      "priority": 7
+    },
+    "core-reporter": {
+      "description": "Cross-app Reporter rules for synthesis, constraints, and document generation",
+      "inject_to": ["reporter"],
+      "priority": 8
+    },
+    "refugee-reporter": {
+      "description": "Refugee-specific Reporter templates for executive summary, evidence list, hearing preparation",
+      "inject_to": ["reporter"],
+      "priority": 9
+    }
+  },
+  "injection_order": [
+    "refugee-audit-rules",
+    "refugee-doc-analysis",
+    "refugee-immicore-mcp",
+    "refugee-workflow",
+    "refugee-client-guidance",
+    "learned-guardrails",
+    "audit-report-output",
+    "core-reporter",
+    "refugee-reporter"
+  ],
+  "agent_skill_mapping": {
+    "detective": {
+      "skills": ["refugee-immicore-mcp", "refugee-audit-rules", "refugee-doc-analysis"],
+      "prompt_file": "detective_prompt.md",
+      "focus": "case_law_search"
+    },
+    "strategist": {
+      "skills": ["refugee-audit-rules", "refugee-doc-analysis", "refugee-workflow"],
+      "prompt_file": "strategist_prompt.md",
+      "focus": "risk_assessment"
+    },
+    "gatekeeper": {
+      "skills": ["refugee-audit-rules", "refugee-workflow", "refugee-client-guidance", "learned-guardrails"],
+      "prompt_file": "gatekeeper_prompt.md",
+      "focus": "compliance_check"
+    },
+    "reporter": {
+      "skills": ["refugee-reporter", "core-reporter", "audit-report-output"],
+      "prompt_file": "reporter_prompt.md",
+      "focus": "report_synthesis"
+    }
+  },
+  "tags": {
+    "skill": "Skill_References",
+    "risk": "Risk_Patterns",
+    "doc": "Document_Analysis",
+    "caselaw": "Caselaw_Patterns",
+    "template": "Output_Templates",
+    "guidance": "Client_Guidance"
+  },
+  "stability": {
+    "allow_rename": false,
+    "preserve_manifest": true
+  },
+  "_metadata": {
+    "created": "2026-01-28",
+    "last_updated": "2026-01-28",
+    "status": "active",
+    "version_notes": "Initial creation for refugee app type"
+  }
+}

@@ -40,7 +40,7 @@ export const audit_session_start = tool({
     case_slot: tool.schema.string().describe("Case slot (e.g., 20260126-tian)"),
     tier: tool.schema.enum(["guest", "pro", "ultra"]).describe("Audit tier"),
     app_type: tool.schema
-      .enum(["spousal", "study", "work", "family", "other"])
+      .enum(["spousal", "study", "work", "refugee", "family", "other"])
       .describe("Application type"),
     workflow_type: tool.schema
       .enum(["risk_audit", "initial_assessment", "final_review", "refusal_analysis", "document_list", "client_guidance"])

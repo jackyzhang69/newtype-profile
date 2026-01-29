@@ -1,0 +1,14 @@
+{
+  "name": "refugee-client-guidance",
+  "version": "1.0.0",
+  "description": "Client guidance templates for refugee protection applications. Includes document preparation, hearing preparation, and statement writing guides.",
+  "categories": ["audit", "client", "guidance", "refugee"],
+  "quality_level": "L4",
+  "quickstart_paths": ["../SKILL.md"],
+  "references": [
+    "document_checklist.md",
+    "hearing_preparation.md",
+    "statement_guide.md"
+  ],
+  "guide_types": ["document_preparation", "hearing_preparation", "statement_writing"]
+}

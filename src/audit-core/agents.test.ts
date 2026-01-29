@@ -120,16 +120,22 @@ describe("Audit Core Agents", () => {
       expect(reporterAgent.prompt).toContain("report")
     })
 
-    it("should have write restriction (prevent direct file writing)", () => {
+    it("should have edit and webfetch restrictions (but allow write for report files)", () => {
+      // Reporter MUST be able to write report files (report.md, report_content.json)
+      // But should NOT be able to edit existing files or fetch from web
       if ((reporterAgent as any).permission) {
-        expect((reporterAgent as any).permission.write).toBe("deny")
+        expect((reporterAgent as any).permission.edit).toBe("deny")
+        expect((reporterAgent as any).permission.webfetch).toBe("deny")
+        // write should NOT be denied - Reporter needs to save reports
+        expect((reporterAgent as any).permission.write).toBeUndefined()
         return
       }
-      if ((reporterAgent.tools as any)?.write === false) {
-        expect((reporterAgent.tools as any).write).toBe(false)
-        return
+      if ((reporterAgent as any).tools) {
+        expect((reporterAgent as any).tools.edit).toBe(false)
+        expect((reporterAgent as any).tools.webfetch).toBe(false)
+        // write should NOT be false - Reporter needs to save reports
+        expect((reporterAgent as any).tools.write).toBeUndefined()
       }
-      expect((reporterAgent.tools as any)?.exclude).toContain("write")
     })
 
     it("should use buildAuditPrompt for skill injection (not minimal prompt)", () => {
