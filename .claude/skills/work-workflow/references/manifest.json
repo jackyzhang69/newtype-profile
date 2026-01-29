@@ -9,7 +9,9 @@
     "primary_assessment.md",
     "deep_analysis.md",
     "final_review.md",
-    "submission_letter.md"
+    "submission_letter.md",
+    "verdict_thresholds.md",
+    "scoring_algorithm.md"
   ],
   "workflow_stages": [
     {

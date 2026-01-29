@@ -127,7 +127,12 @@ Each skill's `references/manifest.json` MUST follow:
     +-- primary_assess_template.md # Primary assessment template
     +-- deep_analysis_template.md  # Deep analysis template
     +-- final_assess_template.md   # Final assessment template
+    +-- verdict_thresholds.md      # Judge verdict thresholds (GO/CAUTION/NO-GO)
+    +-- scoring_algorithm.md       # Defensibility score aggregation algorithm
 ```
+
+> **CRITICAL**: `verdict_thresholds.md` and `scoring_algorithm.md` are MANDATORY.
+> Without these, Judge agent cannot synthesize verdicts consistently.
 
 ### {app-type}-client-guidance
 

@@ -8,6 +8,8 @@
   "references": [
     "primary_assess_template.md",
     "deep_analysis_template.md",
-    "final_review_template.md"
+    "final_review_template.md",
+    "verdict_thresholds.md",
+    "scoring_algorithm.md"
   ]
 }

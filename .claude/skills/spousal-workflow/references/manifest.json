@@ -9,7 +9,9 @@
     "primary_assess_template.md",
     "deep_analysis_template.md",
     "final_assess_template.md",
-    "submission_letter_template.md"
+    "submission_letter_template.md",
+    "verdict_thresholds.md",
+    "scoring_algorithm.md"
   ],
   "workflow_stages": [
     {

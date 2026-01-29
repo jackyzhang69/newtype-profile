@@ -16,6 +16,8 @@ Invoke os-compliance-checker:
 | **manifest uses `references`** | **Not `files`, otherwise content is empty** | **CRITICAL** |
 | **injection_profile no `files`** | **files field is not read** | **CRITICAL** |
 | injection_profile.json | Contains 9 skills mapping | CRITICAL |
+| **verdict_thresholds.md** | **workflow skill has Judge verdict thresholds** | **CRITICAL** |
+| **scoring_algorithm.md** | **workflow skill has defensibility score algorithm** | **CRITICAL** |
 | injection_order | Contains complete injection order | HIGH |
 | agent_skill_mapping | Contains all 4 agent mappings | HIGH |
 | No base+deep split | No base + deep separation pattern | HIGH |
