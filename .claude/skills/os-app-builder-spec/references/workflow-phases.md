@@ -45,11 +45,11 @@ help_centre_search(query="{app-type} documents needed", top_k=20)
 Extract official document requirements from IRCC:
 
 ```bash
-/os-extract-checklist {app-type} --save-to ./tmp/{app-type}-bootstrap/
+/os-generate-doclist {app-type} --refresh --save-to ./tmp/{app-type}-bootstrap/
 ```
 
-This uses the `os-ircc-checklist-extractor` skill to:
-1. Locate the correct IRCC page for the application type
+This uses the `os-doclist-generator` skill to:
+1. Locate the correct IRCC page for the application type (via Playwright)
 2. Extract all document requirements (forms, supporting docs)
 3. Identify conditional requirements (country-specific, situation-specific)
 4. Generate structured checklist for `{app}-doc-analysis` skill

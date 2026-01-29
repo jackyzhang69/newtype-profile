@@ -25,11 +25,10 @@ model: sonnet
 tools: Read, Write, Edit, Glob, Grep, Bash, WebFetch, Playwright
 skills:
   - os-app-builder-spec
-  - os-ircc-checklist-extractor
+  - os-doclist-generator
   - os-knowledge-extractor
   - os-compliance-checker
   - os-design-principles
-  - os-doclist-generator
 ---
 
 # OS App Builder Agent
@@ -49,7 +48,7 @@ You build Immigration Audit Apps by creating 7 skill directories with MCP-source
    Save results to `./tmp/{app-type}-bootstrap/`
 
 2. **Extract IRCC Checklist:**
-   Use Playwright to fetch official document requirements from IRCC website.
+   Use `/os-generate-doclist {app-type} --refresh` to fetch official document requirements.
    Save to `./tmp/{app-type}-bootstrap/ircc_checklist.json`
 
 3. **Only THEN generate skills** using the extracted content.
@@ -63,7 +62,7 @@ You build Immigration Audit Apps by creating 7 skill directories with MCP-source
 ## Process
 
 1. **Phase 1**: MCP Bootstrap (caselaw, operation manual, help centre)
-2. **Phase 1.5**: IRCC Checklist Extraction (Playwright)
+2. **Phase 1.5**: IRCC Checklist Extraction (`/os-generate-doclist`)
 3. **Phase 2**: Knowledge Extraction (`/os-extract-knowledge`)
 4. **Phase 3**: Generate 7 skill directories
 5. **Phase 3.5**: Verify landmark cases with `caselaw_authority()`
